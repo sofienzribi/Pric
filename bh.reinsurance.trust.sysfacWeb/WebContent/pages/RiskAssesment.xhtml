@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+</h:head>
+<h:body>
+
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Risk assesment</ui:define>
+		<ui:define name="content">
+			<div>
+				<h3>Risk Assesment</h3>
+
+				<h:form>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7">General Factors</p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Loss Ration </p:column>
+							<p:column>
+								<p:selectOneMenu id="Loss" style="width:125px">
+									<f:selectItems value="#{assesmentBean.lossRatio}" />
+
+								</p:selectOneMenu>
+								<p:tooltip for="Loss" id="tooltipLoss"
+									value="we can put information here  ...."></p:tooltip>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Construction Class </p:column>
+							<p:column>
+								<p:selectOneMenu id="class" style="width:125px">
+									<f:selectItems value="#{assesmentBean.consClass}" />
+								</p:selectOneMenu>
+								<p:tooltip for="class" id="tooltipClass"
+									value="we can put information here  ...."></p:tooltip>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Safety and Security </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Security Guard 24/365 </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Management risk awarness </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Physical Barrieres </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Acces Control and Alarm System </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Housekeeping </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Smoke control </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Welding control </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Fire prevention officer </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Stock Storage Practice </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Maintenance </p:column>
+							</p:row>
+
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Mechanical Maintenance </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Electrical Maintenance</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Fullfillment of recommendations </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Regular maintenance and self inspection process </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7">BI Loss Prevention </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Backup Facilities</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Business Continuity plan</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Bottleneck loss minimised </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Fire Detection </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Installation </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px"></p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Link </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px"></p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Estinguishment System </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Installation </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px"></p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Link </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px"></p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Plan Fire Brigade </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Type </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px"></p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Public Fire Brigade </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Familiarity with premises </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItem itemLabel="Yes" itemValue="yes" />
+									<f:selectItem itemLabel="No" itemValue="No" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Response Time </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.responseTime}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							#{loginBean.user.login}
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+
+
+
+				</h:form>
+
+			</div>
+
+		</ui:define>
+
+
+	</ui:composition>
+
+
+</h:body>
+</html>

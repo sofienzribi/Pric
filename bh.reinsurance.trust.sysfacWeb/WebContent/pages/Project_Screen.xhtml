@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:head>
+
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title" >Welcome page</ui:define>
+		<ui:define name="content">
+
+
+			<p:panel id="pan1" header="Please select a project">
+				<h:form id="dialog1">
+					<p:dataTable emptyMessage="no Projects found!"
+						value="#{projectBean.projects}" var="prod" rows="5"
+						paginator="true" paginatorPosition="bottom" selectionMode="single"
+						selection="#{projectBean.project}" rowKey="#{prod.id}"
+						widgetVar="prodTabW2">
+						<p:ajax event="rowSelect" listener="#{projectBean.DisplayPop()}"
+							update=":dialog1" />
+						<p:column headerText="Name " filterBy="#{prod.nameOfTheProject}"
+							filterMatchMode="contains">
+							<h:outputText value="#{prod.nameOfTheProject}" />
+						</p:column>
+						<p:column headerText="Creation Date"
+							filterBy="#{prod.dateCreation}" filterMatchMode="contains">
+							<h:outputText value="#{prod.dateCreation}" />
+						</p:column>
+						<p:column headerText="User">
+							<h:outputText value="#{projectBean.getLogin(prod.user)}" />
+						</p:column>
+						<p:column headerText="Privacy">
+							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
+						</p:column>
+					</p:dataTable>
+					<p:commandButton value="Open"
+						action="#{projectBean.openingproject()}"
+						rendered="#{projectBean.popDisplayed}" />
+					<p:commandButton icon="fa fa-plus" value="New Project" onclick="popup.show()" />
+
+				</h:form>
+			</p:panel>
+
+
+
+
+
+
+			<p:dialog header="Password" modal="true" id="popup1"
+				widgetVar="popup1">
+				<h:form id="form3">
+					<h:panelGrid columns="1">
+						<p:messages id="messages" autoUpdate="true" closable="true" />
+						<p:password id="pwd1" value="#{projectBean.pwdcheck}"
+							required="true" requiredMessage="Password required"></p:password>
+						<p:commandButton action="#{projectBean.verifypassword()}"
+							value="Open" update=":form3"></p:commandButton>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+
+
+
+
+
+
+
+			<p:dialog header="New Project" modal="true" widgetVar="popup">
+				<h:form id="form2">
+					<h:panelGrid columns="3">
+						<p:outputLabel for="Name"  value="Name of the project : " />
+						<p:inputText  id="Name"
+							value="#{projectBean.project2.nameOfTheProject}" required="true"
+							requiredMessage="Name Required" />
+						<p:message id="namemsg" for="Name" />
+						<p:outputLabel for="privacy" value="Privacy : " />
+						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
+							required="true" rendered="true"
+							requiredMessage="Privacy required">
+							<f:selectItem itemLabel="Public" itemValue="true" />
+							<f:selectItem itemLabel="Private" itemValue="false" />
+							<p:ajax update="form2" event="valueChange"
+								listener="#{projectBean.displaypasswordmsg()}" />
+						</p:selectOneRadio>
+						<p:message id="radiomsg" for="privacy" />
+
+
+
+						<p:outputLabel value="password : "></p:outputLabel>
+						<p:password id="pass" required="true"
+							disabled="#{projectBean.passwordmsg}"
+							value="#{projectBean.project2.password}"
+							requiredMessage="Please enter a password"></p:password>
+						<p:message id="passmsg" for="pass" />
+
+
+
+
+						<p:outputLabel value="Use account password : "></p:outputLabel>
+						<p:selectBooleanCheckbox value="#{projectBean.checkbox}"
+							disabled="#{projectBean.checkboxDisplay}">
+							<p:ajax update="form2"
+								listener="#{projectBean.DisablePasswordUsingCheckbox()}"></p:ajax>
+						</p:selectBooleanCheckbox>
+
+					</h:panelGrid>
+					<p:commandButton value="Create"
+						action="#{projectBean.OpenProject()}" update=":form2" />
+					<p:commandButton value="Cancel" onclick="popup.hide()" />
+				</h:form>
+			</p:dialog>
+
+
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

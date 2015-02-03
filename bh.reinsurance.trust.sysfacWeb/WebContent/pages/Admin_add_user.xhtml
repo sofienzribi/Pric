@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:head>
+
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Summary</ui:define>
+		<ui:define name="content">
+
+
+
+			<h:form id="Form1">
+				<p:growl id="gorwl1" sticky="true" showDetail="true"></p:growl>
+				<p:wizard flowListener="#{adminBean.OnFlowProcess()}">
+					<p:tab id="Personal" title="Personal">
+						<p:panel header="Personal Details">
+							<p:messages />
+							<p:panelGrid columns="2">
+								<h:outputText value="First Name" />
+								<p:inputText label="First Name" required="true" />
+							</p:panelGrid>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="Address" title="Address">
+						<p:panel header="Address Details">
+							<p:messages />
+							<p:panelGrid columns="2">
+								<h:outputText value="Street" />
+								<p:inputText label="Street" required="true" />
+							</p:panelGrid>
+						</p:panel>
+					</p:tab>
+
+
+
+
+
+
+
+				</p:wizard>
+
+
+
+
+			</h:form>
+
+
+		</ui:define>
+
+
+
+	</ui:composition>
+</h:body>
+</html>

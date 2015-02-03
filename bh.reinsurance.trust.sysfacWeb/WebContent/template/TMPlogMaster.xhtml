@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title><ui:insert name="title"></ui:insert></title>
+	<h:outputStylesheet library="css" name="5670482863bb.css" />
+	<!-- <h:outputScript library="js" name="812abdebffc1.js"></h:outputScript> -->
+</h:head>
+
+<h:body>
+
+	<ui:include src="/template/TMPlog.xhtml" />
+
+
+	<div id="footer">
+		<div class="container">
+			<div class="container text-left">
+
+				<div class="text-muted credit"
+					style="display: inline-block; padding: 6px;">
+					<ui:insert name="leftmenu" />
+				</div>
+
+
+			</div>
+			<div class="container text-center">
+
+
+
+				<div class="text-muted credit"
+					style="display: inline-block; padding: 6px;">
+
+
+
+
+
+					<ui:insert name="content" />
+
+
+
+
+
+					... <a href="" target="_blank" class=""> <span
+						class="inline-hidden-xs inline-hidden-sm"></span>
+
+
+					</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</h:body>
+
+</html>
