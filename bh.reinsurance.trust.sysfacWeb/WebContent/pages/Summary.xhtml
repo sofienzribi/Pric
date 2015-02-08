@@ -11,11 +11,32 @@
 <h:body>
 	<ui:composition template="/template/TmpNew.xhtml">
 		<ui:define name="title">Summary</ui:define>
-		<ui:define name="content">
+		<ui:define name="Offer">
+			<h:form id="form">
+				<h:panelGrid columns="2" border="0">
 
-<p:commandButton icon="fa fa-plus" value="New Project"  />
+					<p:outputLabel value="Inception Date : " for="inc" />
+					<p:calendar id="inc" />
+					<p:outputLabel value="Expiry date : " for="exp" />
+					<p:calendar id="exp" />
+					<p:outputLabel value="Quoted date : " for="quote" />
+					<p:calendar id="quote" />
+					<p:outputLabel value="Currency : " for="curr" />
+					<p:inputText id="curr" />
+					<p:outputLabel value="Underwriter : " for="Lab1" />
+					<p:inputText id="Lab1" />
+					<p:outputLabel value="Insured : " for="ins" />
+					<p:inputText id="ins" />
+					<p:outputLabel value="Broker : " for="brok" />
+					<p:inputText id="brok" />
+					<p:outputLabel value="Policy : " for="pol" />
+					<p:inputMask id="pol" mask="a*-999-a999" />
 
 
+
+
+				</h:panelGrid>
+			</h:form>
 		</ui:define>
 
 

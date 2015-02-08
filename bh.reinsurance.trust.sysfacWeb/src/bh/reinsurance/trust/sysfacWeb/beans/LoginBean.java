@@ -10,6 +10,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServlet;
 
+import org.primefaces.event.FlowEvent;
+
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
@@ -31,6 +33,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	public UserServicesLocal getUserServicesLocal() {
 		return userServicesLocal;
 	}
+
 
 	public void setUserServicesLocal(UserServicesLocal userServicesLocal) {
 		this.userServicesLocal = userServicesLocal;

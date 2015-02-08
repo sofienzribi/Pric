@@ -1,34 +1,54 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.FlowEvent;
 
-@ManagedBean
-@RequestScoped
-public class AdminBean {
+import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
+
+@ManagedBean(name = "admin")
+@ViewScoped
+public class AdminBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7461654699564286956L;
+	private User user;
+	@EJB
+	private UserServicesLocal local;
 
 	public AdminBean() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public boolean isSkip() {
-		return Skip;
+	@PostConstruct
+	public void init() {
+		user = new User();
 	}
-
-	public void setSkip(boolean skip) {
-		Skip = skip;
-	}
-
-	private boolean Skip;
 
 	public String OnFlowProcess(FlowEvent event) {
-		if (Skip) {
-			Skip = false;
-			return "confirm";
-		}
+
 		return event.getNewStep();
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void addUser() {
+		System.out.println(user.getEmail());
+		local.AddUser(user);
+
 	}
 
 }

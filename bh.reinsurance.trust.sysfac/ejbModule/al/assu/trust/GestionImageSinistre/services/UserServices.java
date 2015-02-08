@@ -41,7 +41,7 @@ public class UserServices implements UserServicesLocal {
 		User userFound = new User();
 		query.setParameter("param1", login);
 		query.setParameter("param2", password);
-		
+
 		try {
 			userFound = (User) query.getSingleResult();
 
@@ -57,6 +57,12 @@ public class UserServices implements UserServicesLocal {
 	public User GetUserByid(int id) {
 		// TODO Auto-generated method stub
 		return entityManager.find(User.class, id);
+	}
+
+	@Override
+	public void AddUser(User user) {
+		entityManager.persist(user);
+
 	}
 
 }
