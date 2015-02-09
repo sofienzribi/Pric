@@ -9,11 +9,12 @@
 	<title><ui:insert name="title"></ui:insert></title>
 	<h:outputStylesheet library="css" name="5670482863bb.css" />
 </h:head>
-
 <h:body>
-
 	<ui:include src="/template/Tmphead.xhtml" />
-<br/><br/>
+	<h:outputScript library="js" name="bootstrap.min.js"></h:outputScript>
+
+	<br />
+	<br />
 
 	<div id="footer">
 		<div class="container">
@@ -23,36 +24,19 @@
 					style="display: inline-block; padding: 6px;">
 					<ui:insert name="leftmenu" />
 				</div>
-
-
 			</div>
 			<div class="container text-center">
-
-
-
 				<div class="text-muted credit"
 					style="display: inline-block; padding: 6px;">
 
-
-
-
-
 					<ui:insert name="content" />
-
-
-
-
 
 					... <a href="" target="_blank" class=""> <span
 						class="inline-hidden-xs inline-hidden-sm"></span>
-
-
 					</a>
 				</div>
 			</div>
-			
 		</div>
-
 	</div>
 </h:body>
 

@@ -14,39 +14,28 @@
 					data-target=".navbar-collapse">
 					<span class="sr-only">Toggle navigation</span> <span
 						class="fa fa-bars fa-lg fa-fw fa-inverse"></span>
-				</button>
-				<!--   <a class="navbar-brand" href="/">   <h:graphicImage value="/resources/images/log).jpg"></h:graphicImage>     </a> -->
+				</button>		<!--   <a class="navbar-brand" href="/">   <h:graphicImage value="/resources/images/log).jpg"></h:graphicImage>     </a> -->
 
 			</div>
-
 			<div class="navbar-collapse collapse">
-
 				<ul class="nav navbar-nav">
-
-
-
-
-
-
-
-
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<!-- dropdown connected -->
-					<!-- <li class="dropdown"><a href="#"
+
+					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-user"></i> <span></span> <b class="caret"></b>
+							class="fa fa-user"></i> <span>#{login.Connected()}</span> <b
+							class="caret"></b>
 					</a>
 
 						<ul class="dropdown-menu">
 
-
-
-
-							<li><a href=><i
-									class="fa fa-sign-out"></i> Sign out</a></li>
-
-						</ul></li> -->
+							<li><h:form id="aa"> <i
+							class="fa fa-user"></i>
+									<p:commandLink value="Signout"
+										actionListener="#{login.doGet()}"></p:commandLink>
+								</h:form></li>
+						</ul></li>
 
 				</ul>
 			</div>

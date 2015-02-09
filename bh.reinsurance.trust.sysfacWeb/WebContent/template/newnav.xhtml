@@ -6,6 +6,27 @@
 
 
 
+	<p:dataTable var="car" value="#{dtBasicView.cars}">
+		<p:column headerText="Id">
+			<h:outputText value="#{car.id}" />
+		</p:column>
+
+		<p:column headerText="Year">
+			<h:outputText value="#{car.year}" />
+		</p:column>
+
+		<p:column headerText="Brand">
+			<h:outputText value="#{car.brand}" />
+		</p:column>
+
+		<p:column headerText="Color">
+			<h:outputText value="#{car.color}" />
+		</p:column>
+	</p:dataTable>
+
+
+
+
 
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -17,7 +38,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"> <h:graphicImage
+				<a href="#"> <h:graphicImage
 						value="/resources/images/logo_small.png" />
 				</a>
 			</div>

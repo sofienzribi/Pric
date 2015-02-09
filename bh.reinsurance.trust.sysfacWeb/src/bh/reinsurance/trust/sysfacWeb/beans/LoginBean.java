@@ -1,5 +1,6 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -10,18 +11,12 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServlet;
 
-import org.primefaces.event.FlowEvent;
-
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
 @ManagedBean(name = "login")
 @SessionScoped
 public class LoginBean extends HttpServlet implements Serializable {
-
-	/**
-	 * 
-	 */
 
 	private static final long serialVersionUID = 1L;
 	// Models
@@ -34,6 +29,26 @@ public class LoginBean extends HttpServlet implements Serializable {
 		return userServicesLocal;
 	}
 
+	public String Connected() {
+		System.out.println(user.login);
+		if (user.getLogin() == null) {
+			return "Nobody !!!";
+		} else {
+			return user.getLogin();
+		}
+
+	}
+
+	public void doGet() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.invalidateSession();
+		user = new User();
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("/bh.reinsurance.trust.sysfacWeb/");
+	}
+	
+
+	
 
 	public void setUserServicesLocal(UserServicesLocal userServicesLocal) {
 		this.userServicesLocal = userServicesLocal;
@@ -60,7 +75,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 			return false;
 		}
 	}
-	
 
 	public String login() {
 
@@ -80,7 +94,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_FATAL,
 							"Bad Credentials!", "Bad Credentials"));
 			// setUser(new user());
-
 			return "";
 		}
 	}

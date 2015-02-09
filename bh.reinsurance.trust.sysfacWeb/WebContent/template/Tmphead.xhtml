@@ -4,33 +4,16 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-
-
-
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="fa fa-bars fa-lg fa-fw fa-inverse"></span>
-				</button>
-				<!--   <a class="navbar-brand" href="/">   <h:graphicImage value="/resources/images/log).jpg"></h:graphicImage>     </a> -->
-
+				<p:graphicImage value="/resources/images/logo_small.png"></p:graphicImage>
 			</div>
-
 			<div class="navbar-collapse collapse">
-
 				<ul class="nav navbar-nav">
-
-
-
-
-
 					<li class="active"><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/RiskAssesment.jsf"><i
 							class="fa fa-plus"></i> Rating tool</a></li>
-
 					<li><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Project_Screen.jsf"><i
 							class="fa fa-plus"></i> Abacus tool</a></li>
@@ -38,49 +21,31 @@
 							class="fa fa-plus"></i> Information about facultatives</a></li>
 					<li><a href="/bh.reinsurance.trust.sysfacWeb/pages/login.jsf"><i
 							class="fa fa-plus"></i> Reporting tool</a></li>
-
-
-
+					<li><a
+						href="/bh.reinsurance.trust.sysfacWeb/pages/Summary.jsf"><i
+							class="fa fa-plus"></i> Summary</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<!-- dropdown connected -->
 
 
+					<li class="dropdown"><a href="#"
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
+							class="fa fa-user"></i> <span>#{login.Connected()}</span> <b
+							class="caret"></b>
+					</a>
 
+						<ul class="dropdown-menu">
 
-					<li><a><i class="fa fa-sign-out"></i> Sign out</a>
-						
-
-
-
-
-							</li>
+							<li><h:form id="juij">
+									<i class="fa fa-user"></i>
+									<p:commandLink value="Signout"
+										actionListener="#{login.doGet()}"></p:commandLink>
+								</h:form></li>
+						</ul></li>
 
 				</ul>
 			</div>
-
 		</div>
 		<!--/.navbar-collapse -->
 	</nav>
-
-
-
-
-	<!-- View -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </ui:composition>

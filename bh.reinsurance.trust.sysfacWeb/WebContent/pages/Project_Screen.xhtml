@@ -3,18 +3,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-
 <h:head>
-
 </h:head>
 <h:body>
-		<ui:composition template="/template/TMPlogMaster.xhtml">
-
-		<ui:define name="title" >Welcome page</ui:define>
+	<ui:composition template="/template/TMPlogMaster.xhtml">
+		<ui:define name="title">Welcome page</ui:define>
 		<ui:define name="content">
-
-
 			<p:panel id="pan1" header="Please select a project">
 				<h:form id="dialog1">
 					<p:dataTable emptyMessage="no Projects found!"
@@ -42,15 +36,10 @@
 					<p:commandButton value="Open"
 						action="#{projectBean.openingproject()}"
 						rendered="#{projectBean.popDisplayed}" />
-					<p:commandButton icon="fa fa-plus" value="New Project" onclick="popup.show()" />
-
+					<p:commandButton icon="fa fa-plus" value="New Project"
+						onclick="popup.show()" />
 				</h:form>
 			</p:panel>
-
-
-
-
-
 
 			<p:dialog header="Password" modal="true" id="popup1"
 				widgetVar="popup1">
@@ -66,17 +55,11 @@
 			</p:dialog>
 
 
-
-
-
-
-
-
 			<p:dialog header="New Project" modal="true" widgetVar="popup">
 				<h:form id="form2">
 					<h:panelGrid columns="3">
-						<p:outputLabel for="Name"  value="Name of the project : " />
-						<p:inputText  id="Name"
+						<p:outputLabel for="Name" value="Name of the project : " />
+						<p:inputText id="Name"
 							value="#{projectBean.project2.nameOfTheProject}" required="true"
 							requiredMessage="Name Required" />
 						<p:message id="namemsg" for="Name" />
@@ -90,34 +73,24 @@
 								listener="#{projectBean.displaypasswordmsg()}" />
 						</p:selectOneRadio>
 						<p:message id="radiomsg" for="privacy" />
-
-
-
 						<p:outputLabel value="password : "></p:outputLabel>
 						<p:password id="pass" required="true"
 							disabled="#{projectBean.passwordmsg}"
 							value="#{projectBean.project2.password}"
 							requiredMessage="Please enter a password"></p:password>
 						<p:message id="passmsg" for="pass" />
-
-
-
-
 						<p:outputLabel value="Use account password : "></p:outputLabel>
 						<p:selectBooleanCheckbox value="#{projectBean.checkbox}"
 							disabled="#{projectBean.checkboxDisplay}">
 							<p:ajax update="form2"
 								listener="#{projectBean.DisablePasswordUsingCheckbox()}"></p:ajax>
 						</p:selectBooleanCheckbox>
-
 					</h:panelGrid>
 					<p:commandButton value="Create"
 						action="#{projectBean.OpenProject()}" update=":form2" />
 					<p:commandButton value="Cancel" onclick="popup.hide()" />
 				</h:form>
 			</p:dialog>
-
-
 
 		</ui:define>
 	</ui:composition>

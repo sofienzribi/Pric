@@ -37,23 +37,19 @@ public class AssetsBean {
 	private AssetsServicesLocal assetsServicesLocal;
 
 	LoginBean bean;
-	ExternalContext context=FacesContext.getCurrentInstance().getExternalContext();
+	ExternalContext context = FacesContext.getCurrentInstance()
+			.getExternalContext();
 
 	public AssetsBean() throws IOException {
-		
+
 		forrmDisplayed = false;
 		setAssets(new Assets());
 
 	}
 
 	@PostConstruct
-	public void init() throws IOException {
-		if (user.getLogin() == null) {
-			
-			context.redirect("login.jsf");
-			return;
-		}
-		System.out.println(user.login);
+	public void init() {
+
 	}
 
 	public List<Assets> GetAssets() {

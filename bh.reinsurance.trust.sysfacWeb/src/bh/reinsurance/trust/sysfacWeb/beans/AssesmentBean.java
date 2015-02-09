@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 @ManagedBean
-@ApplicationScoped
+@ViewScoped
 public class AssesmentBean {
 
 	private Map<String, String> Quality;

@@ -35,7 +35,6 @@ public class ProjectBean implements Serializable {
 	private List<Project> projects = new ArrayList<Project>();
 	private Project project;
 	private Project project2;
-
 	private String Test;
 	private boolean PopDisplayed;
 	private boolean CheckboxDisplay;
@@ -125,9 +124,7 @@ public class ProjectBean implements Serializable {
 	}
 
 	public String getLogin(int id) {
-		System.out.println(id);
 		return local2.GetUserByid(id).login;
-
 	}
 
 	public void DisplayPop() {
@@ -139,11 +136,9 @@ public class ProjectBean implements Serializable {
 		if (project.getPrivacy() == true) {
 			return "RiskAssesment?faces-redirect=true";
 		} else {
-
 			if (project.getUser() == user.getId()) {
 				return "RiskAssesment?faces-redirect=true";
 			} else {
-
 				RequestContext context = RequestContext.getCurrentInstance();
 				context.execute("popup1.show();");
 				return null;
