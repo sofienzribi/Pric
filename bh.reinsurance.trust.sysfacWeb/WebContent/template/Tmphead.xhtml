@@ -12,7 +12,8 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 
-					<li><a href="/bh.reinsurance.trust.sysfacWeb/pages/Assets.jsf"><i
+					<li><a
+						href="/bh.reinsurance.trust.sysfacWeb/pages/Fac_info.jsf"><i
 							class="fa fa-info-circle"></i> Information about facultatives</a></li>
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
@@ -24,26 +25,31 @@
 
 							<li><h:form id="firstb">
 									<i class="fa fa-folder-open-o"></i>
-									<p:commandLink value="Rating"></p:commandLink>
+									<p:commandLink value="Rating"
+										actionListener="#{redirectionBean.GoToRating()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="secondb">
 									<i class="fa fa-comment-o"></i>
-									<p:commandLink value="Assets"></p:commandLink>
+									<p:commandLink value="Assets"
+										actionListener="#{redirectionBean.GoToAssets()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="thirdb">
 									<i class="fa fa-comment-o"></i>
-									<p:commandLink value="Risk Assesment"></p:commandLink>
+									<p:commandLink value="Risk Assesment"
+										actionListener="#{redirectionBean.GoToRiskAssesment()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="fourthb">
 									<i class="fa fa-comment-o"></i>
-									<p:commandLink value="Summary"></p:commandLink>
+									<p:commandLink value="Summary"
+										actionListener="#{redirectionBean.GoToSummary()}"></p:commandLink>
 								</h:form></li>
 						</ul></li>
 					<li><a
-						href="/bh.reinsurance.trust.sysfacWeb/pages/Project_Screen.jsf"><i
+						href="/bh.reinsurance.trust.sysfacWeb/pages/Chart_Page.jsf"><i
 							class="fa fa-area-chart"></i> Abacus tool</a></li>
 
-					<li><a href="/bh.reinsurance.trust.sysfacWeb/pages/login.jsf"><i
+					<li><a
+						href="/bh.reinsurance.trust.sysfacWeb/pages/Report_page.jsf"><i
 							class="fa fa-file-pdf-o"></i> Reporting tool</a></li>
 
 				</ul>
@@ -72,22 +78,22 @@
 
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-folder"></i> <span>Project</span> <b class="caret"></b>
+							class="fa fa-folder"></i> <span>Project
+								#{projectBean.project.nameOfTheProject}</span> <b class="caret"></b>
 					</a>
 
 						<ul class="dropdown-menu">
 
-							<li><h:form id="fdeS">
-									<i class="fa fa-folder-open-o"></i>
-									<p:commandLink value="Open Project"></p:commandLink>
-								</h:form></li>
+
 							<li><h:form id="efe">
 									<i class="fa fa-comment-o"></i>
-									<p:commandLink value="View Comments"></p:commandLink>
+									<p:commandLink value="View Comments"
+										actionListener="#{redirectionBean.GoToComment()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="dfds">
 									<i class="fa fa-folder"></i>
-									<p:commandLink value="Close Project"></p:commandLink>
+									<p:commandLink value="Close Project"
+										actionListener="#{redirectionBean.GoToProject()}"></p:commandLink>
 								</h:form></li>
 						</ul></li>
 
