@@ -46,9 +46,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("/bh.reinsurance.trust.sysfacWeb/");
 	}
-	
-
-	
 
 	public void setUserServicesLocal(UserServicesLocal userServicesLocal) {
 		this.userServicesLocal = userServicesLocal;
@@ -86,7 +83,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 			System.out.println(user.getId());
 			System.out.println("acces granted");
 
-			return "Project_Screen?faces-redirect=true";
+			return "Fac_info?faces-redirect=true";
 
 		} else {
 			FacesContext.getCurrentInstance().addMessage(
