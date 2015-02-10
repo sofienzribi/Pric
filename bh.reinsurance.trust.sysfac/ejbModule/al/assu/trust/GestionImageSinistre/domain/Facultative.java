@@ -104,13 +104,7 @@ public class Facultative implements Serializable {
 	}
 
 	
-	public int getOur_liability() {
-		return our_liability;
-	}
-
-	public void setOur_liability(int our_liability) {
-		this.our_liability = our_liability;
-	}
+	
 
 	public String getSuminsured() {
 		return suminsured;
@@ -119,7 +113,13 @@ public class Facultative implements Serializable {
 	public void setSuminsured(String suminsured) {
 		this.suminsured = suminsured;
 	}
+	public int getOur_liability() {
+		return our_liability;
+	}
 
+	public void setOur_liability(int our_liability) {
+		this.our_liability = our_liability;
+	}
 
 
 }

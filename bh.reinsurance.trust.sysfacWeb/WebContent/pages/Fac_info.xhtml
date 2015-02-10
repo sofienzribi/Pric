@@ -9,7 +9,99 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Facultative information </ui:define>
 		<ui:define name="content">
-			
+
+			<div class="jumbotron">
+				<h1>FACULTATIVES</h1>
+				<p class="lead"></p>
+				<p class="lead"></p>
+			</div>
+
+			<p:panel id="master">
+				<h:form>
+					<h:panelGrid id="eu" columns="2">
+
+
+						<h:outputLabel value="Region" />
+						<p:selectOneMenu value="#{facultativeBean.reg1}"
+							style="width:375px">
+							<p:ajax event="valueChange"
+								listener="#{facultativeBean.OnRegionChange()}"
+								update=":master :details" />
+							<f:selectItem itemLabel="All regions" />
+							<f:selectItems value="#{facultativeBean.reg}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel value="Country" />
+						<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
+							style="width:375px">
+							<p:ajax event="valueChange"
+								listener="#{facultativeBean.affichselec()}" update=":details" />
+							<f:selectItem itemLabel="All countries." />
+							<f:selectItems value="#{facultativeBean.countr}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel value="Occupency" style="width:375px" />
+
+						<p:selectOneMenu value="#{facultativeBean.occup1}" style="width:375px" >
+							<p:ajax event="valueChange"
+								listener="#{facultativeBean.affichselec()}" update=":details" />
+							<f:selectItem itemLabel="select one..." />
+							<f:selectItems value="#{facultativeBean.occup}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+				</h:form>
+			</p:panel>
+
+
+
+
+			<p:panel id="details" visible="#{facultativeBean.testaff}">
+				<h:form id="details_form">
+					<p:dataTable emptyMessage="no fac found!"
+						value="#{facultativeBean.facbychoice}" var="prod" rows="15"
+						paginator="true" paginatorPosition="bottom" selectionMode="single"
+						selection="#{facultativeBean.facbychoice1}" rowKey="#{prod.id}"
+						filteredValue="#{facultativeBean.filtredfac}" widgetVar="prodTabW">
+
+
+
+						<f:facet name="header">
+							<h:outputText value="facultatives by choice" />
+						</f:facet>
+
+						<p:column headerText="Region">
+							<h:outputText value="#{prod.regions}" />
+						</p:column>
+
+						<p:column headerText="Insured">
+							<h:outputText value="#{prod.insured}" />
+						</p:column>
+
+						<p:column headerText="Country">
+							<h:outputText value="#{prod.countries}" />
+						</p:column>
+
+
+						<p:column headerText="Occupency">
+							<h:outputText value="#{prod.occupencies}" />
+						</p:column>
+
+
+
+						<p:column headerText="our liability">
+							<h:outputText value="#{prod.our_liability}" />
+						</p:column>
+
+
+					</p:dataTable>
+
+				</h:form>
+			</p:panel>
+
 		</ui:define>
 	</ui:composition>
 </h:body>
