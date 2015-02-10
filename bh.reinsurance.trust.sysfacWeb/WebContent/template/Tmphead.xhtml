@@ -11,19 +11,41 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a
-						href="/bh.reinsurance.trust.sysfacWeb/pages/RiskAssesment.jsf"><i
-							class="fa fa-plus"></i> Rating tool</a></li>
+
+					<li><a href="/bh.reinsurance.trust.sysfacWeb/pages/Assets.jsf"><i
+							class="fa fa-info-circle"></i> Information about facultatives</a></li>
+					<li class="dropdown"><a href="#"
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
+							class="fa fa-tasks"></i> <span>Rating tool</span> <b
+							class="caret"></b>
+					</a>
+
+						<ul class="dropdown-menu">
+
+							<li><h:form id="firstb">
+									<i class="fa fa-folder-open-o"></i>
+									<p:commandLink value="Rating"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="secondb">
+									<i class="fa fa-comment-o"></i>
+									<p:commandLink value="Assets"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="thirdb">
+									<i class="fa fa-comment-o"></i>
+									<p:commandLink value="Risk Assesment"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="fourthb">
+									<i class="fa fa-comment-o"></i>
+									<p:commandLink value="Summary"></p:commandLink>
+								</h:form></li>
+						</ul></li>
 					<li><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Project_Screen.jsf"><i
-							class="fa fa-plus"></i> Abacus tool</a></li>
-					<li><a href="/bh.reinsurance.trust.sysfacWeb/pages/Assets.jsf"><i
-							class="fa fa-plus"></i> Information about facultatives</a></li>
+							class="fa fa-area-chart"></i> Abacus tool</a></li>
+
 					<li><a href="/bh.reinsurance.trust.sysfacWeb/pages/login.jsf"><i
-							class="fa fa-plus"></i> Reporting tool</a></li>
-					<li><a
-						href="/bh.reinsurance.trust.sysfacWeb/pages/Summary.jsf"><i
-							class="fa fa-plus"></i> Summary</a></li>
+							class="fa fa-file-pdf-o"></i> Reporting tool</a></li>
+
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 
@@ -35,13 +57,40 @@
 					</a>
 
 						<ul class="dropdown-menu">
-
+							<li><h:form id="mmmi">
+									<i class="fa fa-wrench"></i>
+									<p:commandLink value="Edit Account"></p:commandLink>
+								</h:form></li>
 							<li><h:form id="juij">
 									<i class="fa fa-user"></i>
 									<p:commandLink value="Signout"
 										actionListener="#{login.doGet()}"></p:commandLink>
 								</h:form></li>
+
 						</ul></li>
+
+
+					<li class="dropdown"><a href="#"
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
+							class="fa fa-folder"></i> <span>Project</span> <b class="caret"></b>
+					</a>
+
+						<ul class="dropdown-menu">
+
+							<li><h:form id="fdeS">
+									<i class="fa fa-folder-open-o"></i>
+									<p:commandLink value="Open Project"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="efe">
+									<i class="fa fa-comment-o"></i>
+									<p:commandLink value="View Comments"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="dfds">
+									<i class="fa fa-folder"></i>
+									<p:commandLink value="Close Project"></p:commandLink>
+								</h:form></li>
+						</ul></li>
+
 
 				</ul>
 			</div>
