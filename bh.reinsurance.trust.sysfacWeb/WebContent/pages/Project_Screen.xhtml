@@ -67,8 +67,9 @@
 						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
 							required="true" rendered="true"
 							requiredMessage="Privacy required">
-							<f:selectItem itemLabel="Public" itemValue="true" />
+							
 							<f:selectItem itemLabel="Private" itemValue="false" />
+							<f:selectItem itemLabel="Public" itemValue="true" />
 							<p:ajax update="form2" event="valueChange"
 								listener="#{projectBean.displaypasswordmsg()}" />
 						</p:selectOneRadio>

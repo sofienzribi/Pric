@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FlowEvent;
 
@@ -48,6 +49,8 @@ public class AdminBean implements Serializable {
 	public void addUser() {
 		System.out.println(user.getEmail());
 		local.AddUser(user);
+		FacesContext.getCurrentInstance().getExternalContext()
+				.invalidateSession();
 
 	}
 

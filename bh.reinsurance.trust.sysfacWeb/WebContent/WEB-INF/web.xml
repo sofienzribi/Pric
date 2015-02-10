@@ -26,6 +26,7 @@
 	</filter-mapping>
 	<servlet>
 		<servlet-name>Push Servlet</servlet-name>
+		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
 		<init-param>
 			<param-name>org.atmosphere.useWebSocket</param-name>
 			<param-value>false</param-value>

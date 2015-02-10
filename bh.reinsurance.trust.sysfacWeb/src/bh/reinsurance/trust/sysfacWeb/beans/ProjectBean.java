@@ -47,12 +47,14 @@ public class ProjectBean implements Serializable {
 	// methods
 
 	public ProjectBean() {
+		CheckboxDisplay = false;
 		project2 = new Project();
 	}
 
 	@PostConstruct
 	public void init() {
-		CheckboxDisplay = true;
+		System.out.println(user.getId());
+
 		passwordmsg = true;
 		PopDisplayed = false;
 		projects = local.GetAllProjects();
@@ -72,20 +74,18 @@ public class ProjectBean implements Serializable {
 
 	public String OpenProject() {
 
-		if (priv.endsWith("true")) {
-			project2.setPrivacy(true);
-		} else {
+		if (priv.equals("false")) {
 			project2.setPrivacy(false);
+			if (Checkbox.equals("true")) {
+				project2.setPassword(user.getPassword());
+			}
+		} else {
+			project2.setPrivacy(true);
+			
 		}
-		if (Checkbox.equals("true")) {
-			project2.setPassword(user.getPassword());
-		}
-		System.out.println(user.getId());
-		System.out.println(user.getLogin());
-		System.out.println(user.getEmail());
-		System.out.println(user.getPassword());
+
 		project2.setUser(user.getId());
-		System.out.println(Checkbox);
+		System.out.println(user.getId());
 		local.NewProject(project2);
 		projects = local.GetAllProjects();
 		return "RiskAssesment?faces-redirect=true";
