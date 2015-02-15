@@ -8,8 +8,19 @@
 <h:body>
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Chart tool </ui:define>
+
 		<ui:define name="content">
-			
+			<h:form>
+				<h3>RSS TEST</h3>
+				<p:feedReader
+					value="http://feeds.marketwatch.com/marketwatch/marketpulse/"
+					var="feed">
+					<h:outputText value="#{feed.title}"
+						style="font-weight: bold;display:block" />
+					<h:outputText value="#{feed.description.value}" escape="false" />
+					<p:separator />
+				</p:feedReader>
+			</h:form>
 		</ui:define>
 	</ui:composition>
 </h:body>

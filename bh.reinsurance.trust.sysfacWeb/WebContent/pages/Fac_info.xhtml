@@ -20,7 +20,6 @@
 				<h:form>
 					<h:panelGrid id="eu" columns="2">
 
-
 						<h:outputLabel value="Region" />
 						<p:selectOneMenu value="#{facultativeBean.reg1}"
 							style="width:375px">
@@ -44,7 +43,8 @@
 
 						<h:outputLabel value="Occupency" style="width:375px" />
 
-						<p:selectOneMenu value="#{facultativeBean.occup1}" style="width:375px" >
+						<p:selectOneMenu value="#{facultativeBean.occup1}"
+							style="width:375px">
 							<p:ajax event="valueChange"
 								listener="#{facultativeBean.affichselec()}" update=":details" />
 							<f:selectItem itemLabel="select one..." />
@@ -56,19 +56,15 @@
 				</h:form>
 			</p:panel>
 
-
-
-
 			<p:panel id="details" visible="#{facultativeBean.testaff}">
 				<h:form id="details_form">
 					<p:dataTable emptyMessage="no fac found!"
-						value="#{facultativeBean.facbychoice}" var="prod" rows="15"
+						value="#{facultativeBean.facbychoice}" var="prod" rows="10"
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{facultativeBean.facbychoice1}" rowKey="#{prod.id}"
 						filteredValue="#{facultativeBean.filtredfac}" widgetVar="prodTabW">
-
-
-
+						<p:ajax event="rowSelect"
+							listener="#{facultativeBean.OnRowSelect4()}" update=":FacInfo" />
 						<f:facet name="header">
 							<h:outputText value="facultatives by choice" />
 						</f:facet>
@@ -90,18 +86,132 @@
 							<h:outputText value="#{prod.occupencies}" />
 						</p:column>
 
-
-
 						<p:column headerText="our liability">
 							<h:outputText value="#{prod.our_liability}" />
 						</p:column>
-
 
 					</p:dataTable>
 
 				</h:form>
 			</p:panel>
 
+
+			<p:panel id="FacInfo" visible="#{facultativeBean.displayDeatils}">
+
+				<h2>Details</h2>
+				<h:form id="FacInfoForm">
+					<p:panelGrid columns="2" id="Detailsandcomparaisons">
+						<p:panelGrid id="SelectedFac" columns="2">
+							<p:outputLabel value="Region" />
+							<p:outputLabel value="#{facultativeBean.facbychoice1.regions}" />
+							<p:outputLabel value="Country" />
+							<p:outputLabel value="#{facultativeBean.facbychoice1.countries}" />
+							<p:outputLabel value="Occupency" />
+							<p:outputLabel
+								value="#{facultativeBean.facbychoice1.occupencies}" />
+							<p:outputLabel value="Insured" />
+							<p:outputLabel value="#{facultativeBean.facbychoice1.insured}" />
+							<p:outputLabel value="Cedent" />
+							<p:outputLabel value="#{facultativeBean.facbychoice1.cedant}" />
+							<p:outputLabel value="Sum Insured" />
+							<p:outputLabel value="#{facultativeBean.facbychoice1.suminsured}" />
+							<p:outputLabel value="Our Liability" />
+							<p:outputLabel
+								value="#{facultativeBean.facbychoice1.our_liability}" />
+							<p:outputLabel value="Interest" />
+							<p:outputLabel value="#{facultativeBean.facbychoice1.interest}" />
+							<p:outputLabel value="Commission" />
+							<p:outputLabel value="#{facultativeBean.facbychoice1.commission}" />
+							<p:commandButton value="Show All Claims" />
+						</p:panelGrid>
+
+
+						<h:form id="buttoncomparaison"
+							rendered="#{facultativeBean.displayComparaisonButton}">
+							<p:commandLink
+								value="Click Here to Compare With Another Facultative"
+								onclick="popup.show()" />
+						</h:form>
+						<h:form id="Compfacultative"
+							rendered="#{facultativeBean.displayFacCompare}">
+
+							<p:panelGrid id="CompareFac" columns="2">
+								<p:outputLabel value="Region" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.regions}" />
+								<p:outputLabel value="Country" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.countries}" />
+								<p:outputLabel value="Occupency" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.occupencies}" />
+								<p:outputLabel value="Insured" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.insured}" />
+								<p:outputLabel value="Cedent" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.cedant}" />
+								<p:outputLabel value="Sum Insured" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.suminsured}" />
+								<p:outputLabel value="Our Liability" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.our_liability}" />
+								<p:outputLabel value="Interest" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.interest}" />
+								<p:outputLabel value="Commission" />
+								<p:outputLabel
+									value="#{facultativeBean.comparaisonFacultative.commission}" />
+								<p:commandButton value="Show All Claims" />
+								<p:commandButton value="Change" onclick="popup.show()" />
+							</p:panelGrid>
+						</h:form>
+					</p:panelGrid>
+				</h:form>
+			</p:panel>
+
+
+			<p:dialog header="Choose a Facultative" modal="true"
+				widgetVar="popup">
+				<h:form id="form2">
+					<p:dataTable emptyMessage="no fac found!"
+						value="#{facultativeBean.facultatives}" var="proda" rows="10"
+						paginator="true" paginatorPosition="bottom" selectionMode="single"
+						selection="#{facultativeBean.comparaisonFacultative}"
+						rowKey="#{proda.id}" filteredValue="#{facultativeBean.filtredfac}"
+						widgetVar="prodTabWs">
+
+
+
+						<p:column headerText="Region">
+							<h:outputText value="#{proda.regions}" />
+						</p:column>
+
+						<p:column headerText="Insured">
+							<h:outputText value="#{proda.insured}" />
+						</p:column>
+
+						<p:column headerText="Country">
+							<h:outputText value="#{proda.countries}" />
+						</p:column>
+
+
+						<p:column headerText="Occupency">
+							<h:outputText value="#{proda.occupencies}" />
+						</p:column>
+
+						<p:column headerText="our liability">
+							<h:outputText value="#{proda.our_liability}" />
+						</p:column>
+
+					</p:dataTable>
+
+					<p:commandButton value="Compare"
+						action="#{facultativeBean.DisplayFacCompare()}" update=":FacInfo"
+						onclick="popup.hide()" />
+				</h:form>
+			</p:dialog>
 		</ui:define>
 	</ui:composition>
 </h:body>

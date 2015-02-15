@@ -6,13 +6,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+
+import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Facultative;
 import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class FacultativeBean implements Serializable {
 
 	/**
@@ -28,9 +31,10 @@ public class FacultativeBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<String> countr;
 	private String countr1;
+	private Facultative ComparaisonFacultative;
 	private String occup1;
 	private Facultative facultative;
-
+	private boolean DisplayDeatils;
 	private List<String> occup;
 	private List<String> reg;
 	private String reg1;
@@ -38,7 +42,8 @@ public class FacultativeBean implements Serializable {
 	private Facultative facbychoice1;
 	private List<Facultative> filtredfac;
 	private List<Facultative> facultatives2;
-
+	private boolean DisplayComparaisonButton;
+	private boolean DisplayFacCompare;
 	public FacultativeBean() {
 
 	
@@ -46,6 +51,9 @@ public class FacultativeBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		DisplayFacCompare=false;
+		DisplayComparaisonButton=true;
+		DisplayDeatils=false;
 		testaff = false;
 		setFacultative(new Facultative());
 		occup = facultativeServicesLocal.GetOcuupencies();
@@ -63,7 +71,15 @@ public class FacultativeBean implements Serializable {
 				occup1));
 		testaff = true;
 	}
-
+	public void DisplayFacCompare(){
+		DisplayFacCompare=true;
+		DisplayComparaisonButton=false;
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("popup.hide();");
+	}
+		public void OnRowSelect4(){
+			DisplayDeatils=true;
+		}
 	public void affichselec() {
 		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
 				occup1));
@@ -181,6 +197,38 @@ public class FacultativeBean implements Serializable {
 
 	public void setFacultative(Facultative facultative) {
 		this.facultative = facultative;
+	}
+
+	public boolean isDisplayDeatils() {
+		return DisplayDeatils;
+	}
+
+	public void setDisplayDeatils(boolean displayDeatils) {
+		DisplayDeatils = displayDeatils;
+	}
+
+	public boolean isDisplayComparaisonButton() {
+		return DisplayComparaisonButton;
+	}
+
+	public void setDisplayComparaisonButton(boolean displayComparaisonButton) {
+		DisplayComparaisonButton = displayComparaisonButton;
+	}
+
+	public boolean isDisplayFacCompare() {
+		return DisplayFacCompare;
+	}
+
+	public void setDisplayFacCompare(boolean displayFacCompare) {
+		DisplayFacCompare = displayFacCompare;
+	}
+
+	public Facultative getComparaisonFacultative() {
+		return ComparaisonFacultative;
+	}
+
+	public void setComparaisonFacultative(Facultative comparaisonFacultative) {
+		ComparaisonFacultative = comparaisonFacultative;
 	}
 
 }

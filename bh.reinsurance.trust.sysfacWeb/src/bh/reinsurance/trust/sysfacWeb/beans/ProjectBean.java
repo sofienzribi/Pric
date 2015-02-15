@@ -81,21 +81,21 @@ public class ProjectBean implements Serializable {
 			}
 		} else {
 			project2.setPrivacy(true);
-			
+
 		}
 
 		project2.setUser(user.getId());
 		System.out.println(user.getId());
 		local.NewProject(project2);
 		projects = local.GetAllProjects();
-		return "RiskAssesment?faces-redirect=true";
+		return "Fac_info?faces-redirect=true";
 	}
 
 	public String verifypassword() {
 		System.out.println(project.getPassword());
 		System.out.println(pwdcheck);
 		if (pwdcheck.equals(project.getPassword())) {
-			return "RiskAssesment?faces-redirect=true";
+			return "Fac_info?faces-redirect=true";
 		} else {
 
 			FacesContext.getCurrentInstance().addMessage(
@@ -134,10 +134,10 @@ public class ProjectBean implements Serializable {
 	public String openingproject() {
 
 		if (project.getPrivacy() == true) {
-			return "RiskAssesment?faces-redirect=true";
+			return "Fac_info?faces-redirect=true";
 		} else {
 			if (project.getUser() == user.getId()) {
-				return "RiskAssesment?faces-redirect=true";
+				return "Fac_info?faces-redirect=true";
 			} else {
 				RequestContext context = RequestContext.getCurrentInstance();
 				context.execute("popup1.show();");

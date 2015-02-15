@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -49,9 +50,12 @@ public class AdminBean implements Serializable {
 	public void addUser() {
 		System.out.println(user.getEmail());
 		local.AddUser(user);
+		 FacesContext context = FacesContext.getCurrentInstance();
+         
+	        context.addMessage(null, new FacesMessage("Successful",  "Your message: ") );
 		FacesContext.getCurrentInstance().getExternalContext()
 				.invalidateSession();
-
+			
 	}
 
 }

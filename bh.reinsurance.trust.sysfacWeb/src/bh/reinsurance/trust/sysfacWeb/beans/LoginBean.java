@@ -83,7 +83,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 			System.out.println(user.getId());
 			System.out.println("acces granted");
 
-			return "Fac_info?faces-redirect=true";
+			return "Project_Screen?faces-redirect=true";
 
 		} else {
 			FacesContext.getCurrentInstance().addMessage(

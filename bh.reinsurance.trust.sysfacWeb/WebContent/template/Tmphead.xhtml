@@ -46,11 +46,11 @@
 						</ul></li>
 					<li><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Chart_Page.jsf"><i
-							class="fa fa-area-chart"></i> Abacus tool</a></li>
+							class="fa fa-certificate"></i>  <span>Abacus tool</span></a></li>
 
 					<li><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Report_page.jsf"><i
-							class="fa fa-file-pdf-o"></i> Reporting tool</a></li>
+							class="fa fa-files-o"></i>  <span>Reporting tool</span></a></li>
 
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -68,7 +68,7 @@
 									<p:commandLink value="Edit Account"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="juij">
-									<i class="fa fa-user"></i>
+									<i class="fa fa-sign-out"></i>
 									<p:commandLink value="Signout"
 										actionListener="#{login.doGet()}"></p:commandLink>
 								</h:form></li>
@@ -84,6 +84,11 @@
 
 						<ul class="dropdown-menu">
 
+							<li><h:form id="sdfv">
+									<i class="fa fa-envelope"></i>
+									<p:commandLink value="Send Project"
+										actionListener="#{redirectionBean.GoToComment()}"></p:commandLink>
+								</h:form></li>
 
 							<li><h:form id="efe">
 									<i class="fa fa-comment-o"></i>

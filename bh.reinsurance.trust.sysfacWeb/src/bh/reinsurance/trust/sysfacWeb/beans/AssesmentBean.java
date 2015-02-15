@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class AssesmentBean {
-
+	
 	private Map<String, String> Quality;
 	private Map<String, String> LossRatio;
 	private Map<String, String> ConsClass;
@@ -19,14 +19,14 @@ public class AssesmentBean {
 	public AssesmentBean() {
 
 	}
-
+	
 	@PostConstruct
 	public void init() {
+		
 		Quality = new HashMap<String, String>();
 		LossRatio = new HashMap<String, String>();
 		ConsClass = new HashMap<String, String>();
 		ResponseTime = new HashMap<String, String>();
-
 		ResponseTime.put("<=5 min", "5-");
 		ResponseTime.put("<=10 min", "10-");
 		ResponseTime.put("<=15 min", "15-");
