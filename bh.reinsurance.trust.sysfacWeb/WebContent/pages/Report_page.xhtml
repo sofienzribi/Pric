@@ -9,7 +9,21 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Repoting tool </ui:define>
 		<ui:define name="content">
-			
+			<h:form id="dialog1">
+				<p:dataTable emptyMessage="no Projects found!"
+					value="#{reportBean.facultatives}" var="prod" rows="5"
+					paginator="true" paginatorPosition="bottom" selectionMode="single"
+					selection="#{reportBean.facultative}" rowKey="#{prod.id}"
+					widgetVar="prodTabW2">
+
+
+					<p:column headerText="INSURED">
+						<h:outputText value="#{prod.insured}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="PDF"
+					actionListener="#{reportBean.ExportToPDF()}"></p:commandButton>
+			</h:form>
 		</ui:define>
 	</ui:composition>
 </h:body>

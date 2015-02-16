@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.context.RequestContext;
@@ -15,13 +14,8 @@ import al.assu.trust.GestionImageSinistre.domain.Facultative;
 import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class FacultativeBean implements Serializable {
-
-	/**
-	 * 
-	 * 
-	 */
 	@EJB
 	FacultativeServicesLocal facultativeServicesLocal;
 
@@ -44,42 +38,40 @@ public class FacultativeBean implements Serializable {
 	private List<Facultative> facultatives2;
 	private boolean DisplayComparaisonButton;
 	private boolean DisplayFacCompare;
-	public FacultativeBean() {
 
-	
+	public FacultativeBean() {
 	}
 
 	@PostConstruct
 	public void init() {
-		DisplayFacCompare=false;
-		DisplayComparaisonButton=true;
-		DisplayDeatils=false;
+		DisplayFacCompare = false;
+		DisplayComparaisonButton = true;
+		DisplayDeatils = false;
 		testaff = false;
 		setFacultative(new Facultative());
 		occup = facultativeServicesLocal.GetOcuupencies();
 		reg = facultativeServicesLocal.getRegions();
-
-		// countr=facultativeServicesLocal.GetCountries("FAR EAST");
-
 		setFacultatives(facultativeServicesLocal.facultatives());
 	}
 
 	public void OnRegionChange() {
-
 		setCountr(facultativeServicesLocal.GetCountries(reg1));
 		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
 				occup1));
 		testaff = true;
 	}
-	public void DisplayFacCompare(){
-		DisplayFacCompare=true;
-		DisplayComparaisonButton=false;
+
+	public void DisplayFacCompare() {
+		DisplayFacCompare = true;
+		DisplayComparaisonButton = false;
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("popup.hide();");
 	}
-		public void OnRowSelect4(){
-			DisplayDeatils=true;
-		}
+
+	public void OnRowSelect4() {
+		DisplayDeatils = true;
+	}
+
 	public void affichselec() {
 		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
 				occup1));
