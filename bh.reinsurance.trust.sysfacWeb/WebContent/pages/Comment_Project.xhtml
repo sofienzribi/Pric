@@ -9,7 +9,39 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Comments_Page </ui:define>
 		<ui:define name="content">
+		<h:form id="SendProject">
+		
+		
+			<p:panelGrid columns="2">
 			
+				<p:outputLabel value=" Name of the project :" />
+				<p:outputLabel value="#{projectBean.project.nameOfTheProject}" />
+				<p:outputLabel id="TO2" for="To" value="To* : ">
+					<p:tooltip for="TO2" id="Totooltip" value="Email @ or login  "></p:tooltip>
+				</p:outputLabel>
+				<p:inputText id="To"></p:inputText>
+				<p:outputLabel id="Text" for="Textt" value="Message : "></p:outputLabel>
+				<p:inputTextarea id="Textt"></p:inputTextarea>
+			
+			</p:panelGrid>
+		<p:commandButton value="Send"></p:commandButton>	
+		
+		
+		 <p:autoComplete id="USer" multiple="true" value="#{projectBean.sendToUsers}" completeMethod="#{projectBean.completeTheme()}"
+                        var="us" itemLabel="#{us.login}" itemValue="#{us.login}" converter="themeConverter" forceSelection="true">
+            <p:column style="width:10%">
+                <h:outputText styleClass="ui-theme ui-theme-#{theme.name}" />
+            </p:column>
+ 
+            <p:column>
+                <h:outputText value="#{theme.displayName}" />
+            </p:column>
+        </p:autoComplete>
+		
+		
+		
+		
+		</h:form>
 		</ui:define>
 	</ui:composition>
 </h:body>

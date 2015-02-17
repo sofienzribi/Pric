@@ -42,14 +42,10 @@
 								styleClass="product-form-input" />
 							<p:message id="pwdmsg" for="pwd" display="icon" />
 
-							<h:outputText value="DEPT : " />
-							<p:selectOneMenu>
-								<f:selectItem itemLabel="select one..." itemValue="" />
-								<f:selectItem itemLabel="Property" itemValue="Property" />
-							</p:selectOneMenu>
-
-							<p:commandButton value="Login" update="@form"
-								action="#{login.login()}" icon="fa fa-home" />
+							
+			<f:facet name="footer"><p:commandButton value="Login" update="@form"
+								action="#{login.login()}" icon="fa fa-home" /></f:facet>
+							
 
 
 						</h:panelGrid>

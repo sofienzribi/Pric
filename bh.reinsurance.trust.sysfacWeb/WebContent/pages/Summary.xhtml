@@ -3,44 +3,41 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-
 <h:head>
-
 </h:head>
 <h:body>
-	<ui:composition template="/template/TmpNew.xhtml">
-		<ui:define name="title">Summary</ui:define>
-		<ui:define name="Offer">
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Rating tool </ui:define>
+
+
+		<ui:define name="content">
 			<h:form id="form">
-				<h:panelGrid columns="2" border="0">
+				<p:panelGrid columns="2" border="0">
 
-					<p:outputLabel value="Inception Date : " for="inc" />
-					<p:calendar id="inc" />
-					<p:outputLabel value="Expiry date : " for="exp" />
-					<p:calendar id="exp" />
-					<p:outputLabel value="Quoted date : " for="quote" />
-					<p:calendar id="quote" />
-					<p:outputLabel value="Currency : " for="curr" />
-					<p:inputText id="curr" />
-					<p:outputLabel value="Underwriter : " for="Lab1" />
-					<p:inputText id="Lab1" />
-					<p:outputLabel value="Insured : " for="ins" />
-					<p:inputText id="ins" />
-					<p:outputLabel value="Broker : " for="brok" />
-					<p:inputText id="brok" />
-					<p:outputLabel value="Policy : " for="pol" />
-					<p:inputMask id="pol" mask="a*-999-a999" />
-					<p:outputLabel value="Insurance basis : " for="bs" />
-					<p:inputText id="bs" />
-					<p:outputLabel value="Risk Grade : " for="GR" />
-					<p:inputMask id="GR" mask="9?9" />
-					
+					<f:facet name="header">SUMMARY</f:facet>
+
+					<p:outputLabel value="Proposed Share : " for="PRO" />
+					<p:inputText id="PRO"></p:inputText>
 
 
 
-				</h:panelGrid>
+					<p:outputLabel value=" MaX Liability : " for="LIA" />
+					<p:outputLabel id="LIA">dfd</p:outputLabel>
+
+					<p:outputLabel value="Profit Margin : " for="Pro" />
+					<p:inputText id="Pro" />
+
+
+					<p:outputLabel value="Brokerage : " for="BROK" />
+					<p:inputText id="BROK" />
+
+					<f:facet name="footer">Commercial Price : 232</f:facet>
+
+
+					</p:panelGrid>
 			</h:form>
+
+
 		</ui:define>
 
 

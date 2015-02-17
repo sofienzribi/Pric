@@ -15,15 +15,27 @@
 					paginator="true" paginatorPosition="bottom" selectionMode="single"
 					selection="#{reportBean.facultative}" rowKey="#{prod.id}"
 					widgetVar="prodTabW2">
-
-
 					<p:column headerText="INSURED">
 						<h:outputText value="#{prod.insured}" />
 					</p:column>
 				</p:dataTable>
 				<p:commandButton value="PDF"
-					actionListener="#{reportBean.ExportToPDF()}"></p:commandButton>
+					onclick="popup.show()"></p:commandButton>
 			</h:form>
+			<p:dialog header="Please enter file name" modal="true" id="popup"
+				widgetVar="popup">
+				<h:form id="form3">
+					<h:panelGrid columns="1">
+						<p:messages id="messages" autoUpdate="true" closable="true" />
+						<p:inputText id="Name" value="#{reportBean.projectName}"
+							required="true" requiredMessage="Name required"></p:inputText>
+						<p:commandButton action="#{reportBean.ExportToPDF()}"
+							value="Create" update=":form3"></p:commandButton>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			
 		</ui:define>
 	</ui:composition>
 </h:body>

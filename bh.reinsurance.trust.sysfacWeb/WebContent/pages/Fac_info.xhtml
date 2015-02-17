@@ -13,7 +13,7 @@
 			<div class="jumbotron">
 				<h2>FACULTATIVES</h2>
 				<!-- <p class="lead"></p> -->
-				
+
 			</div>
 
 			<p:panel id="master">
@@ -63,12 +63,7 @@
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{facultativeBean.facbychoice1}" rowKey="#{prod.id}"
 						filteredValue="#{facultativeBean.filtredfac}" widgetVar="prodTabW">
-						 <f:facet name="Exporters">
-            <h:commandLink value="ghy" >
-               
-                <p:dataExporter type="xls" target="tbl" fileName="cars" pageOnly="true" />
-            </h:commandLink>
-            </f:facet>
+
 						<p:ajax event="rowSelect"
 							listener="#{facultativeBean.OnRowSelect4()}" update=":FacInfo" />
 						<f:facet name="header">
@@ -79,8 +74,8 @@
 							<h:outputText value="#{prod.regions}" />
 						</p:column>
 
-						<p:column headerText="Insured"   >
-							<h:outputText value="#{prod.insured}"  />
+						<p:column headerText="Insured">
+							<h:outputText value="#{prod.insured}" />
 						</p:column>
 
 						<p:column headerText="Country">
@@ -97,7 +92,8 @@
 						</p:column>
 
 					</p:dataTable>
-		
+					<p:commandLink value="Add to report"
+						actionListener="#{reportBean.addchoicetoreport(facultativeBean.facbychoice)}"></p:commandLink>
 				</h:form>
 			</p:panel>
 
@@ -117,7 +113,7 @@
 							<p:outputLabel value="Occupancy" />
 							<p:outputLabel
 								value="#{facultativeBean.facbychoice1.occupencies}" />
-						
+
 							<p:outputLabel value="Cedent" />
 							<p:outputLabel value="#{facultativeBean.facbychoice1.cedant}" />
 							<p:outputLabel value="Sum Insured" />
@@ -129,7 +125,13 @@
 							<p:outputLabel value="#{facultativeBean.facbychoice1.interest}" />
 							<p:outputLabel value="Commission" />
 							<p:outputLabel value="#{facultativeBean.facbychoice1.commission}" />
+						<f:facet name="footer">
+						
+						<h:panelGroup style="display:block; text-align:center">
+						
 							<p:commandButton value="Show Claims" />
+							</h:panelGroup>
+							</f:facet>
 						</p:panelGrid>
 
 
@@ -143,7 +145,7 @@
 							rendered="#{facultativeBean.displayFacCompare}">
 
 							<p:panelGrid id="CompareFac" columns="2">
-							<p:outputLabel value="Insured" />
+								<p:outputLabel value="Insured" />
 								<p:outputLabel
 									value="#{facultativeBean.comparaisonFacultative.insured}" />
 								<p:outputLabel value="Region" />
@@ -155,7 +157,7 @@
 								<p:outputLabel value="Occupancy" />
 								<p:outputLabel
 									value="#{facultativeBean.comparaisonFacultative.occupencies}" />
-								
+
 								<p:outputLabel value="Cedent" />
 								<p:outputLabel
 									value="#{facultativeBean.comparaisonFacultative.cedant}" />
@@ -171,8 +173,18 @@
 								<p:outputLabel value="Commission" />
 								<p:outputLabel
 									value="#{facultativeBean.comparaisonFacultative.commission}" />
+
+							
 								
+								<f:facet name="footer">
+						
+						<h:panelGroup style="display:block; text-align:center">
+						
 								<p:commandButton value="Change" onclick="popup.show()" />
+							</h:panelGroup>
+							</f:facet>
+								
+								
 							</p:panelGrid>
 						</h:form>
 					</p:panelGrid>
@@ -190,13 +202,16 @@
 						rowKey="#{proda.id}" filteredValue="#{facultativeBean.filtredfac}"
 						widgetVar="prodTabWs">
 
-						<p:column headerText="Region" filterBy="#{proda.regions}" filterMatchMode="contains">
-							<h:outputText value="#{proda.regions}"  />
+						<p:column headerText="Region" filterBy="#{proda.regions}"
+							filterMatchMode="contains">
+							<h:outputText value="#{proda.regions}" />
 						</p:column>
-						<p:column headerText="Insured" filterBy="#{proda.insured}" filterMatchMode="contains">
+						<p:column headerText="Insured" filterBy="#{proda.insured}"
+							filterMatchMode="contains">
 							<h:outputText value="#{proda.insured}" />
 						</p:column>
-						<p:column headerText="Country" filterBy="#{proda.countries}" filterMatchMode="contains">
+						<p:column headerText="Country" filterBy="#{proda.countries}"
+							filterMatchMode="contains">
 							<h:outputText value="#{proda.countries}" />
 						</p:column>
 						<p:column headerText="Occupancy">

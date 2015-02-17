@@ -6,19 +6,133 @@
 <h:head>
 </h:head>
 <h:body>
-	<ui:composition template="/template/TmpMaster.xhtml">
+	<ui:composition template="/template/RatingTmp.xhtml">
 		<ui:define name="title">Rating tool </ui:define>
-		<ui:define name="content">
-		
-		<p:notificationBar position="LEFT" effect="slide" styleClass="top" widgetVar="bar">
-		
-    <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
-</p:notificationBar>
- 
-<p:commandButton value="Show" onclick="PF('bar').show()" type="button" icon="ui-icon-arrow-1-s"/>
-<p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
-			
+
+
+		<ui:define name="Offer">
+			<h:form id="form">
+				<h:panelGrid columns="2" border="0">
+
+					<p:outputLabel value="Underwriter : " for="Lab1" />
+					<p:outputLabel value="#{login.Connected()}" id="Lab1"></p:outputLabel>
+					<p:outputLabel value="Inception Date : " for="inc" />
+					<p:calendar id="inc" />
+					<p:outputLabel value="Expiry date : " for="exp" />
+					<p:calendar id="exp" />
+					<p:outputLabel value="Quoted date : " for="quote" />
+					<p:calendar id="quote" />
+					<p:outputLabel value="Currency : " for="curr" />
+					<p:selectOneMenu id="curr" style="width:160px">
+						<f:selectItems value="#{ratingBean.currency}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Insured : " for="ins" />
+					<p:inputText id="ins" />
+					<p:outputLabel value="Broker : " for="brok" />
+					<p:inputText id="brok" />
+					<p:outputLabel value="Policy : " for="pol" />
+					<p:inputMask id="pol" mask="a*-999-a999" />
+					<p:outputLabel value="Country : " for="CR" />
+					<p:selectOneMenu id="CR" style="width:160px">
+						<f:selectItem itemLabel="Bahrain" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Risk Grade : " for="GR" />
+					<p:inputMask id="GR" mask="9?9" />
+					<p:outputLabel value="Insurance  basis : " for="RB" />
+
+					<p:outputLabel id="RB" value="QS(SI)"></p:outputLabel>
+				</h:panelGrid>
+
+			</h:form>
+			<br />
+			<br />
+
+
+			<p:panelGrid id="BIMLOP">
+				<f:facet name="header">
+					<p:row>
+						<p:column>BI and MLoP</p:column>
+						<p:column>Selection</p:column>
+
+						<p:column>Load</p:column>
+					</p:row>
+				</f:facet>
+				<p:row>
+					<p:column>Indemnity Period (BI)</p:column>
+					<p:column>
+						<p:selectOneMenu id="Indemni" style="width:125px">
+							<f:selectItem itemLabel="25" />
+							<f:selectItem itemLabel="45" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>%</p:column>
+				</p:row>
+				<p:separator title="ABC"  height="33">dfs</p:separator>
+				<p:row>
+					<p:column> Indemnity period(MLoP)</p:column>
+					<p:column>
+						<p:selectOneMenu id="ers" style="width:125px">
+							<f:selectItem itemLabel="" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>%</p:column>
+				</p:row>
+				<p:row>
+					<p:column> CBI</p:column>
+					<p:column>
+						<p:selectOneMenu id="cf" style="width:125px">
+							<f:selectItem itemLabel="" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>%</p:column>
+				</p:row>
+			</p:panelGrid>
+
+			<p:panelGrid id="Deductibles">
+				<f:facet name="header">
+					<p:row>
+						<p:column width="150px">Deductibles</p:column>
+						<p:column>Selection</p:column>
+
+						<p:column>Load</p:column>
+					</p:row>
+				</f:facet>
+				<p:row>
+					<p:column> PD_MB Deductibles</p:column>
+					<p:column>
+						<p:selectOneMenu id="deduc" style="width:125px">
+							<f:selectItem itemLabel="" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>50%</p:column>
+				</p:row>
+				<p:row>
+					<p:column>% of Claim</p:column>
+					<p:column>
+						<p:selectOneMenu id="claim" style="width:125px">
+							<f:selectItems value="#{ratingBean.currency}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>40%</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+
+
 		</ui:define>
+		<ui:define name="Result">
+
+
+
+
+
+
+
+		</ui:define>
+
+
 	</ui:composition>
 </h:body>
 </html>

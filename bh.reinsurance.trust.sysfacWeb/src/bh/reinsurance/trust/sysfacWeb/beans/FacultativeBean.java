@@ -60,7 +60,7 @@ public class FacultativeBean implements Serializable {
 				occup1));
 		testaff = true;
 	}
-
+	
 	public void DisplayFacCompare() {
 		DisplayFacCompare = true;
 		DisplayComparaisonButton = false;

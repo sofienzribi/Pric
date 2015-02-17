@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
-@RequestScoped
+@javax.faces.bean.SessionScoped
 public class RedirectionBean implements Serializable {
 
 	/**
@@ -17,7 +16,6 @@ public class RedirectionBean implements Serializable {
 	private static final long serialVersionUID = -2248985821074026073L;
 
 	public RedirectionBean() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void GoToSummary() throws IOException {
@@ -49,5 +47,6 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Comment_Project.jsf");
 	}
+
 
 }

@@ -43,14 +43,16 @@ public class ProjectBean implements Serializable {
 	private ProjectServicesLocal local;
 	@EJB
 	private UserServicesLocal local2;
-
+	private List<User> SendToUsers;
+	
 	// methods
 
 	public ProjectBean() {
 		CheckboxDisplay = false;
 		project2 = new Project();
 	}
-
+	
+	
 	@PostConstruct
 	public void init() {
 		System.out.println(user.getId());
@@ -60,7 +62,7 @@ public class ProjectBean implements Serializable {
 		projects = local.GetAllProjects();
 
 	}
-
+	
 	public void displaypasswordmsg() {
 		if (priv.equals("true")) {
 			passwordmsg = true;
@@ -147,6 +149,27 @@ public class ProjectBean implements Serializable {
 
 	}
 
+	
+	
+	
+	
+	public List<User> completeTheme(String query) {
+        List<User> allThemes = local2.GetAllUsers();
+        		List<User> filteredThemes = new ArrayList<User>();
+         
+        for (int i = 0; i < allThemes.size(); i++) {
+        	User user1 = allThemes.get(i);
+            if(user1.getLogin().toLowerCase().contains(query)) {
+                filteredThemes.add(user1);
+            }
+        }
+         
+        return filteredThemes;
+    }
+	
+	
+	
+	
 	// get set
 
 	public UserServicesLocal getLocal2() {
@@ -251,6 +274,16 @@ public class ProjectBean implements Serializable {
 
 	public void setCheckboxDisplay(boolean checkboxDisplay) {
 		CheckboxDisplay = checkboxDisplay;
+	}
+
+
+	public List<User> getSendToUsers() {
+		return SendToUsers;
+	}
+
+
+	public void setSendToUsers(List<User> sendToUsers) {
+		SendToUsers = sendToUsers;
 	}
 
 }

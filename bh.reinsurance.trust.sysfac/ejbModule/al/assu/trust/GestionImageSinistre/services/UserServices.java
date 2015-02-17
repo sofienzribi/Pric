@@ -3,6 +3,7 @@ package al.assu.trust.GestionImageSinistre.services;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.Stateless;
@@ -63,6 +64,12 @@ public class UserServices implements UserServicesLocal {
 	public void AddUser(User user) {
 		entityManager.persist(user);
 
+	}
+
+	@Override
+	public List<User> GetAllUsers() {
+		return entityManager.createQuery("select p from User p ").getResultList();
+				
 	}
 
 }

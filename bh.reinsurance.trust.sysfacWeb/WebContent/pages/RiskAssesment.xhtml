@@ -28,13 +28,47 @@
 								<p:selectOneMenu id="Loss" style="width:125px">
 									<f:selectItems value="#{assesmentBean.lossRatio}" />
 								</p:selectOneMenu>
-								<p:tooltip for="Loss" id="tooltipLoss"	value="we can put information here  ...."></p:tooltip>
+								<p:tooltip for="Loss" id="tooltipLoss"
+									value="we can put information here  ...."></p:tooltip>
+							</p:column>
+							<p:column>
+			#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column id="Const"  style="width:250px">Construction Class </p:column>
+							<p:column>
+								<p:selectOneMenu id="Class" style="width:125px">
+									<f:selectItems value="#{assesmentBean.consClass}" />
+								</p:selectOneMenu>
+								<p:tooltip for="Const" id="tooltipClass"
+									value="Construction Class  ....A …  ,b means ......,C means ..."></p:tooltip>
 							</p:column>
 							<p:column>
 			#{login.Connected()}
 							</p:column>
 						</p:row>
 
+					</p:panelGrid>
+
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Safety and Security </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Security Guard 24/365 </p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+
+							</p:column>
+						</p:row>
 					</p:panelGrid>
 				</h:form>
 

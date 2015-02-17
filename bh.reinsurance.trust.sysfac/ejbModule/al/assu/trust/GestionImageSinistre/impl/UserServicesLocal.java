@@ -1,5 +1,7 @@
 package al.assu.trust.GestionImageSinistre.impl;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import al.assu.trust.GestionImageSinistre.domain.User;
@@ -11,4 +13,6 @@ public interface UserServicesLocal {
 	public User GetUserByid(int id);
 
 	public void AddUser(User user);
+	
+	public List<User> GetAllUsers();
 }
