@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title><ui:insert name="title"></ui:insert></title>
+	<h:outputStylesheet library="css" name="5670482863bb.css" />
+	
+</h:head>
+<h:body>
+	<ui:include src="/template/Tmphead.xhtml" />
+	<h:outputScript library="js" name="bootstrap.min.js"></h:outputScript>
+
+	<br />
+	<br />
+<div id="body">
+<div class="container">
+		
+			<div class="row">
+
+				<div class="col-xs-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">Offer Information</div>
+						<div class="panel-body">
+							<ui:insert name="Offer" />
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-xs-8">
+					<div class="panel panel-default">
+						<div class="panel-heading">Result</div>
+						<div class="panel-body">
+							<ui:insert name="Result"></ui:insert>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</h:body>
+
+</html>
