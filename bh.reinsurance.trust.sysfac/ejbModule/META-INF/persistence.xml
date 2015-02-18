@@ -9,6 +9,7 @@
 		<class>al.assu.trust.GestionImageSinistre.domain.Assets</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Project</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Facultative</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Summary</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

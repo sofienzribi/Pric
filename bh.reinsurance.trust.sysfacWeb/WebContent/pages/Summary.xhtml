@@ -39,7 +39,7 @@
 				<p:panelGrid columns="2" >
 					<f:facet name="header">Internal Costs</f:facet>
 					<p:outputLabel value="Expenses : " for="exp" style="width:250px" />
-						<p:outputLabel id="exp" value="0" 
+						<p:outputLabel id="exp" value="#{projectBean.summary.expenses}" 
 						style="width:150px" />
 					<p:outputLabel value="Cost of Capital : " for="CCP"
 						style="width:250px" />

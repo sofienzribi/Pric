@@ -15,8 +15,10 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Project;
+import al.assu.trust.GestionImageSinistre.domain.Summary;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.SummaryServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
 @ManagedBean
@@ -39,22 +41,32 @@ public class ProjectBean implements Serializable {
 	private boolean PopDisplayed;
 	private boolean CheckboxDisplay;
 	private String priv;
+	
+	
+	private Summary summary;
+	@EJB
+	private SummaryServicesLocal local3;
+
+	
+	
+	
+	
 	@EJB
 	private ProjectServicesLocal local;
 	@EJB
 	private UserServicesLocal local2;
 	private List<User> SendToUsers;
-	
+
 	// methods
 
 	public ProjectBean() {
 		CheckboxDisplay = false;
 		project2 = new Project();
 	}
-	
-	
+
 	@PostConstruct
 	public void init() {
+		
 		System.out.println(user.getId());
 
 		passwordmsg = true;
@@ -62,7 +74,7 @@ public class ProjectBean implements Serializable {
 		projects = local.GetAllProjects();
 
 	}
-	
+
 	public void displaypasswordmsg() {
 		if (priv.equals("true")) {
 			passwordmsg = true;
@@ -97,6 +109,7 @@ public class ProjectBean implements Serializable {
 		System.out.println(project.getPassword());
 		System.out.println(pwdcheck);
 		if (pwdcheck.equals(project.getPassword())) {
+			summary=local3.GetSummary(project.getId());
 			return "Fac_info?faces-redirect=true";
 		} else {
 
@@ -136,9 +149,11 @@ public class ProjectBean implements Serializable {
 	public String openingproject() {
 
 		if (project.getPrivacy() == true) {
+			summary=local3.GetSummary(project.getId());
 			return "Fac_info?faces-redirect=true";
 		} else {
 			if (project.getUser() == user.getId()) {
+				summary=local3.GetSummary(project.getId());
 				return "Fac_info?faces-redirect=true";
 			} else {
 				RequestContext context = RequestContext.getCurrentInstance();
@@ -149,27 +164,20 @@ public class ProjectBean implements Serializable {
 
 	}
 
-	
-	
-	
-	
 	public List<User> completeTheme(String query) {
-        List<User> allThemes = local2.GetAllUsers();
-        		List<User> filteredThemes = new ArrayList<User>();
-         
-        for (int i = 0; i < allThemes.size(); i++) {
-        	User user1 = allThemes.get(i);
-            if(user1.getLogin().toLowerCase().contains(query)) {
-                filteredThemes.add(user1);
-            }
-        }
-         
-        return filteredThemes;
-    }
-	
-	
-	
-	
+		List<User> allThemes = local2.GetAllUsers();
+		List<User> filteredThemes = new ArrayList<User>();
+
+		for (int i = 0; i < allThemes.size(); i++) {
+			User user1 = allThemes.get(i);
+			if (user1.getLogin().toLowerCase().contains(query)) {
+				filteredThemes.add(user1);
+			}
+		}
+
+		return filteredThemes;
+	}
+
 	// get set
 
 	public UserServicesLocal getLocal2() {
@@ -276,14 +284,20 @@ public class ProjectBean implements Serializable {
 		CheckboxDisplay = checkboxDisplay;
 	}
 
-
 	public List<User> getSendToUsers() {
 		return SendToUsers;
 	}
 
-
 	public void setSendToUsers(List<User> sendToUsers) {
 		SendToUsers = sendToUsers;
+	}
+
+	public Summary getSummary() {
+		return summary;
+	}
+
+	public void setSummary(Summary summary) {
+		this.summary = summary;
 	}
 
 }
