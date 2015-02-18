@@ -7,41 +7,63 @@
 </h:head>
 <h:body>
 	<ui:composition template="/template/TmpMaster.xhtml">
-		<ui:define name="title">Rating tool </ui:define>
+		<ui:define name="title"> Summary </ui:define>
 
 
 		<ui:define name="content">
 			<h:form id="form">
-				<p:panelGrid columns="2" border="0">
-
+			
+				<p:panelGrid columns="2" >
 					<f:facet name="header">SUMMARY</f:facet>
+					<p:outputLabel value="Proposed Share : " for="PRO"
+						style="width:250px" />
+					<p:inputText id="PRO" style="width:150px"/>
+					<p:outputLabel value=" MaX Liability : " for="LIA"
+						style="width:250px" />
+					<p:outputLabel id="LIA" style="width:150px">0</p:outputLabel>
+				</p:panelGrid>
+				
+				<p:panelGrid columns="2" >
+					<f:facet name="header">Risk Price</f:facet>
+					<p:outputLabel value="Rating Factors : " for="RAFA"
+						style="width:250px" />
+				<p:outputLabel id="RAFA" value="0" 
+						style="width:150px" />
+					<p:outputLabel value="Nat.Catastrophe : " for="NATCAT"
+						style="width:250px" />
+						<p:outputLabel id="NATCAT" value="0" 
+						style="width:150px" />
+					<f:facet name="footer">Total Risk Price : 0 </f:facet>
+				</p:panelGrid>
+				
+				<p:panelGrid columns="2" >
+					<f:facet name="header">Internal Costs</f:facet>
+					<p:outputLabel value="Expenses : " for="exp" style="width:250px" />
+						<p:outputLabel id="exp" value="0" 
+						style="width:150px" />
+					<p:outputLabel value="Cost of Capital : " for="CCP"
+						style="width:250px" />
+						<p:outputLabel id="CCP" value="0" 
+						style="width:150px" />
+					<p:outputLabel value="Reinsurance Costs : " for="RC"
+						style="width:250px" />
+						<p:outputLabel id="RC" value="0" 
+						style="width:150px" />
+					<f:facet name="footer">Total Cost : 0 </f:facet>
+				</p:panelGrid>
+				
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Profit Margin : " for="Pro"
+						style="width:250px" />
+					<p:inputText id="Pro" style="width:150px" />
+					<p:outputLabel value="Brokerage : " for="BROK" style="width:150px" />
+					<p:inputText id="BROK" style="width:150px" />
+					<f:facet name="footer">Commercial Price : 0
+					 </f:facet>
+				</p:panelGrid>
 
-					<p:outputLabel value="Proposed Share : " for="PRO" />
-					<p:inputText id="PRO"></p:inputText>
-
-
-
-					<p:outputLabel value=" MaX Liability : " for="LIA" />
-					<p:outputLabel id="LIA">dfd</p:outputLabel>
-
-					<p:outputLabel value="Profit Margin : " for="Pro" />
-					<p:inputText id="Pro" />
-
-
-					<p:outputLabel value="Brokerage : " for="BROK" />
-					<p:inputText id="BROK" />
-
-					<f:facet name="footer">Commercial Price : 232</f:facet>
-
-
-					</p:panelGrid>
 			</h:form>
-
-
 		</ui:define>
-
-
-
 	</ui:composition>
 </h:body>
 </html>

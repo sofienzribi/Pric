@@ -22,7 +22,10 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Summary.jsf");
 	}
-
+	public void GoToMap() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("ShowRisksOnMap.jsf");
+	}
 	public void GoToAssets() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Assets.jsf");
