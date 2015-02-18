@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import al.assu.trust.GestionImageSinistre.domain.Project;
-import al.assu.trust.GestionImageSinistre.domain.User;
-import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import al.assu.trust.GestionImageSinistre.domain.Project;
+import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 
 /**
  * Session Bean implementation class ProjectServices
@@ -21,25 +21,25 @@ import javax.persistence.Query;
 @Stateless
 public class ProjectServices implements ProjectServicesLocal {
 
-    /**
-     * Default constructor. 
-     */
+	/**
+	 * Default constructor.
+	 */
 	@PersistenceContext
 	EntityManager entityManager;
-	static Locale locale=Locale.getDefault();
-	static Date date=new Date();
-	static DateFormat dateFormat= new SimpleDateFormat("MM/dd/yyyy");
-	String datee ;
-    public ProjectServices() {
-    }
-    
+	static Locale locale = Locale.getDefault();
+	static Date date = new Date();
+	static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	String datee;
+
+	public ProjectServices() {
+	}
 
 	@Override
 	public void NewProject(Project project) {
-		datee=dateFormat.format(date);
+		datee = dateFormat.format(date);
 		project.setDateCreation(date);
-	entityManager.persist(project);
-		
+		entityManager.merge(project);
+
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ProjectServices implements ProjectServicesLocal {
 
 	@Override
 	public List<Project> GetAllProjects() {
-		
+
 		Query query = entityManager.createQuery("select a from Project a");
 		return query.getResultList();
 	}
@@ -59,7 +59,37 @@ public class ProjectServices implements ProjectServicesLocal {
 	@Override
 	public void DeleteProject(Project project) {
 		entityManager.remove(entityManager.merge(project));
+
+	}
+
+	@Override
+	public Project GetProjectByName(String Name) {
+		return (Project) entityManager
+				.createQuery(
+						"select p from Project p where p.nameOfTheProject=:c")
+				.setParameter("c", Name).getSingleResult();
+	}
+
+	@Override
+	public boolean Nameexist(String Name) {
+		String jpql = "select u from Project u where u.nameOfTheProject =:param1 ";
+		Query query = entityManager.createQuery(jpql);
+		Project projectFound;
+		query.setParameter("param1", Name);
 		
+
+		try {
+			projectFound = (Project) query.getSingleResult();
+
+		} catch (Exception e) {
+			projectFound = null;
+			System.out.println("Acces granted" + datee);
+		}
+
+	if(projectFound!=null)
+		return true;
+		else
+			return false;
 	}
 
 }

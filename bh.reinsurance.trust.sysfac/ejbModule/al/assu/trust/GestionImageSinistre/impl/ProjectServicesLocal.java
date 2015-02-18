@@ -12,8 +12,11 @@ public interface ProjectServicesLocal {
 	
 	public void NewProject(Project project);
 	public List<Project> GetProjectsByUser(User user);
+	public Project GetProjectByName(String Name);
 	public List<Project> GetAllProjects();
 	public void DeleteProject(Project project);
+	
+public boolean Nameexist(String Name);
 	
 	
 }

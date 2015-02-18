@@ -41,32 +41,28 @@ public class ProjectBean implements Serializable {
 	private boolean PopDisplayed;
 	private boolean CheckboxDisplay;
 	private String priv;
-	
-	
-	private Summary summary;
-	@EJB
-	private SummaryServicesLocal local3;
-
-	
-	
-	
-	
+	private Project project3;
 	@EJB
 	private ProjectServicesLocal local;
 	@EJB
 	private UserServicesLocal local2;
 	private List<User> SendToUsers;
+	private Summary summary;
+	@EJB
+	private SummaryServicesLocal summaryServicesLocal;
 
 	// methods
 
 	public ProjectBean() {
+		summary=new Summary();
+		project3 = new Project();
 		CheckboxDisplay = false;
 		project2 = new Project();
 	}
 
 	@PostConstruct
 	public void init() {
-		
+
 		System.out.println(user.getId());
 
 		passwordmsg = true;
@@ -87,7 +83,18 @@ public class ProjectBean implements Serializable {
 	}
 
 	public String OpenProject() {
-
+		if(local.Nameexist(project2.getNameOfTheProject())){
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_FATAL,
+							"Name already exists!!", "Name Exist"));
+			return null;
+		}
+		else
+		{
+			
+		
+		
 		if (priv.equals("false")) {
 			project2.setPrivacy(false);
 			if (Checkbox.equals("true")) {
@@ -101,15 +108,22 @@ public class ProjectBean implements Serializable {
 		project2.setUser(user.getId());
 		System.out.println(user.getId());
 		local.NewProject(project2);
+		project3 = local.GetProjectByName(project2.getNameOfTheProject());
+		summary.setIdProj(project3.getId());
+	
+		summaryServicesLocal.CreateSummary(summary);
+		
+		project2 = new Project();
 		projects = local.GetAllProjects();
-		return "Fac_info?faces-redirect=true";
+		return "Fac_info?faces-redirect=true";}
 	}
 
 	public String verifypassword() {
 		System.out.println(project.getPassword());
 		System.out.println(pwdcheck);
 		if (pwdcheck.equals(project.getPassword())) {
-			summary=local3.GetSummary(project.getId());
+			project3 = project;
+			summary=summaryServicesLocal.GetSummary(project3.getId());
 			return "Fac_info?faces-redirect=true";
 		} else {
 
@@ -149,11 +163,13 @@ public class ProjectBean implements Serializable {
 	public String openingproject() {
 
 		if (project.getPrivacy() == true) {
-			summary=local3.GetSummary(project.getId());
+			project3 = project;
+			summary=summaryServicesLocal.GetSummary(project3.getId());
 			return "Fac_info?faces-redirect=true";
 		} else {
 			if (project.getUser() == user.getId()) {
-				summary=local3.GetSummary(project.getId());
+				project3 = project;
+				summary=summaryServicesLocal.GetSummary(project3.getId());
 				return "Fac_info?faces-redirect=true";
 			} else {
 				RequestContext context = RequestContext.getCurrentInstance();
@@ -290,6 +306,14 @@ public class ProjectBean implements Serializable {
 
 	public void setSendToUsers(List<User> sendToUsers) {
 		SendToUsers = sendToUsers;
+	}
+
+	public Project getProject3() {
+		return project3;
+	}
+
+	public void setProject3(Project project3) {
+		this.project3 = project3;
 	}
 
 	public Summary getSummary() {

@@ -12,46 +12,43 @@
 
 		<ui:define name="content">
 			<h:form id="form">
-			
-				<p:panelGrid columns="2" >
+
+				<p:panelGrid columns="2">
 					<f:facet name="header">SUMMARY</f:facet>
 					<p:outputLabel value="Proposed Share : " for="PRO"
 						style="width:250px" />
-					<p:inputText id="PRO" style="width:150px"/>
+					<p:inputText id="PRO" style="width:150px" />
 					<p:outputLabel value=" MaX Liability : " for="LIA"
 						style="width:250px" />
 					<p:outputLabel id="LIA" style="width:150px">0</p:outputLabel>
 				</p:panelGrid>
-				
-				<p:panelGrid columns="2" >
+
+				<p:panelGrid columns="2">
 					<f:facet name="header">Risk Price</f:facet>
 					<p:outputLabel value="Rating Factors : " for="RAFA"
 						style="width:250px" />
-				<p:outputLabel id="RAFA" value="0" 
-						style="width:150px" />
+					<p:outputLabel id="RAFA" value="0" style="width:150px" />
 					<p:outputLabel value="Nat.Catastrophe : " for="NATCAT"
 						style="width:250px" />
-						<p:outputLabel id="NATCAT" value="0" 
+					<p:outputLabel id="NATCAT" value="#{projectBean.summary.idProj}"
 						style="width:150px" />
 					<f:facet name="footer">Total Risk Price : 0 </f:facet>
 				</p:panelGrid>
-				
-				<p:panelGrid columns="2" >
+
+				<p:panelGrid columns="2">
 					<f:facet name="header">Internal Costs</f:facet>
 					<p:outputLabel value="Expenses : " for="exp" style="width:250px" />
-						<p:outputLabel id="exp" value="#{projectBean.summary.expenses}" 
+					<p:outputLabel id="exp" value="#{projectBean.summary.expenses}"
 						style="width:150px" />
 					<p:outputLabel value="Cost of Capital : " for="CCP"
 						style="width:250px" />
-						<p:outputLabel id="CCP" value="0" 
-						style="width:150px" />
+					<p:outputLabel id="CCP" value="0" style="width:150px" />
 					<p:outputLabel value="Reinsurance Costs : " for="RC"
 						style="width:250px" />
-						<p:outputLabel id="RC" value="0" 
-						style="width:150px" />
+					<p:outputLabel id="RC" value="0" style="width:150px" />
 					<f:facet name="footer">Total Cost : 0 </f:facet>
 				</p:panelGrid>
-				
+
 				<p:panelGrid columns="2">
 					<p:outputLabel value="Profit Margin : " for="Pro"
 						style="width:250px" />

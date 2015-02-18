@@ -32,7 +32,7 @@ public class SummaryServices implements SummaryServicesLocal {
 
 	@Override
 	public void CreateSummary(Summary summary) {
-		entityManager.persist(summary);
+		entityManager.merge(summary);
 
 	}
 
