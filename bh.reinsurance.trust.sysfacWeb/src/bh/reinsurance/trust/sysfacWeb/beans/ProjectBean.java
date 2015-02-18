@@ -180,19 +180,7 @@ public class ProjectBean implements Serializable {
 
 	}
 
-	public List<User> completeTheme(String query) {
-		List<User> allThemes = local2.GetAllUsers();
-		List<User> filteredThemes = new ArrayList<User>();
-
-		for (int i = 0; i < allThemes.size(); i++) {
-			User user1 = allThemes.get(i);
-			if (user1.getLogin().toLowerCase().contains(query)) {
-				filteredThemes.add(user1);
-			}
-		}
-
-		return filteredThemes;
-	}
+	
 
 	// get set
 

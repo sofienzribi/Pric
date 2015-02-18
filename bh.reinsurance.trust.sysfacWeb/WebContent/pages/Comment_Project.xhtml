@@ -27,16 +27,6 @@
 		<p:commandButton value="Send"></p:commandButton>	
 		
 		
-		 <p:autoComplete id="USer" multiple="true" value="#{projectBean.sendToUsers}" completeMethod="#{projectBean.completeTheme()}"
-                        var="us" itemLabel="#{us.login}" itemValue="#{us.login}" converter="themeConverter" forceSelection="true">
-            <p:column style="width:10%">
-                <h:outputText styleClass="ui-theme ui-theme-#{theme.name}" />
-            </p:column>
- 
-            <p:column>
-                <h:outputText value="#{theme.displayName}" />
-            </p:column>
-        </p:autoComplete>
 		
 		
 		
