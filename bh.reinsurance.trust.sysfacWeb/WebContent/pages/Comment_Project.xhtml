@@ -19,12 +19,12 @@
 				<p:outputLabel id="TO2" for="To" value="To* : ">
 					<p:tooltip for="TO2" id="Totooltip" value="Email @ or login  "></p:tooltip>
 				</p:outputLabel>
-				<p:inputText id="To"></p:inputText>
+				<p:inputText id="To" value="#{projectBean.box.user_id}"></p:inputText>
 				<p:outputLabel id="Text" for="Textt" value="Message : "></p:outputLabel>
-				<p:inputTextarea id="Textt"></p:inputTextarea>
+				<p:inputTextarea id="Textt" value="#{projectBean.box.message}"></p:inputTextarea>
 			
 			</p:panelGrid>
-		<p:commandButton value="Send"></p:commandButton>	
+		<p:commandButton value="Send" actionListener="#{projectBean.SendProject()}"></p:commandButton>	
 		
 		
 		

@@ -76,7 +76,6 @@ public class ProjectServices implements ProjectServicesLocal {
 		Query query = entityManager.createQuery(jpql);
 		Project projectFound;
 		query.setParameter("param1", Name);
-		
 
 		try {
 			projectFound = (Project) query.getSingleResult();
@@ -86,10 +85,15 @@ public class ProjectServices implements ProjectServicesLocal {
 			System.out.println("Acces granted" + datee);
 		}
 
-	if(projectFound!=null)
-		return true;
+		if (projectFound != null)
+			return true;
 		else
 			return false;
 	}
 
+	@Override
+	public Project GetProjectById(int id) {
+
+		return entityManager.find(Project.class, id);
+	}
 }

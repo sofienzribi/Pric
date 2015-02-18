@@ -17,6 +17,6 @@ public interface ProjectServicesLocal {
 	public void DeleteProject(Project project);
 	
 public boolean Nameexist(String Name);
-	
+	public Project GetProjectById(int id);
 	
 }

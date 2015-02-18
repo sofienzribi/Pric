@@ -14,9 +14,11 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 
+import al.assu.trust.GestionImageSinistre.domain.MailBox;
 import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.domain.Summary;
 import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.impl.MailBoxServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.SummaryServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
@@ -41,6 +43,15 @@ public class ProjectBean implements Serializable {
 	private boolean PopDisplayed;
 	private boolean CheckboxDisplay;
 	private String priv;
+	private MailBox box;
+	public MailBox getBox() {
+		return box;
+	}
+
+	public void setBox(MailBox box) {
+		this.box = box;
+	}
+
 	private Project project3;
 	@EJB
 	private ProjectServicesLocal local;
@@ -50,10 +61,16 @@ public class ProjectBean implements Serializable {
 	private Summary summary;
 	@EJB
 	private SummaryServicesLocal summaryServicesLocal;
-
+	@EJB
+	private MailBoxServicesLocal mailBoxServicesLocal;
+	
+	private MailBox mailBox;
+	private List<MailBox> mailBoxs;
+	
 	// methods
 
 	public ProjectBean() {
+		box=new MailBox();
 		summary=new Summary();
 		project3 = new Project();
 		CheckboxDisplay = false;
@@ -62,7 +79,7 @@ public class ProjectBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
 		System.out.println(user.getId());
 
 		passwordmsg = true;
@@ -117,7 +134,30 @@ public class ProjectBean implements Serializable {
 		projects = local.GetAllProjects();
 		return "Fac_info?faces-redirect=true";}
 	}
+		public String GetUserName(int id){
+			
+			User user2=local2.GetUserByid(id);
+			return user2.getFirst_Name();
+		}
+public String GetNameOfTheProject(int id)
+{
+			Project proj= local.GetProjectById(id);
+			return proj.getNameOfTheProject();
+		}
 
+		
+	public void SendProject(){
+		
+		
+		box.setId_project(project3.getId());
+		box.setUser_sending_id(user.getId());
+		box.setState("NOT SEEN");
+		mailBoxServicesLocal.CreateMailBox(box);
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		
+	}
+	
+	
 	public String verifypassword() {
 		System.out.println(project.getPassword());
 		System.out.println(pwdcheck);
@@ -310,6 +350,22 @@ public class ProjectBean implements Serializable {
 
 	public void setSummary(Summary summary) {
 		this.summary = summary;
+	}
+
+	public List<MailBox> getMailBoxs() {
+		return mailBoxs;
+	}
+
+	public void setMailBoxs(List<MailBox> mailBoxs) {
+		this.mailBoxs = mailBoxs;
+	}
+
+	public MailBox getMailBox() {
+		return mailBox;
+	}
+
+	public void setMailBox(MailBox mailBox) {
+		this.mailBox = mailBox;
 	}
 
 }
