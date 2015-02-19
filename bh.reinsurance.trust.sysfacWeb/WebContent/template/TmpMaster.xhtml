@@ -8,16 +8,18 @@
 <h:head>
 	<title><ui:insert name="title"></ui:insert></title>
 	<h:outputStylesheet library="css" name="5670482863bb.css" />
-	<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script src="http://maps.google.com/maps/api/js?sensor=false"
+		type="text/javascript"></script>
 </h:head>
 <h:body>
 	<ui:include src="/template/Tmphead.xhtml" />
 	<h:outputScript library="js" name="bootstrap.min.js"></h:outputScript>
 
-	<br />
-	<br />
 
-	<div id="footer">
+
+
+
+	<div id="body">
 		<div class="container">
 			<div class="container text-left">
 
@@ -26,17 +28,39 @@
 					<ui:insert name="leftmenu" />
 				</div>
 			</div>
+
+
+			<div class="container text-center">
+				<div class="text-muted credit"
+					style="display: inline-block; padding: 0px;">
+					<ui:insert name="content" />
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div id="footer">
+		<div class="container">
+			<div class="container text-left">
+
+				<div class="text-muted credit"
+					style="display: inline-block; padding: 6px;"></div>
+			</div>
+
 			<div class="container text-center">
 				<div class="text-muted credit"
 					style="display: inline-block; padding: 6px;">
-
-					<ui:insert name="content" />
 
 					... <a href="" target="_blank" class=""> <span
 						class="inline-hidden-xs inline-hidden-sm"></span>
 					</a>
 				</div>
 			</div>
+
 		</div>
 	</div>
 </h:body>

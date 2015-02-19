@@ -15,10 +15,12 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.MailBox;
+import al.assu.trust.GestionImageSinistre.domain.Offer;
 import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.domain.Summary;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.MailBoxServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.OfferServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.SummaryServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
@@ -44,15 +46,10 @@ public class ProjectBean implements Serializable {
 	private boolean CheckboxDisplay;
 	private String priv;
 	private MailBox box;
-	public MailBox getBox() {
-		return box;
-	}
-
-	public void setBox(MailBox box) {
-		this.box = box;
-	}
-
+	private Offer offer;
 	private Project project3;
+	@EJB
+	private OfferServicesLocal offerServicesLocal;
 	@EJB
 	private ProjectServicesLocal local;
 	@EJB
@@ -63,15 +60,16 @@ public class ProjectBean implements Serializable {
 	private SummaryServicesLocal summaryServicesLocal;
 	@EJB
 	private MailBoxServicesLocal mailBoxServicesLocal;
-	
+
 	private MailBox mailBox;
 	private List<MailBox> mailBoxs;
-	
+
 	// methods
 
 	public ProjectBean() {
-		box=new MailBox();
-		summary=new Summary();
+		offer = new Offer();
+		box = new MailBox();
+		summary = new Summary();
 		project3 = new Project();
 		CheckboxDisplay = false;
 		project2 = new Project();
@@ -99,72 +97,73 @@ public class ProjectBean implements Serializable {
 		}
 	}
 
-	public String OpenProject() {
-		if(local.Nameexist(project2.getNameOfTheProject())){
+	public String OpenProject()
+
+	{
+		if (local.Nameexist(project2.getNameOfTheProject())) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_FATAL,
 							"Name already exists!!", "Name Exist"));
 			return null;
-		}
-		else
-		{
-			
-		
-		
-		if (priv.equals("false")) {
-			project2.setPrivacy(false);
-			if (Checkbox.equals("true")) {
-				project2.setPassword(user.getPassword());
-			}
 		} else {
-			project2.setPrivacy(true);
 
+			if (priv.equals("false")) {
+				project2.setPrivacy(false);
+				if (Checkbox.equals("true")) {
+					project2.setPassword(user.getPassword());
+				}
+			} else {
+				project2.setPrivacy(true);
+
+			}
+
+			project2.setUser(user.getId());
+			local.NewProject(project2);
+			project3 = local.GetProjectByName(project2.getNameOfTheProject());
+			summary.setIdProj(project3.getId());
+			offer.setId_project(project3.getId());
+			offer.setId_underwriter(user.getId());
+			summaryServicesLocal.CreateSummary(summary);
+			offerServicesLocal.AddOffer(offer);
+			project2 = new Project();
+			projects = local.GetAllProjects();
+			return "Fac_info?faces-redirect=true";
 		}
-
-		project2.setUser(user.getId());
-		System.out.println(user.getId());
-		local.NewProject(project2);
-		project3 = local.GetProjectByName(project2.getNameOfTheProject());
-		summary.setIdProj(project3.getId());
-	
-		summaryServicesLocal.CreateSummary(summary);
-		
-		project2 = new Project();
-		projects = local.GetAllProjects();
-		return "Fac_info?faces-redirect=true";}
 	}
-		public String GetUserName(int id){
-			
-			User user2=local2.GetUserByid(id);
-			return user2.getFirst_Name();
-		}
-public String GetNameOfTheProject(int id)
-{
-			Project proj= local.GetProjectById(id);
-			return proj.getNameOfTheProject();
-		}
 
-		
-	public void SendProject(){
-		
-		
+	public String GetUserName(int id) {
+
+		User user2 = local2.GetUserByid(id);
+		return user2.getFirst_Name();
+	}
+
+	public String GetNameOfTheProject(int id) {
+		Project proj = local.GetProjectById(id);
+		return proj.getNameOfTheProject();
+	}
+
+	public void SendProject() {
+
 		box.setId_project(project3.getId());
 		box.setUser_sending_id(user.getId());
 		box.setState("NOT SEEN");
 		mailBoxServicesLocal.CreateMailBox(box);
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
-		
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "project Sent!",
+						"Bad Credentials"));
+
 	}
-	
-	
+
 	public String verifypassword() {
 		System.out.println(project.getPassword());
 		System.out.println(pwdcheck);
 		if (pwdcheck.equals(project.getPassword())) {
 			project3 = project;
-			summary=summaryServicesLocal.GetSummary(project3.getId());
-			return "Fac_info?faces-redirect=true";
+			summary = summaryServicesLocal.GetSummary(project3.getId());
+			return "Summary2?faces-redirect=true";
 		} else {
 
 			FacesContext.getCurrentInstance().addMessage(
@@ -183,7 +182,13 @@ public String GetNameOfTheProject(int id)
 		}
 
 	}
+	public void refreshtable(){
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+	}
+	public void refreshtable2(){
+		projects = local.GetAllProjects();
 
+	}
 	public String getPrivacy(boolean a) {
 		if (a == true) {
 			return "Public";
@@ -204,13 +209,13 @@ public String GetNameOfTheProject(int id)
 
 		if (project.getPrivacy() == true) {
 			project3 = project;
-			summary=summaryServicesLocal.GetSummary(project3.getId());
-			return "Fac_info?faces-redirect=true";
+			summary = summaryServicesLocal.GetSummary(project3.getId());
+			return "Summary2?faces-redirect=true";
 		} else {
 			if (project.getUser() == user.getId()) {
 				project3 = project;
-				summary=summaryServicesLocal.GetSummary(project3.getId());
-				return "Fac_info?faces-redirect=true";
+				summary = summaryServicesLocal.GetSummary(project3.getId());
+				return "Summary2?faces-redirect=true";
 			} else {
 				RequestContext context = RequestContext.getCurrentInstance();
 				context.execute("popup1.show();");
@@ -220,7 +225,13 @@ public String GetNameOfTheProject(int id)
 
 	}
 
-	
+	public String OpeningSentProject(int id) {
+
+		project = local.GetProjectById(id);
+		project3 = project;
+		summary = summaryServicesLocal.GetSummary(project3.getId());
+		return "Summary2?faces-redirect=true";
+	}
 
 	// get set
 
@@ -300,6 +311,14 @@ public String GetNameOfTheProject(int id)
 		return passwordmsg;
 	}
 
+	public MailBox getBox() {
+		return box;
+	}
+
+	public void setBox(MailBox box) {
+		this.box = box;
+	}
+
 	public void setPasswordmsg(boolean passwordmsg) {
 		this.passwordmsg = passwordmsg;
 	}
@@ -366,6 +385,14 @@ public String GetNameOfTheProject(int id)
 
 	public void setMailBox(MailBox mailBox) {
 		this.mailBox = mailBox;
+	}
+
+	public Offer getOffer() {
+		return offer;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
 	}
 
 }

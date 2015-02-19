@@ -14,13 +14,18 @@ public class RedirectionBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2248985821074026073L;
-
+	private String testaff=null;
 	public RedirectionBean() {
 	}
 
 	public void GoToSummary() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("Summary.jsf");
+				.redirect("Summary2.jsf");
+		testaff="Summary";
+	}
+	public void GoToFacInfo() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("Fac_info.jsf");
 	}
 	public void GoToMap() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
@@ -39,16 +44,26 @@ public class RedirectionBean implements Serializable {
 	public void GoToRating() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Rating.jsf");
+		testaff="Rating";
 	}
 
 	public void GoToProject() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Project_Screen.jsf");
+		
 	}
 
 	public void GoToComment() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Comment_Project.jsf");
+	}
+
+	public String getTestaff() {
+		return testaff;
+	}
+
+	public void setTestaff(String testaff) {
+		this.testaff = testaff;
 	}
 
 

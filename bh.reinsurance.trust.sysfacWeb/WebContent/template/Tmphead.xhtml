@@ -12,9 +12,29 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 
-					<li><a
-						href="/bh.reinsurance.trust.sysfacWeb/pages/Fac_info.jsf"><i
-							class="fa fa-info-circle"></i> Information about facultatives</a></li>
+
+					<li class="dropdown"><a href="#"
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
+							class="fa fa-info-circle"></i> <span>Information Tool</span> <b
+							class="caret"></b>
+					</a>
+						<ul class="dropdown-menu">
+
+							<li><h:form>
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Fac Info"
+										actionListener="#{redirectionBean.GoToFacInfo()}"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="FIFTHb">
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Risks On Map"
+										actionListener="#{redirectionBean.GoToMap()}"></p:commandLink>
+								</h:form></li>
+						</ul></li>
+
+
+
+
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
 							class="fa fa-tasks"></i> <span>Rating tool</span> <b
@@ -43,11 +63,7 @@
 									<p:commandLink value="Summary"
 										actionListener="#{redirectionBean.GoToSummary()}"></p:commandLink>
 								</h:form></li>
-							<li><h:form id="FIFTHb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Risks On Map"
-										actionListener="#{redirectionBean.GoToMap()}"></p:commandLink>
-								</h:form></li>
+
 						</ul></li>
 					<li><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Chart_Page.jsf"><i
@@ -58,6 +74,12 @@
 							class="fa fa-files-o"></i> <span>Reporting tool</span></a></li>
 
 				</ul>
+
+
+				<!-- left menu
+ -->
+
+
 				<ul class="nav navbar-nav navbar-right">
 
 
@@ -79,7 +101,6 @@
 								</h:form></li>
 
 						</ul></li>
-
 
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i

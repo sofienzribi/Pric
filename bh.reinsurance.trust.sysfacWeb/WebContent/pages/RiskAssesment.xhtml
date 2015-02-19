@@ -16,6 +16,8 @@
 			<div>
 				<h3>Risk Assesment</h3>
 				<h:form>
+
+
 					<p:panelGrid style="width:500px">
 						<f:facet name="header">
 							<p:row>
@@ -36,7 +38,7 @@
 							</p:column>
 						</p:row>
 						<p:row>
-							<p:column id="Const"  style="width:250px">Construction Class </p:column>
+							<p:column id="Const" style="width:250px">Construction Class </p:column>
 							<p:column>
 								<p:selectOneMenu id="Class" style="width:125px">
 									<f:selectItems value="#{assesmentBean.consClass}" />
@@ -48,8 +50,9 @@
 			#{login.Connected()}
 							</p:column>
 						</p:row>
-
 					</p:panelGrid>
+
+
 
 					<p:panelGrid style="width:500px">
 						<f:facet name="header">
@@ -69,7 +72,198 @@
 
 							</p:column>
 						</p:row>
+						<p:row>
+							<p:column style="width:250px">Management Risk awareness</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Physical barriers</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Access Control and Alarm system</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+
+							</p:column>
+						</p:row>
 					</p:panelGrid>
+
+
+
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> HouseKeeping </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Smoke Control</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Welding Control</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Fire Prevention Officer</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Stock storage practise</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> Maintenance </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Mechanical Maintenance</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Electrical Maintenance</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Fullfilment of recommendations</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Regular maintenance and self inspection process</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+
+
+					<p:panelGrid style="width:500px">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="7"> BI Loss prevention </p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width:250px">Backup facilities</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">Business continuity plan</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width:250px">bottleneck loss minimised</p:column>
+							<p:column>
+								<p:selectOneMenu style="width:125px">
+									<f:selectItems value="#{assesmentBean.quality}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+									#{login.Connected()}
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+
+
+
+
 				</h:form>
 
 			</div>

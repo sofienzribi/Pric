@@ -2,6 +2,8 @@ package al.assu.trust.GestionImageSinistre.domain;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.Date;
+
 import javax.persistence.*;
 
 /**
@@ -19,6 +21,7 @@ public class MailBox implements Serializable {
 	private String state;
 	private String message;
 	private int id_project;
+	private Date sentDate;
 	private static final long serialVersionUID = 1L;
 
 	public MailBox() {
@@ -66,6 +69,12 @@ public class MailBox implements Serializable {
 
 	public void setId_project(int id_project) {
 		this.id_project = id_project;
+	}
+	public Date getSentDate() {
+		return sentDate;
+	}
+	public void setSentDate(Date sentDate) {
+		this.sentDate = sentDate;
 	}
    
 }

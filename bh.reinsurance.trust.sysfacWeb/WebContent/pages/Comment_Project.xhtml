@@ -8,9 +8,12 @@
 <h:body>
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Comments_Page </ui:define>
+		
+		
 		<ui:define name="content">
 		<h:form id="SendProject">
 		
+						<p:messages id="messages" autoUpdate="true" closable="true" />
 		
 			<p:panelGrid columns="2">
 			
@@ -22,7 +25,7 @@
 				<p:inputText id="To" value="#{projectBean.box.user_id}"></p:inputText>
 				<p:outputLabel id="Text" for="Textt" value="Message : "></p:outputLabel>
 				<p:inputTextarea id="Textt" value="#{projectBean.box.message}"></p:inputTextarea>
-			
+				
 			</p:panelGrid>
 		<p:commandButton value="Send" actionListener="#{projectBean.SendProject()}"></p:commandButton>	
 		

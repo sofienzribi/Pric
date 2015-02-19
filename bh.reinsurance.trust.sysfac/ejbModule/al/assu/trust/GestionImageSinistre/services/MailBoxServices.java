@@ -1,6 +1,10 @@
 package al.assu.trust.GestionImageSinistre.services;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,13 +25,18 @@ public class MailBoxServices implements MailBoxServicesLocal {
 	 */
 	@PersistenceContext
 	EntityManager entityManager;
-
+	static Locale locale = Locale.getDefault();
+	static Date date = new Date();
+	static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	String datee;
 	public MailBoxServices() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void CreateMailBox(MailBox box) {
+		datee = dateFormat.format(date);
+		box.setSentDate(date);
 		entityManager.merge(box);
 
 	}

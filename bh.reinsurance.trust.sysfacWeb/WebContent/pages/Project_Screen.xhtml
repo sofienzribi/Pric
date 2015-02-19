@@ -9,13 +9,14 @@
 	<ui:composition template="/template/TMPlogMaster.xhtml">
 		<ui:define name="title">Welcome page</ui:define>
 		<ui:define name="content">
-			<p:panel id="pan1" header="Please select a project">
+			<p:panel id="pan1" >
 				<h:form id="dialog1">
 					<p:dataTable emptyMessage="no Projects found!"
 						value="#{projectBean.projects}" var="prod" rows="5"
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{projectBean.project}" rowKey="#{prod.id}"
 						widgetVar="prodTabW2">
+						<f:facet name="header">Please select a project</f:facet>
 						<p:ajax event="rowSelect" listener="#{projectBean.DisplayPop()}"
 							update=":dialog1" />
 						<p:column headerText="Name " filterBy="#{prod.nameOfTheProject}"
@@ -32,6 +33,8 @@
 						<p:column headerText="Privacy">
 							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
 						</p:column>
+						<f:facet name="footer"><p:commandButton value="refresh" update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
+						</f:facet>
 					</p:dataTable>
 					<p:commandButton value="Open"
 						action="#{projectBean.openingproject()}"

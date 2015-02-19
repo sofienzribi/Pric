@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Entity
 public class Summary implements Serializable {
 
-	private Integer Id;
+	private int Id;
 	private int idProj;
 	private Integer Proposed_Share;
 	private Integer Max_Liability;
@@ -34,15 +34,8 @@ public class Summary implements Serializable {
 		super();
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer getId() {
-		return this.Id;
-	}
-
-	public void setId(Integer Id) {
-		this.Id = Id;
-	}
+	
+	
 
 	public Integer getProposed_Share() {
 		return this.Proposed_Share;
@@ -146,6 +139,15 @@ public class Summary implements Serializable {
 
 	public void setIdProj(int idProj) {
 		this.idProj = idProj;
+	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getId() {
+		return Id;
+	}
+
+	public void setId(int id) {
+		Id = id;
 	}
 
 	

@@ -12,43 +12,59 @@
 
 		<ui:define name="Offer">
 			<h:form id="form">
+				<p:messages id="messages" autoUpdate="true" closable="true" />
 				<h:panelGrid columns="2" border="0">
 
 					<p:outputLabel value="Underwriter : " for="Lab1" />
-					<p:outputLabel value="#{login.Connected()}" id="Lab1"></p:outputLabel>
+					<p:outputLabel
+						value="#{offerBean.getunder(offerBean.offer.id_underwriter)}"
+						id="Lab1"></p:outputLabel>
 					<p:outputLabel value="Inception Date : " for="inc" />
-					<p:calendar id="inc" />
+					<p:calendar id="inc" value="#{offerBean.offer.inception_Date}" />
 					<p:outputLabel value="Expiry date : " for="exp" />
-					<p:calendar id="exp" />
+					<p:calendar id="exp" value="#{offerBean.offer.expiry_date}" />
 					<p:outputLabel value="Quoted date : " for="quote" />
-					<p:calendar id="quote" />
+					<p:calendar id="quote" value="#{offerBean.offer.quoted_Date}" />
 					<p:outputLabel value="Currency : " for="curr" />
-					<p:selectOneMenu id="curr" style="width:160px">
-						<f:selectItems value="#{ratingBean.currency}" />
+					<p:selectOneMenu id="curr" value="#{offerBean.offer.currency}"
+						style="width:160px">
+
+						<f:selectItem itemLabel="Select one .." />
+						<f:selectItems value="#{ratingBean.currency}" var="cat"
+							itemValue="#{cat}" itemLabel="#{cat}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Insured : " for="ins" />
-					<p:inputText id="ins" />
+					<p:inputText id="ins" value="#{offerBean.offer.insured}" />
 					<p:outputLabel value="Broker : " for="brok" />
-					<p:inputText id="brok" />
+					<p:inputText id="brok" value="#{offerBean.offer.broker}" />
 					<p:outputLabel value="Policy : " for="pol" />
-					<p:inputMask id="pol" mask="a*-999-a999" />
+					<p:inputMask id="pol" mask="a*-999-a999"
+						value="#{offerBean.offer.policy}" />
 					<p:outputLabel value="Country : " for="CR" />
 					<p:selectOneMenu id="CR" style="width:160px">
 						<f:selectItem itemLabel="Bahrain" />
 					</p:selectOneMenu>
 					<p:outputLabel value="Risk Grade : " for="GR" />
-					<p:inputMask id="GR" mask="9?9" />
+					<p:inputMask id="GR" mask="9?9"
+						value="#{offerBean.offer.risk_Grade}" />
 					<p:outputLabel value="Insurance  basis : " for="RB" />
 
-					<p:outputLabel id="RB" value="QS(SI)"></p:outputLabel>
-				</h:panelGrid>
+					<p:selectOneMenu id="RB" value="#{offerBean.offer.insurance_Basis}"
+						style="width:160px">
 
+						<f:selectItem itemLabel="Select one .." />
+						<f:selectItems value="#{ratingBean.currency}" var="cat"
+							itemValue="#{cat}" itemLabel="#{cat}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<p:commandButton actionListener="#{offerBean.SaveOffer()}"
+					value="Save"></p:commandButton>
 			</h:form>
 			<br />
 			<br />
 
-<!-- 
+			<!-- 
 			<p:panelGrid id="BIMLOP">
 				<f:facet name="header">
 					<p:row>
@@ -122,15 +138,7 @@
  -->
 
 		</ui:define>
-		<ui:define name="Result">
 
-
-
-
-
-
-
-		</ui:define>
 
 
 	</ui:composition>
