@@ -18,7 +18,7 @@
 			<p:panelGrid columns="2">
 			
 				<p:outputLabel value=" Name of the project :" />
-				<p:outputLabel value="#{projectBean.project.nameOfTheProject}" />
+				<p:outputLabel value="#{projectBean.project3.nameOfTheProject}" />
 				<p:outputLabel id="TO2" for="To" value="To* : ">
 					<p:tooltip for="TO2" id="Totooltip" value="Email @ or login  "></p:tooltip>
 				</p:outputLabel>
@@ -27,7 +27,7 @@
 				<p:inputTextarea id="Textt" value="#{projectBean.box.message}"></p:inputTextarea>
 				
 			</p:panelGrid>
-		<p:commandButton value="Send" actionListener="#{projectBean.SendProject()}"></p:commandButton>	
+		<p:commandButton value="Send" actionListener="#{projectBean.SendProject()}" ></p:commandButton>	
 		
 		
 		

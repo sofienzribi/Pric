@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -34,6 +35,7 @@ public class ProjectBean implements Serializable {
 	// var
 	@ManagedProperty("#{login.getUser()}")
 	private User user;
+
 	private boolean passwordmsg;
 	private String pwdcheck;
 	private String Checkbox;
@@ -63,6 +65,7 @@ public class ProjectBean implements Serializable {
 
 	private MailBox mailBox;
 	private List<MailBox> mailBoxs;
+	private int NumberProjectReceived;
 
 	// methods
 
@@ -78,12 +81,22 @@ public class ProjectBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
-		System.out.println(user.getId());
-
+		NumberProjectReceived = GetMails();
 		passwordmsg = true;
 		PopDisplayed = false;
 		projects = local.GetAllProjects();
 
+	}
+
+	public int GetMails() {
+		int a = 0;
+
+		for (int i = 0; i < mailBoxs.size(); i++) {
+			if (mailBoxs.get(i).getState().equals("NOT SEEN")) {
+				a++;
+			}
+		}
+		return a;
 	}
 
 	public void displaypasswordmsg() {
@@ -150,6 +163,8 @@ public class ProjectBean implements Serializable {
 		box.setState("NOT SEEN");
 		mailBoxServicesLocal.CreateMailBox(box);
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		NumberProjectReceived = GetMails();
+		box=new  MailBox();
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "project Sent!",
@@ -182,13 +197,16 @@ public class ProjectBean implements Serializable {
 		}
 
 	}
-	public void refreshtable(){
+
+	public void refreshtable() {
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
 	}
-	public void refreshtable2(){
+
+	public void refreshtable2() {
 		projects = local.GetAllProjects();
 
 	}
+
 	public String getPrivacy(boolean a) {
 		if (a == true) {
 			return "Public";
@@ -225,11 +243,17 @@ public class ProjectBean implements Serializable {
 
 	}
 
-	public String OpeningSentProject(int id) {
+	public String OpeningSentProject() {
 
-		project = local.GetProjectById(id);
+		project = local.GetProjectById(mailBox.getId_project());
 		project3 = project;
 		summary = summaryServicesLocal.GetSummary(project3.getId());
+		MailBox box2=mailBoxServicesLocal.GetMailBox(mailBox.getId());
+		box2.setState("SEEN");
+	
+		mailBoxServicesLocal.UpdateMailBox(box2);
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		NumberProjectReceived = GetMails();
 		return "Summary2?faces-redirect=true";
 	}
 
@@ -393,6 +417,14 @@ public class ProjectBean implements Serializable {
 
 	public void setOffer(Offer offer) {
 		this.offer = offer;
+	}
+
+	public int getNumberProjectReceived() {
+		return NumberProjectReceived;
+	}
+
+	public void setNumberProjectReceived(int numberProjectReceived) {
+		NumberProjectReceived = numberProjectReceived;
 	}
 
 }

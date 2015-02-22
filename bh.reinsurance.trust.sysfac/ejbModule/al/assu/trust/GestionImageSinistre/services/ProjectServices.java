@@ -36,8 +36,10 @@ public class ProjectServices implements ProjectServicesLocal {
 
 	@Override
 	public void NewProject(Project project) {
+
 		datee = dateFormat.format(date);
 		project.setDateCreation(date);
+
 		entityManager.merge(project);
 
 	}
@@ -95,5 +97,11 @@ public class ProjectServices implements ProjectServicesLocal {
 	public Project GetProjectById(int id) {
 
 		return entityManager.find(Project.class, id);
+	}
+
+	@Override
+	public void UpdateProject(Project project) {
+		entityManager.merge(project);
+
 	}
 }

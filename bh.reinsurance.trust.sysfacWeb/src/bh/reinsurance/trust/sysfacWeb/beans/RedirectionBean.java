@@ -14,7 +14,7 @@ public class RedirectionBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2248985821074026073L;
-	private String testaff=null;
+	private String testaff="Summary";
 	public RedirectionBean() {
 	}
 
@@ -23,6 +23,12 @@ public class RedirectionBean implements Serializable {
 				.redirect("Summary2.jsf");
 		testaff="Summary";
 	}
+	
+	public void GoToReceived() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("ProjectBox.jsf");
+	}
+	
 	public void GoToFacInfo() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Fac_info.jsf");

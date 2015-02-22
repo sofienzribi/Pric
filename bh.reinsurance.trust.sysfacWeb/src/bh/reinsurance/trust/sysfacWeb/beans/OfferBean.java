@@ -45,7 +45,10 @@ public class OfferBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		offer = offerServicesLocal.GetOffer(project.getId());
+		if(project.getNameOfTheProject()!=null){
+			offer = offerServicesLocal.GetOffer(project.getId());
+		}
+		
 	}
 
 	public void SaveOffer() {

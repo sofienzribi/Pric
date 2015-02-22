@@ -81,8 +81,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 		if (userFound != null) {
 
 			user = userFound;
-			System.out.println(user.getId());
-			System.out.println("acces granted");
+			
 
 			return "Project_Screen?faces-redirect=true";
 

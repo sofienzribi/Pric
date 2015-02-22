@@ -8,49 +8,8 @@
 <h:body>
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Chart tool </ui:define>
-
 		<ui:define name="content">
-<h:form>
-			<p:dataTable emptyMessage="no Mails found!"
-				value="#{projectBean.mailBoxs}" var="prod" rows="5" paginator="true"
-				paginatorPosition="bottom" selectionMode="single"
-				selection="#{projectBean.mailBox}" rowKey="#{prod.id}"
-				widgetVar="prodTab">
-				<f:facet name="header">ProjectBox</f:facet>
-					<p:column headerText="From">
-					<h:outputText
-						value="#{projectBean.GetUserName(prod.user_sending_id)}" />
-				</p:column>
-				<p:column headerText="Project Name">
-					<h:outputText
-						value="#{projectBean.GetNameOfTheProject(prod.id_project)}" />
-				</p:column>
-				<p:column headerText="Message ">
-					<h:outputText value="#{prod.message}" />
-				</p:column>
-				<p:column headerText="Date">
-					<h:outputText
-						value="#{prod.sentDate}" />
-				</p:column>
-					<p:column>
-						<p:commandButton value="Open"
-							action="#{projectBean.OpeningSentProject(prod.id_project)}" />
-					</p:column>
-					<f:facet name="footer"> 
-					<p:commandButton value="Refresh" actionListener="#{projectBean.refreshtable()}" update="@form"></p:commandButton>
-					</f:facet>
-				</p:dataTable>
-	
-
-
-
-</h:form>
-
-
-
-
-
-			<!-- <h:form>
+			<h:form>
 				<h3>RSS TEST</h3>
 				<p:feedReader
 					value="http://feeds.marketwatch.com/marketwatch/marketpulse/"
@@ -60,7 +19,7 @@
 					<h:outputText value="#{feed.description.value}" escape="false" />
 					<p:separator />
 				</p:feedReader>
-			</h:form> -->
+			</h:form>
 		</ui:define>
 	</ui:composition>
 </h:body>

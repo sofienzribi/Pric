@@ -11,4 +11,5 @@ public interface MailBoxServicesLocal {
 	public void CreateMailBox(MailBox box);
 	public List<MailBox> GetMailBoxByUserId(int User_Id);
 	public MailBox GetMailBox(int id);
+	public void UpdateMailBox(MailBox box);
 }

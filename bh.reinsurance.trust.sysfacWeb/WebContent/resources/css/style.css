@@ -11,7 +11,10 @@ body
   color: #000;
 }
 
-
+.old
+{
+  background:#6F3E3E;
+}
 p
 { padding: 0 0 10px 0;
   color: #FFF;
