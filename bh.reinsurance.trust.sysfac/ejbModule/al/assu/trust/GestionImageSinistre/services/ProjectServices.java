@@ -48,7 +48,7 @@ public class ProjectServices implements ProjectServicesLocal {
 	public List<Project> GetProjectsByUser(User user) {
 		return entityManager
 				.createQuery("select p from Project p where p.user=:c")
-				.setParameter("c", user).getResultList();
+				.setParameter("c", user.getId()).getResultList();
 	}
 
 	@Override
@@ -59,8 +59,8 @@ public class ProjectServices implements ProjectServicesLocal {
 	}
 
 	@Override
-	public void DeleteProject(Project project) {
-		entityManager.remove(entityManager.merge(project));
+	public void DeleteProject(int project) {
+		entityManager.remove(entityManager.find(Project.class, project));
 
 	}
 

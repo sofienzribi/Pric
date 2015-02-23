@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title"> Measures </ui:define>
+		<ui:define name="content">
+			<h:form id="A">
+			
+
+
+				<p:commandButton actionListener="#{MapBean.tryGrowl()}"
+					value="Submit" icon="ui-icon-check" update="msgs" />
+
+
+
+
+	<p:growl  id="msgs" showDetail="true"  sticky="true"/>
+
+
+				<!-- <h3>RSS TEST</h3>
+				<p:feedReader
+					value="http://feeds.marketwatch.com/marketwatch/marketpulse/"
+					var="feed">
+					<h:outputText value="#{feed.title}"
+						style="font-weight: bold;display:block" />
+					<h:outputText value="#{feed.description.value}" escape="false" />
+					<p:separator />
+				</p:feedReader> -->
+			</h:form>
+			
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

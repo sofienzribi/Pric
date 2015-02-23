@@ -3,17 +3,25 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
+	<h:outputStylesheet library="css" name="style.css" />
 
-	<nav class="navbar navbar-default navbar-fixed-top">
+
+
+	<nav class="navbar navbar-default navbar-fixed-top ">
 		<div class="container">
-			<div class="navbar-header">
+			<div style="display:#{login.displayNavBarEssential} "
+				class="navbar-header">
+				<h:outputText value="#{login.department}" styleClass="textima" />
 				<p:graphicImage value="/resources/images/logo_small.png"></p:graphicImage>
+
 			</div>
+
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 
 
-					<li class="dropdown"><a href="#"
+					<li style="display:#{login.displayNavBarEssential}"
+						class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
 							class="fa fa-info-circle"></i> <span>Information Tool</span> <b
 							class="caret"></b>
@@ -35,14 +43,13 @@
 
 
 
-					<li class="dropdown"><a href="#"
+					<li class="dropdown"
+						style="display:#{projectBean.displayProjectNav}"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
 							class="fa fa-tasks"></i> <span>Rating tool</span> <b
 							class="caret"></b>
 					</a>
-
 						<ul class="dropdown-menu">
-
 							<li><h:form id="firstb">
 									<i class="fa fa-play"></i>
 									<p:commandLink value="Rating"
@@ -65,14 +72,24 @@
 								</h:form></li>
 
 						</ul></li>
-					<li><a
-						href="/bh.reinsurance.trust.sysfacWeb/pages/Chart_Page.jsf"><i
-							class="fa fa-certificate"></i> <span>Abacus tool</span></a></li>
 
-					<li><a
+
+
+
+					<li style="display:#{login.displayFacultative}"><a
+						href="/bh.reinsurance.trust.sysfacWeb/pages/Chart_Page.jsf"><i
+							class="fa fa-certificate"></i> Abacus tool</a></li>
+
+
+					<li style="display:#{login.displayActuarial}"><a
+						href="/bh.reinsurance.trust.sysfacWeb/pages/Chart_Page.jsf"><i
+							class="fa fa-certificate"></i> Measures</a></li>
+
+
+
+					<li style="display:#{login.displayNavBarEssential}"><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Report_page.jsf"><i
 							class="fa fa-files-o"></i> <span>Reporting tool</span></a></li>
-
 				</ul>
 
 
@@ -80,15 +97,13 @@
  -->
 
 
-				<ul class="nav navbar-nav navbar-right">
-
-
+				<ul style="display:#{login.displayNavBarEssential}"
+					class="nav navbar-nav navbar-right">
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
 							class="fa fa-user"></i> <span>#{login.Connected()}</span> <b
 							class="caret"></b>
 					</a>
-
 						<ul class="dropdown-menu">
 							<li><h:form id="mmmi">
 									<i class="fa fa-wrench"></i>
@@ -102,34 +117,35 @@
 
 						</ul></li>
 
+
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
 							class="fa fa-folder"></i> <span>Project
 								#{projectBean.project3.nameOfTheProject}</span> <b class="caret"></b>
 					</a>
-
 						<ul class="dropdown-menu">
-
 							<li><h:form id="sdfv">
 									<i class="fa fa-envelope"></i>
 									<p:commandLink value="Send Project"
 										actionListener="#{redirectionBean.GoToSendProject()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="formreceived">
-									<i class="fa fa-envelope"></i>
+									<i class="fa fa-archive"></i>
 									<p:commandLink
 										actionListener="#{redirectionBean.GoToReceived()}">Received Project(#{projectBean.numberProjectReceived})
 										</p:commandLink>
 								</h:form></li>
-
+							<li><h:form id="mpl">
+									<i class="fa fa-wrench"></i>
+									<p:commandLink value="Manage Projects"
+										actionListener="#{redirectionBean.GoToManageProject()}"></p:commandLink>
+								</h:form></li>
 							<li><h:form id="dfds">
 									<i class="fa fa-folder"></i>
 									<p:commandLink value="Close Project"
-										actionListener="#{redirectionBean.GoToProject()}"></p:commandLink>
+										actionListener="#{projectBean.CloseDProject()}"></p:commandLink>
 								</h:form></li>
 						</ul></li>
-
-
 				</ul>
 			</div>
 		</div>

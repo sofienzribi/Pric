@@ -10,59 +10,16 @@
 		<ui:define name="title">Chart tool </ui:define>
 		<ui:define name="content">
 			<h:form id="A">
-				<p:growl id="msgs" showDetail="true" />
-				<p:outputLabel value="TEst:" for="Test3" />
-				<p:autoComplete id="Test3" completeMethod="#{MapBean.completeTheme}"
-					value="#{MapBean.user2}" var="prod"
-					itemLabel="#{prod.first_Name} #{prod.last_Name}"
-					itemValue="#{prod}" converter="NameConverter">
-					
-					<f:facet name="itemtip">
-						<h:panelGrid columns="2" cellpadding="5">
-							<f:facet name="header">
-								<h:outputText value="#{prod.first_Name} #{prod.last_Name}"
-									style="margin-left:50px" />
-							</f:facet>
-							
-							<h:outputText value="Email: " />
-							<h:outputText value="#{prod.email}" />
-							<h:outputText value="Dept: " />
-							<h:outputText value="#{prod.department}" />
-						</h:panelGrid>
-					</f:facet>
+			
 
 
-				</p:autoComplete>
+				<p:commandButton actionListener="#{MapBean.tryGrowl()}"
+					value="Submit" icon="ui-icon-check" update="msgs" />
 
 
 
 
-
-
-
-
-
-
-				<p:commandButton value="Submit" icon="ui-icon-check" update="output"
-					oncomplete="PF('dlg').show()" />
-				<p:dialog header="Values" resizable="false" showEffect="fade"
-					widgetVar="dlg">
-					<p:panelGrid id="output" columns="2">
-						<h:outputText value="Simple:" />
-						<h:outputText value="#{MapBean.user2.first_Name}" />
-					</p:panelGrid>
-				</p:dialog>
-
-
-
-
-
-
-
-
-
-
-
+	<p:growl  id="msgs" showDetail="true"  sticky="true"/>
 
 
 				<!-- <h3>RSS TEST</h3>
@@ -75,6 +32,7 @@
 					<p:separator />
 				</p:feedReader> -->
 			</h:form>
+			
 		</ui:define>
 	</ui:composition>
 </h:body>

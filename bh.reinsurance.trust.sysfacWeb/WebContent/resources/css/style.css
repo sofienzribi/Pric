@@ -2,3 +2,16 @@
 	
 	font-weight: bold;
 }
+.textima{
+	font-weight: bold;
+	
+}
+
+
+.avesettings {
+    background-image: url('../resources/images/logo_small.png');
+    cursor: pointer;
+    width: 126px;
+    height: 41px;
+    border: none;
+}

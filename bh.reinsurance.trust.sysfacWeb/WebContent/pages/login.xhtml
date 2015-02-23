@@ -9,17 +9,19 @@
 
 </h:head>
 <h:body>
-	<ui:composition template="/template/TMPlogMaster.xhtml">
+	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Login page</ui:define>
-		<ui:define name="content">
-			
-				<h1><p:graphicImage value="/resources/images/log.png"></p:graphicImage></h1>
-				<p class="lead"></p>
-				<p class="lead"></p>
-			
+		<ui:define name="log">
 
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
+			<h1>
+				<p:graphicImage value="/resources/images/log.png"></p:graphicImage>
+			</h1>
+			<p class="lead"></p>
+			<p class="lead"></p>
+
+
+			<div>
+				<div>
 
 
 
@@ -28,27 +30,25 @@
 
 						<p:messages id="messages" autoUpdate="true" closable="true" />
 
-						<h:panelGrid id="pan" columns="3">
+						<h:panelGrid id="pan" cellpadding="3" columns="3">
 
 
-							<p:outputLabel for="login" value="Login:" />
+							<p:outputLabel value="Login" />
+							<p:outputLabel value="*:" />
 							<p:inputText id="login" value="#{login.user.login}"
 								styleClass="product-form-input" required="true"
 								requiredMessage="Login required" />
-							<p:message id="loginmsg" for="login" display="icon" />
-							<p:outputLabel for="pwd" value="Password:" />
+
+							<p:outputLabel value="Password" />
+							<p:outputLabel value="*:" />
 							<p:password id="pwd" value="#{login.user.password}"
 								required="true" requiredMessage="Password required"
 								styleClass="product-form-input" />
-							<p:message id="pwdmsg" for="pwd" display="icon" />
-
-							
-			<f:facet name="footer"><p:commandButton value="Login" update="@form"
-								action="#{login.login()}" icon="fa fa-home" /></f:facet>
-							
 
 
 						</h:panelGrid>
+						<p:commandButton value="Login" update="@form" icon="ui-icon-key"
+							action="#{login.login()}" style="margin-left:110px" />
 					</h:form>
 
 

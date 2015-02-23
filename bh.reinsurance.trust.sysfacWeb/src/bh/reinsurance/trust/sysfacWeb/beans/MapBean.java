@@ -6,8 +6,11 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
@@ -18,13 +21,15 @@ import org.primefaces.model.map.Marker;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
-@ManagedBean(name="MapBean",eager=true)
+@ManagedBean(name = "MapBean", eager = true)
 @SessionScoped
 public class MapBean implements Serializable {
 
 	/**
 	 * 
 	 */
+
+	
 	private MapModel simpleModel;
 	private Marker marker;
 	private static final long serialVersionUID = 1L;
@@ -34,6 +39,7 @@ public class MapBean implements Serializable {
 	 */
 	public MapBean() {
 		user2 = new User();
+
 		// TODO Auto-generated constructor stub
 	}
 
@@ -71,8 +77,12 @@ public class MapBean implements Serializable {
 	}
 
 	// tests
+	public void tryGrowl() {
+		FacesContext context = FacesContext.getCurrentInstance();
 
-	
+		context.addMessage(null, new FacesMessage("Successful",
+				"Your message: azerty "));
+	}
 
 	@EJB
 	private UserServicesLocal local;
@@ -93,8 +103,6 @@ public class MapBean implements Serializable {
 
 		return filteredThemes;
 	}
-
-	
 
 	public User Finduserbyname(int id) {
 		return local.GetUserByid(id);

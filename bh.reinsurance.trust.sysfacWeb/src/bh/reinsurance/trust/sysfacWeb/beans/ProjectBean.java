@@ -1,5 +1,6 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,10 @@ public class ProjectBean implements Serializable {
 	private List<MailBox> mailBoxs;
 	private int NumberProjectReceived;
 	private boolean DisplayButtonMailBox;
+	private List<Project> projectsbyuser;
+	private Project proojectbyuser;
+	private boolean DisplayProjectManagButton;
+	private String DisplayProjectNav;
 
 	// methods
 
@@ -81,12 +86,38 @@ public class ProjectBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		DisplayProjectNav = "none";
+		proojectbyuser = new Project();
+		DisplayProjectManagButton = false;
+		projectsbyuser = local.GetProjectsByUser(user);
 		DisplayButtonMailBox = false;
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
 		NumberProjectReceived = GetMails();
 		passwordmsg = true;
 		PopDisplayed = false;
 		projects = local.GetAllProjects();
+
+	}
+
+	public void UpdateProject() {
+
+		local.UpdateProject(proojectbyuser);
+		projectsbyuser = local.GetProjectsByUser(user);
+		DisplayProjectManagButton = false;
+		projects = local.GetAllProjects();
+
+	}
+
+	public void DeleteProject() {
+		local.DeleteProject(proojectbyuser.getId());
+		projectsbyuser = local.GetProjectsByUser(user);
+		DisplayProjectManagButton = false;
+		projects = local.GetAllProjects();
+	}
+
+	public void OnProjManSelect() {
+		System.out.println("L id est " + proojectbyuser.getNameOfTheProject());
+		DisplayProjectManagButton = true;
 
 	}
 
@@ -154,6 +185,8 @@ public class ProjectBean implements Serializable {
 			offerServicesLocal.AddOffer(offer);
 			project2 = new Project();
 			projects = local.GetAllProjects();
+			DisplayProjectNav = "true";
+			projectsbyuser = local.GetProjectsByUser(user);
 			return "Fac_info?faces-redirect=true";
 		}
 	}
@@ -161,7 +194,7 @@ public class ProjectBean implements Serializable {
 	public String GetUserName(int id) {
 
 		User user2 = local2.GetUserByid(id);
-		return user2.getFirst_Name();
+		return user2.getFirst_Name() + " " + user2.getLast_Name();
 	}
 
 	public String GetNameOfTheProject(int id) {
@@ -170,12 +203,15 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void SendProject() {
-
 		box.setId_project(project3.getId());
 		box.setUser_sending_id(user.getId());
 		box.setState("NOT SEEN");
-		box.setUser_id(UserDestination.getId());
-		mailBoxServicesLocal.CreateMailBox(box);
+		for (int i = 0; i < SendToUsers.size(); i++) {
+
+			box.setUser_id(SendToUsers.get(i).getId());
+			mailBoxServicesLocal.CreateMailBox(box);
+		}
+
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
 		NumberProjectReceived = GetMails();
 		box = new MailBox();
@@ -191,6 +227,8 @@ public class ProjectBean implements Serializable {
 		System.out.println(pwdcheck);
 		if (pwdcheck.equals(project.getPassword())) {
 			project3 = project;
+			project = new Project();
+			PopDisplayed = false;
 			summary = summaryServicesLocal.GetSummary(project3.getId());
 			return "Summary2?faces-redirect=true";
 		} else {
@@ -256,11 +294,19 @@ public class ProjectBean implements Serializable {
 
 		if (project.getPrivacy() == true) {
 			project3 = project;
+			project = new Project();
+			PopDisplayed = false;
+			DisplayProjectNav = "true";
+
 			summary = summaryServicesLocal.GetSummary(project3.getId());
 			return "Summary2?faces-redirect=true";
 		} else {
 			if (project.getUser() == user.getId()) {
 				project3 = project;
+				project = new Project();
+				PopDisplayed = false;
+				DisplayProjectNav = "true";
+
 				summary = summaryServicesLocal.GetSummary(project3.getId());
 				return "Summary2?faces-redirect=true";
 			} else {
@@ -285,7 +331,17 @@ public class ProjectBean implements Serializable {
 		NumberProjectReceived = GetMails();
 		DisplayButtonMailBox = false;
 		mailBox = new MailBox();
+		DisplayProjectNav = "true";
+
 		return "Summary2?faces-redirect=true";
+	}
+
+	public void CloseDProject() throws IOException {
+
+		DisplayProjectNav = "none";
+		project3 = new Project();
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("Project_Screen.jsf");
 	}
 
 	// get set
@@ -472,6 +528,38 @@ public class ProjectBean implements Serializable {
 
 	public void setDisplayButtonMailBox(boolean displayButtonMailBox) {
 		DisplayButtonMailBox = displayButtonMailBox;
+	}
+
+	public List<Project> getProjectsbyuser() {
+		return projectsbyuser;
+	}
+
+	public void setProjectsbyuser(List<Project> projectsbyuser) {
+		this.projectsbyuser = projectsbyuser;
+	}
+
+	public Project getProojectbyuser() {
+		return proojectbyuser;
+	}
+
+	public void setProojectbyuser(Project proojectbyuser) {
+		this.proojectbyuser = proojectbyuser;
+	}
+
+	public boolean isDisplayProjectManagButton() {
+		return DisplayProjectManagButton;
+	}
+
+	public void setDisplayProjectManagButton(boolean displayProjectManagButton) {
+		DisplayProjectManagButton = displayProjectManagButton;
+	}
+
+	public String getDisplayProjectNav() {
+		return DisplayProjectNav;
+	}
+
+	public void setDisplayProjectNav(String displayProjectNav) {
+		DisplayProjectNav = displayProjectNav;
 	}
 
 }

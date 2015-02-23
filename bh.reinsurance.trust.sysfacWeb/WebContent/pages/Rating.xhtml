@@ -38,9 +38,13 @@
 					<p:inputText id="ins" value="#{offerBean.offer.insured}" />
 					<p:outputLabel value="Broker : " for="brok" />
 					<p:inputText id="brok" value="#{offerBean.offer.broker}" />
-					<p:outputLabel value="Policy : " for="pol" />
+
+
+
+					<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
 					<p:inputMask id="pol" mask="a*-999-a999"
 						value="#{offerBean.offer.policy}" />
+				
 					<p:outputLabel value="Country : " for="CR" />
 					<p:selectOneMenu id="CR" style="width:160px">
 						<f:selectItem itemLabel="Bahrain" />
@@ -59,7 +63,7 @@
 					</p:selectOneMenu>
 				</h:panelGrid>
 				<p:commandButton actionListener="#{offerBean.SaveOffer()}"
-					value="Save"></p:commandButton>
+					value="Save" style="margin-left:90px" icon="ui-icon-disk"></p:commandButton>
 			</h:form>
 			<br />
 			<br />

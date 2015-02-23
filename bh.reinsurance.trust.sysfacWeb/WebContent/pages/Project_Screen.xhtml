@@ -6,7 +6,7 @@
 <h:head>
 </h:head>
 <h:body>
-	<ui:composition template="/template/TMPlogMaster.xhtml">
+	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Welcome page</ui:define>
 		<ui:define name="content">
 		
@@ -34,11 +34,11 @@
 						<p:column headerText="Privacy">
 							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
 						</p:column>
-						<f:facet name="footer"><p:commandButton value="refresh" update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
+						<f:facet name="footer"><p:commandButton icon="ui-icon-refresh" value="refresh" update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
 						<p:commandButton value="Open"
 						action="#{projectBean.openingproject()}"
-						rendered="#{projectBean.popDisplayed}" />
-					<p:commandButton icon="fa fa-plus" value="New Project"
+						rendered="#{projectBean.popDisplayed}" icon="ui-icon-folder-open"/>
+					<p:commandButton icon="ui-icon-plusthick" value="New Project"
 						onclick="popup.show()" />
 						</f:facet>
 					</p:dataTable>

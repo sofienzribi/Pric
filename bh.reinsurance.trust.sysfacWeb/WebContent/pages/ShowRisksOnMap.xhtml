@@ -9,8 +9,8 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Risks On map </ui:define>
 		<ui:define name="content">
-		
-		
+
+
 			<div class="jumbotron">
 				<h2>Risks On Map</h2>
 				<!-- <p class="lead"></p> -->
@@ -18,13 +18,14 @@
 			</div>
 			<div id="map">
 				<p:gmap center="26.0275, 50.5500" zoom="2" type="HYBRID"
-					style="width:1000px;height:400px" model="#{mapBean.simpleModel}">
-					<p:ajax event="overlaySelect" listener="#{mapBean.onMarkerSelect}" />
+					style="width:1000px;height:400px" model="#{MapBean.simpleModel}">
+					<p:ajax event="overlaySelect"
+						listener="#{MapBean.onMarkerSelect}" />
 					<p:gmapInfoWindow id="infoWindow">
 						<p:outputPanel
 							style="text-align: center; display: block; margin: auto">
 							TrustRe 
-							<h:outputText value="#{mapBean.marker.title}" />
+							<h:outputText value="#{MapBean.marker.title}" />
 							<br />
 						</p:outputPanel>
 					</p:gmapInfoWindow>

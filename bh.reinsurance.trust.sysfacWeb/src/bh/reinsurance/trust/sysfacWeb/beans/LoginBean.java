@@ -20,8 +20,13 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// Models
-
+	private String Department;
 	private User user;
+	private String DisplayActuarial;
+	private String DisplayFacultative;
+	private String DisplayNavBarEssential;
+	private String DisplayProjectNav;
+
 	// EJB
 	@EJB
 	private UserServicesLocal userServicesLocal;
@@ -31,7 +36,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	}
 
 	public String Connected() {
-		System.out.println(user.login);
+
 		if (user.getLogin() == null) {
 			return "Nobody !!!";
 		} else {
@@ -61,7 +66,10 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// init methode
 	@PostConstruct
 	public void init() {
-
+		DisplayProjectNav = "none";
+		DisplayNavBarEssential = "none";
+		DisplayActuarial = "none";
+		DisplayFacultative = "none";
 	}
 
 	// methods
@@ -81,9 +89,17 @@ public class LoginBean extends HttpServlet implements Serializable {
 		if (userFound != null) {
 
 			user = userFound;
-			
-
-			return "Project_Screen?faces-redirect=true";
+			System.out.println(user.getDepartment());
+			if (user.getDepartment().equals("actuarialandrisk")) {
+				Department = "Actuarial & Risk";
+				DisplayActuarial = "true";
+				DisplayNavBarEssential = "true";
+				return "Measures?faces-redirect=true";
+			} else {
+				Department = "Facultative Department";
+				DisplayNavBarEssential = "true";
+				return "Project_Screen?faces-redirect=true";
+			}
 
 		} else {
 			FacesContext.getCurrentInstance().addMessage(
@@ -95,12 +111,60 @@ public class LoginBean extends HttpServlet implements Serializable {
 		}
 	}
 
+	public void DisplayNavbar() {
+		if (user.getDepartment().equals("actuarialandrisk")) {
+			DisplayActuarial = "true";
+		} else {
+			DisplayFacultative = "true";
+		}
+	}
+
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getDepartment() {
+		return Department;
+	}
+
+	public void setDepartment(String department) {
+		Department = department;
+	}
+
+	public String getDisplayActuarial() {
+		return DisplayActuarial;
+	}
+
+	public void setDisplayActuarial(String displayActuarial) {
+		DisplayActuarial = displayActuarial;
+	}
+
+	public String getDisplayFacultative() {
+		return DisplayFacultative;
+	}
+
+	public void setDisplayFacultative(String displayFacultative) {
+		DisplayFacultative = displayFacultative;
+	}
+
+	public String getDisplayNavBarEssential() {
+		return DisplayNavBarEssential;
+	}
+
+	public void setDisplayNavBarEssential(String displayNavBarEssential) {
+		DisplayNavBarEssential = displayNavBarEssential;
+	}
+
+	public String getDisplayProjectNav() {
+		return DisplayProjectNav;
+	}
+
+	public void setDisplayProjectNav(String displayProjectNav) {
+		DisplayProjectNav = displayProjectNav;
 	}
 
 }

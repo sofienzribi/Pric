@@ -18,12 +18,14 @@ public interface ProjectServicesLocal {
 
 	public List<Project> GetAllProjects();
 
-	public void DeleteProject(Project project);
+	public void DeleteProject(int project);
 
 	public boolean Nameexist(String Name);
 
 	public Project GetProjectById(int id);
 	
 	public void UpdateProject(Project project);
+	
+	
 
 }
