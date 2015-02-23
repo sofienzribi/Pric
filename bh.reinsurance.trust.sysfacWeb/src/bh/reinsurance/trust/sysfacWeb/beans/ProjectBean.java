@@ -9,7 +9,6 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -62,14 +61,16 @@ public class ProjectBean implements Serializable {
 	private SummaryServicesLocal summaryServicesLocal;
 	@EJB
 	private MailBoxServicesLocal mailBoxServicesLocal;
-
+	private User UserDestination;
 	private MailBox mailBox;
 	private List<MailBox> mailBoxs;
 	private int NumberProjectReceived;
+	private boolean DisplayButtonMailBox;
 
 	// methods
 
 	public ProjectBean() {
+
 		offer = new Offer();
 		box = new MailBox();
 		summary = new Summary();
@@ -80,6 +81,7 @@ public class ProjectBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		DisplayButtonMailBox = false;
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
 		NumberProjectReceived = GetMails();
 		passwordmsg = true;
@@ -97,6 +99,17 @@ public class ProjectBean implements Serializable {
 			}
 		}
 		return a;
+	}
+
+	public void OnRowSelect() {
+		DisplayButtonMailBox = true;
+	}
+
+	public void DeleteMailBox() {
+		mailBoxServicesLocal.DeleteMailBox(mailBox.getId());
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		DisplayButtonMailBox = false;
+
 	}
 
 	public void displaypasswordmsg() {
@@ -161,10 +174,11 @@ public class ProjectBean implements Serializable {
 		box.setId_project(project3.getId());
 		box.setUser_sending_id(user.getId());
 		box.setState("NOT SEEN");
+		box.setUser_id(UserDestination.getId());
 		mailBoxServicesLocal.CreateMailBox(box);
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
 		NumberProjectReceived = GetMails();
-		box=new  MailBox();
+		box = new MailBox();
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "project Sent!",
@@ -187,6 +201,21 @@ public class ProjectBean implements Serializable {
 							"Bad Credentials!", "Bad Credentials"));
 			return null;
 		}
+	}
+
+	public List<User> completeName(String query) {
+		List<User> allThemes = local2.GetAllUsers();
+		List<User> filteredThemes = new ArrayList<User>();
+
+		for (int i = 0; i < allThemes.size(); i++) {
+			User skin = allThemes.get(i);
+			if (skin.getFirst_Name().toLowerCase().startsWith(query)
+					|| skin.getLast_Name().toLowerCase().startsWith(query)) {
+				filteredThemes.add(skin);
+			}
+		}
+
+		return filteredThemes;
 	}
 
 	public void DisablePasswordUsingCheckbox() {
@@ -248,12 +277,14 @@ public class ProjectBean implements Serializable {
 		project = local.GetProjectById(mailBox.getId_project());
 		project3 = project;
 		summary = summaryServicesLocal.GetSummary(project3.getId());
-		MailBox box2=mailBoxServicesLocal.GetMailBox(mailBox.getId());
+		MailBox box2 = mailBoxServicesLocal.GetMailBox(mailBox.getId());
 		box2.setState("SEEN");
-	
+
 		mailBoxServicesLocal.UpdateMailBox(box2);
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
 		NumberProjectReceived = GetMails();
+		DisplayButtonMailBox = false;
+		mailBox = new MailBox();
 		return "Summary2?faces-redirect=true";
 	}
 
@@ -425,6 +456,22 @@ public class ProjectBean implements Serializable {
 
 	public void setNumberProjectReceived(int numberProjectReceived) {
 		NumberProjectReceived = numberProjectReceived;
+	}
+
+	public User getUserDestination() {
+		return UserDestination;
+	}
+
+	public void setUserDestination(User userDestination) {
+		UserDestination = userDestination;
+	}
+
+	public boolean isDisplayButtonMailBox() {
+		return DisplayButtonMailBox;
+	}
+
+	public void setDisplayButtonMailBox(boolean displayButtonMailBox) {
+		DisplayButtonMailBox = displayButtonMailBox;
 	}
 
 }

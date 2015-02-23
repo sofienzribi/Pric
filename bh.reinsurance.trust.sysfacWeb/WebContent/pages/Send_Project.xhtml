@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Send Project </ui:define>
+		<ui:define name="content">
+			<h:form id="SendProject">
+				<p:messages id="messages" autoUpdate="true" closable="true" />
+
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value=" Name of the project :" />
+					<p:outputLabel value="#{projectBean.project3.nameOfTheProject}" />
+
+					<p:outputLabel id="TO2" for="To" value="To* : " />
+					<p:autoComplete id="To"
+						completeMethod="#{projectBean.completeName}"
+						value="#{projectBean.userDestination}" var="prod"
+						itemLabel="#{prod.first_Name} #{prod.last_Name}"
+						itemValue="#{prod}" converter="NameConverter"
+						forceSelection="true" required="true"
+						requiredMessage="Please enter a user destination">
+						<f:facet name="itemtip">
+							<h:panelGrid columns="2" cellpadding="5">
+								<f:facet name="header">
+									<h:outputText value="#{prod.first_Name} #{prod.last_Name}"
+										style="margin-left:50px" />
+								</f:facet>
+								<h:outputText value="Email: " />
+								<h:outputText value="#{prod.email}" />
+								<h:outputText value="Dept: " />
+								<h:outputText value="#{prod.department}" />
+							</h:panelGrid>
+						</f:facet>
+					</p:autoComplete>
+
+					<p:outputLabel id="Text" for="Textt" value="Message : " />
+					<p:inputTextarea id="Textt" value="#{projectBean.box.message}"
+						required="true" requiredMessage="Please enter a message"></p:inputTextarea>
+				</p:panelGrid>
+				<p:commandButton value="Send"
+					actionListener="#{projectBean.SendProject()}"></p:commandButton>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

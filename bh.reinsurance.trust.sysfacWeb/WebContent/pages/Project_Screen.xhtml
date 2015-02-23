@@ -9,10 +9,11 @@
 	<ui:composition template="/template/TMPlogMaster.xhtml">
 		<ui:define name="title">Welcome page</ui:define>
 		<ui:define name="content">
+		
 			<p:panel id="pan1" >
 				<h:form id="dialog1">
 					<p:dataTable emptyMessage="no Projects found!"
-						value="#{projectBean.projects}" var="prod" rows="13"  rowStyleClass="#{prod.id eq 2 ? 'old' : null}"
+						value="#{projectBean.projects}" var="prod" rows="13"  
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{projectBean.project}" rowKey="#{prod.id}"
 						widgetVar="prodTabW2">
@@ -34,13 +35,14 @@
 							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
 						</p:column>
 						<f:facet name="footer"><p:commandButton value="refresh" update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
-						</f:facet>
-					</p:dataTable>
-					<p:commandButton value="Open"
+						<p:commandButton value="Open"
 						action="#{projectBean.openingproject()}"
 						rendered="#{projectBean.popDisplayed}" />
 					<p:commandButton icon="fa fa-plus" value="New Project"
 						onclick="popup.show()" />
+						</f:facet>
+					</p:dataTable>
+					
 				</h:form>
 			</p:panel>
 

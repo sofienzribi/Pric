@@ -62,4 +62,11 @@ public class MailBoxServices implements MailBoxServicesLocal {
 
 	}
 
+	@Override
+	public void DeleteMailBox(int box) {
+
+		entityManager.remove(entityManager.find(MailBox.class, box));
+
+	}
+
 }

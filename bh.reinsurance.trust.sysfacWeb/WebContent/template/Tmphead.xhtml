@@ -113,7 +113,7 @@
 							<li><h:form id="sdfv">
 									<i class="fa fa-envelope"></i>
 									<p:commandLink value="Send Project"
-										actionListener="#{redirectionBean.GoToComment()}"></p:commandLink>
+										actionListener="#{redirectionBean.GoToSendProject()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="formreceived">
 									<i class="fa fa-envelope"></i>
@@ -121,11 +121,7 @@
 										actionListener="#{redirectionBean.GoToReceived()}">Received Project(#{projectBean.numberProjectReceived})
 										</p:commandLink>
 								</h:form></li>
-							<li><h:form id="efe">
-									<i class="fa fa-comment-o"></i>
-									<p:commandLink value="View Comments"
-										actionListener="#{redirectionBean.GoToComment()}"></p:commandLink>
-								</h:form></li>
+
 							<li><h:form id="dfds">
 									<i class="fa fa-folder"></i>
 									<p:commandLink value="Close Project"

@@ -59,9 +59,9 @@ public class RedirectionBean implements Serializable {
 		
 	}
 
-	public void GoToComment() throws IOException {
+	public void GoToSendProject() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("Comment_Project.jsf");
+				.redirect("Send_Project.jsf");
 	}
 
 	public String getTestaff() {
