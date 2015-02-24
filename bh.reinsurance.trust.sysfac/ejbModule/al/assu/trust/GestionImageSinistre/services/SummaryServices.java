@@ -36,4 +36,9 @@ public class SummaryServices implements SummaryServicesLocal {
 
 	}
 
+	@Override
+	public void DeleteSummary(Summary summary) {
+		entityManager.remove(entityManager.merge(summary));
+	}
+
 }

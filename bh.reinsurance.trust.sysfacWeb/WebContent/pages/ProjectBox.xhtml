@@ -38,14 +38,15 @@
 
 					<f:facet name="footer">
 						<p:commandButton value="Refresh"
-							actionListener="#{projectBean.refreshtable()}" icon="ui-icon-refresh" update="@form" />
+							actionListener="#{projectBean.refreshtable()}"
+							icon="ui-icon-refresh" update="@form" />
 
 						<p:commandButton value="Open" icon="ui-icon-mail-open"
 							action="#{projectBean.OpeningSentProject()}"
 							rendered="#{projectBean.displayButtonMailBox}" />
 
 						<p:commandButton value="Delete" icon="ui-icon-trash"
-							rendered="#{projectBean.displayButtonMailBox}"
+							rendered="#{projectBean.diplayDeleteButton}"
 							actionListener="#{projectBean.DeleteMailBox()}"
 							update=":Mainform">
 							<p:confirm header="Confirmation"

@@ -24,6 +24,12 @@ public class RedirectionBean implements Serializable {
 				.redirect("Summary2.jsf");
 		testaff = "Summary";
 	}
+	
+	public void GoToProjectScreen() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("Project_Screen.jsf");
+		testaff = "Summary";
+	}
 
 	public void GoToManageProject() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()

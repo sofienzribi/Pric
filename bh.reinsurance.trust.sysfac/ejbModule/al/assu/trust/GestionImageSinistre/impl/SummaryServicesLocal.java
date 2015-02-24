@@ -11,5 +11,6 @@ public interface SummaryServicesLocal {
 	public Summary GetSummary(int IdProject);
 	
 	public void CreateSummary(Summary summary);
+	public void DeleteSummary(Summary summary);
 	
 }

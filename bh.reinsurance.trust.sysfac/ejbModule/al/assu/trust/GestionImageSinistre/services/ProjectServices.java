@@ -95,8 +95,12 @@ public class ProjectServices implements ProjectServicesLocal {
 
 	@Override
 	public Project GetProjectById(int id) {
-
-		return entityManager.find(Project.class, id);
+try {
+	return entityManager.find(Project.class, id);
+} catch (Exception e) {
+	return null;
+}
+		
 	}
 
 	@Override

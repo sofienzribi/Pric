@@ -26,15 +26,16 @@ import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.SummaryServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
-@ManagedBean
+@ManagedBean()
 @SessionScoped
 public class ProjectBean implements Serializable {
 	/**
 	 * 
 	 */
 	// var
+
 	@ManagedProperty("#{login.getUser()}")
-	private User user;
+	private User user2;
 
 	private boolean passwordmsg;
 	private String pwdcheck;
@@ -70,7 +71,12 @@ public class ProjectBean implements Serializable {
 	private List<Project> projectsbyuser;
 	private Project proojectbyuser;
 	private boolean DisplayProjectManagButton;
-	private String DisplayProjectNav;
+	private String DisplayFacultativeDept;
+	private String DisplayActuarial;
+	private String DisplayRating;
+	private boolean DiplayDeleteButton;
+	private boolean DisabledButtonProject;
+	private boolean DisabledButtonProjectSendClose;
 
 	// methods
 
@@ -86,12 +92,22 @@ public class ProjectBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		DisplayProjectNav = "none";
+		DisabledButtonProject=false;
+		DisabledButtonProjectSendClose=true;
+		DisplayRating = "none";
+		if (user2.getDepartment().equals("actuarialandrisk")) {
+			DisplayActuarial = "true";
+			DisplayFacultativeDept = "none";
+		} else {
+			DisplayFacultativeDept = "true";
+			DisplayActuarial = "none";
+		}
+		DiplayDeleteButton = false;
 		proojectbyuser = new Project();
 		DisplayProjectManagButton = false;
-		projectsbyuser = local.GetProjectsByUser(user);
+		projectsbyuser = local.GetProjectsByUser(user2);
 		DisplayButtonMailBox = false;
-		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
 		NumberProjectReceived = GetMails();
 		passwordmsg = true;
 		PopDisplayed = false;
@@ -102,16 +118,23 @@ public class ProjectBean implements Serializable {
 	public void UpdateProject() {
 
 		local.UpdateProject(proojectbyuser);
-		projectsbyuser = local.GetProjectsByUser(user);
+		projectsbyuser = local.GetProjectsByUser(user2);
 		DisplayProjectManagButton = false;
 		projects = local.GetAllProjects();
 
 	}
-
+	
 	public void DeleteProject() {
 		local.DeleteProject(proojectbyuser.getId());
-		projectsbyuser = local.GetProjectsByUser(user);
+		Offer offer2 = offerServicesLocal.GetOffer(proojectbyuser.getId());
+		Summary summary2 = summaryServicesLocal.GetSummary(proojectbyuser
+				.getId());
+		summaryServicesLocal.DeleteSummary(summary2);
+		offerServicesLocal.DeleteOfferByIdProject(offer2);
+		projectsbyuser = local.GetProjectsByUser(user2);
 		DisplayProjectManagButton = false;
+		DisplayRating = "none";
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
 		projects = local.GetAllProjects();
 	}
 
@@ -133,13 +156,22 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void OnRowSelect() {
-		DisplayButtonMailBox = true;
+
+		if (local.GetProjectById(mailBox.getId_project()) == null) {
+			DisplayButtonMailBox = false;
+			DiplayDeleteButton = true;
+		} else {
+			DiplayDeleteButton = true;
+			DisplayButtonMailBox = true;
+		}
+
 	}
 
 	public void DeleteMailBox() {
 		mailBoxServicesLocal.DeleteMailBox(mailBox.getId());
-		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
 		DisplayButtonMailBox = false;
+		DiplayDeleteButton = false;
 
 	}
 
@@ -168,25 +200,28 @@ public class ProjectBean implements Serializable {
 			if (priv.equals("false")) {
 				project2.setPrivacy(false);
 				if (Checkbox.equals("true")) {
-					project2.setPassword(user.getPassword());
+					project2.setPassword(user2.getPassword());
 				}
 			} else {
 				project2.setPrivacy(true);
 
 			}
 
-			project2.setUser(user.getId());
+			project2.setUser(user2.getId());
 			local.NewProject(project2);
 			project3 = local.GetProjectByName(project2.getNameOfTheProject());
 			summary.setIdProj(project3.getId());
 			offer.setId_project(project3.getId());
-			offer.setId_underwriter(user.getId());
+			System.out.println("L id de ce con est" + user2.getDepartment());
+			offer.setId_underwriter(user2.getId());
 			summaryServicesLocal.CreateSummary(summary);
 			offerServicesLocal.AddOffer(offer);
 			project2 = new Project();
+			DisplayRating = "true";
 			projects = local.GetAllProjects();
-			DisplayProjectNav = "true";
-			projectsbyuser = local.GetProjectsByUser(user);
+			projectsbyuser = local.GetProjectsByUser(user2);
+			DisabledButtonProject=true;
+			DisabledButtonProjectSendClose=false;
 			return "Fac_info?faces-redirect=true";
 		}
 	}
@@ -198,13 +233,19 @@ public class ProjectBean implements Serializable {
 	}
 
 	public String GetNameOfTheProject(int id) {
+
 		Project proj = local.GetProjectById(id);
-		return proj.getNameOfTheProject();
+		if (proj == null) {
+			return "The project was deleted by his owner";
+		} else {
+			return proj.getNameOfTheProject();
+		}
+
 	}
 
 	public void SendProject() {
 		box.setId_project(project3.getId());
-		box.setUser_sending_id(user.getId());
+		box.setUser_sending_id(user2.getId());
 		box.setState("NOT SEEN");
 		for (int i = 0; i < SendToUsers.size(); i++) {
 
@@ -212,7 +253,7 @@ public class ProjectBean implements Serializable {
 			mailBoxServicesLocal.CreateMailBox(box);
 		}
 
-		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
 		NumberProjectReceived = GetMails();
 		box = new MailBox();
 		FacesContext.getCurrentInstance().addMessage(
@@ -223,13 +264,15 @@ public class ProjectBean implements Serializable {
 	}
 
 	public String verifypassword() {
-		System.out.println(project.getPassword());
-		System.out.println(pwdcheck);
+
 		if (pwdcheck.equals(project.getPassword())) {
 			project3 = project;
 			project = new Project();
 			PopDisplayed = false;
 			summary = summaryServicesLocal.GetSummary(project3.getId());
+			DisplayRating = "true";
+			DisabledButtonProject=true;
+			DisabledButtonProjectSendClose=false;
 			return "Summary2?faces-redirect=true";
 		} else {
 
@@ -266,7 +309,7 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void refreshtable() {
-		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
 	}
 
 	public void refreshtable2() {
@@ -296,17 +339,19 @@ public class ProjectBean implements Serializable {
 			project3 = project;
 			project = new Project();
 			PopDisplayed = false;
-			DisplayProjectNav = "true";
-
+			DisplayRating = "true";
+			DisabledButtonProject=true;
+			DisabledButtonProjectSendClose=false;
 			summary = summaryServicesLocal.GetSummary(project3.getId());
 			return "Summary2?faces-redirect=true";
 		} else {
-			if (project.getUser() == user.getId()) {
+			if (project.getUser() == user2.getId()) {
 				project3 = project;
 				project = new Project();
 				PopDisplayed = false;
-				DisplayProjectNav = "true";
-
+				DisplayRating = "true";
+				DisabledButtonProject=true;
+				DisabledButtonProjectSendClose=false;
 				summary = summaryServicesLocal.GetSummary(project3.getId());
 				return "Summary2?faces-redirect=true";
 			} else {
@@ -327,19 +372,22 @@ public class ProjectBean implements Serializable {
 		box2.setState("SEEN");
 
 		mailBoxServicesLocal.UpdateMailBox(box2);
-		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user.getId()));
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
 		NumberProjectReceived = GetMails();
 		DisplayButtonMailBox = false;
 		mailBox = new MailBox();
-		DisplayProjectNav = "true";
-
+		DisabledButtonProject=true;
+		DisabledButtonProjectSendClose=false;
+		DisplayRating = "true";
 		return "Summary2?faces-redirect=true";
 	}
 
 	public void CloseDProject() throws IOException {
 
-		DisplayProjectNav = "none";
 		project3 = new Project();
+		DisplayRating = "none";
+		DisabledButtonProject=false;
+		DisabledButtonProjectSendClose=true;
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Project_Screen.jsf");
 	}
@@ -348,14 +396,6 @@ public class ProjectBean implements Serializable {
 
 	public UserServicesLocal getLocal2() {
 		return local2;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public void setLocal2(UserServicesLocal local2) {
@@ -554,12 +594,61 @@ public class ProjectBean implements Serializable {
 		DisplayProjectManagButton = displayProjectManagButton;
 	}
 
-	public String getDisplayProjectNav() {
-		return DisplayProjectNav;
+	public User getUser2() {
+		return user2;
 	}
 
-	public void setDisplayProjectNav(String displayProjectNav) {
-		DisplayProjectNav = displayProjectNav;
+	public void setUser2(User user2) {
+		this.user2 = user2;
+	}
+
+	public String getDisplayFacultativeDept() {
+		return DisplayFacultativeDept;
+	}
+
+	public void setDisplayFacultativeDept(String displayFacultativeDept) {
+		DisplayFacultativeDept = displayFacultativeDept;
+	}
+
+	public String getDisplayActuarial() {
+		return DisplayActuarial;
+	}
+
+	public void setDisplayActuarial(String displayActuarial) {
+		DisplayActuarial = displayActuarial;
+	}
+
+	public String getDisplayRating() {
+		return DisplayRating;
+	}
+
+	public void setDisplayRating(String displayRating) {
+		DisplayRating = displayRating;
+	}
+
+	public boolean isDiplayDeleteButton() {
+		return DiplayDeleteButton;
+	}
+
+	public void setDiplayDeleteButton(boolean diplayDeleteButton) {
+		DiplayDeleteButton = diplayDeleteButton;
+	}
+
+	public boolean isDisabledButtonProject() {
+		return DisabledButtonProject;
+	}
+
+	public void setDisabledButtonProject(boolean disabledButtonProject) {
+		DisabledButtonProject = disabledButtonProject;
+	}
+
+	public boolean isDisabledButtonProjectSendClose() {
+		return DisabledButtonProjectSendClose;
+	}
+
+	public void setDisabledButtonProjectSendClose(
+			boolean disabledButtonProjectSendClose) {
+		DisabledButtonProjectSendClose = disabledButtonProjectSendClose;
 	}
 
 }

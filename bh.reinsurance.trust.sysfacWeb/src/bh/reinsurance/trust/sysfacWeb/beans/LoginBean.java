@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
-@ManagedBean(name = "login")
+@ManagedBean(name ="login")
 @SessionScoped
 public class LoginBean extends HttpServlet implements Serializable {
 
@@ -22,10 +22,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// Models
 	private String Department;
 	private User user;
-	private String DisplayActuarial;
-	private String DisplayFacultative;
-	private String DisplayNavBarEssential;
-	private String DisplayProjectNav;
+	
 
 	// EJB
 	@EJB
@@ -66,10 +63,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// init methode
 	@PostConstruct
 	public void init() {
-		DisplayProjectNav = "none";
-		DisplayNavBarEssential = "none";
-		DisplayActuarial = "none";
-		DisplayFacultative = "none";
+	
 	}
 
 	// methods
@@ -89,15 +83,11 @@ public class LoginBean extends HttpServlet implements Serializable {
 		if (userFound != null) {
 
 			user = userFound;
-			System.out.println(user.getDepartment());
-			if (user.getDepartment().equals("actuarialandrisk")) {
+			if (userFound.getDepartment().equals("actuarialandrisk")) {
 				Department = "Actuarial & Risk";
-				DisplayActuarial = "true";
-				DisplayNavBarEssential = "true";
 				return "Measures?faces-redirect=true";
 			} else {
 				Department = "Facultative Department";
-				DisplayNavBarEssential = "true";
 				return "Project_Screen?faces-redirect=true";
 			}
 
@@ -111,22 +101,9 @@ public class LoginBean extends HttpServlet implements Serializable {
 		}
 	}
 
-	public void DisplayNavbar() {
-		if (user.getDepartment().equals("actuarialandrisk")) {
-			DisplayActuarial = "true";
-		} else {
-			DisplayFacultative = "true";
-		}
-	}
+	
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	
 	public String getDepartment() {
 		return Department;
 	}
@@ -135,36 +112,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 		Department = department;
 	}
 
-	public String getDisplayActuarial() {
-		return DisplayActuarial;
+	
+	
+	public User getUser() {
+		return user;
 	}
 
-	public void setDisplayActuarial(String displayActuarial) {
-		DisplayActuarial = displayActuarial;
-	}
-
-	public String getDisplayFacultative() {
-		return DisplayFacultative;
-	}
-
-	public void setDisplayFacultative(String displayFacultative) {
-		DisplayFacultative = displayFacultative;
-	}
-
-	public String getDisplayNavBarEssential() {
-		return DisplayNavBarEssential;
-	}
-
-	public void setDisplayNavBarEssential(String displayNavBarEssential) {
-		DisplayNavBarEssential = displayNavBarEssential;
-	}
-
-	public String getDisplayProjectNav() {
-		return DisplayProjectNav;
-	}
-
-	public void setDisplayProjectNav(String displayProjectNav) {
-		DisplayProjectNav = displayProjectNav;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }
