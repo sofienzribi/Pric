@@ -29,7 +29,7 @@
 							<li><h:form>
 									<i class="fa fa-play"></i>
 									<p:commandLink value="Fac Info"
-										actionListener="#{redirectionBean.GoToFacInfo()}"></p:commandLink>
+										actionListener="#{redirectionBean.GoToMeasures()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="FIFTHb">
 									<i class="fa fa-play"></i>
@@ -78,11 +78,39 @@
 							class="fa fa-certificate"></i> Abacus tool</a></li>
 
 
-					<li><a style="display:#{projectBean.displayActuarial}"
-						href="/bh.reinsurance.trust.sysfacWeb/pages/Chart_Page.jsf"><i
-							class="fa fa-certificate"></i> Measures</a></li>
 
 
+
+					<li class="dropdown"
+						style="display:#{projectBean.displayActuarial}"><a href="#"
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
+							class="fa fa-tasks"></i> <span>Measures</span> <b class="caret"></b>
+					</a>
+
+						<ul class="dropdown-menu">
+							<li><h:form id="zerzerze">
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Factors" />
+								</h:form></li>
+							<li><h:form id="secoqsdfndb">
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Occupancies" />
+								</h:form></li>
+							<li><h:form id="dsfsqdfqsde">
+									<i class="fa fa-play"> </i>
+									<p:commandLink value="Ded Tables" />
+								</h:form></li>
+							<li><h:form id="fourtddsfhb">
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Loss prevention" />
+								</h:form></li>
+							<li><h:form id="zeorbihb">
+									<i class="fa fa-play"> </i>
+									<p:commandLink value="Fire Fighting" />
+
+								</h:form></li>
+
+						</ul></li>
 
 					<li><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Report_page.jsf"><i

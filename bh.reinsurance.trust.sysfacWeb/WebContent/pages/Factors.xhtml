@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+
+
+	<h:form id="A">
+
+		<p:inputText value="#{factorsBean.construction_Type.category}" />
+		<p:inputText value="#{factorsBean.factors.name}" />
+		<p:commandButton
+			actionListener="#{factorsBean.CreateConstructionType()}" value="go"
+			icon="ui-icon-check" />
+
+
+
+
+
+
+
+
+	</h:form>
+
+
+</h:body>
+</html>

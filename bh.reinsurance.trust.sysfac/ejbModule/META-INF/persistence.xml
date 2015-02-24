@@ -5,13 +5,16 @@
 	<persistence-unit name="al.assu.trust.GestionImageSinistre">
 		<jta-data-source>java:/sysfacDS</jta-data-source>
 		
-		<class>al.assu.trust.GestionImageSinistre.domain.User</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Assets</class>
-		<class>al.assu.trust.GestionImageSinistre.domain.Project</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Construction_Type</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Factors</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Facultative</class>
-		<class>al.assu.trust.GestionImageSinistre.domain.Summary</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.MailBox</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Measure</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Offer</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Project</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Summary</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.User</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

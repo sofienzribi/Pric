@@ -84,7 +84,7 @@ public class ProjectServices implements ProjectServicesLocal {
 
 		} catch (Exception e) {
 			projectFound = null;
-			System.out.println("Acces granted" + datee);
+
 		}
 
 		if (projectFound != null)
@@ -95,12 +95,12 @@ public class ProjectServices implements ProjectServicesLocal {
 
 	@Override
 	public Project GetProjectById(int id) {
-try {
-	return entityManager.find(Project.class, id);
-} catch (Exception e) {
-	return null;
-}
-		
+		try {
+			return entityManager.find(Project.class, id);
+		} catch (Exception e) {
+			return null;
+		}
+
 	}
 
 	@Override

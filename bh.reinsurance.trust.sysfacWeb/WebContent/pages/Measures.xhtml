@@ -9,30 +9,60 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Measures </ui:define>
 		<ui:define name="content">
-			<h:form id="A">
-			
 
 
-				<p:commandButton actionListener="#{MapBean.tryGrowl()}"
-					value="Submit" icon="ui-icon-check" update="msgs" />
-
-
-
-
-	<p:growl  id="msgs" showDetail="true"  sticky="true"/>
-
-
-				<!-- <h3>RSS TEST</h3>
-				<p:feedReader
-					value="http://feeds.marketwatch.com/marketwatch/marketpulse/"
-					var="feed">
-					<h:outputText value="#{feed.title}"
-						style="font-weight: bold;display:block" />
-					<h:outputText value="#{feed.description.value}" escape="false" />
-					<p:separator />
-				</p:feedReader> -->
+			<h:form id="Measure">
+				<p:dataTable emptyMessage="No Measures found!"
+					value="#{measureBean.measures}" var="prod" rows="5"
+					paginator="true" paginatorPosition="bottom" selectionMode="single"
+					selection="#{measureBean.measure}" rowKey="#{prod.id}"
+					widgetVar="prodTab">
+					<p:ajax event="rowSelect" update=":Measure"
+						listener="#{measureBean.OnRowSelected()}" />
+					<f:facet name="header">Measures</f:facet>
+					<p:column headerText="Name">
+						<h:outputText value="#{prod.name}" />
+					</p:column>
+					<p:column headerText="Creation Date">
+						<h:outputText value="#{prod.creationDate}" />
+					</p:column>
+					<p:column headerText="User">
+						<h:outputText value="#{prod.userId}" />
+					</p:column>
+					<p:column headerText="Active Measure">
+						<h:outputText value="#{prod.activeTest}" />
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton value="New Measure" icon="ui-icon-plusthick"
+							onclick="popup.show()" />
+						<p:commandButton value="Delete"
+							actionListener="#{measureBean.DeleteMeasure()}"
+							rendered="#{measureBean.displayButtons}" update=":Measure"
+							icon="ui-icon-trash" />
+					</f:facet>
+				</p:dataTable>
 			</h:form>
-			
+
+
+			<p:dialog id="popup" header="New Measure" modal="true"
+				widgetVar="popup">
+				<h:form id="NewMeasure">
+					<p:messages id="messagesd" autoUpdate="true" closable="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel for="Name" value="Name: " />
+						<p:inputText id="Name" value="#{measureBean.newmeasure.name}"
+							required="true" requiredMessage="Name Required" />
+						<p:outputLabel for="Desc" value="Descripton : " />
+						<p:inputText id="Desc"
+							value="#{measureBean.newmeasure.description}" required="true"
+							requiredMessage="Description Required" />
+					</h:panelGrid>
+					<p:commandButton value="Create" icon="ui-icon-plusthick"
+						update=":Measure" actionListener="#{measureBean.CreateMeasure()}" />
+				</h:form>
+			</p:dialog>
+
+
 		</ui:define>
 	</ui:composition>
 </h:body>
