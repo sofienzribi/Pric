@@ -19,6 +19,8 @@ public interface MeasureServicesLocal {
 	public void DeleteMeasure(Measure measure);
 
 	public boolean NameExist(String name);
-	
+
 	public Measure GetMeasureByName(String Name);
+
+	public Measure GetWorkingMeasure();
 }

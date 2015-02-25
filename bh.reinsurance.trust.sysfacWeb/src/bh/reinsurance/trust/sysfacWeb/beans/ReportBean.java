@@ -12,7 +12,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.base.JRBaseField;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.primefaces.context.RequestContext;
@@ -31,6 +30,7 @@ public class ReportBean {
 	private Facultative facultative;
 	private String ProjectName;
 	private List<Facultative> facultativesbychoice;
+
 	public ReportBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -47,28 +47,33 @@ public class ReportBean {
 		context.execute("popup.hide();");
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				facultatives);
-		
+
 		setJasperPrint(JasperFillManager.fillReport(
 				"/Users/zribisofien/report1.jasper", new HashMap(),
 				beanCollectionDataSource));
 
 	}
-	public void addchoicetoreport(List< Facultative> facultatives1) throws JRException{
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("popup.hide();");
+
+	public void addchoicetoreport(List<Facultative> facultatives1)
+			throws JRException {
+
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				facultatives1);
 		setJasperPrint(JasperFillManager.fillReport(
 				"/Users/zribisofien/report1.jasper", new HashMap(),
 				beanCollectionDataSource));
 		JasperExportManager.exportReportToPdfFile(jasperPrint,
-				"/Users/zribisofien/Desktop/TestChoice.pdf");
+				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("popuppdf.hide();");
+
 	}
+
 	public void ExportToPDF() throws JRException, IOException {
 		init();
 
 		JasperExportManager.exportReportToPdfFile(jasperPrint,
-				"/Users/zribisofien/Desktop/"+ProjectName+".pdf");
+				"/Users/zribisofien/Desktop/" + ProjectName + ".pdf");
 
 	}
 

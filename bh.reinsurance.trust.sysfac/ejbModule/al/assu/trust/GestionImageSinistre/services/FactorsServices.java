@@ -58,7 +58,8 @@ public class FactorsServices implements FactorsServicesLocal {
 	@Override
 	public boolean CategoryExists(String Category, int IdFactor, String Type) {
 
-		String jpql = "select u from "+Type+" u where u.category=:param1 and u.idFactor=:param3  ";
+		String jpql = "select u from " + Type
+				+ " u where u.category=:param1 and u.idFactor=:param3  ";
 		Query query = entityManager.createQuery(jpql);
 
 		query.setParameter("param1", Category);
@@ -72,6 +73,22 @@ public class FactorsServices implements FactorsServicesLocal {
 		}
 
 		return true;
+	}
+
+	@Override
+	public Construction_Type FindConstructionTypeByCategory(String cat,
+			int idFactor) {
+		return (Construction_Type) entityManager
+				.createQuery(
+						"select p from Construction_Type p where p.idFactor=:c and category:=f")
+				.setParameter("c", idFactor).setParameter("f", cat)
+				.getSingleResult();
+
+	}
+
+	@Override
+	public Construction_Type FindConstById(int id) {
+		return entityManager.find(Construction_Type.class, id);
 	}
 
 }

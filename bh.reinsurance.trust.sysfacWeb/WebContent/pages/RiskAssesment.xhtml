@@ -15,7 +15,7 @@
 		<ui:define name="content">
 			<div>
 				<h3>Risk Assesment</h3>
-				<h:form>
+				<h:form id="Form1">
 
 
 					<p:panelGrid style="width:500px">
@@ -40,14 +40,31 @@
 						<p:row>
 							<p:column id="Const" style="width:250px">Construction Class </p:column>
 							<p:column>
-								<p:selectOneMenu id="Class" style="width:125px">
-									<f:selectItems value="#{assesmentBean.consClass}" />
+
+
+
+								<p:selectOneMenu value="#{assesmentBean.a}" style="width:125px">
+
+									<p:ajax event="valueChange" listener="#{assesmentBean.test()}"
+										update=":Form1" />
+									<f:selectItem itemLabel="select one"  />
+
+									<f:selectItems value="#{assesmentBean.construction_Types}"
+										var="cat" itemValue="#{cat.loading}"
+										itemLabel="#{cat.category}" />
 								</p:selectOneMenu>
+
+
+
 								<p:tooltip for="Const" id="tooltipClass"
 									value="Construction Class  ....A …  ,b means ......,C means ..."></p:tooltip>
+
+
+
+
 							</p:column>
 							<p:column>
-			#{login.Connected()}
+			#{assesmentBean.a} %
 							</p:column>
 						</p:row>
 					</p:panelGrid>

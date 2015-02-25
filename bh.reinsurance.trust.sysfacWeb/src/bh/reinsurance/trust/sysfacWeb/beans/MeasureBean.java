@@ -19,6 +19,7 @@ import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.MeasureServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
 @ManagedBean(name = "measure")
 @SessionScoped
@@ -44,8 +45,10 @@ public class MeasureBean implements Serializable {
 	private boolean DisableButtonMeasure;
 	private boolean disableButtonCloseSet;
 	private String DisplayMeasureMenu;
-
+	private Measure FacWorkingMeasure;
 	private String PasswordCheck;
+	@EJB
+	private UserServicesLocal userServicesLocal;
 
 	// const
 	public MeasureBean() {
@@ -54,6 +57,7 @@ public class MeasureBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure();
 		PasswordCheck = null;
 		DisplayMeasureMenu = "none";
 		DisableButtonMeasure = false;
@@ -164,6 +168,10 @@ public class MeasureBean implements Serializable {
 		}
 	}
 
+	public String GetUserName(int id) {
+		return userServicesLocal.GetFirstAndLast(id);
+	}
+
 	public void DeleteMeasure() {
 		measureServicesLocal.DeleteMeasure(measure);
 		measure = new Measure();
@@ -252,4 +260,13 @@ public class MeasureBean implements Serializable {
 	public void setPasswordCheck(String passwordCheck) {
 		PasswordCheck = passwordCheck;
 	}
+
+	public Measure getFacWorkingMeasure() {
+		return FacWorkingMeasure;
+	}
+
+	public void setFacWorkingMeasure(Measure facWorkingMeasure) {
+		FacWorkingMeasure = facWorkingMeasure;
+	}
+
 }

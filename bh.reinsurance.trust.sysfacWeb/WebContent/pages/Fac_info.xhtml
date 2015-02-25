@@ -90,10 +90,15 @@
 						<p:column headerText="our liability">
 							<h:outputText value="#{prod.our_liability}" />
 						</p:column>
+						<f:facet name="footer">
+							<p:commandLink onclick="popuppdf.show()">
 
+								<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
+									width="24" />
+							</p:commandLink>
+						</f:facet>
 					</p:dataTable>
-					<p:commandLink value="Add to report"
-						actionListener="#{reportBean.addchoicetoreport(facultativeBean.facbychoice)}"></p:commandLink>
+
 				</h:form>
 			</p:panel>
 
@@ -125,12 +130,12 @@
 							<p:outputLabel value="#{facultativeBean.facbychoice1.interest}" />
 							<p:outputLabel value="Commission" />
 							<p:outputLabel value="#{facultativeBean.facbychoice1.commission}" />
-						<f:facet name="footer">
-						
-						<h:panelGroup style="display:block; text-align:center">
-						
-							<p:commandButton value="Show Claims" />
-							</h:panelGroup>
+							<f:facet name="footer">
+
+								<h:panelGroup style="display:block; text-align:center">
+
+									<p:commandButton value="Show Claims" />
+								</h:panelGroup>
 							</f:facet>
 						</p:panelGrid>
 
@@ -174,17 +179,17 @@
 								<p:outputLabel
 									value="#{facultativeBean.comparaisonFacultative.commission}" />
 
-							
-								
+
+
 								<f:facet name="footer">
-						
-						<h:panelGroup style="display:block; text-align:center">
-						
-								<p:commandButton value="Change" onclick="popup.show()" />
-							</h:panelGroup>
-							</f:facet>
-								
-								
+
+									<h:panelGroup style="display:block; text-align:center">
+
+										<p:commandButton value="Change" onclick="popup.show()" />
+									</h:panelGroup>
+								</f:facet>
+
+
 							</p:panelGrid>
 						</h:form>
 					</p:panelGrid>
@@ -227,6 +232,26 @@
 						onclick="popup.hide()" />
 				</h:form>
 			</p:dialog>
+
+			<p:dialog header="Please enter file name" modal="true" id="popuppdf"
+				widgetVar="popuppdf">
+				<h:form id="formpdf">
+					<h:panelGrid columns="1">
+						<p:messages id="messages" autoUpdate="true" closable="true" />
+						<p:inputText id="Name" value="#{reportBean.projectName}"
+							required="true" requiredMessage="Name required"></p:inputText>
+						<p:commandButton
+							actionListener="#{reportBean.addchoicetoreport(facultativeBean.facbychoice)}"
+							value="Create" update=":formpdf"></p:commandButton>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+
+
+
+
+
 		</ui:define>
 	</ui:composition>
 </h:body>

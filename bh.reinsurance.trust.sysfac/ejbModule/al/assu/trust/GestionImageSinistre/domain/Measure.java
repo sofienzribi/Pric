@@ -23,7 +23,6 @@ public class Measure implements Serializable {
 	private boolean activeTest;
 	private String description;
 	private static final long serialVersionUID = 1L;
-
 	public Measure() {
 		super();
 	}

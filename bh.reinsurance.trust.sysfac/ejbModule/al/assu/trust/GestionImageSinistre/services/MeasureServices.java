@@ -90,4 +90,17 @@ public class MeasureServices implements MeasureServicesLocal {
 				.setParameter("c", Name).getSingleResult();
 	}
 
+	@Override
+	public Measure GetWorkingMeasure() {
+		String jpql = "select u from Measure u where u.active =:param1 ";
+		Query query = entityManager.createQuery(jpql).setParameter("param1", true);
+		try {
+			return (Measure) query.getSingleResult();
+		} catch (Exception e) {
+
+			System.out.println("No working Measure");
+			return null;
+		}
+
+	}
 }

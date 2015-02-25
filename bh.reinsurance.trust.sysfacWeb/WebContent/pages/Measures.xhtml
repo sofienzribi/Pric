@@ -27,7 +27,7 @@
 						<h:outputText value="#{prod.creationDate}" />
 					</p:column>
 					<p:column headerText="User">
-						<h:outputText value="#{prod.userId}" />
+						<h:outputText value="#{measure.GetUserName(prod.userId)}" />
 					</p:column>
 					<p:column headerText="Active Measure">
 						<h:outputText value="#{measure.testactive(prod.active)}" />
@@ -40,7 +40,7 @@
 							actionListener="#{measure.DeleteMeasure()}"
 							rendered="#{measure.displayButtons}" update=":Measure"
 							icon="ui-icon-trash">
-							<p:confirm header="Confirmation"  message="Delete this measure  ?"
+							<p:confirm header="Confirmation" message="Delete this measure  ?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
 
@@ -70,7 +70,7 @@
 			</p:dialog>
 
 			<p:confirmDialog global="true" showEffect="fade">
-			
+
 				<p:commandButton value="Yes" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 				<p:commandButton value="No" type="button"

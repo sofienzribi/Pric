@@ -18,4 +18,9 @@ public interface FactorsServicesLocal {
 	public Factors GetFactorByIdMeasure(int id);
 
 	public boolean CategoryExists(String Category, int IdFactor, String Type);
+
+	public Construction_Type FindConstructionTypeByCategory(String cat,
+			int idFactor);
+
+	public Construction_Type FindConstById(int id);
 }
