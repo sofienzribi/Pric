@@ -2,13 +2,10 @@ package al.assu.trust.GestionImageSinistre.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 /**
  * Entity implementation class for Entity: Construction_Type
@@ -20,7 +17,7 @@ public class Construction_Type implements Serializable {
 	private int id;
 	private int load;
 	private String category;
-	private Factors factors;
+	private int IdFactor;
 	private static final long serialVersionUID = 1L;
 
 	public Construction_Type() {
@@ -53,14 +50,12 @@ public class Construction_Type implements Serializable {
 		this.category = category;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(insertable=true,name="IdFacrors",referencedColumnName="id")
-	public Factors getFactors() {
-		return factors;
+	public int getIdFactor() {
+		return IdFactor;
 	}
 
-	public void setFactors(Factors factors) {
-		this.factors = factors;
+	public void setIdFactor(int idFactor) {
+		IdFactor = idFactor;
 	}
 
 }

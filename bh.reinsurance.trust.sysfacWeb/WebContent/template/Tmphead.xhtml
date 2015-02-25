@@ -29,7 +29,7 @@
 							<li><h:form>
 									<i class="fa fa-play"></i>
 									<p:commandLink value="Fac Info"
-										actionListener="#{redirectionBean.GoToMeasures()}"></p:commandLink>
+										actionListener="#{redirectionBean.GoToFacInfo()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="FIFTHb">
 									<i class="fa fa-play"></i>
@@ -81,16 +81,18 @@
 
 
 
-					<li class="dropdown"
-						style="display:#{projectBean.displayActuarial}"><a href="#"
-						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-tasks"></i> <span>Measures</span> <b class="caret"></b>
+					<li class="dropdown" style="display:#{measure.displayMeasureMenu}"><a
+						href="#" class="dropdown-toggle needsclick" data-toggle="dropdown">
+							<i class="fa fa-tasks"></i> <span>Measures</span> <b
+							class="caret"></b>
 					</a>
 
 						<ul class="dropdown-menu">
 							<li><h:form id="zerzerze">
 									<i class="fa fa-play"></i>
-									<p:commandLink value="Factors" />
+									<p:commandLink
+										actionListener="#{redirectionBean.GoToFactors()}"
+										value="Factors" />
 								</h:form></li>
 							<li><h:form id="secoqsdfndb">
 									<i class="fa fa-play"></i>
@@ -112,7 +114,7 @@
 
 						</ul></li>
 
-					<li><a
+					<li style="display:#{projectBean.displayFacultativeDept}"><a
 						href="/bh.reinsurance.trust.sysfacWeb/pages/Report_page.jsf"><i
 							class="fa fa-files-o"></i> <span>Reporting tool</span></a></li>
 				</ul>
@@ -140,6 +142,7 @@
 								</h:form></li>
 
 						</ul></li>
+
 
 
 					<li class="dropdown"><a href="#"
@@ -181,6 +184,44 @@
 										actionListener="#{projectBean.CloseDProject()}"></p:commandLink>
 								</h:form></li>
 						</ul></li>
+
+
+
+					<li class="dropdown"
+						style="display:#{projectBean.displayActuarial}"><a href="#"
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
+							class="fa fa-folder"></i> <span>Measure
+								#{measure.workingMeasure.name} </span> <b class="caret"></b>
+					</a>
+						<ul class="dropdown-menu">
+							<li><h:form id="M1">
+									<i class="fa fa-folder-open-o"></i>
+									<p:commandLink disabled="#{measure.disableButtonMeasure}"
+										value="Create/Open Measure"
+										actionListener="#{redirectionBean.GoToMeasures()}"></p:commandLink>
+								</h:form></li>
+
+
+							<li><h:form id="M4">
+									<i class="fa fa-wrench"></i>
+									<p:commandLink disabled="#{measure.disableButtonCloseSet}"
+										value="Set Working Measure" onclick="POPSET.show()"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="M5">
+									<i class="fa fa-folder"></i>
+									<p:commandLink disabled="#{measure.disableButtonCloseSet}"
+										value="Close Measure"
+										actionListener="#{measure.CloseMeasure()}"></p:commandLink>
+								</h:form></li>
+						</ul></li>
+
+
+
+
+
+
+
+
 				</ul>
 			</div>
 		</div>

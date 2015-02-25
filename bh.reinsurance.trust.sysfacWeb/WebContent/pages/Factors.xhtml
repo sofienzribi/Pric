@@ -6,25 +6,96 @@
 <h:head>
 </h:head>
 <h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title"> Factors </ui:define>
+		<ui:define name="content">
+
+			<h:form id="Form1">
+				<p:dataTable emptyMessage="No Construction Types!"
+					value="#{factorsBean.construction_Types}" var="prod" rows="5"
+					paginator="true" paginatorPosition="bottom" selectionMode="single"
+					selection="#{factorsBean.construction_Type}" rowKey="#{prod.id}"
+					widgetVar="ConstTab">
+					<f:facet name="header">
+						<p:outputLabel>Construction type</p:outputLabel>
+					</f:facet>
+					<p:column headerText="Category">
+						<h:outputText value="#{prod.category}" />
+					</p:column>
+					<p:column headerText="Load">
+						<h:outputText value="#{prod.loading} %" />
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton icon="ui-icon-plusthick" onclick="Popup.show()" />
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{factorsBean.DeleteConstructionType()}"
+							update=":Form1">
+							<p:confirm header="Confirmation" message="Are you sure  ?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:commandButton icon=" ui-icon-pencil" onclick="Popup2.show()" />
+					</f:facet>
+				</p:dataTable>
+			</h:form>
 
 
-	<h:form id="A">
-
-		<p:inputText value="#{factorsBean.construction_Type.category}" />
-		<p:inputText value="#{factorsBean.factors.name}" />
-		<p:commandButton
-			actionListener="#{factorsBean.CreateConstructionType()}" value="go"
-			icon="ui-icon-check" />
-
+			<p:confirmDialog global="true" showEffect="fade">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 
 
+			<h:form id="Form2">
+				<p:dialog modal="true" widgetVar="Popup" id="Popup">
+					<p:messages id="messagesd" autoUpdate="true" closable="true" />
+					<f:facet name="header">New Construction Type</f:facet>
+					<h:panelGrid columns="2">
+						<p:outputLabel for="Category" value="Category : " />
+						<p:inputText id="Category"
+							value="#{factorsBean.construction_Type2.category}"
+							required="true" requiredMessage="Category Required" />
+						<p:outputLabel for="Load" value="Load :  " />
+						<p:inputText id="Load"
+							value="#{factorsBean.construction_Type2.loading}" required="true"
+							requiredMessage="Load Required" />
+					</h:panelGrid>
+					<p:commandButton value="Save" icon="ui-icon-check"
+						actionListener="#{factorsBean.CreateConstructionType()}"
+						update=":Form1" />
+				</p:dialog>
+			</h:form>
+
+
+
+			<h:form id="Form3">
+				<p:dialog modal="true" widgetVar="Popup2" id="Popup2">
+					<p:messages id="messagesf" autoUpdate="true" closable="true" />
+					<f:facet name="header">Update Construction Type</f:facet>
+					<h:panelGrid columns="2">
+						<p:outputLabel for="Category1" value="Category : " />
+						<p:inputText id="Category1"
+							value="#{factorsBean.construction_Type.category}" required="true"
+							requiredMessage="Category Required" />
+						<p:outputLabel for="Load1" value="Load :  " />
+						<p:inputText id="Load1"
+							value="#{factorsBean.construction_Type.loading}" required="true"
+							requiredMessage="Load Required" />
+					</h:panelGrid>
+					<p:commandButton value="Update" icon="ui-icon-check"
+						actionListener="#{factorsBean.UpdateConstructionType()}"
+						update=":Form1" />
+				</p:dialog>
+			</h:form>
 
 
 
 
 
-	</h:form>
 
+		</ui:define>
+	</ui:composition>
 
 </h:body>
 </html>

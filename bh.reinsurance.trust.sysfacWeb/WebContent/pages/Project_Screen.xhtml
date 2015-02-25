@@ -35,9 +35,11 @@
 							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
 						</p:column>
 						<f:facet name="footer"><p:commandButton icon="ui-icon-refresh" value="refresh" update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
+						
 						<p:commandButton value="Open"
 						action="#{projectBean.openingproject()}"
 						rendered="#{projectBean.popDisplayed}" icon="ui-icon-folder-open"/>
+					
 					<p:commandButton icon="ui-icon-plusthick" value="New Project"
 						onclick="popup.show()" />
 						</f:facet>
@@ -54,7 +56,7 @@
 						<p:password id="pwd1" value="#{projectBean.pwdcheck}"
 							required="true" requiredMessage="Password required"></p:password>
 						<p:commandButton action="#{projectBean.verifypassword()}"
-							value="Open" update=":form3"></p:commandButton>
+							icon="ui-icon-folder-open" value="Open" update=":form3"></p:commandButton>
 					</h:panelGrid>
 				</h:form>
 			</p:dialog>
@@ -94,7 +96,7 @@
 								listener="#{projectBean.DisablePasswordUsingCheckbox()}"></p:ajax>
 						</p:selectBooleanCheckbox>
 					</h:panelGrid>
-					<p:commandButton value="Create"
+					<p:commandButton value="Create" icon="ui-icon-check"
 						action="#{projectBean.OpenProject()}" update=":form2" />
 					<p:commandButton value="Cancel"  />
 				</h:form>

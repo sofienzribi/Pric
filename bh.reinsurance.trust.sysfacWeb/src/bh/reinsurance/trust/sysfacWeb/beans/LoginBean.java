@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
-@ManagedBean(name ="login")
+@ManagedBean(name = "login")
 @SessionScoped
 public class LoginBean extends HttpServlet implements Serializable {
 
@@ -22,7 +22,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// Models
 	private String Department;
 	private User user;
-	
+	private boolean connected;
 
 	// EJB
 	@EJB
@@ -46,6 +46,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.invalidateSession();
 		user = new User();
+
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("/bh.reinsurance.trust.sysfacWeb/");
 	}
@@ -63,7 +64,8 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// init methode
 	@PostConstruct
 	public void init() {
-	
+		connected = false;
+
 	}
 
 	// methods
@@ -85,10 +87,13 @@ public class LoginBean extends HttpServlet implements Serializable {
 			user = userFound;
 			if (userFound.getDepartment().equals("actuarialandrisk")) {
 				Department = "Actuarial & Risk";
-				return "Measures?faces-redirect=true";
+				connected = true;
+				return "/pages/Fac_info?faces-redirect=true";
+
 			} else {
 				Department = "Facultative Department";
-				return "Project_Screen?faces-redirect=true";
+				connected = true;
+				return "/pages/Fac_info?faces-redirect=true";
 			}
 
 		} else {
@@ -101,9 +106,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 		}
 	}
 
-	
-
-	
 	public String getDepartment() {
 		return Department;
 	}
@@ -112,14 +114,20 @@ public class LoginBean extends HttpServlet implements Serializable {
 		Department = department;
 	}
 
-	
-	
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
 	}
 
 }

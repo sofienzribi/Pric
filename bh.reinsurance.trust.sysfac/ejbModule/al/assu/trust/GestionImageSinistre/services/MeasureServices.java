@@ -83,4 +83,11 @@ public class MeasureServices implements MeasureServicesLocal {
 			return false;
 	}
 
+	@Override
+	public Measure GetMeasureByName(String Name) {
+		return (Measure) entityManager
+				.createQuery("select p from Measure p where p.name=:c")
+				.setParameter("c", Name).getSingleResult();
+	}
+
 }

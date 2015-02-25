@@ -8,8 +8,8 @@
 <h:head>
 	<title><ui:insert name="title"></ui:insert></title>
 	<h:outputStylesheet library="css" name="5670482863bb.css" />
-		<h:outputStylesheet library="css" name="style.css" />
-	
+	<h:outputStylesheet library="css" name="style.css" />
+
 	<script src="http://maps.google.com/maps/api/js?sensor=false"
 		type="text/javascript"></script>
 </h:head>
@@ -33,9 +33,23 @@
 			<div class="container text-center">
 				<div class="text-muted credit"
 					style="display: inline-block; padding: 0px;">
-					
+
 					<ui:insert name="content" />
 
+					<h:form id="Form4">
+						<p:dialog modal="true" widgetVar="POPSET" id="POPUPSET">
+							<p:messages id="messagesf" autoUpdate="true" closable="true" />
+							<f:facet name="header">Working Measure</f:facet>
+
+							<h:panelGrid columns="1">
+								<p:outputLabel>Please enter the password to make this measure the working measure</p:outputLabel>
+								<p:password value="#{measure.passwordCheck}"></p:password>
+
+							</h:panelGrid>
+							<p:commandButton value="Save" icon="ui-icon-check"
+								actionListener="#{measure.MakeWorkingMeasure()}" />
+						</p:dialog>
+					</h:form>
 
 				</div>
 			</div>
@@ -45,7 +59,7 @@
 
 
 	<div id="footer">
-		<div class="container " >
+		<div class="container ">
 			<div class="container text-left">
 
 				<div class="text-muted credit"
@@ -55,8 +69,8 @@
 			<div class="container text-center">
 				<div class="text-muted credit"
 					style="display: inline-block; padding: 6px;">
-<ui:insert name="log"></ui:insert>
-					 <a href="" target="_blank" class=""> <span
+					<ui:insert name="log"></ui:insert>
+					<a href="" target="_blank" class=""> <span
 						class="inline-hidden-xs inline-hidden-sm"></span>
 					</a>
 				</div>

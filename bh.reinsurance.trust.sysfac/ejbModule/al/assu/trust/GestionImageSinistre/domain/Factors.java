@@ -1,15 +1,11 @@
 package al.assu.trust.GestionImageSinistre.domain;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 /**
  * Entity implementation class for Entity: Factors
@@ -20,8 +16,7 @@ public class Factors implements Serializable {
 
 	private int id;
 	private String Name;
-	private List<Construction_Type> construction_Types;
-
+	private int IdMeasure;
 	private static final long serialVersionUID = 1L;
 
 	public Factors() {
@@ -46,13 +41,12 @@ public class Factors implements Serializable {
 		this.Name = Name;
 	}
 
-	@OneToMany(mappedBy = "factors", cascade = CascadeType.ALL)
-	public List<Construction_Type> getConstruction_Types() {
-		return construction_Types;
+	public int getIdMeasure() {
+		return IdMeasure;
 	}
 
-	public void setConstruction_Types(List<Construction_Type> construction_Types) {
-		this.construction_Types = construction_Types;
+	public void setIdMeasure(int idMeasure) {
+		IdMeasure = idMeasure;
 	}
 
 }
