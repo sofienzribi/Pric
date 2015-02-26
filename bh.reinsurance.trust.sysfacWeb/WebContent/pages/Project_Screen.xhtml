@@ -10,9 +10,9 @@
 		<ui:define name="title">Welcome page</ui:define>
 		<ui:define name="content">
 		
-			<p:panel id="pan1" >
+			<p:panel id="pan1">
 				<h:form id="dialog1">
-					<p:dataTable emptyMessage="no Projects found!"
+					<p:dataTable style="width:650px" emptyMessage="no Projects found!"
 						value="#{projectBean.projects}" var="prod" rows="13"  
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{projectBean.project}" rowKey="#{prod.id}"
@@ -41,7 +41,7 @@
 						rendered="#{projectBean.popDisplayed}" icon="ui-icon-folder-open"/>
 					
 					<p:commandButton icon="ui-icon-plusthick" value="New Project"
-						onclick="popup.show()" />
+						onclick="PF('popup').show()" />
 						</f:facet>
 					</p:dataTable>
 					

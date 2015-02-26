@@ -91,7 +91,7 @@
 							<h:outputText value="#{prod.our_liability}" />
 						</p:column>
 						<f:facet name="footer">
-							<p:commandLink onclick="popuppdf.show()">
+							<p:commandLink onclick="PF('popuppdf').show()">
 
 								<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
 									width="24" />
@@ -108,7 +108,7 @@
 				<h2>Details</h2>
 				<h:form id="FacInfoForm">
 					<p:panelGrid columns="2" id="Detailsandcomparaisons">
-						<p:panelGrid id="SelectedFac" columns="2">
+						<p:panelGrid style="width:550px" id="SelectedFac" columns="2">
 							<p:outputLabel value="Insured" />
 							<p:outputLabel value="#{facultativeBean.facbychoice1.insured}" />
 							<p:outputLabel value="Region" />
@@ -144,12 +144,12 @@
 							rendered="#{facultativeBean.displayComparaisonButton}">
 							<p:commandLink
 								value="Click Here to Compare With Another Facultative"
-								onclick="popup.show()" />
+								onclick="PF('popup').show()" />
 						</h:form>
 						<h:form id="Compfacultative"
 							rendered="#{facultativeBean.displayFacCompare}">
 
-							<p:panelGrid id="CompareFac" columns="2">
+							<p:panelGrid style="width:550px" id="CompareFac" columns="2">
 								<p:outputLabel value="Insured" />
 								<p:outputLabel
 									value="#{facultativeBean.comparaisonFacultative.insured}" />
@@ -185,7 +185,7 @@
 
 									<h:panelGroup style="display:block; text-align:center">
 
-										<p:commandButton value="Change" onclick="popup.show()" />
+										<p:commandButton value="Change" onclick="PF('popup').show()" />
 									</h:panelGroup>
 								</f:facet>
 
@@ -229,7 +229,7 @@
 
 					<p:commandButton value="Compare"
 						action="#{facultativeBean.DisplayFacCompare()}" update=":FacInfo"
-						onclick="popup.hide()" />
+						onclick="PF('popup').hide()" />
 				</h:form>
 			</p:dialog>
 

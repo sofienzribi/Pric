@@ -356,7 +356,7 @@ public class ProjectBean implements Serializable {
 				return "Summary2?faces-redirect=true";
 			} else {
 				RequestContext context = RequestContext.getCurrentInstance();
-				context.execute("popup1.show();");
+				context.execute("PF('popup1').show();");
 				return null;
 			}
 		}

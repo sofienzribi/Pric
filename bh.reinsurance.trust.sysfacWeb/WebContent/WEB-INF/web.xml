@@ -24,39 +24,6 @@
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<servlet-name>Faces Servlet</servlet-name>
 	</filter-mapping>
-	<servlet>
-		<servlet-name>Push Servlet</servlet-name>
-		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
-		<init-param>
-			<param-name>org.atmosphere.useWebSocket</param-name>
-			<param-value>false</param-value>
-		</init-param>
-		<init-param>
-			<param-name>org.atmosphere.cpr.sessionSupport</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<param-name>org.atmosphere.useNative</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
-			<param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
-		</init-param>
-		<init-param>
-			<param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
-			<param-value>org.atmosphere.client.TrackMessageSizeFilter</param-value>
-		</init-param>
-		<init-param>
-			<param-name>org.atmosphere.resumeOnBroadcast</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-		<async-supported>true</async-supported>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Push Servlet</servlet-name>
-		<url-pattern>/prime push/*</url-pattern>
-	</servlet-mapping>
+	
 	
 </web-app>

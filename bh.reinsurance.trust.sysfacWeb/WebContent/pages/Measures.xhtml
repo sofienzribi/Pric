@@ -12,7 +12,7 @@
 
 
 			<h:form id="Measure">
-				<p:dataTable emptyMessage="No Measures found!"
+				<p:dataTable style="width:650px" emptyMessage="No Measures found!"
 					value="#{measure.measures}" var="prod" rows="5" paginator="true"
 					paginatorPosition="bottom" selectionMode="single"
 					selection="#{measure.measure}" rowKey="#{prod.id}"
@@ -34,7 +34,7 @@
 					</p:column>
 					<f:facet name="footer">
 						<p:commandButton value="New Measure" icon="ui-icon-plusthick"
-							onclick="popup.show()" />
+							onclick="PF('popup').show()" />
 
 						<p:commandButton value="Delete"
 							actionListener="#{measure.DeleteMeasure()}"

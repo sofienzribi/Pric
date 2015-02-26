@@ -115,7 +115,7 @@ public class MeasureBean implements Serializable {
 			disableButtonCloseSet = false;
 
 			Newmeasure = new Measure();
-			context.execute("popup.hide();");
+			context.execute("PF('popup').hide();");
 			FacesContext.getCurrentInstance().getExternalContext()
 					.redirect("Factors.jsf");
 
@@ -155,7 +155,7 @@ public class MeasureBean implements Serializable {
 
 			}
 			RequestContext context = RequestContext.getCurrentInstance();
-			context.execute("POPSET.hide();");
+			context.execute("PF('POPSET').hide();");
 
 		}
 	}

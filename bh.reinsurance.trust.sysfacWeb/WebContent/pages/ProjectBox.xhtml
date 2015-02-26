@@ -11,7 +11,7 @@
 
 		<ui:define name="content">
 			<h:form id="Mainform">
-				<p:dataTable emptyMessage="no Mails found!"
+				<p:dataTable style="width:500px" emptyMessage="no Mails found!"
 					value="#{projectBean.mailBoxs}" var="prod" rows="5"
 					rowStyleClass="#{prod.state eq 'NOT SEEN' ? 'old' : null}"
 					paginator="true" paginatorPosition="bottom" selectionMode="single"

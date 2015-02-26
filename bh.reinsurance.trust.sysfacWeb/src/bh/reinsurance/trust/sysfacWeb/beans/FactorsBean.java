@@ -72,7 +72,7 @@ public class FactorsBean implements Serializable {
 			construction_Type2 = new Construction_Type();
 			RequestContext context = RequestContext.getCurrentInstance();
 
-			context.execute("Popup.hide();");
+			context.execute("PF('Popup').hide();");
 		}
 
 	}
@@ -82,7 +82,7 @@ public class FactorsBean implements Serializable {
 		construction_Types = factorsServicesLocal.GetConsttype(factors.getId());
 		RequestContext context = RequestContext.getCurrentInstance();
 
-		context.execute("Popup2.hide();");
+		context.execute("PF('Popup2').hide();");
 	}
 
 	public void DeleteConstructionType() {

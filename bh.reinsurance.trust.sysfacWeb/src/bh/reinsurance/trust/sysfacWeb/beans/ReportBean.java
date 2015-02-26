@@ -44,10 +44,12 @@ public class ReportBean {
 	public void init() throws JRException {
 
 		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("popup.hide();");
+		context.execute("PF('popup').hide();");
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				facultatives);
 
+		
+		
 		setJasperPrint(JasperFillManager.fillReport(
 				"/Users/zribisofien/report1.jasper", new HashMap(),
 				beanCollectionDataSource));
@@ -65,7 +67,7 @@ public class ReportBean {
 		JasperExportManager.exportReportToPdfFile(jasperPrint,
 				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
 		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("popuppdf.hide();");
+		context.execute("PF('popuppdf').hide();");
 
 	}
 

@@ -88,12 +88,12 @@ public class LoginBean extends HttpServlet implements Serializable {
 			if (userFound.getDepartment().equals("actuarialandrisk")) {
 				Department = "Actuarial & Risk";
 				connected = true;
-				return "/pages/Fac_info?faces-redirect=true";
+				return "pages/Fac_info?faces-redirect=true";
 
 			} else {
 				Department = "Facultative Department";
 				connected = true;
-				return "/pages/Fac_info?faces-redirect=true";
+				return "pages/Fac_info?faces-redirect=true";
 			}
 
 		} else {

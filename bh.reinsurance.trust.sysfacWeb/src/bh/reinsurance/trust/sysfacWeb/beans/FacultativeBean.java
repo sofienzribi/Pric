@@ -65,7 +65,7 @@ public class FacultativeBean implements Serializable {
 		DisplayFacCompare = true;
 		DisplayComparaisonButton = false;
 		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("popup.hide();");
+		context.execute("PF('popup').hide();");
 	}
 
 	public void OnRowSelect4() {

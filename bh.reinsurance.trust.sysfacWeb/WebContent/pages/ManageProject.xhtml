@@ -12,7 +12,7 @@
 
 
 			<h:form id="dialog1">
-				<p:dataTable emptyMessage="no Projects found!"
+				<p:dataTable style="width:650px" emptyMessage="no Projects found!"
 					value="#{projectBean.projectsbyuser}" var="prod" rows="5"
 					paginator="true" paginatorPosition="bottom" selectionMode="single"
 					selection="#{projectBean.proojectbyuser}" rowKey="#{prod.id}"
@@ -37,7 +37,7 @@
 					<f:facet name="footer">
 						<p:commandButton value="Modify"
 							rendered="#{projectBean.displayProjectManagButton}"
-							onclick="popup.show()" icon="ui-icon-pencil" update=":form3" />
+							onclick="PF('popup').show()" icon="ui-icon-pencil" update=":form3" />
 						<p:commandButton value="Delete" icon="ui-icon-trash"
 							rendered="#{projectBean.displayProjectManagButton}"
 							actionListener="#{projectBean.DeleteProject()}" update=":dialog1">
