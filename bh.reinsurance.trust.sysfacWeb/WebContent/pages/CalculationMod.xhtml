@@ -70,27 +70,24 @@
 				<h:form>
 
 
-
-					<p:selectOneRadio id="console">
-						<f:selectItem itemLabel="Liability" itemValue="Liablity" />
-						<f:selectItem itemLabel="Sum insured" itemValue="b">
-
-						</f:selectItem>
-						<p:ajax listener="#{facultativeBean.ChangeTableType()}"
-							event="valueChange" update=":details"></p:ajax>
-
-					</p:selectOneRadio>
+					<p:commandButton value="SumIsured"
+						actionListener="#{facultativeBean.ChangeTableTypeToSI()}"
+						update=":details :details_form"></p:commandButton>
+					<p:commandButton value="Liability"
+						actionListener="#{facultativeBean.ChangeTableTypeToLiab()}"
+						update=":details"></p:commandButton>
 						Liability Bands : 
-					<p:commandButton value="-" process=":details"
+					<p:commandButton icon="ui-icon-minusthick" process=":details"
 						actionListener="#{facultativeBean.minusLiabilityBand()}"
 						update=":details" />
-					<p:commandButton value="+"
+					<p:commandButton icon="ui-icon-plusthick"
 						action="#{facultativeBean.plusLiabilityBand()}" update=":details" />
 					<p:dataTable id="tbl" emptyMessage="no fac found!"
 						value="#{facultativeBean.sysfacus2}" var="prod" rows="10"
 						widgetVar="prodTabW">
 						<f:facet name="header">
-							<h:outputText value="Result by bands of Liability" />
+							<h:outputText
+								value="Result by bands of #{facultativeBean.radioValue} "></h:outputText>
 						</f:facet>
 						<p:column headerText="From" style="width:95px">
 							<h:outputText value="#{prod.from}" />

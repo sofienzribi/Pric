@@ -122,23 +122,34 @@ public class FacultativeBean implements Serializable {
 	}
 
 	public void plusLiabilityBand() {
-		LiabilityBand = LiabilityBand * 2;
-		PasLiability = PasLiability * 2;
-		Filllist();
+		if (RadioValue.equals("Liability")) {
+			PasLiability = PasLiability * 2;
+			Filllist();
+		} else {
+			SumInsuredPas = SumInsuredPas * 2;
+			Filllist2();
+		}
+
 	}
 
 	public void minusLiabilityBand() {
-
-		PasLiability = PasLiability / 2;
-		Filllist();
-	}
-
-	public void ChangeTableType() {
 		if (RadioValue.equals("Liability")) {
+			PasLiability = PasLiability / 2;
 			Filllist();
 		} else {
+			SumInsuredPas = SumInsuredPas / 2;
 			Filllist2();
 		}
+	}
+
+	public void ChangeTableTypeToSI() {
+		RadioValue = "Sum Insured";
+		Filllist2();
+	}
+
+	public void ChangeTableTypeToLiab() {
+		RadioValue = "Liability";
+		Filllist();
 	}
 
 	// Table 1 By Liability
