@@ -1,0 +1,249 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Fac Info </ui:define>
+		<ui:define name="content">
+
+			<p:panel id="master">
+				<h:form>
+					<p:panelGrid columns="2">
+						<h:panelGrid id="eu" columns="2">
+
+							<h:outputLabel value="Region" />
+							<p:selectOneMenu value="#{facultativeBean.reg1}"
+								style="width:250px">
+								<p:ajax event="valueChange"
+									listener="#{facultativeBean.OnRegionChange()}"
+									update=":master :details :Details2" />
+								<f:selectItem itemLabel="All regions" />
+								<f:selectItems value="#{facultativeBean.reg}" var="cat"
+									itemValue="#{cat}" itemLabel="#{cat}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel value="Country" />
+							<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
+								style="width:250px">
+								<p:ajax event="valueChange"
+									listener="#{facultativeBean.affichselec()}"
+									update=":master :details :Details2" />
+								<f:selectItem itemLabel="All countries." />
+								<f:selectItems value="#{facultativeBean.countr}" var="cat"
+									itemValue="#{cat}" itemLabel="#{cat}" />
+							</p:selectOneMenu>
+							<h:outputLabel value="Occupancy" style="width:250px" />
+							<p:selectOneMenu value="#{facultativeBean.occup1}"
+								style="width:250px">
+								<p:ajax event="valueChange"
+									listener="#{facultativeBean.affichselec()}"
+									update=":master :details :Details2" />
+								<f:selectItem itemLabel="select one..." />
+								<f:selectItems value="#{facultativeBean.occup}" var="cat"
+									itemValue="#{cat}" itemLabel="#{cat}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Year" style="width:250px" />
+							<p:selectOneMenu style="width:250px">
+								<f:selectItem itemLabel="select one..." />
+								<f:selectItems value="#{facultativeBean.years}" var="cat"
+									itemLabel="#{cat}" />
+
+							</p:selectOneMenu>
+							<h:outputLabel value="Cedant" style="width:250px" />
+							<p:selectOneMenu style="width:250px" />
+							<h:outputLabel value="Broker" style="width:250px" />
+							<p:selectOneMenu style="width:250px" />
+
+						</h:panelGrid>
+
+					</p:panelGrid>
+				</h:form>
+			</p:panel>
+
+			<p:panel id="details" visible="#{facultativeBean.testaff}">
+				<h:form>
+
+
+
+					<p:selectOneRadio id="console">
+						<f:selectItem itemLabel="Liability" itemValue="Liablity" />
+						<f:selectItem itemLabel="Sum insured" itemValue="b">
+
+						</f:selectItem>
+						<p:ajax listener="#{facultativeBean.ChangeTableType()}"
+							event="valueChange" update=":details"></p:ajax>
+
+					</p:selectOneRadio>
+						Liability Bands : 
+					<p:commandButton value="-" process=":details"
+						actionListener="#{facultativeBean.minusLiabilityBand()}"
+						update=":details" />
+					<p:commandButton value="+"
+						action="#{facultativeBean.plusLiabilityBand()}" update=":details" />
+					<p:dataTable id="tbl" emptyMessage="no fac found!"
+						value="#{facultativeBean.sysfacus2}" var="prod" rows="10"
+						widgetVar="prodTabW">
+						<f:facet name="header">
+							<h:outputText value="Result by bands of Liability" />
+						</f:facet>
+						<p:column headerText="From" style="width:95px">
+							<h:outputText value="#{prod.from}" />
+						</p:column>
+						<p:column headerText="To" style="width:95px">
+							<h:outputText value="#{prod.to}" />
+						</p:column>
+						<p:column headerText="Nbr" style="width:50px">
+							<h:outputText value="#{prod.nbr}" />
+						</p:column>
+						<p:column headerText="TSI">
+							<h:outputText value="#{prod.sum}" />
+						</p:column>
+						<p:column headerText="Total Liability">
+							<h:outputText value="#{prod.lia}" />
+						</p:column>
+						<p:column headerText="Avg liability">
+							<h:outputText value="#{prod.avglia}" />
+						</p:column>
+						<p:column headerText="Premium Gross" style="width:55px">
+							<h:outputText value="NO DATA" />
+						</p:column>
+						<p:column headerText="AVG Premium" style="width:55px">
+							<h:outputText value="NO DATA" />
+						</p:column>
+						<p:column headerText="Commission" style="width:55px">
+							<h:outputText value="NO DATA" />
+						</p:column>
+						<p:column headerText="AVG Commission" style="width:55px">
+							<h:outputText value="NO DATA" />
+						</p:column>
+						<f:facet name="footer">
+							<p:commandLink onclick="PF('popuppdf').show()">
+
+								<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
+									width="24" />
+							</p:commandLink>
+						</f:facet>
+					</p:dataTable>
+				</h:form>
+				<h:form id="details_form">
+					<p:panelGrid style="width:300px;margin :10px auto auto auto;"
+						columns="2">
+						<f:facet name="header">Summary</f:facet>
+						<p:outputLabel>NB fac</p:outputLabel>
+						<p:outputLabel>#{facultativeBean.totalNumbreFac}</p:outputLabel>
+						<p:outputLabel>Total liability</p:outputLabel>
+						<p:outputLabel>#{facultativeBean.totalLiability}</p:outputLabel>
+						<p:outputLabel>AVG liability</p:outputLabel>
+						<p:outputLabel>#{facultativeBean.AVgLiability} </p:outputLabel>
+						<p:outputLabel>Total Sum insured</p:outputLabel>
+						<p:outputLabel>#{facultativeBean.totalSumInsured} </p:outputLabel>
+						<p:outputLabel>Total Premium</p:outputLabel>
+						<p:outputLabel>NO DATA </p:outputLabel>
+						<p:outputLabel>AVG Premium</p:outputLabel>
+						<p:outputLabel>NO DATA </p:outputLabel>
+						<p:outputLabel>Total Commission</p:outputLabel>
+						<p:outputLabel>NO DATA </p:outputLabel>
+						<p:outputLabel>AVG Commission</p:outputLabel>
+						<p:outputLabel>NO DATA </p:outputLabel>
+					</p:panelGrid>
+				</h:form>
+			</p:panel>
+
+
+
+
+			<p:panel id="Details2" visible="#{facultativeBean.testaff}">
+				<h:form>
+					<p:dataTable var="player" value="#{dtGroupView.players}"
+						style="margin-top:40px">
+
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column rowspan="3" headerText="Bands of Trust Re Liability" />
+								<p:column colspan="#{facultativeBean.years1.size()*2}"
+									headerText="Average Premium Rate Evolution" />
+							</p:row>
+							<p:row>
+								<ui:repeat value="#{facultativeBean.years1}" var="year">
+									<p:column colspan="2" headerText="#{year}">
+									</p:column>
+								</ui:repeat>
+							</p:row>
+							<p:row>
+								<ui:repeat value="#{facultativeBean.years1}" var="year">
+									<p:column headerText="Nb">
+									</p:column>
+									<p:column headerText="Av.Rate">
+									</p:column>
+								</ui:repeat>
+
+							</p:row>
+
+						</p:columnGroup>
+
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+						<p:column>
+							<h:outputText value="OO" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="zae" />
+						</p:column>
+
+
+
+						<f:facet name="footer">
+            Data between 2010-2014
+        </f:facet>
+					</p:dataTable>
+				</h:form>
+			</p:panel>
+
+			<p:dialog header="Please enter file name" modal="true" id="popuppdf"
+				widgetVar="popuppdf">
+				<h:form id="formpdf">
+					<h:panelGrid columns="1">
+						<p:messages id="messages" autoUpdate="true" closable="true" />
+						<p:inputText id="Name" value="#{reportBean.projectName}"
+							required="true" requiredMessage="Name required"></p:inputText>
+						<p:commandButton
+							actionListener="#{reportBean.ReportByBands(facultativeBean.sysfacus2)}"
+							value="Create" update=":formpdf"></p:commandButton>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

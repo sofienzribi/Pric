@@ -25,6 +25,12 @@ public class RedirectionBean implements Serializable {
 		testaff = "Summary";
 	}
 
+	public void GoToCalcTool() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("CalculationMod.jsf");
+		
+	}
+
 	public void GoToFactors() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Factors.jsf");

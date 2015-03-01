@@ -9,15 +9,13 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Chart tool </ui:define>
 		<ui:define name="content">
-			<h:form>
+			<h:form id="chart">
 				<h:panelGrid style="width:100%">
-
-					<p:chart type="bar" model="#{chartBean.animatedModel2}" 
-						style="width:400px;" />
+					<p:chart type="bar" model="#{chartBean.animatedModel2}"
+						style="width:600px;">
+					</p:chart>
 				</h:panelGrid>
-
 			</h:form>
-
 		</ui:define>
 	</ui:composition>
 </h:body>

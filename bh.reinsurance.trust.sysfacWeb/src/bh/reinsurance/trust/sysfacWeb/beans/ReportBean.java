@@ -17,6 +17,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Facultative;
+import al.assu.trust.GestionImageSinistre.domain.Sysfacus;
 import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 
 @javax.faces.bean.ManagedBean
@@ -48,8 +49,6 @@ public class ReportBean {
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				facultatives);
 
-		
-		
 		setJasperPrint(JasperFillManager.fillReport(
 				"/Users/zribisofien/report1.jasper", new HashMap(),
 				beanCollectionDataSource));
@@ -62,13 +61,25 @@ public class ReportBean {
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				facultatives1);
 		setJasperPrint(JasperFillManager.fillReport(
-				"/Users/zribisofien/report1.jasper", new HashMap(),
-				beanCollectionDataSource));
+				"/Users/zribisofien/Desktop/ModelReport/report1.jasper",
+				new HashMap(), beanCollectionDataSource));
 		JasperExportManager.exportReportToPdfFile(jasperPrint,
 				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popuppdf').hide();");
 
+	}
+
+	public void ReportByBands(List<Sysfacus> sysfacus) throws JRException {
+		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
+				sysfacus);
+		setJasperPrint(JasperFillManager.fillReport(
+				"/Users/zribisofien/Desktop/ModelReport/report2.jasper",
+				new HashMap(), beanCollectionDataSource));
+		JasperExportManager.exportReportToPdfFile(jasperPrint,
+				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('popuppdf').hide();");
 	}
 
 	public void ExportToPDF() throws JRException, IOException {

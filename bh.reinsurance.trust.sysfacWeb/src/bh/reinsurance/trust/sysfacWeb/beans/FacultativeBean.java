@@ -1,7 +1,12 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -11,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Facultative;
+import al.assu.trust.GestionImageSinistre.domain.Sysfacus;
 import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 
 @ManagedBean
@@ -18,7 +24,7 @@ import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 public class FacultativeBean implements Serializable {
 	@EJB
 	FacultativeServicesLocal facultativeServicesLocal;
-
+	final Locale us = Locale.US;
 	private List<Facultative> facbychoice;
 
 	private boolean testaff;
@@ -38,12 +44,40 @@ public class FacultativeBean implements Serializable {
 	private List<Facultative> facultatives2;
 	private boolean DisplayComparaisonButton;
 	private boolean DisplayFacCompare;
+	private String liab = null;
+	private int NBRfac = 0;
+	private String Suminsured = null;
+	private String AvgLiability;
+	private List<Sysfacus> sysfacus2;
+	private int TotalNumbreFac = 0;
+	private String TotalLiability = null;
+	private String TotalSumInsured = null;
+	private String AVgLiability;
+	private Map<String, String> Years = new HashMap<String, String>();
+	private List<Integer> years1;
+	private int LiabilityBand = 0;
+	private int PasLiability = 1000000;
+	private String RadioValue = "Liablity";
+	private int SumInsuredPas = 10000000;
 
 	public FacultativeBean() {
 	}
 
 	@PostConstruct
 	public void init() {
+		years1 = new ArrayList<Integer>();
+		years1.add(2010);
+		years1.add(2011);
+		years1.add(2012);
+		years1.add(2014);
+		Years = new HashMap<String, String>();
+		Years.put("2010", "2010");
+		Years.put("2011", "2011");
+		Years.put("2012", "2012");
+		Years.put("2013", "2013");
+		Years.put("2014", "2014");
+		Years.put("2015", "2015");
+		sysfacus2 = new ArrayList<Sysfacus>();
 		DisplayFacCompare = false;
 		DisplayComparaisonButton = true;
 		DisplayDeatils = false;
@@ -55,12 +89,27 @@ public class FacultativeBean implements Serializable {
 	}
 
 	public void OnRegionChange() {
+		countr1 = null;
+		occup1 = null;
 		setCountr(facultativeServicesLocal.GetCountries(reg1));
+		setOccup(facultativeServicesLocal.GetOcuupenciesbyChoice(reg1, countr1));
 		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
 				occup1));
+
+		Filllist();
+
 		testaff = true;
 	}
-	
+
+	public void affichselec() {
+		setCountr(facultativeServicesLocal.GetCountries(reg1));
+		setOccup(facultativeServicesLocal.GetOcuupenciesbyChoice(reg1, countr1));
+		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
+				occup1));
+		Filllist();
+		testaff = true;
+	}
+
 	public void DisplayFacCompare() {
 		DisplayFacCompare = true;
 		DisplayComparaisonButton = false;
@@ -72,10 +121,152 @@ public class FacultativeBean implements Serializable {
 		DisplayDeatils = true;
 	}
 
-	public void affichselec() {
-		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
-				occup1));
-		testaff = true;
+	public void plusLiabilityBand() {
+		LiabilityBand = LiabilityBand * 2;
+		PasLiability = PasLiability * 2;
+		Filllist();
+	}
+
+	public void minusLiabilityBand() {
+
+		PasLiability = PasLiability / 2;
+		Filllist();
+	}
+
+	public void ChangeTableType() {
+		if (RadioValue.equals("Liability")) {
+			Filllist();
+		} else {
+			Filllist2();
+		}
+	}
+
+	// Table 1 By Liability
+	public void Filllist() {
+		sysfacus2 = new ArrayList<Sysfacus>();
+		TotalNumbreFac = 0;
+		int i = facbychoice.size();
+		int f = 0;
+		int c = 0;
+		int totalSI = 0;
+		int totalLia = 0;
+		List<Facultative> facultatives2 = new ArrayList<Facultative>();
+		for (int j = 0; j <= 9 * PasLiability; j = j + PasLiability) {
+			Sysfacus sysfacus = new Sysfacus();
+			f = 0;
+			c = 0;
+			facultatives2 = new ArrayList<Facultative>();
+			for (Facultative a : facbychoice) {
+				if (j == 9 * PasLiability && a.getOur_liability() > j) {
+					facultatives2.add(a);
+					totalLia = totalLia + a.getOur_liability();
+					totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+					f = f + a.getOur_liability();
+					TotalNumbreFac++;
+					c = c + Integer.parseInt(a.getSuminsured());
+				} else {
+
+					if (a.getOur_liability() <= j + PasLiability
+							&& a.getOur_liability() > j) {
+						facultatives2.add(a);
+						totalLia = totalLia + a.getOur_liability();
+						totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+						f = f + a.getOur_liability();
+						TotalNumbreFac++;
+						c = c + Integer.parseInt(a.getSuminsured());
+					}
+				}
+			}
+
+			sysfacus.setLia(liab = NumberFormat.getCurrencyInstance(us).format(
+					f));
+			AVgLiability = NumberFormat.getCurrencyInstance(us).format(
+					totalLia / TotalNumbreFac);
+			TotalSumInsured = NumberFormat.getCurrencyInstance(us).format(
+					totalSI);
+			TotalLiability = NumberFormat.getCurrencyInstance(us).format(
+					totalLia);
+
+			sysfacus.setAvglia(AvgLiability = NumberFormat.getCurrencyInstance(
+					us).format((f / i)));
+			sysfacus.setNbr(facultatives2.size());
+			sysfacus.setSum(NumberFormat.getCurrencyInstance(us).format(c));
+			sysfacus.setFrom(NumberFormat.getCurrencyInstance(us).format(j));
+			if (j == 9 * PasLiability) {
+				sysfacus.setTo("&&More");
+			} else {
+				sysfacus.setTo(NumberFormat.getCurrencyInstance(us).format(
+						j + PasLiability));
+			}
+
+			sysfacus2.add(sysfacus);
+		}
+
+	}
+
+	// table 2 By SI
+	public void Filllist2() {
+		sysfacus2 = new ArrayList<Sysfacus>();
+		TotalNumbreFac = 0;
+		int i = facbychoice.size();
+		int f = 0;
+		int c = 0;
+		int totalSI = 0;
+		int totalLia = 0;
+		List<Facultative> facultatives2 = new ArrayList<Facultative>();
+		for (int j = 0; j <= 9 * SumInsuredPas; j = j + SumInsuredPas) {
+			Sysfacus sysfacus = new Sysfacus();
+			f = 0;
+			c = 0;
+			facultatives2 = new ArrayList<Facultative>();
+			for (Facultative a : facbychoice) {
+				if (j == 9 * SumInsuredPas
+						&& Integer.parseInt(a.getSuminsured()) > j) {
+					facultatives2.add(a);
+					totalLia = totalLia + a.getOur_liability();
+					totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+					f = f + a.getOur_liability();
+					TotalNumbreFac++;
+					c = c + Integer.parseInt(a.getSuminsured());
+				} else {
+
+					if (Integer.parseInt(a.getSuminsured()) <= j
+							+ SumInsuredPas
+							&& Integer.parseInt(a.getSuminsured()) > j) {
+						facultatives2.add(a);
+						totalLia = totalLia + a.getOur_liability();
+						totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+						f = f + a.getOur_liability();
+						TotalNumbreFac++;
+						c = c + Integer.parseInt(a.getSuminsured());
+					}
+				}
+			}
+
+			sysfacus.setLia(liab = NumberFormat.getCurrencyInstance(us).format(
+					f));
+			AVgLiability = NumberFormat.getCurrencyInstance(us).format(
+					totalLia / TotalNumbreFac);
+			TotalSumInsured = NumberFormat.getCurrencyInstance(us).format(
+					totalSI);
+			TotalLiability = NumberFormat.getCurrencyInstance(us).format(
+					totalLia);
+
+			sysfacus.setAvglia(AvgLiability = NumberFormat.getCurrencyInstance(
+					us).format((f / i)));
+			sysfacus.setNbr(facultatives2.size());
+			sysfacus.setSum(NumberFormat.getCurrencyInstance(us).format(c));
+			sysfacus.setFrom(NumberFormat.getCurrencyInstance(us).format(j));
+			if (j == 9 * SumInsuredPas) {
+				sysfacus.setTo("&&More");
+			} else {
+				sysfacus.setTo(NumberFormat.getCurrencyInstance(us).format(
+						j + SumInsuredPas));
+			}
+
+			sysfacus2.add(sysfacus);
+		}
+
 	}
 
 	public boolean isTestaff() {
@@ -195,6 +386,14 @@ public class FacultativeBean implements Serializable {
 		return DisplayDeatils;
 	}
 
+	public List<Sysfacus> getSysfacus2() {
+		return sysfacus2;
+	}
+
+	public void setSysfacus2(List<Sysfacus> sysfacus2) {
+		this.sysfacus2 = sysfacus2;
+	}
+
 	public void setDisplayDeatils(boolean displayDeatils) {
 		DisplayDeatils = displayDeatils;
 	}
@@ -221,6 +420,118 @@ public class FacultativeBean implements Serializable {
 
 	public void setComparaisonFacultative(Facultative comparaisonFacultative) {
 		ComparaisonFacultative = comparaisonFacultative;
+	}
+
+	public int getNBRfac() {
+		return NBRfac;
+	}
+
+	public void setNBRfac(int nBRfac) {
+		NBRfac = nBRfac;
+	}
+
+	public String getLiab() {
+		return liab;
+	}
+
+	public void setLiab(String liab) {
+		this.liab = liab;
+	}
+
+	public String getSuminsured() {
+		return Suminsured;
+	}
+
+	public void setSuminsured(String suminsured) {
+		Suminsured = suminsured;
+	}
+
+	public String getAvgLiability() {
+		return AvgLiability;
+	}
+
+	public void setAvgLiability(String avgLiability) {
+		AvgLiability = avgLiability;
+	}
+
+	public int getTotalNumbreFac() {
+		return TotalNumbreFac;
+	}
+
+	public void setTotalNumbreFac(int totalNumbreFac) {
+		TotalNumbreFac = totalNumbreFac;
+	}
+
+	public String getTotalLiability() {
+		return TotalLiability;
+	}
+
+	public void setTotalLiability(String totalLiability) {
+		TotalLiability = totalLiability;
+	}
+
+	public String getTotalSumInsured() {
+		return TotalSumInsured;
+	}
+
+	public void setTotalSumInsured(String totalSumInsured) {
+		TotalSumInsured = totalSumInsured;
+	}
+
+	public String getAVgLiability() {
+		return AVgLiability;
+	}
+
+	public void setAVgLiability(String aVgLiability) {
+		AVgLiability = aVgLiability;
+	}
+
+	public Map<String, String> getYears() {
+		return Years;
+	}
+
+	public void setYears(Map<String, String> years) {
+		Years = years;
+	}
+
+	public List<Integer> getYears1() {
+		return years1;
+	}
+
+	public void setYears1(List<Integer> years1) {
+		this.years1 = years1;
+	}
+
+	public int getLiabilityBand() {
+		return LiabilityBand;
+	}
+
+	public void setLiabilityBand(int liabilityBand) {
+		LiabilityBand = liabilityBand;
+	}
+
+	public int getPasLiability() {
+		return PasLiability;
+	}
+
+	public void setPasLiability(int pasLiability) {
+		PasLiability = pasLiability;
+	}
+
+	public String getRadioValue() {
+		return RadioValue;
+	}
+
+	public void setRadioValue(String radioValue) {
+		RadioValue = radioValue;
+	}
+
+	public int getSumInsuredPas() {
+		return SumInsuredPas;
+	}
+
+	public void setSumInsuredPas(int sumInsuredPas) {
+		SumInsuredPas = sumInsuredPas;
 	}
 
 }

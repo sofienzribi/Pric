@@ -161,4 +161,27 @@ public class FacultativeServices implements FacultativeServicesLocal {
 		return (Long) query.getSingleResult();
 	}
 
+	@Override
+	public List<String> GetOcuupenciesbyChoice(String Region, String Country) {
+		if (Country == null) {
+
+			Query query = entityManager
+					.createQuery("select DISTINCT  p.occupencies from Facultative p where p.regions=:a");
+			query.setParameter("a", Region);
+
+			return query.getResultList();
+		} else if (Country == null && Region == null) {
+			Query query = entityManager
+					.createQuery("select DISTINCT a.occupencies from Facultative a");
+			return query.getResultList();
+		} else {
+
+			Query query = entityManager
+					.createQuery("select DISTINCT p.occupencies from Facultative p where p.countries=:a AND p.regions=:b");
+			query.setParameter("a", Country);
+			query.setParameter("b", Region);
+			return query.getResultList();
+		}
+	}
+
 }

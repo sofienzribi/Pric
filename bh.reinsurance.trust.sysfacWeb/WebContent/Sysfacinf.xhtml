@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+
+
+
+	<p:panel id="master">
+		<h:form>
+			<h:panelGrid id="eu" columns="2">
+
+				<h:outputLabel value="Region" />
+				<p:selectOneMenu value="#{facultativeBean.reg1}" style="width:375px">
+					<p:ajax event="valueChange"
+						listener="#{facultativeBean.OnRegionChange()}"
+						update=":master :details" />
+					<f:selectItem itemLabel="All regions" />
+					<f:selectItems value="#{facultativeBean.reg}" var="cat"
+						itemValue="#{cat}" itemLabel="#{cat}" />
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Country" />
+				<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
+					style="width:375px">
+					<p:ajax event="valueChange"
+						listener="#{facultativeBean.affichselec()}" update=":details" />
+					<f:selectItem itemLabel="All countries." />
+					<f:selectItems value="#{facultativeBean.countr}" var="cat"
+						itemValue="#{cat}" itemLabel="#{cat}" />
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Occupancy" style="width:375px" />
+
+				<p:selectOneMenu value="#{facultativeBean.occup1}"
+					style="width:375px">
+					<p:ajax event="valueChange"
+						listener="#{facultativeBean.affichselec()}" update=":details" />
+					<f:selectItem itemLabel="select one..." />
+					<f:selectItems value="#{facultativeBean.occup}" var="cat"
+						itemValue="#{cat}" itemLabel="#{cat}" />
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+		</h:form>
+	</p:panel>
+
+	<p:panel id="details" visible="#{facultativeBean.testaff}">
+		<h:form id="details_form">
+			<h:panelGrid style="width:400px" columns="2" border="4">
+				<p:outputLabel>NB fac</p:outputLabel>
+				<p:outputLabel>#{facultativeBean.NBRfac}</p:outputLabel>
+				<p:outputLabel>Our liability</p:outputLabel>
+				<p:outputLabel>#{facultativeBean.liab}</p:outputLabel>
+				<p:outputLabel>AVG liability</p:outputLabel>
+				<p:outputLabel>#{facultativeBean.avgLiability} </p:outputLabel>
+				<p:outputLabel>Sum insured</p:outputLabel>
+				<p:outputLabel>#{facultativeBean.suminsured} </p:outputLabel>
+
+
+			</h:panelGrid>
+
+
+
+		</h:form>
+	</p:panel>
+
+
+
+
+
+</h:body>
+</html>
