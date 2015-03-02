@@ -181,6 +181,20 @@
 										value="Manage Projects"
 										actionListener="#{redirectionBean.GoToManageProject()}"></p:commandLink>
 								</h:form></li>
+
+
+
+							<li style="display:#{projectBean.displayActuarial}"><h:form
+									id="M30">
+									<i class="fa fa-wrench"></i>
+									<p:commandLink value="Test/Reset Measure"
+										disabled="#{projectBean.disabledButtonProjectSendClose}"
+										onclick="PF('POPMeasure').show()"></p:commandLink>
+								</h:form></li>
+
+
+
+
 							<li><h:form id="dfds">
 									<i class="fa fa-folder"></i>
 									<p:commandLink
@@ -212,6 +226,7 @@
 									<p:commandLink disabled="#{measure.disableButtonCloseSet}"
 										value="Set Working Measure" onclick="PF('POPSET').show()"></p:commandLink>
 								</h:form></li>
+
 							<li><h:form id="M5">
 									<i class="fa fa-folder"></i>
 									<p:commandLink disabled="#{measure.disableButtonCloseSet}"

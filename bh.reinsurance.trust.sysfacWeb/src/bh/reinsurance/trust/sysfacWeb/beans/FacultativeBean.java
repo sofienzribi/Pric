@@ -156,10 +156,14 @@ public class FacultativeBean implements Serializable {
 	public void Filllist() {
 		sysfacus2 = new ArrayList<Sysfacus>();
 		TotalNumbreFac = 0;
-		int i = facbychoice.size();
+		int i = 1;
+		if (facbychoice.size() != 0) {
+			i = facbychoice.size();
+		}
+
 		int f = 0;
-		int c = 0;
-		int totalSI = 0;
+		float c = 0;
+		float totalSI = 0;
 		int totalLia = 0;
 		List<Facultative> facultatives2 = new ArrayList<Facultative>();
 		for (int j = 0; j <= 9 * PasLiability; j = j + PasLiability) {
@@ -171,24 +175,26 @@ public class FacultativeBean implements Serializable {
 				if (j == 9 * PasLiability && a.getOur_liability() > j) {
 					facultatives2.add(a);
 					totalLia = totalLia + a.getOur_liability();
-					totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+					totalSI = totalSI + Float.parseFloat(a.getSuminsured());
 					f = f + a.getOur_liability();
 					TotalNumbreFac++;
-					c = c + Integer.parseInt(a.getSuminsured());
+					c = c + Float.parseFloat(a.getSuminsured());
 				} else {
 
 					if (a.getOur_liability() <= j + PasLiability
 							&& a.getOur_liability() > j) {
 						facultatives2.add(a);
 						totalLia = totalLia + a.getOur_liability();
-						totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+						totalSI = totalSI + Float.parseFloat(a.getSuminsured());
 						f = f + a.getOur_liability();
 						TotalNumbreFac++;
-						c = c + Integer.parseInt(a.getSuminsured());
+						c = c + Float.parseFloat(a.getSuminsured());
 					}
 				}
 			}
-
+			if (TotalNumbreFac == 0) {
+				TotalNumbreFac = 1;
+			}
 			sysfacus.setLia(liab = NumberFormat.getCurrencyInstance(us).format(
 					f));
 			AVgLiability = NumberFormat.getCurrencyInstance(us).format(
@@ -221,8 +227,8 @@ public class FacultativeBean implements Serializable {
 		TotalNumbreFac = 0;
 		int i = facbychoice.size();
 		int f = 0;
-		int c = 0;
-		int totalSI = 0;
+		float c = 0;
+		float totalSI = 0;
 		int totalLia = 0;
 		List<Facultative> facultatives2 = new ArrayList<Facultative>();
 		for (int j = 0; j <= 9 * SumInsuredPas; j = j + SumInsuredPas) {
@@ -232,24 +238,24 @@ public class FacultativeBean implements Serializable {
 			facultatives2 = new ArrayList<Facultative>();
 			for (Facultative a : facbychoice) {
 				if (j == 9 * SumInsuredPas
-						&& Integer.parseInt(a.getSuminsured()) > j) {
+						&& Float.parseFloat(a.getSuminsured()) > j) {
 					facultatives2.add(a);
 					totalLia = totalLia + a.getOur_liability();
-					totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+					totalSI = totalSI + Float.parseFloat(a.getSuminsured());
 					f = f + a.getOur_liability();
 					TotalNumbreFac++;
-					c = c + Integer.parseInt(a.getSuminsured());
+					c = c + Float.parseFloat(a.getSuminsured());
 				} else {
 
-					if (Integer.parseInt(a.getSuminsured()) <= j
+					if (Float.parseFloat(a.getSuminsured()) <= j
 							+ SumInsuredPas
-							&& Integer.parseInt(a.getSuminsured()) > j) {
+							&& Float.parseFloat(a.getSuminsured()) > j) {
 						facultatives2.add(a);
 						totalLia = totalLia + a.getOur_liability();
-						totalSI = totalSI + Integer.parseInt(a.getSuminsured());
+						totalSI = totalSI + Float.parseFloat(a.getSuminsured());
 						f = f + a.getOur_liability();
 						TotalNumbreFac++;
-						c = c + Integer.parseInt(a.getSuminsured());
+						c = c + Float.parseFloat(a.getSuminsured());
 					}
 				}
 			}

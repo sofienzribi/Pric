@@ -93,7 +93,8 @@ public class MeasureServices implements MeasureServicesLocal {
 	@Override
 	public Measure GetWorkingMeasure() {
 		String jpql = "select u from Measure u where u.active =:param1 ";
-		Query query = entityManager.createQuery(jpql).setParameter("param1", true);
+		Query query = entityManager.createQuery(jpql).setParameter("param1",
+				true);
 		try {
 			return (Measure) query.getSingleResult();
 		} catch (Exception e) {
@@ -102,5 +103,19 @@ public class MeasureServices implements MeasureServicesLocal {
 			return null;
 		}
 
+	}
+
+	@Override
+	public Measure GetTestingMeasure() {
+		String jpql = "select u from Measure u where u.activeTest =:param1 ";
+		Query query = entityManager.createQuery(jpql).setParameter("param1",
+				true);
+		try {
+			return (Measure) query.getSingleResult();
+		} catch (Exception e) {
+
+			System.out.println("No Testing Measure");
+			return null;
+		}
 	}
 }

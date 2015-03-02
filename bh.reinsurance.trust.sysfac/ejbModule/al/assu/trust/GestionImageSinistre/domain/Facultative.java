@@ -2,15 +2,16 @@ package al.assu.trust.GestionImageSinistre.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * The persistent class for the facultative database table.
  * 
  */
 @Entity
-
 public class Facultative implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,6 +27,8 @@ public class Facultative implements Serializable {
 
 	private String insured;
 
+	private String year;
+
 	private String interest;
 
 	private String occupencies;
@@ -33,8 +36,18 @@ public class Facultative implements Serializable {
 	private String regions;
 
 	private String suminsured;
-	
+
 	private int our_liability;
+
+	private String Broker;
+
+	private String our_Share;
+
+	private String our_premium;
+
+	private String commission_Rate;
+	
+	private String Gross_Rate;
 
 	public Facultative() {
 	}
@@ -103,9 +116,6 @@ public class Facultative implements Serializable {
 		this.regions = regions;
 	}
 
-	
-	
-
 	public String getSuminsured() {
 		return suminsured;
 	}
@@ -113,6 +123,7 @@ public class Facultative implements Serializable {
 	public void setSuminsured(String suminsured) {
 		this.suminsured = suminsured;
 	}
+
 	public int getOur_liability() {
 		return our_liability;
 	}
@@ -121,5 +132,52 @@ public class Facultative implements Serializable {
 		this.our_liability = our_liability;
 	}
 
+	public String getGross_Rate() {
+		return Gross_Rate;
+	}
+
+	public void setGross_Rate(String gross_Rate) {
+		Gross_Rate = gross_Rate;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getBroker() {
+		return Broker;
+	}
+
+	public void setBroker(String broker) {
+		Broker = broker;
+	}
+
+	public String getOur_Share() {
+		return our_Share;
+	}
+
+	public void setOur_Share(String our_Share) {
+		this.our_Share = our_Share;
+	}
+
+	public String getOur_premium() {
+		return our_premium;
+	}
+
+	public void setOur_premium(String our_premium) {
+		this.our_premium = our_premium;
+	}
+
+	public String getCommission_Rate() {
+		return commission_Rate;
+	}
+
+	public void setCommission_Rate(String commission_Rate) {
+		this.commission_Rate = commission_Rate;
+	}
 
 }

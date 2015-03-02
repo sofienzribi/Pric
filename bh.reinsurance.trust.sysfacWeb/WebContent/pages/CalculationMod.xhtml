@@ -21,7 +21,7 @@
 								<p:ajax event="valueChange"
 									listener="#{facultativeBean.OnRegionChange()}"
 									update=":master :details :Details2" />
-								<f:selectItem itemLabel="All regions" />
+								<f:selectItem itemLabel="All regions" itemValue="all" />
 								<f:selectItems value="#{facultativeBean.reg}" var="cat"
 									itemValue="#{cat}" itemLabel="#{cat}" />
 							</p:selectOneMenu>
@@ -32,7 +32,7 @@
 								<p:ajax event="valueChange"
 									listener="#{facultativeBean.affichselec()}"
 									update=":master :details :Details2" />
-								<f:selectItem itemLabel="All countries." />
+								<f:selectItem itemLabel="All countries." itemValue="all"/>
 								<f:selectItems value="#{facultativeBean.countr}" var="cat"
 									itemValue="#{cat}" itemLabel="#{cat}" />
 							</p:selectOneMenu>
@@ -82,7 +82,7 @@
 						update=":details" />
 					<p:commandButton icon="ui-icon-plusthick"
 						action="#{facultativeBean.plusLiabilityBand()}" update=":details" />
-					<p:dataTable id="tbl" emptyMessage="no fac found!"
+					<p:dataTable id="tbl" emptyMessage="no Reuslt found!"
 						value="#{facultativeBean.sysfacus2}" var="prod" rows="10"
 						widgetVar="prodTabW">
 						<f:facet name="header">

@@ -83,6 +83,12 @@ public class FacultativeServices implements FacultativeServicesLocal {
 	@Override
 	public List<Facultative> GetFacBychoice(String region, String country,
 			String occupancy) {
+		if (region.equals("all")) {
+
+			Query query = entityManager
+					.createQuery("select a from Facultative a");
+			return query.getResultList();
+		}
 
 		if (region != null && country != null && occupancy != null) {
 

@@ -86,6 +86,47 @@ public class MeasureBean implements Serializable {
 	}
 
 	// methods
+	public void SetTestMeasure() throws IOException {
+		measure.setActiveTest(true);
+		measureServicesLocal.UpdateMeasure(measure);
+		measures = measureServicesLocal.GetAllMeasures();
+		for (int i = 0; i < measures.size(); i++) {
+			if (measures.get(i).getId() != measure.getId()) {
+				Measure measuree = measures.get(i);
+				measuree.setActiveTest(false);
+				measureServicesLocal.UpdateMeasure(measuree);
+			}
+		}
+		DisplayButtons = false;
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('POPMeasure').hide();");
+		measure = new Measure();
+		FacWorkingMeasure = measureServicesLocal.GetTestingMeasure();
+		System.out.println(FacWorkingMeasure.getId());
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("Summary2.jsf");
+	}
+
+	public void ResetMeasure() throws IOException {
+		measures = measureServicesLocal.GetAllMeasures();
+		for (int i = 0; i < measures.size(); i++) {
+
+			Measure measuree = measures.get(i);
+			measuree.setActiveTest(false);
+			measureServicesLocal.UpdateMeasure(measuree);
+
+		}
+		measure = new Measure();
+		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure();
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('POPMeasure').hide();");
+		DisplayButtons = false;
+
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("Summary2.jsf");
+
+	}
+
 	public void CreateMeasure() throws IOException {
 
 		if (measureServicesLocal.NameExist(Newmeasure.getName())) {

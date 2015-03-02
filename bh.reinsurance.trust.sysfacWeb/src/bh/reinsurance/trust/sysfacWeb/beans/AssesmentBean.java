@@ -39,6 +39,7 @@ public class AssesmentBean {
 	public void init() {
 		a = 0;
 		construction_Type = new Construction_Type();
+		System.out.println("work fac" + facWorkingMeasure.getId());
 		construction_Types = factorsServicesLocal
 				.GetConsttype(factorsServicesLocal.GetFactorByIdMeasure(
 						facWorkingMeasure.getId()).getId());

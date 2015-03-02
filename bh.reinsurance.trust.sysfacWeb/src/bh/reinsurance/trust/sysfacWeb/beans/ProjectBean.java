@@ -92,8 +92,8 @@ public class ProjectBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		DisabledButtonProject=false;
-		DisabledButtonProjectSendClose=true;
+		DisabledButtonProject = false;
+		DisabledButtonProjectSendClose = true;
 		DisplayRating = "none";
 		if (user2.getDepartment().equals("actuarialandrisk")) {
 			DisplayActuarial = "true";
@@ -121,9 +121,11 @@ public class ProjectBean implements Serializable {
 		projectsbyuser = local.GetProjectsByUser(user2);
 		DisplayProjectManagButton = false;
 		projects = local.GetAllProjects();
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('popup').hide();");
 
 	}
-	
+
 	public void DeleteProject() {
 		local.DeleteProject(proojectbyuser.getId());
 		Offer offer2 = offerServicesLocal.GetOffer(proojectbyuser.getId());
@@ -220,8 +222,8 @@ public class ProjectBean implements Serializable {
 			DisplayRating = "true";
 			projects = local.GetAllProjects();
 			projectsbyuser = local.GetProjectsByUser(user2);
-			DisabledButtonProject=true;
-			DisabledButtonProjectSendClose=false;
+			DisabledButtonProject = true;
+			DisabledButtonProjectSendClose = false;
 			return "Fac_info?faces-redirect=true";
 		}
 	}
@@ -236,7 +238,7 @@ public class ProjectBean implements Serializable {
 
 		Project proj = local.GetProjectById(id);
 		if (proj == null) {
-			return "The project was deleted by his owner";
+			return "The project has been deleted by his owner";
 		} else {
 			return proj.getNameOfTheProject();
 		}
@@ -271,8 +273,8 @@ public class ProjectBean implements Serializable {
 			PopDisplayed = false;
 			summary = summaryServicesLocal.GetSummary(project3.getId());
 			DisplayRating = "true";
-			DisabledButtonProject=true;
-			DisabledButtonProjectSendClose=false;
+			DisabledButtonProject = true;
+			DisabledButtonProjectSendClose = false;
 			return "Summary2?faces-redirect=true";
 		} else {
 
@@ -340,8 +342,8 @@ public class ProjectBean implements Serializable {
 			project = new Project();
 			PopDisplayed = false;
 			DisplayRating = "true";
-			DisabledButtonProject=true;
-			DisabledButtonProjectSendClose=false;
+			DisabledButtonProject = true;
+			DisabledButtonProjectSendClose = false;
 			summary = summaryServicesLocal.GetSummary(project3.getId());
 			return "Summary2?faces-redirect=true";
 		} else {
@@ -350,8 +352,8 @@ public class ProjectBean implements Serializable {
 				project = new Project();
 				PopDisplayed = false;
 				DisplayRating = "true";
-				DisabledButtonProject=true;
-				DisabledButtonProjectSendClose=false;
+				DisabledButtonProject = true;
+				DisabledButtonProjectSendClose = false;
 				summary = summaryServicesLocal.GetSummary(project3.getId());
 				return "Summary2?faces-redirect=true";
 			} else {
@@ -376,8 +378,8 @@ public class ProjectBean implements Serializable {
 		NumberProjectReceived = GetMails();
 		DisplayButtonMailBox = false;
 		mailBox = new MailBox();
-		DisabledButtonProject=true;
-		DisabledButtonProjectSendClose=false;
+		DisabledButtonProject = true;
+		DisabledButtonProjectSendClose = false;
 		DisplayRating = "true";
 		return "Summary2?faces-redirect=true";
 	}
@@ -386,8 +388,8 @@ public class ProjectBean implements Serializable {
 
 		project3 = new Project();
 		DisplayRating = "none";
-		DisabledButtonProject=false;
-		DisabledButtonProjectSendClose=true;
+		DisabledButtonProject = false;
+		DisabledButtonProjectSendClose = true;
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Project_Screen.jsf");
 	}

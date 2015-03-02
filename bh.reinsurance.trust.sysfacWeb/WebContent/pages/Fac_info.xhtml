@@ -26,7 +26,7 @@
 							<p:ajax event="valueChange"
 								listener="#{facultativeBean.OnRegionChange()}"
 								update=":master :details" />
-							<f:selectItem itemLabel="All regions" />
+							<f:selectItem itemLabel="All regions" itemValue="all" />
 							<f:selectItems value="#{facultativeBean.reg}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
 						</p:selectOneMenu>
@@ -35,8 +35,9 @@
 						<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
 							style="width:375px">
 							<p:ajax event="valueChange"
-								listener="#{facultativeBean.affichselec()}" update=":details" />
-							<f:selectItem itemLabel="All countries." />
+								listener="#{facultativeBean.affichselec()}"
+								update=":master :details" />
+							<f:selectItem itemLabel="select country" />
 							<f:selectItems value="#{facultativeBean.countr}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
 						</p:selectOneMenu>
@@ -47,7 +48,7 @@
 							style="width:375px">
 							<p:ajax event="valueChange"
 								listener="#{facultativeBean.affichselec()}" update=":details" />
-							<f:selectItem itemLabel="select one..." />
+							<f:selectItem itemLabel="select occupancy" />
 							<f:selectItems value="#{facultativeBean.occup}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
 						</p:selectOneMenu>

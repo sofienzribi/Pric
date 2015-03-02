@@ -8,7 +8,7 @@
 <h:head>
 	<title><ui:insert name="title"></ui:insert></title>
 	<h:outputStylesheet library="css" name="5670482863bb.css" />
-	
+
 </h:head>
 <h:body>
 	<ui:include src="/template/Tmphead.xhtml" />
@@ -16,9 +16,9 @@
 
 	<br />
 	<br />
-<div id="body">
-<div class="container">
-		
+	<div id="body">
+		<div class="container">
+
 			<div class="row">
 
 				<div class="col-xs-4">
@@ -39,10 +39,48 @@
 						</div>
 					</div>
 				</div>
+				<p:dialog modal="true" widgetVar="POPMeasure" id="POPMeasure">
+					<f:facet name="header">Change Measure</f:facet>
+					<h:form id="ee">
+						<p:dataTable style="width:650px" emptyMessage="No Measures found!"
+							value="#{measure.measures}" var="prod" rows="5" paginator="true"
+							paginatorPosition="bottom" selectionMode="single"
+							selection="#{measure.measure}" rowKey="#{prod.id}"
+							widgetVar="prodTab2">
+							<p:ajax event="rowSelect" update=":ee"
+								listener="#{measure.OnRowSelected()}" />
+							<f:facet name="header">Measures</f:facet>
+							<p:column headerText="Name">
+								<h:outputText value="#{prod.name}" />
+							</p:column>
+							<p:column headerText="Creation Date">
+								<h:outputText value="#{prod.creationDate}" />
+							</p:column>
+							<p:column headerText="User">
+								<h:outputText value="#{measure.GetUserName(prod.userId)}" />
+							</p:column>
+							<p:column headerText="Active Measure">
+								<h:outputText value="#{measure.testactive(prod.active)}" />
+							</p:column>
+							<p:column headerText="Testing Measure">
+								<h:outputText value="#{measure.testactive(prod.activeTest)}" />
+							</p:column>
+							<f:facet name="footer">
+								<p:commandButton value="Set Measure"
+									actionListener="#{measure.SetTestMeasure()}"
+									rendered="#{measure.displayButtons}" icon="ui-icon-check"
+									update=":ee" />
+								<p:commandButton value="Reset Measure"
+									actionListener="#{measure.ResetMeasure()}"
+									icon="ui-icon-refresh" update=":ee" />
+							</f:facet>
+						</p:dataTable>
+					</h:form>
+				</p:dialog>
 			</div>
 		</div>
 	</div>
-	
+
 </h:body>
 
 </html>

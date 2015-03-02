@@ -23,4 +23,7 @@ public interface MeasureServicesLocal {
 	public Measure GetMeasureByName(String Name);
 
 	public Measure GetWorkingMeasure();
+
+	public Measure GetTestingMeasure();
+
 }
