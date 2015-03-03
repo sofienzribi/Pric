@@ -176,7 +176,7 @@ public class MeasureBean implements Serializable {
 
 	}
 
-	public void MakeWorkingMeasure() throws IOException {
+	public void MakeWorkingMeasure() throws IOException, InterruptedException {
 		if (!PasswordCheck.equals("sofien")) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -197,6 +197,11 @@ public class MeasureBean implements Serializable {
 			}
 			RequestContext context = RequestContext.getCurrentInstance();
 			context.execute("PF('POPSET').hide();");
+			FacesContext.getCurrentInstance()
+			.addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"The Working measure was changed", ""));
 
 		}
 	}

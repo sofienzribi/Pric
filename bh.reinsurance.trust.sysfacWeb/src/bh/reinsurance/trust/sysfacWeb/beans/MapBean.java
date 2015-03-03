@@ -77,6 +77,8 @@ public class MapBean implements Serializable {
 	}
 
 	// tests
+	
+	
 	public void tryGrowl() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
@@ -114,6 +116,10 @@ public class MapBean implements Serializable {
 
 	public void setUser2(User user2) {
 		this.user2 = user2;
+	}
+	
+	public void addField(){
+		
 	}
 
 }

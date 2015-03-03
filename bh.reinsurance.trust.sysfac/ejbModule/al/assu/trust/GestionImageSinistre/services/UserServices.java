@@ -68,14 +68,22 @@ public class UserServices implements UserServicesLocal {
 
 	@Override
 	public List<User> GetAllUsers() {
-		return entityManager.createQuery("select p from User p ").getResultList();
-				
+		return entityManager.createQuery("select p from User p ")
+				.getResultList();
+
 	}
 
 	@Override
 	public String GetFirstAndLast(int id) {
-		User user3=entityManager.find(User.class, id);
-		return user3.getFirst_Name()+"  "+user3.getLast_Name();
+		User user3 = entityManager.find(User.class, id);
+		return user3.getFirst_Name() + "  " + user3.getLast_Name();
+	}
+
+	@Override
+	public void tryz() {
+		entityManager.createNativeQuery(
+				"ALTER TABLE ee ADD column_namef varchar(225)").executeUpdate();
+
 	}
 
 }

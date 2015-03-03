@@ -157,9 +157,6 @@ public class FacultativeBean implements Serializable {
 		sysfacus2 = new ArrayList<Sysfacus>();
 		TotalNumbreFac = 0;
 		int i = 1;
-		if (facbychoice.size() != 0) {
-			i = facbychoice.size();
-		}
 
 		int f = 0;
 		float c = 0;
@@ -179,18 +176,21 @@ public class FacultativeBean implements Serializable {
 					f = f + a.getOur_liability();
 					TotalNumbreFac++;
 					c = c + Float.parseFloat(a.getSuminsured());
-				} else {
+				} else
 
-					if (a.getOur_liability() <= j + PasLiability
-							&& a.getOur_liability() > j) {
-						facultatives2.add(a);
-						totalLia = totalLia + a.getOur_liability();
-						totalSI = totalSI + Float.parseFloat(a.getSuminsured());
-						f = f + a.getOur_liability();
-						TotalNumbreFac++;
-						c = c + Float.parseFloat(a.getSuminsured());
-					}
+				if (a.getOur_liability() <= j + PasLiability
+						&& a.getOur_liability() > j) {
+					facultatives2.add(a);
+					totalLia = totalLia + a.getOur_liability();
+					totalSI = totalSI + Float.parseFloat(a.getSuminsured());
+					f = f + a.getOur_liability();
+					TotalNumbreFac++;
+					c = c + Float.parseFloat(a.getSuminsured());
 				}
+
+			}
+			if (facultatives2.size() != 0) {
+				i = facultatives2.size();
 			}
 			if (TotalNumbreFac == 0) {
 				TotalNumbreFac = 1;
@@ -204,8 +204,8 @@ public class FacultativeBean implements Serializable {
 			TotalLiability = NumberFormat.getCurrencyInstance(us).format(
 					totalLia);
 
-			sysfacus.setAvglia(AvgLiability = NumberFormat.getCurrencyInstance(
-					us).format((f / i)));
+			sysfacus.setAvglia(NumberFormat.getCurrencyInstance(us).format(
+					(f / i)));
 			sysfacus.setNbr(facultatives2.size());
 			sysfacus.setSum(NumberFormat.getCurrencyInstance(us).format(c));
 			sysfacus.setFrom(NumberFormat.getCurrencyInstance(us).format(j));
@@ -225,7 +225,7 @@ public class FacultativeBean implements Serializable {
 	public void Filllist2() {
 		sysfacus2 = new ArrayList<Sysfacus>();
 		TotalNumbreFac = 0;
-		int i = facbychoice.size();
+		int i = 1;
 		int f = 0;
 		float c = 0;
 		float totalSI = 0;
@@ -259,7 +259,12 @@ public class FacultativeBean implements Serializable {
 					}
 				}
 			}
-
+			if (facultatives2.size() != 0) {
+				i = facultatives2.size();
+			}
+			if (TotalNumbreFac == 0) {
+				TotalNumbreFac = 1;
+			}
 			sysfacus.setLia(liab = NumberFormat.getCurrencyInstance(us).format(
 					f));
 			AVgLiability = NumberFormat.getCurrencyInstance(us).format(

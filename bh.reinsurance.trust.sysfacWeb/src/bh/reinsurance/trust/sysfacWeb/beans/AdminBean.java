@@ -25,7 +25,8 @@ public class AdminBean implements Serializable {
 	private User user;
 	@EJB
 	private UserServicesLocal local;
-
+	
+	
 	public AdminBean() {
 	}
 

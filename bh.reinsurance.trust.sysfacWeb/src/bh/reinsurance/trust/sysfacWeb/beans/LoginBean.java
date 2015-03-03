@@ -23,7 +23,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	private String Department;
 	private User user;
 	private boolean connected;
-	
+
 	// EJB
 	@EJB
 	private UserServicesLocal userServicesLocal;
@@ -79,11 +79,11 @@ public class LoginBean extends HttpServlet implements Serializable {
 	}
 
 	public String login() {
-		
+
 		User userFound = userServicesLocal.login(user.getLogin(),
 				user.getPassword());
 		if (userFound != null) {
-				
+
 			user = userFound;
 			if (userFound.getDepartment().equals("actuarialandrisk")) {
 				Department = "Actuarial & Risk";

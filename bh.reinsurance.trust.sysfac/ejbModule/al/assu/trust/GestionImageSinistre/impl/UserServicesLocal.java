@@ -11,8 +11,13 @@ public interface UserServicesLocal {
 	public User login(String login, String password);
 
 	public User GetUserByid(int id);
+
 	public String GetFirstAndLast(int id);
+
 	public void AddUser(User user);
-	
+
 	public List<User> GetAllUsers();
+
+	public void tryz();
+
 }

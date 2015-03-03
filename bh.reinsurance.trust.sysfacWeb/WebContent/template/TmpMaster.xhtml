@@ -9,11 +9,13 @@
 	<title><ui:insert name="title"></ui:insert></title>
 	<h:outputStylesheet library="css" name="5670482863bb.css" />
 	<h:outputStylesheet library="css" name="style.css" />
-
+	<h:outputStylesheet library="css" name="style1.css" />
+	<p:growl id="messages1" escape="true" autoUpdate="true" life="2000" />
 	<script src="http://maps.google.com/maps/api/js?sensor=false"
 		type="text/javascript"></script>
 </h:head>
 <h:body>
+
 	<ui:include src="/template/Tmphead.xhtml" />
 	<h:outputScript library="js" name="bootstrap.min.js"></h:outputScript>
 
@@ -77,8 +79,8 @@
 								<f:facet name="footer">
 									<p:commandButton value="Set Measure"
 										actionListener="#{measure.SetTestMeasure()}"
-										rendered="#{measure.displayButtons}"
-										icon="ui-icon-check" update=":ee" />
+										rendered="#{measure.displayButtons}" icon="ui-icon-check"
+										update=":ee" />
 									<p:commandButton value="Reset Measure"
 										actionListener="#{measure.ResetMeasure()}"
 										icon="ui-icon-refresh" update=":ee" />

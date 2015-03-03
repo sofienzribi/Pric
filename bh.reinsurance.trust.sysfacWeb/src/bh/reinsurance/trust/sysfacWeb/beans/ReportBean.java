@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -42,6 +44,13 @@ public class ReportBean {
 
 	}
 
+	public void ff() {
+		FacesContext.getCurrentInstance().addMessage(
+				"messages1",
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "No .",
+						"What are you doing over there?"));
+	}
+
 	public void init() throws JRException {
 
 		RequestContext context = RequestContext.getCurrentInstance();
@@ -67,7 +76,11 @@ public class ReportBean {
 				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popuppdf').hide();");
-
+		FacesContext.getCurrentInstance()
+				.addMessage(
+						"messages1",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"File Created", ""));
 	}
 
 	public void ReportByBands(List<Sysfacus> sysfacus) throws JRException {
@@ -78,8 +91,14 @@ public class ReportBean {
 				new HashMap(), beanCollectionDataSource));
 		JasperExportManager.exportReportToPdfFile(jasperPrint,
 				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
+
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popuppdf').hide();");
+		FacesContext.getCurrentInstance()
+				.addMessage(
+						"messages1",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"File Created", ""));
 	}
 
 	public void ExportToPDF() throws JRException, IOException {

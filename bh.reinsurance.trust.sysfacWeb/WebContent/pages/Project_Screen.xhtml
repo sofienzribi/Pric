@@ -64,14 +64,14 @@
 
 			<p:dialog header="New Project" modal="true" widgetVar="popup">
 				<h:form id="form2">
-				<p:messages id="messagesd" autoUpdate="true" closable="true" />
+					<p:messages id="messagesd" autoUpdate="true" closable="true" />
 					<h:panelGrid columns="3">
 					
 						<p:outputLabel for="Name" value="Name of the project : " />
 						<p:inputText id="Name"
 							value="#{projectBean.project2.nameOfTheProject}" required="true"
-							requiredMessage="Name Required" />
-						<p:message id="namemsg" for="Name" />
+							requiredMessage="Name Required"  />
+						<p:message id="namemsg" for="Name" display="icon"  />
 						<p:outputLabel for="privacy" value="Privacy : " />
 						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
 							required="true" rendered="true"
@@ -88,7 +88,7 @@
 							disabled="#{projectBean.passwordmsg}"
 							value="#{projectBean.project2.password}"
 							requiredMessage="Please enter a password"></p:password>
-						<p:message id="passmsg" for="pass" />
+						<p:message id="passmsg" for="pass" display="icon" />
 						<p:outputLabel value="Use account password : "></p:outputLabel>
 						<p:selectBooleanCheckbox value="#{projectBean.checkbox}"
 							disabled="#{projectBean.checkboxDisplay}">
