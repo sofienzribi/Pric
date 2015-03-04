@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<p:growl widgetVar="growl" id="growl" showDetail="true" sticky="true"
+		autoUpdate="true" />
+	<h:form>
+		<p:remoteCommand name="fd" actionListener="#{admin.tt()}"></p:remoteCommand>
+	</h:form>
+
+	<p:socket onMessage="handleMessage" channel="/rr"
+		transport="long-polling" />
+
+	<script type="text/javascript">
+        function handleMessage(facesmessage) {
+        fd();
+            
+        }
+</script>
+
+</h:body>
+</html>

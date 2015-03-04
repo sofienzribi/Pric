@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -25,18 +24,10 @@ import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 @SessionScoped
 public class MapBean implements Serializable {
 
-	/**
-	 * 
-	 */
-
-	
 	private MapModel simpleModel;
 	private Marker marker;
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
 	public MapBean() {
 		user2 = new User();
 
@@ -77,11 +68,9 @@ public class MapBean implements Serializable {
 	}
 
 	// tests
-	
-	
+
 	public void tryGrowl() {
 		FacesContext context = FacesContext.getCurrentInstance();
-
 		context.addMessage(null, new FacesMessage("Successful",
 				"Your message: azerty "));
 	}
@@ -102,7 +91,6 @@ public class MapBean implements Serializable {
 				filteredThemes.add(skin);
 			}
 		}
-
 		return filteredThemes;
 	}
 
@@ -117,9 +105,9 @@ public class MapBean implements Serializable {
 	public void setUser2(User user2) {
 		this.user2 = user2;
 	}
-	
-	public void addField(){
-		
+
+	public void addField() {
+
 	}
 
 }

@@ -316,9 +316,9 @@ public class ProjectBean implements Serializable {
 
 	public void refreshtable2() {
 		projects = local.GetAllProjects();
-
+	
 	}
-
+	
 	public String getPrivacy(boolean a) {
 		if (a == true) {
 			return "Public";

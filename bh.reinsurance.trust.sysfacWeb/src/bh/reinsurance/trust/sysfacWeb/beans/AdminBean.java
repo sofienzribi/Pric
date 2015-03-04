@@ -8,8 +8,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.FlowEvent;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
@@ -25,8 +28,7 @@ public class AdminBean implements Serializable {
 	private User user;
 	@EJB
 	private UserServicesLocal local;
-	
-	
+
 	public AdminBean() {
 	}
 
@@ -51,12 +53,25 @@ public class AdminBean implements Serializable {
 	public void addUser() {
 		System.out.println(user.getEmail());
 		local.AddUser(user);
-		 FacesContext context = FacesContext.getCurrentInstance();
-         
-	        context.addMessage(null, new FacesMessage("Successful",  "Your message: ") );
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		context.addMessage(null, new FacesMessage("Successful",
+				"Your message: "));
 		FacesContext.getCurrentInstance().getExternalContext()
 				.invalidateSession();
-			
+
 	}
 
+	public void tt() {
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		context.addMessage("growl", new FacesMessage("Successful",
+				"Your message: "));
+	}
+
+	public void ff(ActionEvent actionEvent) {
+		EventBus eventBus = EventBusFactory.getDefault().eventBus();
+		eventBus.publish("/rr", new FacesMessage("zz", "ss"));
+		System.out.println("sdf");
+	}
 }
