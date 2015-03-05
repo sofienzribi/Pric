@@ -27,6 +27,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -34,6 +35,7 @@ import org.primefaces.model.map.Marker;
 
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
+
 
 @ManagedBean(name = "MapBean", eager = true)
 @SessionScoped
@@ -109,6 +111,24 @@ public class MapBean implements Serializable {
 		return filteredThemes;
 	}
 
+	public User Finduserbyname(int id) {
+		return local.GetUserByid(id);
+	}
+
+	public User getUser2() {
+		return user2;
+	}
+
+	public void setUser2(User user2) {
+		this.user2 = user2;
+	}
+
+	public void addField() {
+
+	}
+
+	private UploadedFile uploadedFile;
+
 	public void sendMail() {
 		String to = "sofien.zribi@esprit.tn";// change accordingly
 		String from = "sofien.zribi@esprit.tn";
@@ -120,11 +140,11 @@ public class MapBean implements Serializable {
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 		Session session = Session.getInstance(props,
-				  new javax.mail.Authenticator() {
+				new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(username, password);
 					}
-				  });
+				});
 
 		try {
 			MimeMessage message = new MimeMessage(session);
@@ -143,8 +163,9 @@ public class MapBean implements Serializable {
 		}
 
 	}
+
 	public void sendMailWithAtta() {
-		String to = "sofien.zribi@esprit.tn";// change accordingly
+		String to = "omar.azzabi@esprit.tn";// change accordingly
 		String from = "sofien.zribi@esprit.tn";
 		final String username = "sofien.zribi@esprit.tn";
 		final String password = "azertycode0000";
@@ -154,40 +175,40 @@ public class MapBean implements Serializable {
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 		Session session = Session.getInstance(props,
-				  new javax.mail.Authenticator() {
+				new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(username, password);
 					}
-				  });
+				});
 
 		try {
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					to));
-			message.setSubject("Ping");
+			message.setSubject("paraprpa");
 			BodyPart messageBodyPart = new MimeBodyPart();
 
-	         // Fill the message
-	         messageBodyPart.setText("This is message body");
-	         
-	         // Create a multipar message
-	         Multipart multipart = new MimeMultipart();
+			// Fill the message
+			messageBodyPart.setText("try 1 try 1");
 
-	         // Set text message part
-	         multipart.addBodyPart(messageBodyPart);
+			// Create a multipar message
+			Multipart multipart = new MimeMultipart();
 
-	         // Part two is attachment
-	         messageBodyPart = new MimeBodyPart();
-	         String filename = "/Users/zribisofien/Desktop/ListOfCountries.txt";
-	         DataSource source = new FileDataSource(filename);
-	         messageBodyPart.setDataHandler(new DataHandler(source));
-	         messageBodyPart.setFileName(filename);
-	         multipart.addBodyPart(messageBodyPart);
+			// Set text message part
+			multipart.addBodyPart(messageBodyPart);
 
-	         // Send the complete message parts
-	         message.setContent(multipart );
-	         System.out.println("message created successfully....");
+			// Part two is attachment
+			messageBodyPart = new MimeBodyPart();
+			String filename = "/Users/zribisofien/Desktop/PDFGEN/liab.pdf";
+			DataSource source = new FileDataSource(filename);
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName(filename);
+			multipart.addBodyPart(messageBodyPart);
+
+			// Send the complete message parts
+			message.setContent(multipart);
+			System.out.println("message created successfully....");
 			// Send message
 			Transport.send(message);
 			System.out.println("message sent successfully....");
@@ -198,20 +219,23 @@ public class MapBean implements Serializable {
 
 	}
 
-	public User Finduserbyname(int id) {
-		return local.GetUserByid(id);
+	public void retfile() {
+		
+		if (uploadedFile != null) {
+
+			System.out.println(uploadedFile.getFileName());
+		} else {
+
+			System.out.println("nulyéwi");
+		}
 	}
 
-	public User getUser2() {
-		return user2;
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
 	}
 
-	public void setUser2(User user2) {
-		this.user2 = user2;
-	}
-
-	public void addField() {
-
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
 	}
 
 }

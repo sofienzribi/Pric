@@ -7,8 +7,13 @@
 </h:head>
 <h:body>
 
-	<h:form id="dd">
-		<p:commandButton value="rrr" actionListener="#{MapBean.sendMail()}" />
+	<h:form id="dd" enctype="multipart/form-data">
+		<p:commandButton value="rrr"
+			actionListener="#{MapBean.sendMailWithAtta()}" />
+		<p:fileUpload value="#{MapBean.uploadedFile}" mode="simple"
+			skinSimple="true" dragDropSupport="true"></p:fileUpload>
+		<p:commandButton ajax="false" value="re"
+			actionListener="#{MapBean.retfile()}" />
 	</h:form>
 
 </h:body>

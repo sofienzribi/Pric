@@ -23,7 +23,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	private String Department;
 	private User user;
 	private boolean connected;
-
+	private String theme = "redmond";
 	// EJB
 	@EJB
 	private UserServicesLocal userServicesLocal;
@@ -92,11 +92,13 @@ public class LoginBean extends HttpServlet implements Serializable {
 				if (userFound.getDepartment().equals("actuarialandrisk")) {
 					Department = "Actuarial & Risk";
 					connected = true;
+					theme = "redmond";
 					return "pages/Fac_info?faces-redirect=true";
 
 				} else {
 					Department = "Facultative Department";
 					connected = true;
+					theme = "blitzer";
 					return "pages/Fac_info?faces-redirect=true";
 				}
 			}
@@ -133,6 +135,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void setConnected(boolean connected) {
 		this.connected = connected;
+	}
+
+	public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 
 }
