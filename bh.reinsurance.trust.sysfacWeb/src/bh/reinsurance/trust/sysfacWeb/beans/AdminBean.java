@@ -56,7 +56,7 @@ public class AdminBean implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		context.addMessage(null, new FacesMessage("Successful",
-				"Your message: "));
+				" "));
 		FacesContext.getCurrentInstance().getExternalContext()
 				.invalidateSession();
 

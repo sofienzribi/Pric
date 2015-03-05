@@ -15,6 +15,7 @@
 		<class>al.assu.trust.GestionImageSinistre.domain.Project</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Summary</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.User</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Loss_Frequency</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	
+			<h:form id="Form1">
+				<p:growl id="gorwl1" sticky="true" showDetail="true"></p:growl>
+				<p:wizard flowListener="#{admin.OnFlowProcess}">
+					<p:tab id="Personal" title="Personal">
+						<p:panel header="Personal Details">
+							<p:messages />
+							<p:panelGrid columns="2">
+								<h:outputText value="First Name" />
+								<p:inputText label="First Name" value="#{admin.user.first_Name}"
+									required="true" />
+								<h:outputText value="Last Name" />
+								<p:inputText label="Last Name" value="#{admin.user.last_Name}" />
+							</p:panelGrid>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="Statut" title="Statut">
+						<p:panel header="Statut Details">
+							<p:messages />
+							<p:panelGrid columns="2">
+								<h:outputText value="Job_Title" />
+								<p:inputText label="Job_Title" value="#{admin.user.job_title}"
+									required="true" />
+								<h:outputText value="Department" />
+								<p:inputText label="Department" value="#{admin.user.department}"
+									required="true" />
+								<h:outputText value="Floor" />
+								<p:inputText label="Floor" value="#{admin.user.floor}"
+									required="true" />
+							</p:panelGrid>
+						</p:panel>
+					</p:tab>
+					<p:tab id="Crendentials" title="Credentials">
+						<p:panel header="Credentials Details">
+							<p:messages />
+							<p:panelGrid columns="2">
+								<h:outputText value="Login" />
+								<p:inputText label="Login" value="#{admin.user.login}"
+									required="true" />
+								<h:outputText value="Password" />
+								<p:inputText label="Pawwsord" value="#{admin.user.password}"
+									required="true" />
+								<h:outputText value="Email" />
+								<p:inputText label="Email" value="#{admin.user.email}"
+									required="true" />
+
+							</p:panelGrid>
+
+						</p:panel>
+					</p:tab>
+
+
+
+					<p:tab id="Confirmation" title="Confirmation">
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Firstname : " />
+							<h:outputText value="#{admin.user.first_Name}"
+								styleClass="outputLabel" />
+
+							<h:outputText value="Lastname : " />
+							<h:outputText value="#{admin.user.last_Name}"
+								styleClass="outputLabel" />
+
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Job_Title :  " />
+							<h:outputText value="#{admin.user.job_title}"
+								styleClass="outputLabel" />
+
+							<h:outputText value="Department :  " />
+							<h:outputText value="#{admin.user.department}"
+								styleClass="outputLabel" />
+
+							<h:outputText value="Floor :  " />
+							<h:outputText value="#{admin.user.floor}"
+								styleClass="outputLabel" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Login :  " />
+							<h:outputText value="#{admin.user.login}"
+								styleClass="outputLabel" />
+
+							<h:outputText value="Password :  " />
+							<h:outputText value="#{admin.user.password}"
+								styleClass="outputLabel" />
+
+							<h:outputText value="Email :  " />
+							<h:outputText value="#{admin.user.email}" />
+
+							<h:outputText />
+							<h:outputText />
+						</h:panelGrid>
+						<p:commandButton process="@this" value="Add user"
+							actionListener="#{admin.addUser()}" update="@this">
+						</p:commandButton>
+					</p:tab>
+
+				</p:wizard>
+			</h:form>
+		
+</h:body>
+</html>

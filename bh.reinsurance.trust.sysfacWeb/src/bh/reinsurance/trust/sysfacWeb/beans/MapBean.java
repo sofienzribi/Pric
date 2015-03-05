@@ -3,13 +3,28 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
@@ -92,6 +107,95 @@ public class MapBean implements Serializable {
 			}
 		}
 		return filteredThemes;
+	}
+
+	public void sendMail() {
+		String to = "sofien.zribi@esprit.tn";// change accordingly
+		String from = "sofien.zribi@esprit.tn";
+		final String username = "sofien.zribi@esprit.tn";
+		final String password = "azertycode0000";
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		Session session = Session.getInstance(props,
+				  new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				  });
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					to));
+			message.setSubject("Ping");
+			message.setText("Hello, this is example of sending email  ");
+			System.out.println("well done sofien");
+			// Send message
+			Transport.send(message);
+			System.out.println("message sent successfully....");
+		} catch (MessagingException e) {
+			System.out.println("ff sofien");
+			e.printStackTrace();
+		}
+
+	}
+	public void sendMailWithAtta() {
+		String to = "sofien.zribi@esprit.tn";// change accordingly
+		String from = "sofien.zribi@esprit.tn";
+		final String username = "sofien.zribi@esprit.tn";
+		final String password = "azertycode0000";
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		Session session = Session.getInstance(props,
+				  new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				  });
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					to));
+			message.setSubject("Ping");
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+	         // Fill the message
+	         messageBodyPart.setText("This is message body");
+	         
+	         // Create a multipar message
+	         Multipart multipart = new MimeMultipart();
+
+	         // Set text message part
+	         multipart.addBodyPart(messageBodyPart);
+
+	         // Part two is attachment
+	         messageBodyPart = new MimeBodyPart();
+	         String filename = "/Users/zribisofien/Desktop/ListOfCountries.txt";
+	         DataSource source = new FileDataSource(filename);
+	         messageBodyPart.setDataHandler(new DataHandler(source));
+	         messageBodyPart.setFileName(filename);
+	         multipart.addBodyPart(messageBodyPart);
+
+	         // Send the complete message parts
+	         message.setContent(multipart );
+	         System.out.println("message created successfully....");
+			// Send message
+			Transport.send(message);
+			System.out.println("message sent successfully....");
+		} catch (MessagingException e) {
+			System.out.println("ff sofien");
+			e.printStackTrace();
+		}
+
 	}
 
 	public User Finduserbyname(int id) {

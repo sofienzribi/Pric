@@ -23,4 +23,5 @@ public interface FactorsServicesLocal {
 			int idFactor);
 
 	public Construction_Type FindConstById(int id);
+
 }

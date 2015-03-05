@@ -41,12 +41,19 @@ public class FactorsServices implements FactorsServicesLocal {
 	}
 
 	@Override
-	public List<Construction_Type> GetConsttype(int factors) {
+	public List<Construction_Type> GetConsttype(int object) {
 		return entityManager
 				.createQuery(
 						"select p from Construction_Type p where p.idFactor=:c")
-				.setParameter("c", factors).getResultList();
+				.setParameter("c", object).getResultList();
 	}
+
+	/*
+	 * @Override public List<Object> GetConsttype(int factors) { return
+	 * entityManager .createQuery(
+	 * "select p from Construction_Type p where p.idFactor=:c")
+	 * .setParameter("c", factors).getResultList(); }
+	 */
 
 	@Override
 	public Factors GetFactorByIdMeasure(int id) {
