@@ -29,7 +29,7 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Admin_add_user.jsf");
 	}
-
+	
 	public void GoToCalcTool() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("CalculationMod.jsf");

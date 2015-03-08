@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import al.assu.trust.GestionImageSinistre.domain.Construction_Type;
 import al.assu.trust.GestionImageSinistre.domain.Factors;
+import al.assu.trust.GestionImageSinistre.domain.Loss_Frequency;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 
 /**
@@ -96,6 +97,19 @@ public class FactorsServices implements FactorsServicesLocal {
 	@Override
 	public Construction_Type FindConstById(int id) {
 		return entityManager.find(Construction_Type.class, id);
+	}
+
+	@Override
+	public List<Loss_Frequency> getloss(int facors) {
+		Query query = entityManager.createQuery(
+				"select p from Loss_Frequency p where p.IdFactor=:c")
+				.setParameter("c", facors);
+
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

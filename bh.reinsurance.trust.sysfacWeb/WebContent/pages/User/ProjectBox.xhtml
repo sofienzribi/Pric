@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">ProjectBox </ui:define>
+
+		<ui:define name="content">
+			<h:form id="Mainform">
+				<p:dataTable style="width:500px" emptyMessage="no Mails found!"
+					value="#{projectBean.mailBoxs}" var="prod" rows="5"
+					rowStyleClass="#{prod.state eq 'NOT SEEN' ? 'old' : null}"
+					paginator="true" paginatorPosition="bottom" selectionMode="single"
+					selection="#{projectBean.mailBox}" rowKey="#{prod.id}"
+					widgetVar="prodTab">
+					<p:ajax event="rowSelect" listener="#{projectBean.OnRowSelect()}"
+						update=":Mainform" />
+
+					<f:facet name="header">ProjectBox</f:facet>
+					<p:column headerText="From">
+						<h:outputText
+							value="#{projectBean.GetUserName(prod.user_sending_id)}" />
+					</p:column>
+					<p:column headerText="Project Name">
+						<h:outputText
+							value="#{projectBean.GetNameOfTheProject(prod.id_project)}" />
+					</p:column>
+					<p:column headerText="Message ">
+						<h:outputText value="#{prod.message}" />
+					</p:column>
+					<p:column headerText="Date">
+						<h:outputText value="#{prod.sentDate}" />
+					</p:column>
+
+					<f:facet name="footer">
+						<p:commandButton value="Refresh"
+							actionListener="#{projectBean.refreshtable()}"
+							icon="ui-icon-refresh" update="@form" />
+
+						<p:commandButton value="Open" icon="ui-icon-mail-open"
+							action="#{projectBean.OpeningSentProject()}"
+							rendered="#{projectBean.displayButtonMailBox}" />
+
+						<p:commandButton value="Delete" icon="ui-icon-trash"
+							rendered="#{projectBean.diplayDeleteButton}"
+							actionListener="#{projectBean.DeleteMailBox()}"
+							update=":Mainform">
+							<p:confirm header="Confirmation"
+								message="Are you sure that you want to delete this message?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</f:facet>
+				</p:dataTable>
+
+				<p:confirmDialog global="true" showEffect="fade">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

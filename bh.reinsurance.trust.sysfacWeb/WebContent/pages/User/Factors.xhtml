@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title"> Factors </ui:define>
+		<ui:define name="content">
+			<p:panelGrid columns="2" >
+	<f:facet name="header"> Factors</f:facet>			
+				
+				<p:column>
+					<h:form id="Form1">
+						<p:dataTable emptyMessage="No Construction Types!"
+							value="#{factorsBean.construction_Types}" var="prod" rows="5"
+							paginator="true" paginatorPosition="bottom"
+							selectionMode="single"
+							selection="#{factorsBean.construction_Type}" rowKey="#{prod.id}"
+							widgetVar="ConstTab" style="width:300px">
+							<f:facet name="header">
+								<p:outputLabel>Construction type</p:outputLabel>
+							</f:facet>
+							<p:column headerText="Category">
+								<h:outputText value="#{prod.category}" />
+							</p:column>
+							<p:column headerText="Load">
+								<h:outputText value="#{prod.loading} %" />
+							</p:column>
+							<f:facet name="footer">
+								<p:commandButton icon="ui-icon-plusthick"
+									onclick="PF('Popup').show()" />
+								<p:commandButton icon="ui-icon-trash"
+									actionListener="#{factorsBean.DeleteConstructionType()}"
+									update=":Form1">
+									<p:confirm header="Confirmation" message="Are you sure  ?"
+										icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:commandButton icon=" ui-icon-pencil"
+									onclick="PF('Popup2').show()" />
+							</f:facet>
+						</p:dataTable>
+					</h:form>
+					<p:confirmDialog global="true" showEffect="fade">
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+					<h:form id="Form2">
+						<p:dialog modal="true" widgetVar="Popup" id="Popup">
+							<p:messages id="messagesd" autoUpdate="true" closable="true" />
+							<f:facet name="header">New Construction Type</f:facet>
+							<h:panelGrid columns="2">
+								<p:outputLabel for="Category" value="Category : " />
+								<p:inputText id="Category"
+									value="#{factorsBean.construction_Type2.category}"
+									required="true" requiredMessage="Category Required" />
+								<p:outputLabel for="Load" value="Load :  " />
+								<p:inputText id="Load"
+									value="#{factorsBean.construction_Type2.loading}"
+									required="true" requiredMessage="Load Required" />
+							</h:panelGrid>
+							<p:commandButton value="Save" icon="ui-icon-check"
+								actionListener="#{factorsBean.CreateConstructionType()}"
+								update=":Form1" />
+						</p:dialog>
+					</h:form>
+					<h:form id="Form3">
+						<p:dialog modal="true" widgetVar="Popup2" id="Popup2">
+							<p:messages id="messagesf" autoUpdate="true" closable="true" />
+							<f:facet name="header">Update Construction Type</f:facet>
+							<h:panelGrid columns="2">
+								<p:outputLabel for="Category1" value="Category : " />
+								<p:inputText id="Category1"
+									value="#{factorsBean.construction_Type.category}"
+									required="true" requiredMessage="Category Required" />
+								<p:outputLabel for="Load1" value="Load :  " />
+								<p:inputText id="Load1"
+									value="#{factorsBean.construction_Type.loading}"
+									required="true" requiredMessage="Load Required" />
+							</h:panelGrid>
+							<p:commandButton value="Update" icon="ui-icon-check"
+								actionListener="#{factorsBean.UpdateConstructionType()}"
+								update=":Form1" />
+						</p:dialog>
+					</h:form>
+</p:column>
+<p:column>
+					<h:form id="Form6">
+						<p:dataTable emptyMessage="No Loss Types!"
+							value="#{factorsBean.loss_Frequencies}" var="prod" rows="5"
+							paginator="true" paginatorPosition="bottom"
+							selectionMode="single" selection="#{factorsBean.loss_Frequency}"
+							rowKey="#{prod.id}" widgetVar="lossTab" style="width:300px">
+							<f:facet name="header">
+								<p:outputLabel>Loss Frequency</p:outputLabel>
+							</f:facet>
+							<p:column headerText="Category">
+								<h:outputText value="#{prod.loss_Ratio}" />
+							</p:column>
+							<p:column headerText="Load">
+								<h:outputText value="#{prod.charge} %" />
+							</p:column>
+							<f:facet name="footer">
+								<p:commandButton icon="ui-icon-plusthick"
+									onclick="PF('Popup2').show()" />
+								<p:commandButton icon="ui-icon-trash"
+									actionListener="#{factorsBean.deleteLoss()}" update=":Form6">
+									<p:confirm header="Confirmation" message="Are you sure  ?"
+										icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:commandButton icon=" ui-icon-pencil"
+									onclick="PF('Popup2').show()" />
+							</f:facet>
+						</p:dataTable>
+					</h:form>
+					<p:confirmDialog global="true" showEffect="fade">
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+					<h:form id="Form5">
+						<p:dialog modal="true" widgetVar="Popup2" id="Popup2">
+							<p:messages id="messagesd" autoUpdate="true" closable="true" />
+							<f:facet name="header">New loss Type</f:facet>
+							<h:panelGrid columns="2">
+								<p:outputLabel for="loss" value="Loss_Ration : " />
+								<p:inputText id="loss"
+									value="#{factorsBean.loss_Frequency2.loss_Ratio}"
+									required="true" requiredMessage="Category Required" />
+								<p:outputLabel for="Charge" value="Charge :  " />
+								<p:inputText id="Charge"
+									value="#{factorsBean.loss_Frequency2.charge}" required="true"
+									requiredMessage="Load Required" />
+							</h:panelGrid>
+							<p:commandButton value="Save" icon="ui-icon-check"
+								actionListener="#{factorsBean.createLossRtaino()}"
+								update=":Form6" />
+						</p:dialog>
+					</h:form>
+					</p:column>
+					
+			</p:panelGrid>
+			
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bh.reinsurance.trust.sysfacWeb.beans.LoginBean;
 
-@WebFilter("/pages/*")
+@WebFilter("/pages/User/*")
 public class FilterAuthentification implements Filter {
 
 	@Override

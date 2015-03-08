@@ -6,24 +6,25 @@
 <h:head>
 </h:head>
 <h:body>
-<h2>ADMIN ZONE TEST</h2>
+	<h2>ADMIN ZONE TEST</h2>
 	<p:growl widgetVar="growl" id="growl" showDetail="true" sticky="true"
 		autoUpdate="true" />
 	<h:form>
-		<p:remoteCommand name="fd" actionListener="#{admin.tt()}"></p:remoteCommand>
+	
 		<p:commandButton value="AddUser"
-		actionListener="#{redirectionBean.GoToAddAdminUser()}"></p:commandButton>
+			actionListener="#{redirectionBean.GoToAddAdminUser()}"></p:commandButton>
 		<p:commandButton value="SendMsgToUSers" actionListener="#{admin.ff}" />
 	</h:form>
-	
-	
+
+
 	<p:socket onMessage="handleMessage" channel="/rr"
 		transport="long-polling" />
 
 	<script type="text/javascript">
         function handleMessage(facesmessage) {
-        fd();
+        	facesmessage.severity = 'info';
             
+            PF('growl').show([facesmessage]);
         }
 </script>
 

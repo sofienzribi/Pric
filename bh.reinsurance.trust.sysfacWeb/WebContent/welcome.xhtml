@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:head>
 </h:head>
 <h:body>
@@ -15,6 +16,22 @@
 		<p:commandButton ajax="false" value="re"
 			actionListener="#{MapBean.retfile()}" />
 	</h:form>
+	
+	
+	<h:form id="f">
+		<p:tabView>
+			<p:tab title="URL">
+
+				<ui:include src="/pages/Chart_Page.xhtml" />
+			</p:tab>
+			<p:tab title="Resource">
+				<pe:documentViewer height="500" library="css" name="e.pdf" />
+			</p:tab>
+
+		</p:tabView>
+	</h:form>
+
+
 
 </h:body>
 </html>

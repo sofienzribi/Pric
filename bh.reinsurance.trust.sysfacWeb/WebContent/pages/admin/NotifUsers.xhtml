@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/masteradm.xhtml">
+		<ui:define name="title">Notify Users</ui:define>
+		<ui:define name="content">
+
+			<h:form id="Notif">
+				<p:panelGrid columns="2" >
+				<f:facet name="header">User Notification</f:facet>
+					<p:outputLabel value="Title" />
+					<p:inputText value="#{admin.title}" required="true"
+						requiredMessage="Title required"></p:inputText>
+					<p:outputLabel value="Message" />
+					<p:inputTextarea value="#{admin.messa}" required="true"
+						requiredMessage="Message Required"></p:inputTextarea>
+				</p:panelGrid>
+
+				<p:commandButton value="SendMsgToUSers" actionListener="#{admin.ff}" />
+
+
+
+			</h:form>
+
+
+
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

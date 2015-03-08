@@ -148,5 +148,6 @@ public class ReportBean {
 	public void setFacultativesbychoice(List<Facultative> facultativesbychoice) {
 		this.facultativesbychoice = facultativesbychoice;
 	}
+	// aaz
 
 }

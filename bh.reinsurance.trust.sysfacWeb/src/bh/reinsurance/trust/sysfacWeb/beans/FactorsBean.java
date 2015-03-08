@@ -15,6 +15,7 @@ import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Construction_Type;
 import al.assu.trust.GestionImageSinistre.domain.Factors;
+import al.assu.trust.GestionImageSinistre.domain.Loss_Frequency;
 import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 
@@ -36,6 +37,9 @@ public class FactorsBean implements Serializable {
 	private Construction_Type construction_Type;
 	private List<Construction_Type> construction_Types;
 	private Construction_Type construction_Type2;
+	private List<Loss_Frequency> loss_Frequencies;
+	private Loss_Frequency loss_Frequency;
+	private Loss_Frequency loss_Frequency2;
 
 	// const
 
@@ -47,7 +51,9 @@ public class FactorsBean implements Serializable {
 	public void init() {
 		factors = factorsServicesLocal.GetFactorByIdMeasure(workingMeasure
 				.getId());
-
+		loss_Frequencies = factorsServicesLocal.getloss(factors.getId());
+		loss_Frequency = new Loss_Frequency();
+		loss_Frequency2 = new Loss_Frequency();
 		construction_Type = new Construction_Type();
 		construction_Type2 = new Construction_Type();
 		construction_Types = factorsServicesLocal.GetConsttype(factors.getId());
@@ -77,6 +83,16 @@ public class FactorsBean implements Serializable {
 
 	}
 
+	public void createLossRtaino() {
+		loss_Frequency2.setIdFactor(factors.getId());
+		factorsServicesLocal.Persist(loss_Frequency2);
+		loss_Frequencies = factorsServicesLocal.getloss(factors.getId());
+		RequestContext context = RequestContext.getCurrentInstance();
+
+		context.execute("PF('Popup2').hide();");
+
+	}
+
 	public void UpdateConstructionType() {
 		factorsServicesLocal.Persist(construction_Type);
 		construction_Types = factorsServicesLocal.GetConsttype(factors.getId());
@@ -88,6 +104,11 @@ public class FactorsBean implements Serializable {
 	public void DeleteConstructionType() {
 		factorsServicesLocal.Delete(construction_Type);
 		construction_Types = factorsServicesLocal.GetConsttype(factors.getId());
+	}
+
+	public void deleteLoss() {
+		factorsServicesLocal.Delete(loss_Frequency);
+		loss_Frequencies = factorsServicesLocal.getloss(factors.getId());
 	}
 
 	// get set
@@ -130,6 +151,30 @@ public class FactorsBean implements Serializable {
 
 	public void setWorkingMeasure(Measure workingMeasure) {
 		this.workingMeasure = workingMeasure;
+	}
+
+	public List<Loss_Frequency> getLoss_Frequencies() {
+		return loss_Frequencies;
+	}
+
+	public void setLoss_Frequencies(List<Loss_Frequency> loss_Frequencies) {
+		this.loss_Frequencies = loss_Frequencies;
+	}
+
+	public Loss_Frequency getLoss_Frequency() {
+		return loss_Frequency;
+	}
+
+	public void setLoss_Frequency(Loss_Frequency loss_Frequency) {
+		this.loss_Frequency = loss_Frequency;
+	}
+
+	public Loss_Frequency getLoss_Frequency2() {
+		return loss_Frequency2;
+	}
+
+	public void setLoss_Frequency2(Loss_Frequency loss_Frequency2) {
+		this.loss_Frequency2 = loss_Frequency2;
 	}
 
 }

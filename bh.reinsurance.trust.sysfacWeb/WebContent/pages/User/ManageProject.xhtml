@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Project Management </ui:define>
+		<ui:define name="content">
+
+
+			<h:form id="dialog1">
+				<p:dataTable style="width:650px" emptyMessage="no Projects found!"
+					value="#{projectBean.projectsbyuser}" var="prod" rows="5"
+					paginator="true" paginatorPosition="bottom" selectionMode="single"
+					selection="#{projectBean.proojectbyuser}" rowKey="#{prod.id}"
+					widgetVar="prodTabW2">
+					<f:facet name="header">Select a project</f:facet>
+					<p:ajax event="rowSelect"
+						listener="#{projectBean.OnProjManSelect()}" update=":dialog1" />
+
+					<p:column headerText="Name of the project">
+						<h:outputText value="#{prod.nameOfTheProject}" />
+					</p:column>
+					<p:column headerText="Creation Date">
+						<h:outputText value="#{prod.dateCreation}" />
+					</p:column>
+					<p:column headerText="Privacy ">
+						<h:outputText value="#{prod.privacy}" />
+					</p:column>
+					<p:column headerText="Password  ">
+						<h:outputText value="#{prod.password}" />
+					</p:column>
+
+					<f:facet name="footer">
+						<p:commandButton value="Modify"
+							rendered="#{projectBean.displayProjectManagButton}"
+							onclick="PF('popup').show()" icon="ui-icon-pencil" update=":form3" />
+						<p:commandButton value="Delete" icon="ui-icon-trash"
+							rendered="#{projectBean.displayProjectManagButton}"
+							actionListener="#{projectBean.DeleteProject()}" update=":dialog1">
+							<p:confirm header="Confirmation"
+								message="Are you sure that you want to delete this Project ?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</f:facet>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<p:confirmDialog global="true" showEffect="fade">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
+
+			<p:dialog header="Project management" modal="true" id="popup"
+				widgetVar="popup">
+				<h:form id="form3">
+
+					<h:panelGrid id="pan2" columns="2">
+						<h:outputLabel for="Names" value="Name of the project : " />
+						<p:inputText id="Names"
+							value="#{projectBean.proojectbyuser.nameOfTheProject}"
+							required="true" requiredMessage="Name required" />
+
+					</h:panelGrid>
+
+					<p:commandButton value="Save" style="margin-left:30px"
+						icon="ui-icon-disk"
+						actionListener="#{projectBean.UpdateProject()}" update=":dialog1" />
+				</h:form>
+			</p:dialog>
+
+
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

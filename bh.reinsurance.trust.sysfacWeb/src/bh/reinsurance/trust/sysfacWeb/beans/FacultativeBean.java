@@ -65,6 +65,7 @@ public class FacultativeBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+
 		years1 = new ArrayList<Integer>();
 		years1.add(2010);
 		years1.add(2011);
@@ -119,6 +120,7 @@ public class FacultativeBean implements Serializable {
 
 	public void OnRowSelect4() {
 		DisplayDeatils = true;
+
 	}
 
 	public void plusLiabilityBand() {

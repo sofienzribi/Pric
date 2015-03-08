@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Chart tool </ui:define>
+		<ui:define name="content">
+			<p:tabView style="width:1200px">
+				<p:tab title="CHART">
+					<p:chart type="bar" model="#{chartBean.animatedModel2}"
+						style="width:600px;left: 240px;" />
+				</p:tab>
+				<p:tab title="PDF">
+					<pe:documentViewer height="700" width="1000" library="css"
+						name="e.pdf" />
+				</p:tab>
+
+			</p:tabView>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

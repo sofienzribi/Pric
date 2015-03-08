@@ -78,7 +78,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 		}
 	}
 
-	public String login() {
+	public String login() throws IOException {
 
 		User userFound = userServicesLocal.login(user.getLogin(),
 				user.getPassword());
@@ -86,20 +86,28 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 			user = userFound;
 			if (userFound.getDepartment().equals("admin")) {
-				return "e?faces-redirect=true";
+				FacesContext.getCurrentInstance().getExternalContext()
+						.redirect("pages/admin/AdminHome.jsf");
+				connected = true;
+				theme = "ui-lightness";
+				return null;
 			} else {
 
 				if (userFound.getDepartment().equals("actuarialandrisk")) {
 					Department = "Actuarial & Risk";
 					connected = true;
 					theme = "redmond";
-					return "pages/Fac_info?faces-redirect=true";
+					FacesContext.getCurrentInstance().getExternalContext()
+							.redirect("pages/User/Fac_info.jsf");
+
+					return null;
 
 				} else {
 					Department = "Facultative Department";
 					connected = true;
 					theme = "blitzer";
-					return "pages/Fac_info?faces-redirect=true";
+
+					return "pages/User/Fac_info?faces-redirect=true";
 				}
 			}
 
