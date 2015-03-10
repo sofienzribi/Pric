@@ -9,9 +9,8 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Factors </ui:define>
 		<ui:define name="content">
-			<p:panelGrid columns="2" >
-	<f:facet name="header"> Factors</f:facet>			
-				
+			<p:panelGrid columns="2">
+				<f:facet name="header"> Factors</f:facet>
 				<p:column>
 					<h:form id="Form1">
 						<p:dataTable emptyMessage="No Construction Types!"
@@ -39,7 +38,7 @@
 										icon="ui-icon-alert" />
 								</p:commandButton>
 								<p:commandButton icon=" ui-icon-pencil"
-									onclick="PF('Popup2').show()" />
+									onclick="PF('Popup').show()" />
 							</f:facet>
 						</p:dataTable>
 					</h:form>
@@ -62,6 +61,10 @@
 								<p:inputText id="Load"
 									value="#{factorsBean.construction_Type2.loading}"
 									required="true" requiredMessage="Load Required" />
+
+								<p:outputLabel for="info" value="Information :  " />
+								<p:inputTextarea id="info"
+									value="#{factorsBean.construction_Type2.information}" />
 							</h:panelGrid>
 							<p:commandButton value="Save" icon="ui-icon-check"
 								actionListener="#{factorsBean.CreateConstructionType()}"
@@ -81,14 +84,17 @@
 								<p:inputText id="Load1"
 									value="#{factorsBean.construction_Type.loading}"
 									required="true" requiredMessage="Load Required" />
+								<p:outputLabel for="info3" value="Information :  " />
+								<p:inputText id="info3"
+									value="#{factorsBean.construction_Type.information}" />
 							</h:panelGrid>
 							<p:commandButton value="Update" icon="ui-icon-check"
 								actionListener="#{factorsBean.UpdateConstructionType()}"
 								update=":Form1" />
 						</p:dialog>
 					</h:form>
-</p:column>
-<p:column>
+				</p:column>
+				<p:column>
 					<h:form id="Form6">
 						<p:dataTable emptyMessage="No Loss Types!"
 							value="#{factorsBean.loss_Frequencies}" var="prod" rows="5"
@@ -142,12 +148,10 @@
 								update=":Form6" />
 						</p:dialog>
 					</h:form>
-					</p:column>
-					
+				</p:column>
 			</p:panelGrid>
-			
+
 		</ui:define>
 	</ui:composition>
-
 </h:body>
 </html>

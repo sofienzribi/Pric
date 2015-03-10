@@ -18,9 +18,7 @@
 					<p:outputLabel value="Inception Date : " for="inc" />
 					<h:outputLabel id="inc" value="#{offerBean.offer.inception_Date}" />
 					<p:outputLabel value="Expiry date : " for="exp" />
-					<h:outputLabel id="exp" value="#{offerBean.offer.expiry_date}">
-
-					</h:outputLabel>
+					<h:outputLabel id="exp" value="#{offerBean.offer.expiry_date}" />
 					<p:outputLabel value="Quoted date : " for="quote" />
 					<h:outputLabel id="quote" value="#{offerBean.offer.quoted_Date}" />
 					<p:outputLabel value="Currency : " for="curr" />
@@ -38,18 +36,13 @@
 					<p:outputLabel value="Insurance  basis : " for="RB" />
 					<p:outputLabel id="RB" value="#{offerBean.offer.insurance_Basis}"></p:outputLabel>
 				</h:panelGrid>
-
 			</h:form>
-
 		</ui:define>
 
 		<ui:define name="Result">
-
 			<h:form>
 				<div class="container">
 					<div class="container text-left">
-
-
 						<h:panelGrid columns="2" border="1">
 							<h:outputLabel value="Proposed Share : " for="PRO"
 								style="width:250px" />
@@ -58,11 +51,8 @@
 								style="width:250px" />
 							<h:outputLabel id="LIA" style="width:150px">0</h:outputLabel>
 						</h:panelGrid>
-
 						<br />
 						<p:outputLabel style="align:center" value="Risk Price"></p:outputLabel>
-
-
 						<h:panelGrid columns="2" border="1">
 							<p:outputLabel value="Rating Factors : " for="RAFA"
 								style="width:250px" />
@@ -72,12 +62,9 @@
 							<p:outputLabel id="NATCAT" value="#{projectBean.summary.idProj}"
 								style="width:150px" />
 						</h:panelGrid>
-
-
 						<p:outputLabel value="Total Risk Price					:	">0</p:outputLabel>
 						<br /> <br />
 						<p:outputLabel value="Internal Costs" />
-
 
 						<h:panelGrid columns="2" border="1">
 							<p:outputLabel value="Expenses : " for="exp" style="width:250px" />
@@ -90,12 +77,8 @@
 								style="width:250px" />
 							<p:outputLabel id="RC" value="0" style="width:150px" />
 						</h:panelGrid>
-
-
 						<p:outputLabel value="Total Costs				:	">0</p:outputLabel>
 						<br /> <br />
-
-
 						<h:panelGrid columns="2" border="1">
 							<p:outputLabel value="Profit Margin : " for="Pro"
 								style="width:250px" />
@@ -104,9 +87,6 @@
 								style="width:150px" />
 							<h:inputText id="BROK" style="width:150px" />
 						</h:panelGrid>
-
-
-
 						<br />
 						<p:outputLabel value=" Commercial Price				:	">0</p:outputLabel>
 						<br />

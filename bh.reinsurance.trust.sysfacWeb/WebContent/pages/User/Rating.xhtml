@@ -8,13 +8,10 @@
 <h:body>
 	<ui:composition template="/template/RatingTmp.xhtml">
 		<ui:define name="title">Rating tool </ui:define>
-
-
 		<ui:define name="Offer">
 			<h:form id="form">
 				<p:messages id="messages" autoUpdate="true" closable="true" />
 				<h:panelGrid columns="2" border="0">
-
 					<p:outputLabel value="Underwriter : " for="Lab1" />
 					<p:outputLabel
 						value="#{offerBean.getunder(offerBean.offer.id_underwriter)}"
@@ -33,18 +30,13 @@
 						<f:selectItems value="#{ratingBean.currency}" var="cat"
 							itemValue="#{cat}" itemLabel="#{cat}" />
 					</p:selectOneMenu>
-
 					<p:outputLabel value="Insured : " for="ins" />
 					<p:inputText id="ins" value="#{offerBean.offer.insured}" />
 					<p:outputLabel value="Broker : " for="brok" />
 					<p:inputText id="brok" value="#{offerBean.offer.broker}" />
-
-
-
 					<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
 					<p:inputMask id="pol" mask="a*-999-a999"
 						value="#{offerBean.offer.policy}" />
-				
 					<p:outputLabel value="Country : " for="CR" />
 					<p:selectOneMenu id="CR" style="width:160px">
 						<f:selectItem itemLabel="Bahrain" />
@@ -53,10 +45,8 @@
 					<p:inputMask id="GR" mask="9?9"
 						value="#{offerBean.offer.risk_Grade}" />
 					<p:outputLabel value="Insurance  basis : " for="RB" />
-
 					<p:selectOneMenu id="RB" value="#{offerBean.offer.insurance_Basis}"
 						style="width:160px">
-
 						<f:selectItem itemLabel="Select one .." />
 						<f:selectItems value="#{ratingBean.currency}" var="cat"
 							itemValue="#{cat}" itemLabel="#{cat}" />
@@ -68,13 +58,11 @@
 			<br />
 			<br />
 
-			<!-- 
 			<p:panelGrid id="BIMLOP">
 				<f:facet name="header">
 					<p:row>
 						<p:column>BI and MLoP</p:column>
 						<p:column>Selection</p:column>
-
 						<p:column>Load</p:column>
 					</p:row>
 				</f:facet>
@@ -88,7 +76,7 @@
 					</p:column>
 					<p:column>%</p:column>
 				</p:row>
-				<p:separator title="ABC"  height="33">dfs</p:separator>
+				<p:separator title="ABC" height="33"></p:separator>
 				<p:row>
 					<p:column> Indemnity period(MLoP)</p:column>
 					<p:column>
@@ -136,15 +124,9 @@
 					</p:column>
 					<p:column>40%</p:column>
 				</p:row>
-
 			</p:panelGrid>
 
- -->
-
 		</ui:define>
-
-
-
 	</ui:composition>
 </h:body>
 </html>

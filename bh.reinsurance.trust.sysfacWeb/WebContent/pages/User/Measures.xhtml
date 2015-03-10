@@ -9,8 +9,6 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Measures </ui:define>
 		<ui:define name="content">
-
-
 			<h:form id="Measure">
 				<p:dataTable style="width:650px" emptyMessage="No Measures found!"
 					value="#{measure.measures}" var="prod" rows="5" paginator="true"
@@ -35,7 +33,6 @@
 					<f:facet name="footer">
 						<p:commandButton value="New Measure" icon="ui-icon-plusthick"
 							onclick="PF('popup').show()" />
-
 						<p:commandButton value="Delete"
 							actionListener="#{measure.DeleteMeasure()}"
 							rendered="#{measure.displayButtons}" update=":Measure"
@@ -43,14 +40,11 @@
 							<p:confirm header="Confirmation" message="Delete this measure  ?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
-
 						<p:commandButton value="open" action="#{measure.OpenMeasure()}"
 							rendered="#{measure.displayButtons}" icon="ui-icon-folder-open" />
-
 					</f:facet>
 				</p:dataTable>
 			</h:form>
-
 
 			<p:dialog id="popup" header="New Measure" modal="true"
 				widgetVar="popup">
@@ -70,14 +64,11 @@
 			</p:dialog>
 
 			<p:confirmDialog global="true" showEffect="fade">
-
 				<p:commandButton value="Yes" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 				<p:commandButton value="No" type="button"
 					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 			</p:confirmDialog>
-
-
 
 		</ui:define>
 	</ui:composition>

@@ -1,15 +1,12 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-
 import al.assu.trust.GestionImageSinistre.domain.Construction_Type;
 import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
@@ -17,12 +14,11 @@ import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 @ManagedBean
 @ViewScoped
 public class AssesmentBean {
-
+	//models
 	private Map<String, String> Quality;
 	private Map<String, String> LossRatio;
 	private Map<String, String> ConsClass;
 	private Map<String, String> ResponseTime;
-
 	@ManagedProperty("#{measure.getFacWorkingMeasure()}")
 	private Measure facWorkingMeasure;
 	private List<Construction_Type> construction_Types;
@@ -30,7 +26,7 @@ public class AssesmentBean {
 	FactorsServicesLocal factorsServicesLocal;
 	private Construction_Type construction_Type;
 	private int a;
-
+//const
 	public AssesmentBean() {
 
 	}

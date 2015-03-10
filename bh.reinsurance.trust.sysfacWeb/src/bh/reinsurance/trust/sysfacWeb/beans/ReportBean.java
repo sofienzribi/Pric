@@ -1,5 +1,4 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,7 @@ import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 @javax.faces.bean.ManagedBean
 @SessionScoped
 public class ReportBean {
-
+	// models
 	private List<Facultative> facultatives;
 	private JasperPrint jasperPrint;
 	@EJB
@@ -34,6 +33,7 @@ public class ReportBean {
 	private String ProjectName;
 	private List<Facultative> facultativesbychoice;
 
+	// const
 	public ReportBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,9 +41,9 @@ public class ReportBean {
 	@PostConstruct
 	public void ini() {
 		facultatives = facultativeServicesLocal.facultatives();
-
 	}
 
+	// methods
 	public void ff() {
 		FacesContext.getCurrentInstance().addMessage(
 				"messages1",
@@ -52,21 +52,16 @@ public class ReportBean {
 	}
 
 	public void init() throws JRException {
-
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popup').hide();");
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				facultatives);
-
 		setJasperPrint(JasperFillManager.fillReport(
 				"/Users/zribisofien/report1.jasper", new HashMap(),
 				beanCollectionDataSource));
-
 	}
-
 	public void addchoicetoreport(List<Facultative> facultatives1)
 			throws JRException {
-
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				facultatives1);
 		setJasperPrint(JasperFillManager.fillReport(
@@ -74,6 +69,11 @@ public class ReportBean {
 				new HashMap(), beanCollectionDataSource));
 		JasperExportManager.exportReportToPdfFile(jasperPrint,
 				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
+		/*
+		 * JasperExportManager .exportReportToPdfFile( jasperPrint,
+		 * "/Users/zribisofien/git/TrustRe2/bh.reinsurance.trust.sysfacWeb/WebContent/resources/Report/"
+		 * + ProjectName + ".pdf");
+		 */
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popuppdf').hide();");
 		FacesContext.getCurrentInstance()
@@ -109,6 +109,7 @@ public class ReportBean {
 
 	}
 
+	// getters setters
 	public List<Facultative> getFacultatives() {
 		return facultatives;
 	}
@@ -148,6 +149,4 @@ public class ReportBean {
 	public void setFacultativesbychoice(List<Facultative> facultativesbychoice) {
 		this.facultativesbychoice = facultativesbychoice;
 	}
-	// aaz
-
 }

@@ -15,9 +15,11 @@ public class RatingBean implements Serializable {
 	/**
 	 * 
 	 */
+	//models
+	
 	private Map<String, String> Currency;
 	private static final long serialVersionUID = 1L;
-
+//const
 	public RatingBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -29,7 +31,7 @@ public class RatingBean implements Serializable {
 		Currency.put("BHD", "bhd");
 		Currency.put("EUR", "eur");
 	}
-
+//getters setters
 	public Map<String, String> getCurrency() {
 		return Currency;
 	}

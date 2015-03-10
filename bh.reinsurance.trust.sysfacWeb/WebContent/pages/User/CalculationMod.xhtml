@@ -9,12 +9,10 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Fac Info </ui:define>
 		<ui:define name="content">
-
 			<p:panel id="master">
 				<h:form>
 					<p:panelGrid columns="2">
 						<h:panelGrid id="eu" columns="2">
-
 							<h:outputLabel value="Region" />
 							<p:selectOneMenu value="#{facultativeBean.reg1}"
 								style="width:250px">
@@ -25,14 +23,13 @@
 								<f:selectItems value="#{facultativeBean.reg}" var="cat"
 									itemValue="#{cat}" itemLabel="#{cat}" />
 							</p:selectOneMenu>
-
 							<h:outputLabel value="Country" />
 							<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
 								style="width:250px">
 								<p:ajax event="valueChange"
 									listener="#{facultativeBean.affichselec()}"
 									update=":master :details :Details2" />
-								<f:selectItem itemLabel="All countries." itemValue="all"/>
+								<f:selectItem itemLabel="All countries." itemValue="all" />
 								<f:selectItems value="#{facultativeBean.countr}" var="cat"
 									itemValue="#{cat}" itemLabel="#{cat}" />
 							</p:selectOneMenu>
@@ -53,23 +50,18 @@
 								<f:selectItem itemLabel="select one..." />
 								<f:selectItems value="#{facultativeBean.years}" var="cat"
 									itemLabel="#{cat}" />
-
 							</p:selectOneMenu>
 							<h:outputLabel value="Cedant" style="width:250px" />
 							<p:selectOneMenu style="width:250px" />
 							<h:outputLabel value="Broker" style="width:250px" />
 							<p:selectOneMenu style="width:250px" />
-
 						</h:panelGrid>
-
 					</p:panelGrid>
 				</h:form>
 			</p:panel>
 
 			<p:panel id="details" visible="#{facultativeBean.testaff}">
 				<h:form>
-
-
 					<p:commandButton value="SumIsured"
 						actionListener="#{facultativeBean.ChangeTableTypeToSI()}"
 						update=":details :details_form"></p:commandButton>
@@ -121,7 +113,6 @@
 						</p:column>
 						<f:facet name="footer">
 							<p:commandLink onclick="PF('popuppdf').show()">
-
 								<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
 									width="24" />
 							</p:commandLink>
@@ -152,14 +143,10 @@
 				</h:form>
 			</p:panel>
 
-
-
-
 			<p:panel id="Details2" visible="#{facultativeBean.testaff}">
 				<h:form>
 					<p:dataTable var="player" value="#{dtGroupView.players}"
 						style="margin-top:40px">
-
 						<p:columnGroup type="header">
 							<p:row>
 								<p:column rowspan="3" headerText="Bands of Trust Re Liability" />
@@ -179,19 +166,14 @@
 									<p:column headerText="Av.Rate">
 									</p:column>
 								</ui:repeat>
-
 							</p:row>
-
 						</p:columnGroup>
-
 						<p:column>
 							<h:outputText value="OO" />
 						</p:column>
-
 						<p:column>
 							<h:outputText value="OO" />
 						</p:column>
-
 						<p:column>
 							<h:outputText value="OO" />
 						</p:column>
@@ -216,16 +198,12 @@
 						<p:column>
 							<h:outputText value="zae" />
 						</p:column>
-
-
-
 						<f:facet name="footer">
             Data between 2010-2014
         </f:facet>
 					</p:dataTable>
 				</h:form>
 			</p:panel>
-
 			<p:dialog header="Please enter file name" modal="true" id="popuppdf"
 				widgetVar="popuppdf">
 				<h:form id="formpdf">

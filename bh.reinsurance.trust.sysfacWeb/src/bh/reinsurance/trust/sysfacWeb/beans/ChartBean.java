@@ -14,44 +14,29 @@ import org.primefaces.model.chart.ChartSeries;
 @ManagedBean
 @ViewScoped
 public class ChartBean implements Serializable {
-
-	/**
-	 * 
-	 */
+	// models
 	private static final long serialVersionUID = 1L;
 	private BarChartModel animatedModel2;
-
-	// models
-
-	public BarChartModel getAnimatedModel2() {
-		return animatedModel2;
-	}
-
-	public void setAnimatedModel2(BarChartModel animatedModel2) {
-		this.animatedModel2 = animatedModel2;
-	}
-
 	// const
 	public ChartBean() {
 		// TODO Auto-generated constructor stub
 	}
-
 	@PostConstruct
 	public void init() {
 		createAnimatedModels();
 	}
-
+	
 	// methods
 	private void createAnimatedModels() {
-
+		
 		animatedModel2 = initBarModel();
 		animatedModel2.setTitle("Claims and Premium chart");
 		animatedModel2.setAnimate(true);
 		animatedModel2.setLegendPosition("ne");
 		Axis yAxis = animatedModel2.getAxis(AxisType.Y);
-		
 		yAxis.setMin(0);
 		yAxis.setMax(200);
+	
 	}
 
 	private BarChartModel initBarModel() {
@@ -87,5 +72,12 @@ public class ChartBean implements Serializable {
 	}
 
 	// get set
+	public BarChartModel getAnimatedModel2() {
+		return animatedModel2;
+	}
+
+	public void setAnimatedModel2(BarChartModel animatedModel2) {
+		this.animatedModel2 = animatedModel2;
+	}
 
 }

@@ -18,15 +18,10 @@ import al.assu.trust.GestionImageSinistre.impl.AssetsServicesLocal;
 @ManagedBean
 @RequestScoped
 public class AssetsBean {
-	/**
-	 * 
-	 */
+	// models
+
 	@ManagedProperty("#{login.getUser()}")
 	private User user;
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +35,7 @@ public class AssetsBean {
 	ExternalContext context = FacesContext.getCurrentInstance()
 			.getExternalContext();
 
+	// const
 	public AssetsBean() throws IOException {
 
 		forrmDisplayed = false;
@@ -56,6 +52,7 @@ public class AssetsBean {
 		return assetsServicesLocal.GetAllAssets();
 	}
 
+	// methods
 	public void AddAsset() {
 		assetsServicesLocal.AddAsset(assets);
 		forrmDisplayed = false;
@@ -91,6 +88,7 @@ public class AssetsBean {
 		forrmDisplayed = true;
 	}
 
+	// getters setters
 	public Assets getAssets() {
 		return assets;
 	}
@@ -113,6 +111,10 @@ public class AssetsBean {
 
 	public void setForrmDisplayed(boolean forrmDisplayed) {
 		this.forrmDisplayed = forrmDisplayed;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

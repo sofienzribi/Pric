@@ -22,6 +22,8 @@ import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 @ManagedBean
 @ViewScoped
 public class FacultativeBean implements Serializable {
+	// models
+
 	@EJB
 	FacultativeServicesLocal facultativeServicesLocal;
 	final Locale us = Locale.US;
@@ -57,15 +59,16 @@ public class FacultativeBean implements Serializable {
 	private List<Integer> years1;
 	private int LiabilityBand = 0;
 	private int PasLiability = 1000000;
-	private String RadioValue = "Liablity";
+	private String RadioValue;
 	private int SumInsuredPas = 10000000;
 
+	// const
 	public FacultativeBean() {
 	}
 
 	@PostConstruct
 	public void init() {
-
+		RadioValue = "Liability";
 		years1 = new ArrayList<Integer>();
 		years1.add(2010);
 		years1.add(2011);
@@ -89,6 +92,7 @@ public class FacultativeBean implements Serializable {
 		setFacultatives(facultativeServicesLocal.facultatives());
 	}
 
+	// methods
 	public void OnRegionChange() {
 		countr1 = null;
 		occup1 = null;
@@ -127,7 +131,7 @@ public class FacultativeBean implements Serializable {
 		if (RadioValue.equals("Liability")) {
 			PasLiability = PasLiability * 2;
 			Filllist();
-		} else {
+		} else if (RadioValue.equals("Sum Insured")) {
 			SumInsuredPas = SumInsuredPas * 2;
 			Filllist2();
 		}
@@ -138,7 +142,7 @@ public class FacultativeBean implements Serializable {
 		if (RadioValue.equals("Liability")) {
 			PasLiability = PasLiability / 2;
 			Filllist();
-		} else {
+		} else if (RadioValue.equals("Sum Insured")) {
 			SumInsuredPas = SumInsuredPas / 2;
 			Filllist2();
 		}
@@ -292,7 +296,7 @@ public class FacultativeBean implements Serializable {
 		}
 
 	}
-
+	//getters setters
 	public boolean isTestaff() {
 		return testaff;
 	}
@@ -540,6 +544,7 @@ public class FacultativeBean implements Serializable {
 
 	public void setPasLiability(int pasLiability) {
 		PasLiability = pasLiability;
+		
 	}
 
 	public String getRadioValue() {
@@ -549,6 +554,7 @@ public class FacultativeBean implements Serializable {
 	public void setRadioValue(String radioValue) {
 		RadioValue = radioValue;
 	}
+
 
 	public int getSumInsuredPas() {
 		return SumInsuredPas;

@@ -11,12 +11,9 @@
 		<ui:define name="content">
 			<h:form id="SendProject">
 				<p:messages id="messages" autoUpdate="true" closable="true" />
-
 				<p:panelGrid columns="2">
-
 					<p:outputLabel value=" Name of the project :" />
 					<p:outputLabel value="#{projectBean.project3.nameOfTheProject}" />
-
 					<p:outputLabel id="TO2" for="To" value="To* : " />
 					<p:autoComplete id="To"
 						completeMethod="#{projectBean.completeName}"
@@ -38,10 +35,10 @@
 							</h:panelGrid>
 						</f:facet>
 					</p:autoComplete>
-
 					<p:outputLabel id="Text" for="Textt" value="Message : " />
 					<p:inputTextarea id="Textt" value="#{projectBean.box.message}"
-						required="true" autoResize="true" style="width:400px" requiredMessage="Please enter a message"></p:inputTextarea>
+						required="true" autoResize="true" style="width:400px"
+						requiredMessage="Please enter a message"></p:inputTextarea>
 				</p:panelGrid>
 				<p:commandButton value="Send" icon="ui-icon-check"
 					actionListener="#{projectBean.SendProject()}"></p:commandButton>

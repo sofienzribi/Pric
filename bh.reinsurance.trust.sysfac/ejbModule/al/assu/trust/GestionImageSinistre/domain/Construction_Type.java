@@ -18,6 +18,7 @@ public class Construction_Type implements Serializable {
 	private int load;
 	private String category;
 	private int IdFactor;
+	private String Information;
 	private static final long serialVersionUID = 1L;
 
 	public Construction_Type() {
@@ -56,6 +57,14 @@ public class Construction_Type implements Serializable {
 
 	public void setIdFactor(int idFactor) {
 		IdFactor = idFactor;
+	}
+
+	public String getInformation() {
+		return Information;
+	}
+
+	public void setInformation(String information) {
+		Information = information;
 	}
 
 }

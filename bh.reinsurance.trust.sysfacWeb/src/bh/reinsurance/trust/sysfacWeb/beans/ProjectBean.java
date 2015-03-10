@@ -32,8 +32,9 @@ public class ProjectBean implements Serializable {
 	/**
 	 * 
 	 */
-	// var
+	// models
 
+	
 	@ManagedProperty("#{login.getUser()}")
 	private User user2;
 
@@ -78,7 +79,7 @@ public class ProjectBean implements Serializable {
 	private boolean DisabledButtonProject;
 	private boolean DisabledButtonProjectSendClose;
 
-	// methods
+	// const
 
 	public ProjectBean() {
 
@@ -114,7 +115,7 @@ public class ProjectBean implements Serializable {
 		projects = local.GetAllProjects();
 
 	}
-
+	//methods
 	public void UpdateProject() {
 
 		local.UpdateProject(proojectbyuser);

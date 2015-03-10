@@ -24,7 +24,7 @@ public class OfferBean implements Serializable {
 	/**
 	 * 
 	 */
-
+	//models
 	private static final long serialVersionUID = 1L;
 	private Offer offer;
 	
@@ -38,7 +38,7 @@ public class OfferBean implements Serializable {
 	private UserServicesLocal userServicesLocal;
 	@EJB
 	private ProjectServicesLocal projectServicesLocal;
-
+	//const
 	public OfferBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -50,6 +50,7 @@ public class OfferBean implements Serializable {
 		}
 		
 	}
+	//methods
 
 	public void SaveOffer() {
 		offerServicesLocal.AddOffer(offer);
@@ -59,6 +60,8 @@ public class OfferBean implements Serializable {
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Information saved !!", "offer saved"));
 	}
+	
+	//getters setters
 	public String getunder(int id){
 		return userServicesLocal.GetFirstAndLast(id);
 	}

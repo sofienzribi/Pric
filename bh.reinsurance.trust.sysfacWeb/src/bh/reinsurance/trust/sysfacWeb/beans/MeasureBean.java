@@ -25,9 +25,6 @@ import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 @SessionScoped
 public class MeasureBean implements Serializable {
 
-	/**
-	 * 
-	 */
 	// Models
 	@ManagedProperty("#{login.getUser()}")
 	private User user;
@@ -36,10 +33,12 @@ public class MeasureBean implements Serializable {
 	private Measure WorkingMeasure;
 	private boolean DisplayButtons;
 	private List<Measure> measures;
+
 	@EJB
 	MeasureServicesLocal measureServicesLocal;
 	private static final long serialVersionUID = 1L;
 	private Factors factors;
+
 	@EJB
 	private FactorsServicesLocal factorsServicesLocal;
 	private boolean DisableButtonMeasure;
@@ -67,22 +66,6 @@ public class MeasureBean implements Serializable {
 		WorkingMeasure = new Measure();
 		measure = new Measure();
 		measures = measureServicesLocal.GetAllMeasures();
-	}
-
-	public boolean isDisableButtonMeasure() {
-		return DisableButtonMeasure;
-	}
-
-	public void setDisableButtonMeasure(boolean disableButtonMeasure) {
-		DisableButtonMeasure = disableButtonMeasure;
-	}
-
-	public boolean isDisableButtonCloseSet() {
-		return disableButtonCloseSet;
-	}
-
-	public void setDisableButtonCloseSet(boolean disableButtonCloseSet) {
-		this.disableButtonCloseSet = disableButtonCloseSet;
 	}
 
 	// methods
@@ -197,9 +180,9 @@ public class MeasureBean implements Serializable {
 			}
 			RequestContext context = RequestContext.getCurrentInstance();
 			context.execute("PF('POPSET').hide();");
-			FacesContext.getCurrentInstance()
-			.addMessage(
-					"messages1",
+
+			FacesContext.getCurrentInstance().addMessage(
+					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO,
 							"The Working measure was changed", ""));
 
@@ -313,6 +296,22 @@ public class MeasureBean implements Serializable {
 
 	public void setFacWorkingMeasure(Measure facWorkingMeasure) {
 		FacWorkingMeasure = facWorkingMeasure;
+	}
+
+	public boolean isDisableButtonMeasure() {
+		return DisableButtonMeasure;
+	}
+
+	public void setDisableButtonMeasure(boolean disableButtonMeasure) {
+		DisableButtonMeasure = disableButtonMeasure;
+	}
+
+	public boolean isDisableButtonCloseSet() {
+		return disableButtonCloseSet;
+	}
+
+	public void setDisableButtonCloseSet(boolean disableButtonCloseSet) {
+		this.disableButtonCloseSet = disableButtonCloseSet;
 	}
 
 }

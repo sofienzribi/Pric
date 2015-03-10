@@ -10,8 +10,43 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Chart tool </ui:define>
 		<ui:define name="content">
-			<p:tabView style="width:1200px">
+			<p:tabView style="width:1200px" id="master">
 				<p:tab title="CHART">
+					<p:panel id="mas">
+						<h:form>
+							<h:panelGrid id="eu" columns="2">
+								<h:outputLabel value="Region" />
+								<p:selectOneMenu value="#{facultativeBean.reg1}"
+									style="width:375px">
+									<p:ajax event="valueChange"
+										listener="#{facultativeBean.OnRegionChange()}"
+										update=":master:mas" />
+									<f:selectItem itemLabel="All regions" itemValue="all" />
+									<f:selectItems value="#{facultativeBean.reg}" var="cat"
+										itemValue="#{cat}" itemLabel="#{cat}" />
+								</p:selectOneMenu>
+								<h:outputLabel value="Country" />
+								<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
+									style="width:375px">
+									<p:ajax event="valueChange"
+										listener="#{facultativeBean.affichselec()}"
+										update=":master:mas" />
+									<f:selectItem itemLabel="select country" />
+									<f:selectItems value="#{facultativeBean.countr}" var="cat"
+										itemValue="#{cat}" itemLabel="#{cat}" />
+								</p:selectOneMenu>
+								<h:outputLabel value="Occupancy" style="width:375px" />
+								<p:selectOneMenu value="#{facultativeBean.occup1}"
+									style="width:375px">
+									<p:ajax event="valueChange"
+										listener="#{facultativeBean.affichselec()}" />
+									<f:selectItem itemLabel="select occupancy" />
+									<f:selectItems value="#{facultativeBean.occup}" var="cat"
+										itemValue="#{cat}" itemLabel="#{cat}" />
+								</p:selectOneMenu>
+							</h:panelGrid>
+						</h:form>
+					</p:panel>
 					<p:chart type="bar" model="#{chartBean.animatedModel2}"
 						style="width:600px;left: 240px;" />
 				</p:tab>
@@ -19,7 +54,6 @@
 					<pe:documentViewer height="700" width="1000" library="css"
 						name="e.pdf" />
 				</p:tab>
-
 			</p:tabView>
 
 		</ui:define>

@@ -40,11 +40,11 @@ import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 @ManagedBean(name = "MapBean", eager = true)
 @SessionScoped
 public class MapBean implements Serializable {
-
+	//models
 	private MapModel simpleModel;
 	private Marker marker;
 	private static final long serialVersionUID = 1L;
-
+	//const
 	public MapBean() {
 		user2 = new User();
 
@@ -67,11 +67,14 @@ public class MapBean implements Serializable {
 		simpleModel.addOverlay(new Marker(coord3, " Risk 3"));
 		simpleModel.addOverlay(new Marker(coord4, "Risk 4"));
 	}
+	
+	//methods
 
 	public void onMarkerSelect(OverlaySelectEvent event) {
 		marker = (Marker) event.getOverlay();
 	}
-
+	
+	//get set
 	public MapModel getSimpleModel() {
 		return simpleModel;
 	}
@@ -186,7 +189,7 @@ public class MapBean implements Serializable {
 			message.setFrom(new InternetAddress(from));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					to));
-			message.setSubject("paraprpa");
+			message.setSubject("PING");
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			// Fill the message
@@ -213,7 +216,7 @@ public class MapBean implements Serializable {
 			Transport.send(message);
 			System.out.println("message sent successfully....");
 		} catch (MessagingException e) {
-			System.out.println("ff sofien");
+			System.out.println("message Failed....");
 			e.printStackTrace();
 		}
 

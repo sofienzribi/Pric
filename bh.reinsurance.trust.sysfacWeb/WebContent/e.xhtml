@@ -10,14 +10,14 @@
 	<p:growl widgetVar="growl" id="growl" showDetail="true" sticky="true"
 		autoUpdate="true" />
 	<h:form>
-	
+
 		<p:commandButton value="AddUser"
 			actionListener="#{redirectionBean.GoToAddAdminUser()}"></p:commandButton>
 		<p:commandButton value="SendMsgToUSers" actionListener="#{admin.ff}" />
 	</h:form>
 
 
-	<p:socket onMessage="handleMessage" channel="/rr"
+	<p:socket onMessage="handleMessage" channel="/NotifyUsers"
 		transport="long-polling" />
 
 	<script type="text/javascript">

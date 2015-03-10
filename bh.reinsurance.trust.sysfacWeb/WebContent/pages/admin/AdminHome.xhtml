@@ -6,6 +6,7 @@
 	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:head>
 </h:head>
+
 <h:body>
 	<ui:composition template="/template/masteradm.xhtml">
 		<ui:define name="title">Admin Home</ui:define>
@@ -16,117 +17,101 @@
 						style="width:600px;left: 240px;" />
 				</p:tab>
 				<p:tab title="PDF">
-					<pe:documentViewer height="700" width="1000" library="css"
-						name="e.pdf" />
+					<pe:documentViewer height="700" width="1000" library="Report"
+						name="trusttest.pdf" />
 				</p:tab>
 				<p:tab title="add user">
-				<h:form id="Form1">
-				<p:growl id="gorwl1" sticky="true" showDetail="true"></p:growl>
-				<p:wizard flowListener="#{admin.OnFlowProcess}">
-					<p:tab id="Personal" title="Personal">
-						<p:panel header="Personal Details">
-							<p:messages />
-							<p:panelGrid columns="2">
-								<h:outputText value="First Name" />
-								<p:inputText label="First Name" value="#{admin.user.first_Name}"
-									required="true" />
-								<h:outputText value="Last Name" />
-								<p:inputText label="Last Name" value="#{admin.user.last_Name}" />
-							</p:panelGrid>
-						</p:panel>
-					</p:tab>
+					<h:form id="Form1">
+						<p:growl id="gorwl1" sticky="true" showDetail="true"></p:growl>
+						<p:wizard flowListener="#{admin.OnFlowProcess}">
+							<p:tab id="Personal" title="Personal">
+								<p:panel header="Personal Details">
+									<p:messages />
+									<p:panelGrid columns="2">
+										<h:outputText value="First Name" />
+										<p:inputText label="First Name"
+											value="#{admin.user.first_Name}" required="true"
+											requiredMessage="First name required" />
+										<h:outputText value="Last Name" />
+										<p:inputText label="Last Name" value="#{admin.user.last_Name}"
+											required="true" requiredMessage="Last name required" />
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
 
-					<p:tab id="Statut" title="Statut">
-						<p:panel header="Statut Details">
-							<p:messages />
-							<p:panelGrid columns="2">
-								<h:outputText value="Job_Title" />
-								<p:inputText label="Job_Title" value="#{admin.user.job_title}"
-									required="true" />
-								<h:outputText value="Department" />
-								<p:inputText label="Department" value="#{admin.user.department}"
-									required="true" />
-								<h:outputText value="Floor" />
-								<p:inputText label="Floor" value="#{admin.user.floor}"
-									required="true" />
-							</p:panelGrid>
-						</p:panel>
-					</p:tab>
-					<p:tab id="Crendentials" title="Credentials">
-						<p:panel header="Credentials Details">
-							<p:messages />
-							<p:panelGrid columns="2">
-								<h:outputText value="Login" />
-								<p:inputText label="Login" value="#{admin.user.login}"
-									required="true" />
-								<h:outputText value="Password" />
-								<p:inputText label="Pawwsord" value="#{admin.user.password}"
-									required="true" />
-								<h:outputText value="Email" />
-								<p:inputText label="Email" value="#{admin.user.email}"
-									required="true" />
-
-							</p:panelGrid>
-
-						</p:panel>
-					</p:tab>
-
-
-
-					<p:tab id="Confirmation" title="Confirmation">
-
-						<h:panelGrid columns="2">
-							<h:outputText value="Firstname : " />
-							<h:outputText value="#{admin.user.first_Name}"
-								styleClass="outputLabel" />
-
-							<h:outputText value="Lastname : " />
-							<h:outputText value="#{admin.user.last_Name}"
-								styleClass="outputLabel" />
-
-						</h:panelGrid>
-
-						<h:panelGrid columns="2">
-							<h:outputText value="Job_Title :  " />
-							<h:outputText value="#{admin.user.job_title}"
-								styleClass="outputLabel" />
-
-							<h:outputText value="Department :  " />
-							<h:outputText value="#{admin.user.department}"
-								styleClass="outputLabel" />
-
-							<h:outputText value="Floor :  " />
-							<h:outputText value="#{admin.user.floor}"
-								styleClass="outputLabel" />
-						</h:panelGrid>
-
-						<h:panelGrid columns="2">
-							<h:outputText value="Login :  " />
-							<h:outputText value="#{admin.user.login}"
-								styleClass="outputLabel" />
-
-							<h:outputText value="Password :  " />
-							<h:outputText value="#{admin.user.password}"
-								styleClass="outputLabel" />
-
-							<h:outputText value="Email :  " />
-							<h:outputText value="#{admin.user.email}" />
-
-							<h:outputText />
-							<h:outputText />
-						</h:panelGrid>
-						<p:commandButton process="@this" value="Add user"
-							actionListener="#{admin.addUser()}" update="@this">
-						</p:commandButton>
-					</p:tab>
-
-				</p:wizard>
-			</h:form>
-				
+							<p:tab id="Statut" title="Statut">
+								<p:panel header="Statut Details">
+									<p:messages />
+									<p:panelGrid columns="2">
+										<h:outputText value="Job_Title" />
+										<p:inputText label="Job_Title" value="#{admin.user.job_title}"
+											required="true" requiredMessage="job title required" />
+										<h:outputText value="Department" />
+										<p:inputText label="Department"
+											value="#{admin.user.department}" required="true"
+											requiredMessage="department required" />
+										<h:outputText value="Floor" />
+										<p:inputText label="Floor" value="#{admin.user.floor}"
+											required="true" requiredMessage="floor required" />
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab id="Crendentials" title="Credentials">
+								<p:panel header="Credentials Details">
+									<p:messages />
+									<p:panelGrid columns="2">
+										<h:outputText value="Login" />
+										<p:inputText label="Login" value="#{admin.user.login}"
+											required="true" requiredMessage="login required" />
+										<h:outputText value="Password" />
+										<p:inputText label="Pawwsord" value="#{admin.user.password}"
+											required="true" requiredMessage="Password required" />
+										<h:outputText value="Email" />
+										<p:inputText label="Email" value="#{admin.user.email}"
+											required="true" requiredMessage="Email required" />
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab id="Confirmation" title="Confirmation">
+								<h:panelGrid columns="2">
+									<h:outputText value="Firstname : " />
+									<h:outputText value="#{admin.user.first_Name}"
+										styleClass="outputLabel" />
+									<h:outputText value="Lastname : " />
+									<h:outputText value="#{admin.user.last_Name}"
+										styleClass="outputLabel" />
+								</h:panelGrid>
+								<h:panelGrid columns="2">
+									<h:outputText value="Job_Title :  " />
+									<h:outputText value="#{admin.user.job_title}"
+										styleClass="outputLabel" />
+									<h:outputText value="Department :  " />
+									<h:outputText value="#{admin.user.department}"
+										styleClass="outputLabel" />
+									<h:outputText value="Floor :  " />
+									<h:outputText value="#{admin.user.floor}"
+										styleClass="outputLabel" />
+								</h:panelGrid>
+								<h:panelGrid columns="2">
+									<h:outputText value="Login :  " />
+									<h:outputText value="#{admin.user.login}"
+										styleClass="outputLabel" />
+									<h:outputText value="Password :  " />
+									<h:outputText value="#{admin.user.password}"
+										styleClass="outputLabel" />
+									<h:outputText value="Email :  " />
+									<h:outputText value="#{admin.user.email}" />
+									<h:outputText />
+									<h:outputText />
+								</h:panelGrid>
+								<p:commandButton process="@this" value="Add user"
+									actionListener="#{admin.addUser()}" update="@this">
+								</p:commandButton>
+							</p:tab>
+						</p:wizard>
+					</h:form>
 				</p:tab>
-
 			</p:tabView>
-
 		</ui:define>
 	</ui:composition>
 </h:body>

@@ -10,10 +10,9 @@
 	<ui:composition template="/template/masteradm.xhtml">
 		<ui:define name="title">Notify Users</ui:define>
 		<ui:define name="content">
-
 			<h:form id="Notif">
-				<p:panelGrid columns="2" >
-				<f:facet name="header">User Notification</f:facet>
+				<p:panelGrid columns="2">
+					<f:facet name="header">User Notification</f:facet>
 					<p:outputLabel value="Title" />
 					<p:inputText value="#{admin.title}" required="true"
 						requiredMessage="Title required"></p:inputText>
@@ -21,16 +20,9 @@
 					<p:inputTextarea value="#{admin.messa}" required="true"
 						requiredMessage="Message Required"></p:inputTextarea>
 				</p:panelGrid>
-
-				<p:commandButton value="SendMsgToUSers" actionListener="#{admin.ff}" />
-
-
-
+				<p:commandButton icon="ui-icon-check" value="SendMsgToUSers"
+					actionListener="#{admin.ff}" />
 			</h:form>
-
-
-
-
 		</ui:define>
 	</ui:composition>
 </h:body>

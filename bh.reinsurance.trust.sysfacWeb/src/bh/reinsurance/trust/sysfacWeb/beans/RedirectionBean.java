@@ -13,12 +13,15 @@ public class RedirectionBean implements Serializable {
 	/**
 	 * 
 	 */
+	// models
 	private static final long serialVersionUID = -2248985821074026073L;
 	private String testaff = "Summary";
 
+	// const
 	public RedirectionBean() {
 	}
 
+	// methods
 	public void GoToSummary() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Summary2.jsf");
@@ -29,7 +32,7 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Admin_add_user.jsf");
 	}
-	
+
 	public void GoToCalcTool() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("CalculationMod.jsf");
@@ -99,6 +102,7 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Send_Project.jsf");
 	}
+	//getters setters
 
 	public String getTestaff() {
 		return testaff;

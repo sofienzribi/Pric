@@ -28,33 +28,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 	@EJB
 	private UserServicesLocal userServicesLocal;
 
-	public UserServicesLocal getUserServicesLocal() {
-		return userServicesLocal;
-	}
-
-	public String Connected() {
-
-		if (user.getLogin() == null) {
-			return "Nobody !!!";
-		} else {
-			return user.getLogin();
-		}
-
-	}
-
-	public void doGet() throws IOException {
-		FacesContext.getCurrentInstance().getExternalContext()
-				.invalidateSession();
-		user = new User();
-
-		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("/bh.reinsurance.trust.sysfacWeb/");
-	}
-
-	public void setUserServicesLocal(UserServicesLocal userServicesLocal) {
-		this.userServicesLocal = userServicesLocal;
-	}
-
 	// constructor
 	public LoginBean() {
 
@@ -78,6 +51,25 @@ public class LoginBean extends HttpServlet implements Serializable {
 		}
 	}
 
+	public String Connected() {
+
+		if (user.getLogin() == null) {
+			return "Nobody !!!";
+		} else {
+			return user.getLogin();
+		}
+
+	}
+
+	public void doGet() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.invalidateSession();
+		user = new User();
+
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("/bh.reinsurance.trust.sysfacWeb/");
+	}
+
 	public String login() throws IOException {
 
 		User userFound = userServicesLocal.login(user.getLogin(),
@@ -99,7 +91,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 					theme = "redmond";
 					FacesContext.getCurrentInstance().getExternalContext()
 							.redirect("pages/User/Fac_info.jsf");
-
+					
 					return null;
 
 				} else {
@@ -120,6 +112,8 @@ public class LoginBean extends HttpServlet implements Serializable {
 			return "";
 		}
 	}
+
+	// getters stters
 
 	public String getDepartment() {
 		return Department;
@@ -151,6 +145,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void setTheme(String theme) {
 		this.theme = theme;
+	}
+
+	public UserServicesLocal getUserServicesLocal() {
+		return userServicesLocal;
+	}
+
+	public void setUserServicesLocal(UserServicesLocal userServicesLocal) {
+		this.userServicesLocal = userServicesLocal;
 	}
 
 }

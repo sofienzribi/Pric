@@ -44,8 +44,6 @@
 						</ul></li>
 
 
-
-
 					<li class="dropdown" style="display:#{projectBean.displayRating}"><a
 						href="#" class="dropdown-toggle needsclick" data-toggle="dropdown">
 							<i class="fa fa-tasks"></i> <span>Rating tool</span> <b
@@ -64,7 +62,7 @@
 								</h:form></li>
 							<li><h:form id="thirdb">
 									<i class="fa fa-play"> </i>
-									<p:commandLink value="Risk Assesment"
+									<p:commandLink value="Risk Assessment"
 										actionListener="#{redirectionBean.GoToRiskAssesment()}"></p:commandLink>
 								</h:form></li>
 							<li><h:form id="fourthb">
@@ -72,26 +70,17 @@
 									<p:commandLink value="Summary"
 										actionListener="#{redirectionBean.GoToSummary()}"></p:commandLink>
 								</h:form></li>
-
 						</ul></li>
-
-
-
 
 					<li><a style="display:#{projectBean.displayFacultativeDept}"
 						href="/bh.reinsurance.trust.sysfacWeb/pages/User/Chart_Page.jsf"><i
 							class="fa fa-certificate"></i> Abacus tool</a></li>
-
-
-
-
 
 					<li class="dropdown" style="display:#{measure.displayMeasureMenu}"><a
 						href="#" class="dropdown-toggle needsclick" data-toggle="dropdown">
 							<i class="fa fa-tasks"></i> <span>Measures</span> <b
 							class="caret"></b>
 					</a>
-
 						<ul class="dropdown-menu">
 							<li><h:form id="zerzerze">
 									<i class="fa fa-play"></i>
@@ -128,7 +117,6 @@
 				<!-- left menu
  -->
 
-
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
@@ -147,8 +135,6 @@
 								</h:form></li>
 
 						</ul></li>
-
-
 
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
@@ -182,8 +168,6 @@
 										actionListener="#{redirectionBean.GoToManageProject()}"></p:commandLink>
 								</h:form></li>
 
-
-
 							<li style="display:#{projectBean.displayActuarial}"><h:form
 									id="M30">
 									<i class="fa fa-wrench"></i>
@@ -191,9 +175,6 @@
 										disabled="#{projectBean.disabledButtonProjectSendClose}"
 										onclick="PF('POPMeasure').show()"></p:commandLink>
 								</h:form></li>
-
-
-
 
 							<li><h:form id="dfds">
 									<i class="fa fa-folder"></i>
@@ -203,8 +184,6 @@
 										actionListener="#{projectBean.CloseDProject()}"></p:commandLink>
 								</h:form></li>
 						</ul></li>
-
-
 
 					<li class="dropdown"
 						style="display:#{projectBean.displayActuarial}"><a href="#"
@@ -234,13 +213,6 @@
 										actionListener="#{measure.CloseMeasure()}"></p:commandLink>
 								</h:form></li>
 						</ul></li>
-
-
-
-
-
-
-
 
 				</ul>
 			</div>

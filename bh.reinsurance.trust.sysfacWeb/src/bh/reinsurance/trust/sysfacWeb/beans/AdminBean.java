@@ -1,8 +1,6 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -26,6 +24,7 @@ public class AdminBean implements Serializable {
 	/**
 	 * 
 	 */
+	//models
 	private static final long serialVersionUID = 7461654699564286956L;
 	private User user;
 	@EJB
@@ -33,34 +32,24 @@ public class AdminBean implements Serializable {
 	private String title;
 	private String messa;
 	private String b = "info";
-	private Map<String, String> Severi;
-	public FacesMessage.Severity op = FacesMessage.SEVERITY_INFO;
-
+	
+	//const
 	public AdminBean() {
 	}
 
 	@PostConstruct
 	public void init() {
-		Severi = new HashMap<String, String>();
-		Severi.put("Info", "");
-		Severi.put("Warning", "");
-		Severi.put("Error", "");
-		Severi.put("Fatal", "");
+
 		user = new User();
 	}
 
+	//mthods
 	public String OnFlowProcess(FlowEvent event) {
 
 		return event.getNewStep();
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+	
 
 	public void addUser() {
 		System.out.println(user.getEmail());
@@ -75,8 +64,10 @@ public class AdminBean implements Serializable {
 
 	public void ff(ActionEvent actionEvent) {
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
-		eventBus.publish("/rr", new FacesMessage(title, messa));
+		eventBus.publish("/NotifyUsers", new FacesMessage(title, messa));
 	}
+	
+	//const
 
 	public String getTitle() {
 		return title;
@@ -101,13 +92,12 @@ public class AdminBean implements Serializable {
 	public void setB(String b) {
 		this.b = b;
 	}
-
-	public Map<String, String> getSeverity() {
-		return Severi;
+	public User getUser() {
+		return user;
 	}
 
-	public void setSeverity(Map<String, String> severity) {
-		Severi = severity;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

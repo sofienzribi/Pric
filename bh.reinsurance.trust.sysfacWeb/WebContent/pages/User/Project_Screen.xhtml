@@ -9,7 +9,6 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Projects</ui:define>
 		<ui:define name="content">
-		
 			<p:panel id="pan1">
 				<h:form id="dialog1">
 					<p:dataTable style="width:650px" emptyMessage="no Projects found!"
@@ -35,16 +34,13 @@
 							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
 						</p:column>
 						<f:facet name="footer"><p:commandButton icon="ui-icon-refresh" value="refresh" update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
-						
 						<p:commandButton value="Open"
 						action="#{projectBean.openingproject()}"
 						rendered="#{projectBean.popDisplayed}" icon="ui-icon-folder-open"/>
-					
 					<p:commandButton icon="ui-icon-plusthick" value="New Project"
 						onclick="PF('popup').show()" />
 						</f:facet>
 					</p:dataTable>
-					
 				</h:form>
 			</p:panel>
 
@@ -66,7 +62,6 @@
 				<h:form id="form2">
 					<p:messages id="messagesd" autoUpdate="true" closable="true" />
 					<h:panelGrid columns="3">
-					
 						<p:outputLabel for="Name" value="Name of the project : " />
 						<p:inputText id="Name"
 							value="#{projectBean.project2.nameOfTheProject}" required="true"
@@ -76,7 +71,6 @@
 						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
 							required="true" rendered="true"
 							requiredMessage="Privacy required">
-							
 							<f:selectItem itemLabel="Private" itemValue="false" />
 							<f:selectItem itemLabel="Public" itemValue="true" />
 							<p:ajax update="form2" event="valueChange"
