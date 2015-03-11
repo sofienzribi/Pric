@@ -22,7 +22,7 @@ public class Construction_Type implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Construction_Type() {
-		super();
+	
 	}
 
 	@Id

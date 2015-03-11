@@ -2,12 +2,15 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import al.assu.trust.GestionImageSinistre.domain.Construction_Type;
+import al.assu.trust.GestionImageSinistre.domain.Loss_Frequency;
 import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 
@@ -22,10 +25,12 @@ public class AssesmentBean {
 	@ManagedProperty("#{measure.getFacWorkingMeasure()}")
 	private Measure facWorkingMeasure;
 	private List<Construction_Type> construction_Types;
+	private List<Loss_Frequency> loss_Frequencies;
 	@EJB
 	FactorsServicesLocal factorsServicesLocal;
 	private Construction_Type construction_Type;
 	private int a;
+	private int LossCharge=0;
 //const
 	public AssesmentBean() {
 
@@ -35,10 +40,12 @@ public class AssesmentBean {
 	public void init() {
 		a = 0;
 		construction_Type = new Construction_Type();
-		System.out.println("work fac" + facWorkingMeasure.getId());
 		construction_Types = factorsServicesLocal
 				.GetConsttype(factorsServicesLocal.GetFactorByIdMeasure(
 						facWorkingMeasure.getId()).getId());
+		loss_Frequencies=factorsServicesLocal.getloss(factorsServicesLocal.GetFactorByIdMeasure(
+						facWorkingMeasure.getId()).getId());
+		
 		Quality = new HashMap<String, String>();
 		LossRatio = new HashMap<String, String>();
 		ConsClass = new HashMap<String, String>();
@@ -65,17 +72,14 @@ public class AssesmentBean {
 	}
 
 	// methods
-	public void test() {
-		System.out.println("Le type est " + a);
-	}
-
+	
 	public Construction_Type FindConstById(int id) {
 		return factorsServicesLocal.FindConstById(id);
 	}
 
-	public Construction_Type Findbycat(String Cat) {
-		return factorsServicesLocal.FindConstructionTypeByCategory(
-				Cat,
+	public Object Findbycat(String Cat) {
+		return  factorsServicesLocal.FindConstructionTypeByCategory(
+				Cat,"Construction_Type",
 				factorsServicesLocal.GetFactorByIdMeasure(
 						facWorkingMeasure.getId()).getId());
 	}
@@ -143,6 +147,22 @@ public class AssesmentBean {
 
 	public void setA(int a) {
 		this.a = a;
+	}
+
+	public int getLossCharge() {
+		return LossCharge;
+	}
+
+	public void setLossCharge(int lossCharge) {
+		LossCharge = lossCharge;
+	}
+
+	public List<Loss_Frequency> getLoss_Frequencies() {
+		return loss_Frequencies;
+	}
+
+	public void setLoss_Frequencies(List<Loss_Frequency> loss_Frequencies) {
+		this.loss_Frequencies = loss_Frequencies;
 	}
 
 }

@@ -24,25 +24,30 @@
 						<p:row>
 							<p:column style="width:250px">Loss Ration </p:column>
 							<p:column>
-								<p:selectOneMenu id="Loss" style="width:125px">
-									<f:selectItems value="#{assesmentBean.lossRatio}" />
 
+								<p:selectOneMenu value="#{assesmentBean.lossCharge}"
+									style="width:125px">
+
+									<p:ajax event="valueChange" update=":Form1" />
+									<f:selectItem itemLabel="select one" />
+
+									<f:selectItems value="#{assesmentBean.loss_Frequencies}"
+										var="cat" itemValue="#{cat.charge}"
+										itemLabel="#{cat.category}" />
 								</p:selectOneMenu>
-								<p:tooltip for="Loss" id="tooltipLoss"
-									value="we can put information here  ...."></p:tooltip>
 							</p:column>
 							<p:column>
-							#{login.Connected()}
+							#{assesmentBean.lossCharge} %
 							</p:column>
 						</p:row>
+
 						<p:row>
 							<p:column id="Const" style="width:250px">Construction Class </p:column>
 							<p:column>
 
 								<p:selectOneMenu value="#{assesmentBean.a}" style="width:125px">
 
-									<p:ajax event="valueChange" listener="#{assesmentBean.test()}"
-										update=":Form1" />
+									<p:ajax event="valueChange" update=":Form1" />
 									<f:selectItem itemLabel="select one" />
 
 									<f:selectItems value="#{assesmentBean.construction_Types}"
@@ -50,6 +55,14 @@
 										itemLabel="#{cat.category}"
 										itemDescription="#{cat.information}" />
 								</p:selectOneMenu>
+								
+								
+								
+								
+								
+								
+								
+								
 								<p:tooltip for="Const" id="tooltipClass"
 									value="Construction Class  ....A …  ,b means ......,C means ..."></p:tooltip>
 

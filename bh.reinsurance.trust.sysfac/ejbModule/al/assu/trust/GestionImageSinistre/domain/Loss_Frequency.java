@@ -14,7 +14,7 @@ public class Loss_Frequency implements Serializable {
 
 	@Id
 	private int id;
-	private String Loss_Ratio;
+	private String category;
 	private float Charge;
 	private int IdFactor;
 	private static final long serialVersionUID = 1L;
@@ -31,13 +31,7 @@ public class Loss_Frequency implements Serializable {
 		this.id = id;
 	}
 
-	public String getLoss_Ratio() {
-		return this.Loss_Ratio;
-	}
 
-	public void setLoss_Ratio(String Loss_Ratio) {
-		this.Loss_Ratio = Loss_Ratio;
-	}
 
 	public float getCharge() {
 		return this.Charge;
@@ -53,6 +47,14 @@ public class Loss_Frequency implements Serializable {
 
 	public void setIdFactor(int IdFactor) {
 		this.IdFactor = IdFactor;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 }

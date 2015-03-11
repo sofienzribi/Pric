@@ -11,17 +11,18 @@
 		<ui:define name="title">Notify Users</ui:define>
 		<ui:define name="content">
 			<h:form id="Notif">
-				<p:panelGrid columns="2">
+				<p:panelGrid columns="2" style="width:400px">
 					<f:facet name="header">User Notification</f:facet>
+					<f:facet name="footer"><p:commandButton style="left:130px" icon="ui-icon-check" value="SendMsgToUSers"
+					actionListener="#{admin.ff}" /></f:facet>
 					<p:outputLabel value="Title" />
-					<p:inputText value="#{admin.title}" required="true"
+					<p:inputText   value="#{admin.title}" required="true"
 						requiredMessage="Title required"></p:inputText>
 					<p:outputLabel value="Message" />
-					<p:inputTextarea value="#{admin.messa}" required="true"
+					<p:inputTextarea autoResize="true" value="#{admin.messa}" required="true"
 						requiredMessage="Message Required"></p:inputTextarea>
 				</p:panelGrid>
-				<p:commandButton icon="ui-icon-check" value="SendMsgToUSers"
-					actionListener="#{admin.ff}" />
+				
 			</h:form>
 		</ui:define>
 	</ui:composition>

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sun.rmi.log.LogOutputStream;
 import bh.reinsurance.trust.sysfacWeb.beans.LoginBean;
 
 @WebFilter("/pages/User/*")
@@ -30,6 +31,7 @@ public class FilterAuthentification implements Filter {
 		HttpServletResponse response2 = (HttpServletResponse) response;
 		LoginBean loginBean = (LoginBean) request2.getSession().getAttribute(
 				"login");
+		
 		boolean letgo = false;
 		if ((loginBean != null) && (loginBean.isConnected())) {
 			letgo = true;

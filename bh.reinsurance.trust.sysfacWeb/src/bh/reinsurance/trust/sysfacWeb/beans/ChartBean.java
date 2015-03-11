@@ -10,6 +10,8 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 
 @ManagedBean
 @ViewScoped
@@ -17,26 +19,40 @@ public class ChartBean implements Serializable {
 	// models
 	private static final long serialVersionUID = 1L;
 	private BarChartModel animatedModel2;
+	private LineChartModel lineModel1;
+
 	// const
 	public ChartBean() {
 		// TODO Auto-generated constructor stub
 	}
+
 	@PostConstruct
 	public void init() {
 		createAnimatedModels();
 	}
-	
+
 	// methods
 	private void createAnimatedModels() {
+
+		lineModel1 = initLinearModel();
+		lineModel1.setShowPointLabels(false);
+		lineModel1.setTitle("Linear Chart");
+		lineModel1.setLegendPosition("e");
+		Axis yAxis = lineModel1.getAxis(AxisType.Y);
+		yAxis.setMin(0);
+		yAxis.setMax(10);
+		lineModel1.setAnimate(true);
+		
+		
 		
 		animatedModel2 = initBarModel();
 		animatedModel2.setTitle("Claims and Premium chart");
 		animatedModel2.setAnimate(true);
 		animatedModel2.setLegendPosition("ne");
-		Axis yAxis = animatedModel2.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		yAxis.setMax(200);
-	
+		Axis dAxis = animatedModel2.getAxis(AxisType.Y);
+		dAxis.setMin(0);
+		dAxis.setMax(200);
+
 	}
 
 	private BarChartModel initBarModel() {
@@ -71,6 +87,34 @@ public class ChartBean implements Serializable {
 		return model;
 	}
 
+	private LineChartModel initLinearModel() {
+		LineChartModel model = new LineChartModel();
+		
+		LineChartSeries series1 = new LineChartSeries();
+		series1.setLabel("Series 1");
+		series1.set(1, 8);
+		series1.set(1.5, 6);
+		series1.set(2, 6);
+		series1.set(3, 4);
+		series1.set(4, 1);
+		series1.set(5, 1);
+		
+		series1.setShowMarker(false);
+		LineChartSeries series2 = new LineChartSeries();
+		series2.setLabel("Series 2");
+
+		series2.set(1, 6);
+		series2.set(2, 3);
+		series2.set(3, 2);
+		series2.set(4, 7);
+		series2.set(5, 9);
+		series2.setShowMarker(false);
+		model.addSeries(series1);
+		model.addSeries(series2);
+
+		return model;
+	}
+
 	// get set
 	public BarChartModel getAnimatedModel2() {
 		return animatedModel2;
@@ -78,6 +122,14 @@ public class ChartBean implements Serializable {
 
 	public void setAnimatedModel2(BarChartModel animatedModel2) {
 		this.animatedModel2 = animatedModel2;
+	}
+
+	public LineChartModel getLineModel1() {
+		return lineModel1;
+	}
+
+	public void setLineModel1(LineChartModel lineModel1) {
+		this.lineModel1 = lineModel1;
 	}
 
 }

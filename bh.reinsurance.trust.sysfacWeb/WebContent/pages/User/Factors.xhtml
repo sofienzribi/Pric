@@ -9,8 +9,15 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Factors </ui:define>
 		<ui:define name="content">
-			<p:panelGrid columns="2">
-				<f:facet name="header"> Factors</f:facet>
+			<p:panelGrid id="pan1" columns="2">
+				<f:facet name="header"> Factors
+				</f:facet>
+
+				<f:facet name="footer">
+					<p:commandButton icon="ui-icon-disk"
+						value="Copy factors from another measure"
+						onclick="PF('pop').show()" style="left:200px;"></p:commandButton>
+				</f:facet>
 				<p:column>
 					<h:form id="Form1">
 						<p:dataTable emptyMessage="No Construction Types!"
@@ -105,7 +112,7 @@
 								<p:outputLabel>Loss Frequency</p:outputLabel>
 							</f:facet>
 							<p:column headerText="Category">
-								<h:outputText value="#{prod.loss_Ratio}" />
+								<h:outputText value="#{prod.category}" />
 							</p:column>
 							<p:column headerText="Load">
 								<h:outputText value="#{prod.charge} %" />
@@ -136,8 +143,8 @@
 							<h:panelGrid columns="2">
 								<p:outputLabel for="loss" value="Loss_Ration : " />
 								<p:inputText id="loss"
-									value="#{factorsBean.loss_Frequency2.loss_Ratio}"
-									required="true" requiredMessage="Category Required" />
+									value="#{factorsBean.loss_Frequency2.category}" required="true"
+									requiredMessage="Category Required" />
 								<p:outputLabel for="Charge" value="Charge :  " />
 								<p:inputText id="Charge"
 									value="#{factorsBean.loss_Frequency2.charge}" required="true"
@@ -150,6 +157,51 @@
 					</h:form>
 				</p:column>
 			</p:panelGrid>
+
+
+
+			<p:dialog width="450px" widgetVar="pop" modal="true" closable="true"
+				id="pop" header="Choose a measure " showEffect="true">
+
+				<h:form id="Po">
+					<p:growl widgetVar="gro" id="gro" life="2000" />
+					<p:dataTable emptyMessage="No Measures found!"
+						value="#{measure.measures}" var="prod" rows="5" paginator="true"
+						paginatorPosition="bottom" selectionMode="single"
+						selection="#{factorsBean.measure}" rowKey="#{prod.id}"
+						widgetVar="prodTab">
+						<p:ajax event="rowSelect" update=":Po"
+							listener="#{factorsBean.rowSelectload()}" />
+						<f:facet name="header">Measures</f:facet>
+						<p:column headerText="Name">
+							<h:outputText value="#{prod.name}" />
+						</p:column>
+						<p:column headerText="Creation Date">
+							<h:outputText value="#{prod.creationDate}" />
+						</p:column>
+						<p:column headerText="User">
+							<h:outputText value="#{measure.GetUserName(prod.userId)}" />
+						</p:column>
+						<p:column headerText="Active Measure">
+							<h:outputText value="#{measure.testactive(prod.active)}" />
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton value="load"
+								rendered="#{factorsBean.displayLoadButton}"
+								actionListener="#{factorsBean.LoadFactors()}"
+								update=":Po:gro :pan1">
+								<p:confirm header="Confirmation"
+									message="All the factors will be deleted and replaced with the new factors"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+						</f:facet>
+					</p:dataTable>
+
+				</h:form>
+
+
+			</p:dialog>
+
 
 		</ui:define>
 	</ui:composition>

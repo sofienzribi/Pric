@@ -1,5 +1,6 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
@@ -20,7 +21,7 @@ import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class FactorsBean implements Serializable {
 
 	/**
@@ -29,6 +30,8 @@ public class FactorsBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// models
+	private Measure measure;
+	private boolean DisplayLoadButton;
 	@EJB
 	FactorsServicesLocal factorsServicesLocal;
 	@ManagedProperty("#{measure.workingMeasure}")
@@ -49,6 +52,8 @@ public class FactorsBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		measure = new Measure();
+		DisplayLoadButton = false;
 		factors = factorsServicesLocal.GetFactorByIdMeasure(workingMeasure
 				.getId());
 		loss_Frequencies = factorsServicesLocal.getloss(factors.getId());
@@ -93,6 +98,10 @@ public class FactorsBean implements Serializable {
 
 	}
 
+	public void rowSelectload() {
+		DisplayLoadButton = true;
+	}
+
 	public void UpdateConstructionType() {
 		factorsServicesLocal.Persist(construction_Type);
 		construction_Types = factorsServicesLocal.GetConsttype(factors.getId());
@@ -109,6 +118,51 @@ public class FactorsBean implements Serializable {
 	public void deleteLoss() {
 		factorsServicesLocal.Delete(loss_Frequency);
 		loss_Frequencies = factorsServicesLocal.getloss(factors.getId());
+	}
+
+	public void LoadFactors() throws IOException {
+		Factors factors2 = factorsServicesLocal.GetFactorByIdMeasure(measure
+				.getId());
+		List<Construction_Type> construction_Types2 = factorsServicesLocal
+				.GetConsttype(factors2.getId());
+		List<Loss_Frequency> loss_Frequencies2 = factorsServicesLocal
+				.getloss(factors2.getId());
+		for (Construction_Type G : construction_Types) {
+			factorsServicesLocal.Delete(G);
+		}
+		for (Loss_Frequency R : loss_Frequencies) {
+			factorsServicesLocal.Delete(R);
+		}
+
+		for (Construction_Type a : construction_Types2) {
+			Construction_Type c = new Construction_Type();
+
+			c.setIdFactor(factors.getId());
+			c.setInformation(a.getInformation());
+			c.setLoading(a.getLoading());
+			c.setCategory(a.getCategory());
+			factorsServicesLocal.Persist(c);
+
+		}
+		for (Loss_Frequency b : loss_Frequencies2) {
+			Loss_Frequency d = new Loss_Frequency();
+			d.setCategory(b.getCategory());
+			d.setCharge(b.getCharge());
+			d.setIdFactor(factors.getId());
+			factorsServicesLocal.Persist(d);
+		}
+		loss_Frequencies = factorsServicesLocal.getloss(factors.getId());
+		construction_Types = factorsServicesLocal.GetConsttype(factors.getId());
+		RequestContext.getCurrentInstance().execute("PF('pop').hide();");
+		/*
+		 * FacesContext.getCurrentInstance().getExternalContext()
+		 * .redirect("Factors.jsf");
+		 */
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Factors loaded",
+						""));
+
 	}
 
 	// get set
@@ -175,6 +229,22 @@ public class FactorsBean implements Serializable {
 
 	public void setLoss_Frequency2(Loss_Frequency loss_Frequency2) {
 		this.loss_Frequency2 = loss_Frequency2;
+	}
+
+	public boolean isDisplayLoadButton() {
+		return DisplayLoadButton;
+	}
+
+	public void setDisplayLoadButton(boolean displayLoadButton) {
+		DisplayLoadButton = displayLoadButton;
+	}
+
+	public Measure getMeasure() {
+		return measure;
+	}
+
+	public void setMeasure(Measure measure) {
+		this.measure = measure;
 	}
 
 }

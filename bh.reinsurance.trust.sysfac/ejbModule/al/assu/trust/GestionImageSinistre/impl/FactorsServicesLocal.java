@@ -22,7 +22,7 @@ public interface FactorsServicesLocal {
 
 	public boolean CategoryExists(String Category, int IdFactor, String Type);
 
-	public Construction_Type FindConstructionTypeByCategory(String cat,
+	public Object FindConstructionTypeByCategory(String cat,String cls,
 			int idFactor);
 
 	public Construction_Type FindConstById(int id);

@@ -84,11 +84,11 @@ public class FactorsServices implements FactorsServicesLocal {
 	}
 
 	@Override
-	public Construction_Type FindConstructionTypeByCategory(String cat,
-			int idFactor) {
+	public Object FindConstructionTypeByCategory(String cat,String cls,int idFactor) {
+
 		return (Construction_Type) entityManager
 				.createQuery(
-						"select p from Construction_Type p where p.idFactor=:c and category:=f")
+						"select p from "+cls+" p where p.idFactor=:c and category:=f")
 				.setParameter("c", idFactor).setParameter("f", cat)
 				.getSingleResult();
 
