@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -12,6 +13,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.primefaces.context.RequestContext;
 
@@ -34,7 +42,6 @@ public class ProjectBean implements Serializable {
 	 */
 	// models
 
-	
 	@ManagedProperty("#{login.getUser()}")
 	private User user2;
 
@@ -78,6 +85,7 @@ public class ProjectBean implements Serializable {
 	private boolean DiplayDeleteButton;
 	private boolean DisabledButtonProject;
 	private boolean DisabledButtonProjectSendClose;
+	private boolean DisplayMailSubj;
 
 	// const
 
@@ -93,6 +101,7 @@ public class ProjectBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		DisplayMailSubj = false;
 		DisabledButtonProject = false;
 		DisabledButtonProjectSendClose = true;
 		DisplayRating = "none";
@@ -115,7 +124,8 @@ public class ProjectBean implements Serializable {
 		projects = local.GetAllProjects();
 
 	}
-	//methods
+
+	// methods
 	public void UpdateProject() {
 
 		local.UpdateProject(proojectbyuser);
@@ -246,23 +256,97 @@ public class ProjectBean implements Serializable {
 
 	}
 
-	public void SendProject() {
+	public void SendProject() throws MessagingException {
+
+		String from = user2.getEmail();
+		final String username = user2.getEmail();
+		final String password = user2.getEmailPwd();
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		Session session = Session.getInstance(props,
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
+		MimeMessage message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(from));
+		message.setSubject(box.getSubj());
+		message.setText(box.getMessage());
+
 		box.setId_project(project3.getId());
 		box.setUser_sending_id(user2.getId());
 		box.setState("NOT SEEN");
 		for (int i = 0; i < SendToUsers.size(); i++) {
+			if (DisplayMailSubj == true) {
+				message.addRecipient(Message.RecipientType.TO,
+						new InternetAddress(SendToUsers.get(i).getEmail()));
+
+			}
 
 			box.setUser_id(SendToUsers.get(i).getId());
 			mailBoxServicesLocal.CreateMailBox(box);
+		}
+		if (DisplayMailSubj) {
+			try {
+
+				// Send message
+
+				Transport.send(message);
+				System.out.println("message sent successfully....");
+			} catch (MessagingException e) {
+				System.out.println("ff sofien");
+				e.printStackTrace();
+			}
 		}
 
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
 		NumberProjectReceived = GetMails();
 		box = new MailBox();
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('statusDialog').hide();");
 		FacesContext.getCurrentInstance().addMessage(
-				null,
+				"e",
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "project Sent!",
-						"Bad Credentials"));
+						""));
+
+	}
+
+	public void sendMail() {
+		String to = "sofien.zribi@esprit.tn";// change accordingly
+		String from = user2.getEmail();
+		final String username = user2.getEmail();
+		final String password = user2.getEmailPwd();
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		Session session = Session.getInstance(props,
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					to));
+			message.setSubject("Ping");
+			message.setText("Hello, this is example of sending email  ");
+			System.out.println("well done sofien");
+			// Send message
+			Transport.send(message);
+			System.out.println("message sent successfully....");
+		} catch (MessagingException e) {
+			System.out.println("ff sofien");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -317,9 +401,9 @@ public class ProjectBean implements Serializable {
 
 	public void refreshtable2() {
 		projects = local.GetAllProjects();
-	
+
 	}
-	
+
 	public String getPrivacy(boolean a) {
 		if (a == true) {
 			return "Public";
@@ -652,6 +736,14 @@ public class ProjectBean implements Serializable {
 	public void setDisabledButtonProjectSendClose(
 			boolean disabledButtonProjectSendClose) {
 		DisabledButtonProjectSendClose = disabledButtonProjectSendClose;
+	}
+
+	public boolean isDisplayMailSubj() {
+		return DisplayMailSubj;
+	}
+
+	public void setDisplayMailSubj(boolean displayMailSubj) {
+		DisplayMailSubj = displayMailSubj;
 	}
 
 }

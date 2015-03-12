@@ -19,5 +19,6 @@ public interface UserServicesLocal {
 	public List<User> GetAllUsers();
 
 	public void tryz();
+	public void UpdateUser(User user);
 
 }

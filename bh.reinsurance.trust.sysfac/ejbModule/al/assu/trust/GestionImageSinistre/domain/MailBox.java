@@ -22,6 +22,7 @@ public class MailBox implements Serializable {
 	private String message;
 	private int id_project;
 	private Date sentDate;
+	private String Subj;
 	private static final long serialVersionUID = 1L;
 
 	public MailBox() {
@@ -84,6 +85,14 @@ public class MailBox implements Serializable {
 
 	public void setSentDate(Date sentDate) {
 		this.sentDate = sentDate;
+	}
+
+	public String getSubj() {
+		return Subj;
+	}
+
+	public void setSubj(String subj) {
+		Subj = subj;
 	}
 
 }

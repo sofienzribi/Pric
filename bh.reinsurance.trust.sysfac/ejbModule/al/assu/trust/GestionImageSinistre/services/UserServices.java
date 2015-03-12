@@ -86,4 +86,10 @@ public class UserServices implements UserServicesLocal {
 
 	}
 
+	@Override
+	public void UpdateUser(User user) {
+		entityManager.merge(user);
+
+	}
+
 }

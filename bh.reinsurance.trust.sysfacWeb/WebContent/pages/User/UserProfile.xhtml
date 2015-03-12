@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">User Profile </ui:define>
+		<ui:define name="content">
+			<p:tabView style="width:1200px" id="Mes">
+				<p:tab title="Email credentials">
+					<h:form>
+						<p:growl id="gr1" sticky="true" showDetail="true"></p:growl>
+						<p:panelGrid columns="2">
+							<f:facet name="header">Email Cred</f:facet>
+							<p:outputLabel value="Email" />
+							<p:inputText value="#{login.user.email}" />
+							<p:outputLabel value="password" />
+							<p:password value="#{login.user.emailPwd}"></p:password>
+							<f:facet name="footer">
+								<p:commandButton onclick="PF('statusDialog').show()" style="left:90px" value="Save"
+									actionListener="#{login.SetEmailPwd()}" update="gr1"></p:commandButton>
+							</f:facet>
+						</p:panelGrid>
+					</h:form>
+				</p:tab>
+				<p:tab title="PDF">
+				
+				</p:tab>
+
+
+			</p:tabView>
+			
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+					<p:graphicImage value="/resources/images/ajax-loader.gif"></p:graphicImage>
+					</p:dialog>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

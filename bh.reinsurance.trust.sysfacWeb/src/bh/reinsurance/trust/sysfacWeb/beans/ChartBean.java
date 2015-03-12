@@ -41,10 +41,12 @@ public class ChartBean implements Serializable {
 		Axis yAxis = lineModel1.getAxis(AxisType.Y);
 		yAxis.setMin(0);
 		yAxis.setMax(10);
+		yAxis.setLabel("Premium Rate");
+		Axis xaxis = lineModel1.getAxis(AxisType.X);
+		xaxis.setLabel("Deductible");
+
 		lineModel1.setAnimate(true);
-		
-		
-		
+
 		animatedModel2 = initBarModel();
 		animatedModel2.setTitle("Claims and Premium chart");
 		animatedModel2.setAnimate(true);
@@ -89,30 +91,55 @@ public class ChartBean implements Serializable {
 
 	private LineChartModel initLinearModel() {
 		LineChartModel model = new LineChartModel();
-		
+
 		LineChartSeries series1 = new LineChartSeries();
-		series1.setLabel("Series 1");
+		series1.setLabel(" L/R=48%");
+		series1.set(0, 9);
 		series1.set(1, 8);
-		series1.set(1.5, 6);
-		series1.set(2, 6);
-		series1.set(3, 4);
-		series1.set(4, 1);
-		series1.set(5, 1);
-		
+		series1.set(2, 7);
+		series1.set(3, 6);
+		series1.set(4, 5);
+		series1.set(5, 4);
+
 		series1.setShowMarker(false);
 		LineChartSeries series2 = new LineChartSeries();
-		series2.setLabel("Series 2");
-
+		series2.setLabel("L/R=100%");
+		series2.set(0, 7);
 		series2.set(1, 6);
-		series2.set(2, 3);
-		series2.set(3, 2);
-		series2.set(4, 7);
-		series2.set(5, 9);
+		series2.set(2, 5);
+		series2.set(3, 4);
+		series2.set(4, 3);
+		series2.set(5, 2);
 		series2.setShowMarker(false);
+
+		LineChartSeries series3 = new LineChartSeries();
+		series3.setLabel("L/R=65%");
+		series3.set(0, 8);
+		series3.set(1, 7);
+		series3.set(2, 6);
+		series3.set(3, 5);
+		series3.set(4, 4);
+		series3.set(5, 3);
+		series3.setShowMarker(false);
+
+		LineChartSeries series4 = new LineChartSeries();
+		series4.setLabel("L/R=32%");
+		series4.set(0, 6);
+		series4.set(1, 5);
+		series4.set(2, 4);
+		series4.set(3, 3);
+		series4.set(4, 2);
+		series4.set(5, 1);
+		series4.setShowMarker(false);
+
 		model.addSeries(series1);
+		model.addSeries(series3);
 		model.addSeries(series2);
+		model.addSeries(series4);
+		model.setShadow(true);
 
 		return model;
+
 	}
 
 	// get set

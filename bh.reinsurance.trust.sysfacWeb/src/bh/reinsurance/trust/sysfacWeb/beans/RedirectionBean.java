@@ -43,6 +43,11 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Factors.jsf");
 	}
+	
+	public void GoToUserProfile() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("UserProfile.jsf");
+	}
 
 	public void GoToMeasures() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()

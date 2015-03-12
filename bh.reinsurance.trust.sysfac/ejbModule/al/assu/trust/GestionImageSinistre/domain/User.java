@@ -23,6 +23,8 @@ public class User implements Serializable {
 	private String Department;
 	private String Floor;
 	public String login;
+	private boolean verified;
+	private String emailPwd;
 
 	private String password;
 	private static final long serialVersionUID = 1L;
@@ -111,6 +113,22 @@ public class User implements Serializable {
 
 	public void setFloor(String floor) {
 		Floor = floor;
+	}
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+
+	public String getEmailPwd() {
+		return emailPwd;
+	}
+
+	public void setEmailPwd(String emailPwd) {
+		this.emailPwd = emailPwd;
 	}
 
 }

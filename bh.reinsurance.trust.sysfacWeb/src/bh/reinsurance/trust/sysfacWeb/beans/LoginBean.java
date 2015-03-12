@@ -2,6 +2,7 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -9,7 +10,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServlet;
+
+import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
@@ -91,7 +101,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 					theme = "redmond";
 					FacesContext.getCurrentInstance().getExternalContext()
 							.redirect("pages/User/Fac_info.jsf");
-					
+
 					return null;
 
 				} else {
@@ -111,6 +121,51 @@ public class LoginBean extends HttpServlet implements Serializable {
 			// setUser(new user());
 			return "";
 		}
+	}
+
+	public void SetEmailPwd() throws MessagingException{
+		
+			String from = user.getEmail();
+			final String username = user.getEmail();
+			final String password = user.getEmailPwd();
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
+			Session session = Session.getInstance(props,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(username, password);
+						}
+					});
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.addRecipient(Message.RecipientType.TO,
+					new InternetAddress(user.getEmail()));
+			message.setSubject("SYSFAC CONFIRAMTION");
+			message.setText("Your email password was set properly");
+		try {
+			Transport.send(message);
+			userServicesLocal.UpdateUser(user);
+			userServicesLocal.UpdateUser(user);
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('statusDialog').hide();");
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Profile Updated!", "An email was sent to your address"));
+		} catch (Exception e) {
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('statusDialog').hide();");
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Bad Credentials", "Incorrect email address or password "));
+		}
+		
+		
+		
 	}
 
 	// getters stters

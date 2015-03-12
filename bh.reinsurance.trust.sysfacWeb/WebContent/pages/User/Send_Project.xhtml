@@ -12,6 +12,7 @@
 			<h:form id="SendProject">
 				<p:messages id="messages" autoUpdate="true" closable="true" />
 				<p:panelGrid columns="2">
+					<f:facet name="header">Send project</f:facet>
 					<p:outputLabel value=" Name of the project :" />
 					<p:outputLabel value="#{projectBean.project3.nameOfTheProject}" />
 					<p:outputLabel id="TO2" for="To" value="To* : " />
@@ -39,10 +40,34 @@
 					<p:inputTextarea id="Textt" value="#{projectBean.box.message}"
 						required="true" autoResize="true" style="width:400px"
 						requiredMessage="Please enter a message"></p:inputTextarea>
+					<p:outputLabel id="s" rendered="#{projectBean.displayMailSubj}"
+						value=" Subject :" />
+					<p:inputText value="#{projectBean.box.subj}" style="width:400px"
+						required="true" requiredMessage="Please enter the subject"
+						rendered="#{projectBean.displayMailSubj}"></p:inputText>
+					<f:facet name="footer">
+
+						<p:outputLabel for="d" value="Send Via Email : " />
+						<p:selectBooleanCheckbox id="d"
+							value="#{projectBean.displayMailSubj}">
+							<p:ajax update=":SendProject" />
+						</p:selectBooleanCheckbox>
+
+						<p:commandButton style="left:155px" value="Send"
+							icon="ui-icon-check"
+							actionListener="#{projectBean.SendProject()}" onclick="PF('statusDialog').show()"></p:commandButton>
+					</f:facet>
 				</p:panelGrid>
-				<p:commandButton value="Send" icon="ui-icon-check"
-					actionListener="#{projectBean.SendProject()}"></p:commandButton>
+
+
 			</h:form>
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage value="/resources/images/ajax-loader2.gif"></p:graphicImage>
+			</p:dialog>
+
+
+
 		</ui:define>
 	</ui:composition>
 </h:body>
