@@ -2,6 +2,8 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -256,98 +258,111 @@ public class ProjectBean implements Serializable {
 
 	}
 
-	public void SendProject() throws MessagingException {
+	public void SendProject() throws MessagingException, UnknownHostException {
+		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
+				.toString())) {
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR,
+									"Connection Problems",
+									"Please make sure that you are connected to the internet"));
+		} else {
 
-		String from = user2.getEmail();
-		final String username = user2.getEmail();
-		final String password = user2.getEmailPwd();
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-		Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				});
-		MimeMessage message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(from));
-		message.setSubject(box.getSubj());
-		message.setText(box.getMessage());
-
-		box.setId_project(project3.getId());
-		box.setUser_sending_id(user2.getId());
-		box.setState("NOT SEEN");
-		for (int i = 0; i < SendToUsers.size(); i++) {
-			if (DisplayMailSubj == true) {
-				message.addRecipient(Message.RecipientType.TO,
-						new InternetAddress(SendToUsers.get(i).getEmail()));
-
-			}
-
-			box.setUser_id(SendToUsers.get(i).getId());
-			mailBoxServicesLocal.CreateMailBox(box);
-		}
-		if (DisplayMailSubj) {
+			RequestContext context = RequestContext.getCurrentInstance();
+			String from = user2.getEmail();
+			final String username = user2.getEmail();
+			final String password = user2.getEmailPwd();
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
 			try {
 
-				// Send message
-
-				Transport.send(message);
-				System.out.println("message sent successfully....");
-			} catch (MessagingException e) {
-				System.out.println("ff sofien");
-				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
-		}
+			Session session = Session.getInstance(props,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(username,
+									password);
+						}
+					});
 
-		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
-		NumberProjectReceived = GetMails();
-		box = new MailBox();
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("PF('statusDialog').hide();");
-		FacesContext.getCurrentInstance().addMessage(
-				"e",
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "project Sent!",
-						""));
-
-	}
-
-	public void sendMail() {
-		String to = "sofien.zribi@esprit.tn";// change accordingly
-		String from = user2.getEmail();
-		final String username = user2.getEmail();
-		final String password = user2.getEmailPwd();
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-		Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				});
-
-		try {
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					to));
-			message.setSubject("Ping");
-			message.setText("Hello, this is example of sending email  ");
-			System.out.println("well done sofien");
-			// Send message
-			Transport.send(message);
-			System.out.println("message sent successfully....");
-		} catch (MessagingException e) {
-			System.out.println("ff sofien");
-			e.printStackTrace();
+			message.setSubject(box.getSubj());
+			message.setText(box.getMessage());
+
+			box.setId_project(project3.getId());
+			box.setUser_sending_id(user2.getId());
+			box.setState("NOT SEEN");
+			for (int i = 0; i < SendToUsers.size(); i++) {
+				if (DisplayMailSubj == true) {
+					message.addRecipient(Message.RecipientType.TO,
+							new InternetAddress(SendToUsers.get(i).getEmail()));
+
+				}
+
+				box.setUser_id(SendToUsers.get(i).getId());
+				mailBoxServicesLocal.CreateMailBox(box);
+			}
+			if (DisplayMailSubj) {
+				try {
+
+					// Send message
+
+					Transport.send(message);
+					setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2
+							.getId()));
+					NumberProjectReceived = GetMails();
+					box = new MailBox();
+					context.execute("PF('statusDialog').hide();");
+					FacesContext.getCurrentInstance().addMessage(
+							"e",
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"project Sent!", ""));
+					System.out.println("message sent successfully....");
+				} catch (MessagingException e) {
+					System.out.println("ff sofien");
+
+					e.printStackTrace();
+				}
+			} else {
+				setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2
+						.getId()));
+				NumberProjectReceived = GetMails();
+				box = new MailBox();
+				SendToUsers = new ArrayList<User>();
+				context.execute("PF('statusDialog').hide();");
+				FacesContext.getCurrentInstance().addMessage(
+						"e",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"project Sent!", ""));
+			}
+
 		}
 
+	}
+	public void VerifyMail(){
+		if(user2.isVerified()==false){
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('verif').show()");
+		}
+		
+	}
+	public void cancelbutton(){
+		DisplayMailSubj=false;
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('verif').hide()");
+	}
+	public void Doitnow() throws IOException{
+		FacesContext.getCurrentInstance().getExternalContext()
+		.redirect("UserProfile.jsf");
+		DisplayMailSubj=false;
 	}
 
 	public String verifypassword() {

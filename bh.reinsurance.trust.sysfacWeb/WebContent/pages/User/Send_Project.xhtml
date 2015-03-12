@@ -10,7 +10,7 @@
 		<ui:define name="title">Send Project </ui:define>
 		<ui:define name="content">
 			<h:form id="SendProject">
-				<p:messages id="messages" autoUpdate="true" closable="true" />
+				<p:growl id="e" sticky="true" autoUpdate="true" showDetail="true"></p:growl>
 				<p:panelGrid columns="2">
 					<f:facet name="header">Send project</f:facet>
 					<p:outputLabel value=" Name of the project :" />
@@ -40,32 +40,43 @@
 					<p:inputTextarea id="Textt" value="#{projectBean.box.message}"
 						required="true" autoResize="true" style="width:400px"
 						requiredMessage="Please enter a message"></p:inputTextarea>
-					<p:outputLabel id="s" rendered="#{projectBean.displayMailSubj}"
-						value=" Subject :" />
+					<p:outputLabel id="s" value=" Subject :" />
 					<p:inputText value="#{projectBean.box.subj}" style="width:400px"
-						required="true" requiredMessage="Please enter the subject"
-						rendered="#{projectBean.displayMailSubj}"></p:inputText>
+						required="true" requiredMessage="Please enter the subject"></p:inputText>
 					<f:facet name="footer">
 
-						<p:outputLabel for="d" value="Send Via Email : " />
-						<p:selectBooleanCheckbox id="d"
+						<p:outputLabel for="check" value="Send Via Email : " />
+						<p:selectBooleanCheckbox id="check"
 							value="#{projectBean.displayMailSubj}">
-							<p:ajax update=":SendProject" />
+							<p:ajax listener="#{projectBean.VerifyMail()}" />
+
 						</p:selectBooleanCheckbox>
+
+
 
 						<p:commandButton style="left:155px" value="Send"
 							icon="ui-icon-check"
-							actionListener="#{projectBean.SendProject()}" onclick="PF('statusDialog').show()"></p:commandButton>
+							actionListener="#{projectBean.SendProject()}" update="@this">
+						</p:commandButton>
 					</f:facet>
-				</p:panelGrid>
 
+				</p:panelGrid>
+				<p:ajaxStatus onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()" />
 
 			</h:form>
 			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 				closable="false" resizable="false" showHeader="false">
 				<p:graphicImage value="/resources/images/ajax-loader2.gif"></p:graphicImage>
 			</p:dialog>
-
+			<p:dialog widgetVar="verif" modal="true" draggable="false"
+				closable="true" resizable="false" showHeader="false">
+			Please Complete your account configuration !!
+			<br />
+				<p:commandLink actionListener="#{projectBean.Doitnow()}" >"username"->Edit Account</p:commandLink>
+				<br />
+				<p:commandButton value="cancel" actionListener="#{projectBean.cancelbutton()}" update="SendProject"></p:commandButton>
+			</p:dialog>
 
 
 		</ui:define>

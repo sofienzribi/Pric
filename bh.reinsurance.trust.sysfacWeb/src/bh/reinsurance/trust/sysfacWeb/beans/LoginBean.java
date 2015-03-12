@@ -2,6 +2,8 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -123,8 +125,20 @@ public class LoginBean extends HttpServlet implements Serializable {
 		}
 	}
 
-	public void SetEmailPwd() throws MessagingException{
-		
+	public void SetEmailPwd() throws MessagingException, UnknownHostException {
+		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
+				.toString())) {
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR,
+									"Connection Problems",
+									"Please make sure that you are connected to the internet"));
+		} else {
+
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('statusDialog').show();");
 			String from = user.getEmail();
 			final String username = user.getEmail();
 			final String password = user.getEmailPwd();
@@ -136,36 +150,55 @@ public class LoginBean extends HttpServlet implements Serializable {
 			Session session = Session.getInstance(props,
 					new javax.mail.Authenticator() {
 						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(username, password);
+							return new PasswordAuthentication(username,
+									password);
 						}
 					});
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
-			message.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(user.getEmail()));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					user.getEmail()));
 			message.setSubject("SYSFAC CONFIRAMTION");
 			message.setText("Your email password was set properly");
-		try {
-			Transport.send(message);
-			userServicesLocal.UpdateUser(user);
-			userServicesLocal.UpdateUser(user);
-			RequestContext context = RequestContext.getCurrentInstance();
-			context.execute("PF('statusDialog').hide();");
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO,
-							"Profile Updated!", "An email was sent to your address"));
-		} catch (Exception e) {
-			RequestContext context = RequestContext.getCurrentInstance();
-			context.execute("PF('statusDialog').hide();");
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Bad Credentials", "Incorrect email address or password "));
+			try {
+				Transport.send(message);
+				user.setVerified(true);
+				userServicesLocal.UpdateUser(user);
+
+				RequestContext context2 = RequestContext.getCurrentInstance();
+				context2.execute("PF('statusDialog').hide();");
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Profile Updated!",
+								"An email was sent to your address"));
+			} catch (Exception e) {
+				RequestContext context2 = RequestContext.getCurrentInstance();
+				context2.execute("PF('statusDialog').hide();");
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								"Bad Credentials",
+								"Incorrect email address or password "));
+			}
+
 		}
-		
-		
-		
+
+	}
+
+	public void ModifyButton() {
+		user.setVerified(false);
+	}
+
+	public boolean Cancelbutton() {
+		if (user.getEmailPwd().equals(null) || user.getEmailPwd().equals("")) {
+			return false;
+		}
+		return true;
+	}
+
+	public void CancelButtonAct() {
+		user.setVerified(true);
 	}
 
 	// getters stters

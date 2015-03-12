@@ -13,29 +13,57 @@
 				<p:tab title="Email credentials">
 					<h:form>
 						<p:growl id="gr1" sticky="true" showDetail="true"></p:growl>
-						<p:panelGrid columns="2">
+
+
+						<p:panelGrid columns="2" rendered="#{!login.user.verified}">
 							<f:facet name="header">Email Cred</f:facet>
 							<p:outputLabel value="Email" />
-							<p:inputText value="#{login.user.email}" />
+							<p:inputText value="#{login.user.email}" required="true"
+								requiredMessage="Email required" />
 							<p:outputLabel value="password" />
-							<p:password value="#{login.user.emailPwd}"></p:password>
+							<p:password required="true" requiredMessage="password required"
+								value="#{login.user.emailPwd}"></p:password>
 							<f:facet name="footer">
-								<p:commandButton onclick="PF('statusDialog').show()" style="left:90px" value="Save"
-									actionListener="#{login.SetEmailPwd()}" update="gr1"></p:commandButton>
+								<p:commandButton onclick="PF('statusDialog').show()"
+									style="left:90px" value="Save"
+									actionListener="#{login.SetEmailPwd()}" update=":Mes"></p:commandButton>
+								<p:commandButton style="left:100px"
+									rendered="#{login.Cancelbutton()}"
+									actionListener="#{login.CancelButtonAct()}" value="Cancel"
+									update=":Mes" immediate="true"></p:commandButton>
 							</f:facet>
 						</p:panelGrid>
+
+						<p:panelGrid columns="2" rendered="#{login.user.verified}">
+							<f:facet name="header">Email Cred</f:facet>
+							<p:outputLabel value="Email" />
+							<p:outputLabel value="#{login.user.email}" />
+							<p:outputLabel value="password" />
+							<p:outputLabel value="#{login.user.emailPwd}" />
+							<f:facet name="footer">
+								<p:commandButton style="left:90px"
+									actionListener="#{login.ModifyButton()}" value="Modify"
+									update=":Mes"></p:commandButton>
+							</f:facet>
+						</p:panelGrid>
+
+
+						<p:ajaxStatus onstart="PF('statusDialog').show()"
+							onsuccess="PF('statusDialog').hide()" />
 					</h:form>
+
 				</p:tab>
 				<p:tab title="PDF">
-				
+
 				</p:tab>
 
 
 			</p:tabView>
-			
-			<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-					<p:graphicImage value="/resources/images/ajax-loader.gif"></p:graphicImage>
-					</p:dialog>
+
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage value="/resources/images/ajax-loader.gif"></p:graphicImage>
+			</p:dialog>
 		</ui:define>
 	</ui:composition>
 </h:body>
