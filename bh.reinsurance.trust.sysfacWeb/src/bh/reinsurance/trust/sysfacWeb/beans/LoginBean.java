@@ -221,6 +221,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 			} catch (Exception e) {
 				RequestContext context2 = RequestContext.getCurrentInstance();
 				context2.execute("PF('statusDialog').hide();");
+		user.setEmailPwd("");
 				FacesContext.getCurrentInstance().addMessage(
 						null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,

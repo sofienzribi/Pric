@@ -49,14 +49,14 @@
 							</f:facet>
 						</p:dataTable>
 					</h:form>
-					<p:confirmDialog global="true" showEffect="fade">
+					<p:confirmDialog global="true" showEffect="fade" >
 						<p:commandButton value="Yes" type="button"
 							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 						<p:commandButton value="No" type="button"
 							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 					</p:confirmDialog>
 					<h:form id="Form2">
-						<p:dialog modal="true" widgetVar="Popup" id="Popup">
+						<p:dialog modal="true" widgetVar="Popup" id="Popup"  resizable="false"  showEffect="true" hideEffect="explode">
 							<p:messages id="messagesd" autoUpdate="true" closable="true" />
 							<f:facet name="header">New Construction Type</f:facet>
 							<h:panelGrid columns="2">
@@ -79,7 +79,7 @@
 						</p:dialog>
 					</h:form>
 					<h:form id="Form3">
-						<p:dialog modal="true" widgetVar="Popup2" id="Popup2">
+						<p:dialog modal="true" widgetVar="Popup2" id="Popup2" resizable="false"  showEffect="true" hideEffect="explode">
 							<p:messages id="messagesf" autoUpdate="true" closable="true" />
 							<f:facet name="header">Update Construction Type</f:facet>
 							<h:panelGrid columns="2">
@@ -161,7 +161,7 @@
 
 
 			<p:dialog width="450px" widgetVar="pop" modal="true" closable="true"
-				id="pop" header="Choose a measure " showEffect="true">
+				id="pop" header="Choose a measure " showEffect="true" hideEffect="explode" resizable="false">
 
 				<h:form id="Po">
 					<p:growl widgetVar="gro" id="gro" life="2000" />
