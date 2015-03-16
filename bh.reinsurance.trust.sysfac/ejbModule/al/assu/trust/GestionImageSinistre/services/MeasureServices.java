@@ -91,10 +91,11 @@ public class MeasureServices implements MeasureServicesLocal {
 	}
 
 	@Override
-	public Measure GetWorkingMeasure() {
-		String jpql = "select u from Measure u where u.active =:param1 ";
+	public Measure GetWorkingMeasure(String CLS) {
+		String jpql = "select u from Measure u where u.active =:param1 and u.classofbusiness=:param2 ";
 		Query query = entityManager.createQuery(jpql).setParameter("param1",
-				true);
+				true).setParameter("param2",
+						CLS);
 		try {
 			return (Measure) query.getSingleResult();
 		} catch (Exception e) {

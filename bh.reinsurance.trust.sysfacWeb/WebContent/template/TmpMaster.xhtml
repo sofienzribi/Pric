@@ -10,7 +10,7 @@
 	<h:outputStylesheet library="css" name="5670482863bb.css" />
 	<h:outputStylesheet library="css" name="style.css" />
 	<h:outputStylesheet library="css" name="style1.css" />
-	<p:growl widgetVar="growl" showDetail="true" sticky="true"
+	<p:growl widgetVar="growl" id="growl" showDetail="true" sticky="true"
 		severity="info" />
 
 
@@ -39,18 +39,19 @@
 					<ui:insert name="content" />
 
 					<h:form id="Form4">
-						<p:growl widgetVar="as"  life="2000"
+						<p:growl widgetVar="as" id="as" life="2000"
 							severity="info" />
 						<p:dialog modal="true" widgetVar="POPSET" id="POPUPSET">
+						
 							<p:messages id="messagesf" autoUpdate="true" closable="true" />
 							<f:facet name="header">Working Measure</f:facet>
 
 							<h:panelGrid columns="1">
 								<p:outputLabel>Please enter the password to make this measure the working measure</p:outputLabel>
-								<p:password value="#{measure.passwordCheck}"></p:password>
+								<p:password value="#{measure.passwordCheck}" required="true" requiredMessage="Please enter the password"></p:password>
 							</h:panelGrid>
-							<p:commandButton id="sss" value="Save" icon="ui-icon-check"
-								update="Form4"
+							<p:commandButton id="sss" value="Save" icon="ui-icon-check" update=":Form4:as"
+								
 								actionListener="#{measure.MakeWorkingMeasure()}" />
 						</p:dialog>
 					</h:form>

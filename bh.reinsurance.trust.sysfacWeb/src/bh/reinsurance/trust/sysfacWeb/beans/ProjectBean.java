@@ -39,14 +39,11 @@ import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 @ManagedBean()
 @SessionScoped
 public class ProjectBean implements Serializable {
-	/**
-	 * 
-	 */
+	
 	// models
 
 	@ManagedProperty("#{login.getUser()}")
 	private User user2;
-
 	private boolean passwordmsg;
 	private String pwdcheck;
 	private String Checkbox;
@@ -124,7 +121,6 @@ public class ProjectBean implements Serializable {
 		passwordmsg = true;
 		PopDisplayed = false;
 		projects = local.GetAllProjects();
-
 	}
 
 	// methods
@@ -171,7 +167,6 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void OnRowSelect() {
-
 		if (local.GetProjectById(mailBox.getId_project()) == null) {
 			DisplayButtonMailBox = false;
 			DiplayDeleteButton = true;
@@ -259,6 +254,7 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void SendProject() throws MessagingException, UnknownHostException {
+		//Internet check !!!
 		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
 				.toString())) {
 			FacesContext
@@ -266,7 +262,7 @@ public class ProjectBean implements Serializable {
 					.addMessage(
 							null,
 							new FacesMessage(FacesMessage.SEVERITY_ERROR,
-									"Connection Problems",
+									"Internet Problems",
 									"Please make sure that you are connected to the internet"));
 		} else {
 
@@ -275,15 +271,12 @@ public class ProjectBean implements Serializable {
 			final String username = user2.getEmail();
 			final String password = user2.getEmailPwd();
 			Properties props = new Properties();
+			//GMAIL SMTP
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
 			props.put("mail.smtp.host", "smtp.gmail.com");
 			props.put("mail.smtp.port", "587");
-			try {
-
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+			
 			Session session = Session.getInstance(props,
 					new javax.mail.Authenticator() {
 						protected PasswordAuthentication getPasswordAuthentication() {

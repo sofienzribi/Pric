@@ -12,6 +12,42 @@
 			<div class="jumbotron">
 				<h2>Risks On Map</h2>
 			</div>
+			<p:panel id="master">
+				<h:form>
+					<h:panelGrid id="eu" columns="2">
+						<h:outputLabel value="Region" />
+						<p:selectOneMenu value="#{facultativeBean.reg1}"
+							style="width:375px">
+							<p:ajax event="valueChange"
+								listener="#{facultativeBean.OnRegionChange()}"
+								update=":master " />
+							<f:selectItem itemLabel="All regions" itemValue="all" />
+							<f:selectItems value="#{facultativeBean.reg}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+						<h:outputLabel value="Country" />
+						<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
+							style="width:375px">
+							<p:ajax event="valueChange"
+								listener="#{facultativeBean.affichselec()}"
+								update=":master" />
+							<f:selectItem itemLabel="select country" />
+							<f:selectItems value="#{facultativeBean.countr}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+						<h:outputLabel value="Occupancy" style="width:375px" />
+						<p:selectOneMenu value="#{facultativeBean.occup1}"
+							style="width:375px">
+							<p:ajax event="valueChange"
+								listener="#{facultativeBean.affichselec()}"  />
+							<f:selectItem itemLabel="select occupancy" />
+							<f:selectItems value="#{facultativeBean.occup}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+				</h:form>
+			</p:panel>
+			
 			<div id="map">
 				<p:gmap center="26.0275, 50.5500" zoom="2" type="HYBRID"
 					style="width:1000px;height:400px" model="#{MapBean.simpleModel}">

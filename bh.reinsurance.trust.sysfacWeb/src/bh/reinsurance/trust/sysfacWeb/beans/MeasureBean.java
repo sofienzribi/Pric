@@ -2,6 +2,7 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +34,7 @@ public class MeasureBean implements Serializable {
 	private Measure WorkingMeasure;
 	private boolean DisplayButtons;
 	private List<Measure> measures;
-
+	private List<Measure> searchmeasure;
 	@EJB
 	MeasureServicesLocal measureServicesLocal;
 	private static final long serialVersionUID = 1L;
@@ -56,7 +57,8 @@ public class MeasureBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure();
+		searchmeasure=new  ArrayList<Measure>();
+		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure("Property");
 		PasswordCheck = null;
 		DisplayMeasureMenu = "none";
 		DisableButtonMeasure = false;
@@ -100,7 +102,7 @@ public class MeasureBean implements Serializable {
 
 		}
 		measure = new Measure();
-		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure();
+		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure("Property");
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('POPMeasure').hide();");
 		DisplayButtons = false;
@@ -171,7 +173,7 @@ public class MeasureBean implements Serializable {
 			measureServicesLocal.UpdateMeasure(WorkingMeasure);
 			measures = measureServicesLocal.GetAllMeasures();
 			for (int i = 0; i < measures.size(); i++) {
-				if (measures.get(i).getId() != WorkingMeasure.getId()) {
+				if (measures.get(i).getId() != WorkingMeasure.getId() && measures.get(i).getClassofbusiness().equals(WorkingMeasure.getClassofbusiness())) {
 					Measure measuree = measures.get(i);
 					measuree.setActive(false);
 					measureServicesLocal.UpdateMeasure(measuree);
@@ -313,5 +315,15 @@ public class MeasureBean implements Serializable {
 	public void setDisableButtonCloseSet(boolean disableButtonCloseSet) {
 		this.disableButtonCloseSet = disableButtonCloseSet;
 	}
+
+	public List<Measure> getSearchmeasure() {
+		return searchmeasure;
+	}
+
+	public void setSearchmeasure(List<Measure> searchmeasure) {
+		this.searchmeasure = searchmeasure;
+	}
+
+	
 
 }

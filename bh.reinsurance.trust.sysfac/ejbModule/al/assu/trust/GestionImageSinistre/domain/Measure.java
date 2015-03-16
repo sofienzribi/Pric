@@ -22,6 +22,7 @@ public class Measure implements Serializable {
 	private boolean active;
 	private boolean activeTest;
 	private String description;
+	private String Classofbusiness;
 	private static final long serialVersionUID = 1L;
 	public Measure() {
 		super();
@@ -83,6 +84,14 @@ public class Measure implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getClassofbusiness() {
+		return Classofbusiness;
+	}
+
+	public void setClassofbusiness(String classofbusiness) {
+		Classofbusiness = classofbusiness;
 	}
 
 }

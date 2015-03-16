@@ -100,6 +100,8 @@ public class ReportBean {
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"File Created", ""));
 	}
+	
+	
 
 	public void ExportToPDF() throws JRException, IOException {
 		init();
@@ -148,5 +150,30 @@ public class ReportBean {
 
 	public void setFacultativesbychoice(List<Facultative> facultativesbychoice) {
 		this.facultativesbychoice = facultativesbychoice;
+	}
+	
+	//Tests
+	
+	
+	
+	
+	
+	public void Test(List<Sysfacus> sysfacus) throws JRException {
+		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
+				sysfacus);
+		
+		setJasperPrint(JasperFillManager.fillReport(
+				"/Users/zribisofien/Desktop/ModelReport/report23.jasper",
+				new HashMap(), beanCollectionDataSource));
+		JasperExportManager.exportReportToPdfFile(jasperPrint,
+				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('popuppdf').hide();");
+		FacesContext.getCurrentInstance()
+				.addMessage(
+						"messages1",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"File Created", ""));
 	}
 }

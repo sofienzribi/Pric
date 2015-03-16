@@ -107,6 +107,13 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Send_Project.jsf");
 	}
+	
+	public void GoToTestSummary() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("TestMesureSummary.jsf");
+	}
+	
+	
 	//getters setters
 
 	public String getTestaff() {

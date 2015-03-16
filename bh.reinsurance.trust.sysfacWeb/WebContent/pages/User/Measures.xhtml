@@ -13,16 +13,19 @@
 				<p:dataTable style="width:650px" emptyMessage="No Measures found!"
 					value="#{measure.measures}" var="prod" rows="5" paginator="true"
 					paginatorPosition="bottom" selectionMode="single"
-					selection="#{measure.measure}" rowKey="#{prod.id}"
+					selection="#{measure.measure}" rowKey="#{prod.id}" 
 					widgetVar="prodTab">
 					<p:ajax event="rowSelect" update=":Measure"
 						listener="#{measure.OnRowSelected()}" />
 					<f:facet name="header">Measures</f:facet>
-					<p:column headerText="Name">
+					<p:column headerText="Name" >
 						<h:outputText value="#{prod.name}" />
 					</p:column>
 					<p:column headerText="Creation Date">
 						<h:outputText value="#{prod.creationDate}" />
+					</p:column>
+					<p:column headerText="Class" >
+						<h:outputText value="#{prod.classofbusiness}" />
 					</p:column>
 					<p:column headerText="User">
 						<h:outputText value="#{measure.GetUserName(prod.userId)}" />
@@ -51,9 +54,17 @@
 				<h:form id="NewMeasure">
 					<p:messages id="messagesd" autoUpdate="true" closable="true" />
 					<h:panelGrid columns="2">
+					
 						<p:outputLabel for="Name" value="Name: " />
 						<p:inputText id="Name" value="#{measure.newmeasure.name}"
 							required="true" requiredMessage="Name Required" />
+							
+						<p:outputLabel for="class" value="Class : " />
+						<p:selectOneMenu id="class" style="width:130px" >
+
+							<f:selectItem itemLabel="Select one .." />
+
+						</p:selectOneMenu>
 						<p:outputLabel for="Desc" value="Descripton : " />
 						<p:inputText id="Desc" value="#{measure.newmeasure.description}"
 							required="true" requiredMessage="Description Required" />

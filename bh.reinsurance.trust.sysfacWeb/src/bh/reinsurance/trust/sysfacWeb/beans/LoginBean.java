@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +20,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.context.RequestContext;
 
@@ -40,6 +43,8 @@ public class LoginBean extends HttpServlet implements Serializable {
 	@EJB
 	private UserServicesLocal userServicesLocal;
 
+	private boolean Remember;
+
 	// constructor
 	public LoginBean() {
 
@@ -49,6 +54,19 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// init methode
 	@PostConstruct
 	public void init() {
+
+		Remember = false;
+
+		Map<String, Object> cookies = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestCookieMap();
+		Cookie cookie;
+		if ((Cookie) cookies.get("Remember") != null) {
+			Remember = true;
+			cookie = (Cookie) cookies.get("Remember");
+
+			user.login = cookie.getValue();
+
+		}
 		connected = false;
 
 	}
@@ -94,6 +112,16 @@ public class LoginBean extends HttpServlet implements Serializable {
 						.redirect("pages/admin/AdminHome.jsf");
 				connected = true;
 				theme = "ui-lightness";
+
+				if (Remember == true) {
+
+					HttpServletResponse response = (HttpServletResponse) FacesContext
+							.getCurrentInstance().getExternalContext()
+							.getResponse();
+					Cookie cookie = new Cookie("Remember", user.login);
+					cookie.setMaxAge(3600);
+					response.addCookie(cookie);
+				}
 				return null;
 			} else {
 
@@ -103,14 +131,32 @@ public class LoginBean extends HttpServlet implements Serializable {
 					theme = "redmond";
 					FacesContext.getCurrentInstance().getExternalContext()
 							.redirect("pages/User/Fac_info.jsf");
+					if (Remember == true) {
 
+						HttpServletResponse response = (HttpServletResponse) FacesContext
+								.getCurrentInstance().getExternalContext()
+								.getResponse();
+						Cookie cookie = new Cookie("Remember", user.login);
+
+						cookie.setMaxAge(3600);
+
+						response.addCookie(cookie);
+					}
 					return null;
 
 				} else {
 					Department = "Facultative Department";
 					connected = true;
 					theme = "blitzer";
+					if (Remember == true) {
 
+						HttpServletResponse response = (HttpServletResponse) FacesContext
+								.getCurrentInstance().getExternalContext()
+								.getResponse();
+						Cookie cookie = new Cookie("Remember", user.login);
+						cookie.setMaxAge(3600);
+						response.addCookie(cookie);
+					}
 					return "pages/User/Fac_info?faces-redirect=true";
 				}
 			}
@@ -241,6 +287,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void setUserServicesLocal(UserServicesLocal userServicesLocal) {
 		this.userServicesLocal = userServicesLocal;
+	}
+
+	public boolean isRemember() {
+		return Remember;
+	}
+
+	public void setRemember(boolean remember) {
+		Remember = remember;
 	}
 
 }

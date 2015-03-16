@@ -1,0 +1,116 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Test Measure</ui:define>
+		<ui:define name="content">
+			<p:tabView style="width:1200px">
+				<p:tab title="Summary">
+					<p:panel id="FacInfo">
+						
+						<h:form id="FacInfoForm">
+							<p:panelGrid columns="2" id="Detailsandcomparaisons">
+								<p:panelGrid style="width:550px" id="SelectedFac" columns="2">
+								<f:facet name="header">Working Measure</f:facet>
+									
+									<p:outputLabel value="Nbr" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.countries}" />
+									<p:outputLabel value="Country" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.countries}" />
+									<p:outputLabel value="Occupancy" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.occupencies}" />
+								
+									<p:outputLabel value="Total premium" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.suminsured}" />
+										<p:outputLabel value=" AVG Premium" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.commission}" />
+									<p:outputLabel value="Total Commission " />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.our_liability}" />
+									
+									<p:outputLabel value=" AVG Commission" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.commission}" />
+									
+									<f:facet name="footer">
+										<h:panelGroup style="display:block; text-align:center">
+										
+										</h:panelGroup>
+									</f:facet>
+								</p:panelGrid>
+
+
+								<h:form id="Compfacultative">
+									<p:panelGrid style="width:550px" id="CompareFac" columns="2" >
+									<f:facet name="header" >Test Measure</f:facet>
+									<p:outputLabel value="Nbr" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.countries}" />
+								
+										<p:outputLabel value="Country" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.countries}" />
+									<p:outputLabel value="Occupancy" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.occupencies}" />
+								
+									<p:outputLabel value="Total premium" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.suminsured}" />
+										<p:outputLabel value=" AVG Premium" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.commission}" />
+									<p:outputLabel value="Total Commission " />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.our_liability}" />
+									
+									<p:outputLabel value=" AVG Commission" />
+									<p:outputLabel
+										value="#{facultativeBean.facbychoice1.commission}" />
+									
+									
+										<f:facet name="footer">
+											<h:panelGroup style="display:block; text-align:center">
+											
+											</h:panelGroup>
+										</f:facet>
+									</p:panelGrid>
+								</h:form>
+								<f:facet name="header">
+								Summary
+								</f:facet>
+								<f:facet name="footer">
+								<h:panelGroup style="display:block; text-align:center">
+												<p:commandLink >
+								<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
+									width="24" />
+							</p:commandLink>
+											</h:panelGroup>
+								
+								</f:facet>
+							</p:panelGrid>
+						</h:form>
+					</p:panel>
+
+				</p:tab>
+				<p:tab title="facultatives by bands">
+
+				</p:tab>
+
+
+			</p:tabView>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
