@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.mail.Message;
@@ -33,6 +36,8 @@ import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 @SessionScoped
 public class LoginBean extends HttpServlet implements Serializable {
 
+	@ManagedProperty("#{applicationbean.getList()}")
+	private List<LoginBean> list;
 	private static final long serialVersionUID = 1L;
 	// Models
 	private String Department;
@@ -47,7 +52,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	// constructor
 	public LoginBean() {
-
+		
 		user = new User();
 	}
 
@@ -56,7 +61,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	public void init() {
 
 		Remember = false;
-
+		list.add(this);
 		Map<String, Object> cookies = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestCookieMap();
 		Cookie cookie;
@@ -221,7 +226,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 			} catch (Exception e) {
 				RequestContext context2 = RequestContext.getCurrentInstance();
 				context2.execute("PF('statusDialog').hide();");
-		user.setEmailPwd("");
+				user.setEmailPwd("");
 				FacesContext.getCurrentInstance().addMessage(
 						null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -246,6 +251,13 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void CancelButtonAct() {
 		user.setVerified(true);
+	}
+
+	//test
+	@PreDestroy
+	public void destroy() {
+		
+
 	}
 
 	// getters stters
@@ -296,6 +308,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void setRemember(boolean remember) {
 		Remember = remember;
+	}
+
+	public List<LoginBean> getList() {
+		return list;
+	}
+
+	public void setList(List<LoginBean> list) {
+		this.list = list;
 	}
 
 }

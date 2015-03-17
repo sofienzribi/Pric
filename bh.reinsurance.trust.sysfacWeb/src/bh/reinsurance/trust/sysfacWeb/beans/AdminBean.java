@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -18,13 +17,13 @@ import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
 @ManagedBean(name = "admin")
-@SessionScoped
+@javax.enterprise.context.SessionScoped
 public class AdminBean implements Serializable {
 
 	/**
 	 * 
 	 */
-	//models
+	// models
 	private static final long serialVersionUID = 7461654699564286956L;
 	private User user;
 	@EJB
@@ -32,8 +31,8 @@ public class AdminBean implements Serializable {
 	private String title;
 	private String messa;
 	private String b = "info";
-	
-	//const
+
+	// const
 	public AdminBean() {
 	}
 
@@ -43,13 +42,11 @@ public class AdminBean implements Serializable {
 		user = new User();
 	}
 
-	//mthods
+	// mthods
 	public String OnFlowProcess(FlowEvent event) {
 
 		return event.getNewStep();
 	}
-
-	
 
 	public void addUser() {
 		System.out.println(user.getEmail());
@@ -66,8 +63,8 @@ public class AdminBean implements Serializable {
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
 		eventBus.publish("/NotifyUsers", new FacesMessage(title, messa));
 	}
-	
-	//const
+
+	// const
 
 	public String getTitle() {
 		return title;
@@ -92,6 +89,7 @@ public class AdminBean implements Serializable {
 	public void setB(String b) {
 		this.b = b;
 	}
+
 	public User getUser() {
 		return user;
 	}

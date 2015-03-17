@@ -10,47 +10,67 @@
 		<ui:define name="title">ProjectBox </ui:define>
 		<ui:define name="content">
 			<h:form id="Mainform">
-				<p:dataTable style="width:500px" emptyMessage="no Mails found!"
-					value="#{projectBean.mailBoxs}" var="prod" rows="5"
-					rowStyleClass="#{prod.state eq 'NOT SEEN' ? 'old' : null}"
-					paginator="true" paginatorPosition="bottom" selectionMode="single"
-					selection="#{projectBean.mailBox}" rowKey="#{prod.id}"
-					widgetVar="prodTab">
-					<p:ajax event="rowSelect" listener="#{projectBean.OnRowSelect()}"
-						update=":Mainform" />
-					<f:facet name="header">ProjectBox</f:facet>
-					<p:column headerText="From">
-						<h:outputText
-							value="#{projectBean.GetUserName(prod.user_sending_id)}" />
-					</p:column>
-					<p:column headerText="Project Name">
-						<h:outputText
-							value="#{projectBean.GetNameOfTheProject(prod.id_project)}" />
-					</p:column>
-					<p:column headerText="Message ">
-						<h:outputText value="#{prod.message}" />
-					</p:column>
-					<p:column headerText="Date">
-						<h:outputText value="#{prod.sentDate}" />
-					</p:column>
-					<f:facet name="footer">
-						<p:commandButton value="Refresh"
-							actionListener="#{projectBean.refreshtable()}"
-							icon="ui-icon-refresh" update="@form" />
-						<p:commandButton value="Open" icon="ui-icon-mail-open"
-							action="#{projectBean.OpeningSentProject()}"
-							rendered="#{projectBean.displayButtonMailBox}" />
-						<p:commandButton value="Delete" icon="ui-icon-trash"
-							rendered="#{projectBean.diplayDeleteButton}"
-							actionListener="#{projectBean.DeleteMailBox()}"
-							update=":Mainform">
-							<p:confirm header="Confirmation"
-								message="Are you sure that you want to delete this message?"
-								icon="ui-icon-alert" />
-						</p:commandButton>
-					</f:facet>
-				</p:dataTable>
+				<p:panel>
+					<h:panelGrid columns="2">
 
+						<p:outputLabel for="console" value="Show :"></p:outputLabel>
+						<p:selectOneRadio id="console"
+							value="#{projectBean.displaySelection}"
+							onchange="#{projectBean.setDisplayMSG()}">
+							<f:selectItem itemLabel="All" itemValue="all" />
+							<f:selectItem itemLabel="Read" itemValue="SEEN" />
+							<f:selectItem itemLabel="Unread" itemValue="NOT SEEN" />
+							<p:ajax listener="#{projectBean.setDisplayMSG()}"
+								update=":Mainform:prodtab" />
+						</p:selectOneRadio>
+
+					</h:panelGrid>
+				</p:panel>
+
+
+					<p:dataTable id="prodtab" style="width:500px"
+						emptyMessage="no Mails found!" value="#{projectBean.mailBoxs}"
+						var="prod" rows="5"
+						rowStyleClass="#{prod.state eq 'NOT SEEN' ? 'old' : null}"
+						paginator="true" paginatorPosition="bottom" selectionMode="single"
+						selection="#{projectBean.mailBox}" rowKey="#{prod.id}"
+						widgetVar="prodTab">
+						<p:ajax event="rowSelect" listener="#{projectBean.OnRowSelect()}"
+							update=":Mainform" />
+						<f:facet name="header">ProjectBox</f:facet>
+						<p:column headerText="From">
+
+
+							<h:outputText
+								value="#{projectBean.GetUserName(prod.user_sending_id)}" />
+						</p:column>
+						<p:column headerText="Project Name">
+							<h:outputText
+								value="#{projectBean.GetNameOfTheProject(prod.id_project)}" />
+						</p:column>
+						<p:column headerText="Message ">
+							<h:outputText value="#{prod.message}" />
+						</p:column>
+						<p:column headerText="Date">
+							<h:outputText value="#{prod.sentDate}" />
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton value="Refresh"
+								actionListener="#{projectBean.refreshtable()}"
+								icon="ui-icon-refresh" update="@form" />
+							<p:commandButton value="Open" icon="ui-icon-mail-open"
+								action="#{projectBean.OpeningSentProject()}"
+								rendered="#{projectBean.displayButtonMailBox}" />
+							<p:commandButton value="Delete" icon="ui-icon-trash"
+								rendered="#{projectBean.diplayDeleteButton}"
+								actionListener="#{projectBean.DeleteMailBox()}"
+								update=":Mainform">
+								<p:confirm header="Confirmation"
+									message="Are you sure that you want to delete this message?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+						</f:facet>
+					</p:dataTable>
 				<p:confirmDialog global="true" showEffect="fade">
 					<p:commandButton value="Yes" type="button"
 						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

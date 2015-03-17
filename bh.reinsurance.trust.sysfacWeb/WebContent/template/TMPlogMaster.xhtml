@@ -12,7 +12,8 @@
 	<link rel="stylesheet" type="text/css" href="resources/css2/style5.css" />
 	<style>
 body {
-/*background: #F2F2F2;*/
+	/*background: #F2F2F2;*/
+	
 }
 </style>
 </h:head>
@@ -28,10 +29,11 @@ body {
 			<div class="container text-left"></div>
 			<div class="container text-center">
 
-				<section> <h:form class="form-2" >
+				<section> <h:form class="form-2">
 					<p:graphicImage value="/resources/images/logo_small.png"></p:graphicImage>
 					<h1>
-						<span class="log-in">Log in</span>
+						<span class="log-in" style="font-family: 'Times New Roman';">Log
+							in</span>
 					</h1>
 					<p:messages id="messages" autoUpdate="true" closable="true" />
 					<p class="float">
@@ -45,14 +47,14 @@ body {
 							requiredMessage="Password required" placeholder="password"></p:password>
 					</p>
 					<p class="clearfix">
-						<p:outputLabel  value="Remember Login  " />
+						<p:outputLabel value="Remember Login  " />
 						<p:selectBooleanCheckbox id="re" value="#{login.remember}" />
 					</p>
-					
-						
-					
-					
-					<p:commandButton  value="Login" update="@form" icon="ui-icon-key"
+
+
+
+
+					<p:commandButton value="Login" update="@form" icon="ui-icon-key"
 						action="#{login.login()}" />
 				</h:form> </section>
 			</div>

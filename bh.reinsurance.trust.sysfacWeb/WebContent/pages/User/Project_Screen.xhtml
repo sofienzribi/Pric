@@ -12,7 +12,7 @@
 			<p:panel id="pan1">
 				<h:form id="dialog1">
 					<p:dataTable style="width:650px" emptyMessage="no Projects found!"
-						value="#{projectBean.projects}" var="prod" rows="13"  
+						value="#{projectBean.projects}" var="prod" rows="13"
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{projectBean.project}" rowKey="#{prod.id}"
 						widgetVar="prodTabW2">
@@ -33,19 +33,24 @@
 						<p:column headerText="Privacy">
 							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
 						</p:column>
-						<f:facet name="footer"><p:commandButton icon="ui-icon-refresh" value="refresh" update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
-						<p:commandButton value="Open"
-						action="#{projectBean.openingproject()}"
-						rendered="#{projectBean.popDisplayed}" icon="ui-icon-folder-open"/>
-					<p:commandButton icon="ui-icon-plusthick" value="New Project"
-						onclick="PF('popup').show()" />
+						<f:facet name="footer">
+							<p:commandButton icon="ui-icon-refresh" value="refresh"
+								update=":dialog1"
+								actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
+							<p:commandButton value="Open"
+								action="#{projectBean.openingproject()}"
+								rendered="#{projectBean.popDisplayed}"
+								icon="ui-icon-folder-open" />
+							<p:commandButton icon="ui-icon-plusthick" value="New Project"
+								onclick="PF('popup').show()" />
 						</f:facet>
 					</p:dataTable>
 				</h:form>
 			</p:panel>
 
 			<p:dialog header="Password" modal="true" id="popup1"
-				widgetVar="popup1" showEffect="true" hideEffect="explode" resizable="false">
+				widgetVar="popup1" showEffect="true" hideEffect="explode"
+				resizable="false">
 				<h:form id="form3">
 					<h:panelGrid columns="1">
 						<p:messages id="messages" autoUpdate="true" closable="true" />
@@ -58,15 +63,16 @@
 			</p:dialog>
 
 
-			<p:dialog  header="New Project" modal="true" widgetVar="popup" showEffect="true" hideEffect="explode" resizable="false"> 
+			<p:dialog header="New Project" modal="true" widgetVar="popup"
+				showEffect="true" hideEffect="explode" resizable="false">
 				<h:form id="form2">
 					<p:messages id="messagesd" autoUpdate="true" closable="true" />
 					<h:panelGrid columns="3">
 						<p:outputLabel for="Name" value="Name of the project : " />
 						<p:inputText id="Name"
 							value="#{projectBean.project2.nameOfTheProject}" required="true"
-							requiredMessage="Name Required"  />
-						<p:message id="namemsg" for="Name" display="icon"  />
+							requiredMessage="Name Required" />
+						<p:message id="namemsg" for="Name" display="icon" />
 						<p:outputLabel for="privacy" value="Privacy : " />
 						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
 							required="true" rendered="true"
@@ -92,7 +98,8 @@
 					</h:panelGrid>
 					<p:commandButton value="Create" icon="ui-icon-check"
 						action="#{projectBean.OpenProject()}" update=":form2" />
-					<p:commandButton value="Cancel"  />
+					<p:commandButton value="Cancel"
+						actionListener="#{projectBean.CancelNewProj()}" immediate="true" />
 				</h:form>
 			</p:dialog>
 

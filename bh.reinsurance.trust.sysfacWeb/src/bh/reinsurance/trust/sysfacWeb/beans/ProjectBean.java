@@ -39,7 +39,7 @@ import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 @ManagedBean()
 @SessionScoped
 public class ProjectBean implements Serializable {
-	
+
 	// models
 
 	@ManagedProperty("#{login.getUser()}")
@@ -85,6 +85,7 @@ public class ProjectBean implements Serializable {
 	private boolean DisabledButtonProject;
 	private boolean DisabledButtonProjectSendClose;
 	private boolean DisplayMailSubj;
+	private String DisplaySelection = "all";
 
 	// const
 
@@ -132,6 +133,33 @@ public class ProjectBean implements Serializable {
 		projects = local.GetAllProjects();
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popup').hide();");
+
+	}
+
+	public void setDisplayMSG() {
+
+		List<MailBox> boxs = new ArrayList<MailBox>();
+		List<MailBox> boxs2 = new ArrayList<MailBox>();
+		boxs = mailBoxServicesLocal.GetMailBoxByUserId(user2.getId());
+		if (DisplaySelection.equals("all")) {
+			setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
+
+		} else if (DisplaySelection.equals("SEEN")) {
+
+			for (MailBox a : boxs) {
+				if (a.getState().equals("SEEN")) {
+					boxs2.add(a);
+				}
+			}
+			setMailBoxs(boxs2);
+		} else {
+			for (MailBox a : boxs) {
+				if (a.getState().equals("NOT SEEN")) {
+					boxs2.add(a);
+				}
+			}
+			setMailBoxs(boxs2);
+		}
 
 	}
 
@@ -254,7 +282,7 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void SendProject() throws MessagingException, UnknownHostException {
-		//Internet check !!!
+		// Internet check !!!
 		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
 				.toString())) {
 			FacesContext
@@ -271,12 +299,12 @@ public class ProjectBean implements Serializable {
 			final String username = user2.getEmail();
 			final String password = user2.getEmailPwd();
 			Properties props = new Properties();
-			//GMAIL SMTP
+			// GMAIL SMTP
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
 			props.put("mail.smtp.host", "smtp.gmail.com");
 			props.put("mail.smtp.port", "587");
-			
+
 			Session session = Session.getInstance(props,
 					new javax.mail.Authenticator() {
 						protected PasswordAuthentication getPasswordAuthentication() {
@@ -340,22 +368,28 @@ public class ProjectBean implements Serializable {
 		}
 
 	}
-	public void VerifyMail(){
-		if(user2.isVerified()==false){
+
+	public void VerifyMail() {
+		if (user2.isVerified() == false) {
 			RequestContext context = RequestContext.getCurrentInstance();
 			context.execute("PF('verif').show()");
 		}
-		
+
 	}
-	public void cancelbutton(){
-		DisplayMailSubj=false;
+
+	public void cancelbutton() {
+		DisplayMailSubj = false;
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('verif').hide()");
 	}
-	public void Doitnow() throws IOException{
+	public void  CancelNewProj(){
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('popup').hide()");
+	}
+	public void Doitnow() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
-		.redirect("UserProfile.jsf");
-		DisplayMailSubj=false;
+				.redirect("UserProfile.jsf");
+		DisplayMailSubj = false;
 	}
 
 	public String verifypassword() {
@@ -752,6 +786,14 @@ public class ProjectBean implements Serializable {
 
 	public void setDisplayMailSubj(boolean displayMailSubj) {
 		DisplayMailSubj = displayMailSubj;
+	}
+
+	public String getDisplaySelection() {
+		return DisplaySelection;
+	}
+
+	public void setDisplaySelection(String displaySelection) {
+		DisplaySelection = displaySelection;
 	}
 
 }
