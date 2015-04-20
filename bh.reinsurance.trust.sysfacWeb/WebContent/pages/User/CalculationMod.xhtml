@@ -59,7 +59,6 @@
 					</p:panelGrid>
 				</h:form>
 			</p:panel>
-
 			<p:panel id="details" visible="#{facultativeBean.testaff}">
 				<h:form>
 					<p:commandButton value="SumIsured"
@@ -119,9 +118,11 @@
 						</f:facet>
 					</p:dataTable>
 				</h:form>
+
 				<h:form id="details_form">
 					<p:panelGrid style="width:300px;margin :10px auto auto auto;"
 						columns="2">
+
 						<f:facet name="header">Summary</f:facet>
 						<p:outputLabel>NB fac</p:outputLabel>
 						<p:outputLabel>#{facultativeBean.totalNumbreFac}</p:outputLabel>

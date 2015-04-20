@@ -40,7 +40,7 @@ public class AssetsServices implements AssetsServicesLocal {
 
 		@Override
 		public void DeleteAsset(Assets assets) {
-			entityManager.remove(entityManager.merge(assets));
+			entityManager.remove(entityManager.find(Assets.class, assets.getId()));
 			
 		}
 }

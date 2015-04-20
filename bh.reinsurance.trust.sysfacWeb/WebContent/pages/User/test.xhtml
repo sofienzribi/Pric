@@ -1,0 +1,634 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Rating tool </ui:define>
+		<ui:define name="content">
+			<p:panel>
+				<f:facet name="header">
+					<p:outputLabel >Rating Tool</p:outputLabel>
+				</f:facet>
+				<h:form>
+
+					<p:growl id="gorwl1" sticky="true" showDetail="true"></p:growl>
+
+					<p:wizard flowListener="#{admin.OnFlowProcess}" style="width:1200px">
+						<p:tab id="offer" title="Offer information">
+							<p:panel>
+								<h:form id="form">
+									<p:messages id="messages" autoUpdate="true" closable="true" />
+									<h:panelGrid columns="2">
+										<h:panelGrid columns="2" border="0" style="widht:500px">
+											<p:outputLabel value="Underwriter : " for="Lab1" />
+											<p:outputLabel
+												value="#{offerBean.getunder(offerBean.offer.id_underwriter)}"
+												id="Lab1"></p:outputLabel>
+											<p:outputLabel value="Inception Date : " for="inc" />
+											<p:calendar id="inc"
+												value="#{offerBean.offer.inception_Date}" />
+											<p:outputLabel value="Expiry date : " for="exp" />
+											<p:calendar id="exp" value="#{offerBean.offer.expiry_date}" />
+											<p:outputLabel value="Quoted date : " for="quote" />
+											<p:calendar id="quote" value="#{offerBean.offer.quoted_Date}" />
+											<p:outputLabel value="Main Occupancy : " for="occu" />
+											<p:inputText id="occu" value="#{offerBean.offer.occupancy}" />
+											<p:outputLabel value="Main Class : " for="class" />
+											<p:inputText id="class" value="#{offerBean.offer.mainclass}" />
+											<p:outputLabel value="Currency : " for="curr" />
+											<p:selectOneMenu id="curr"
+												value="#{offerBean.offer.currency}" style="width:160px">
+
+												<f:selectItem itemLabel="Select one .." />
+												<f:selectItems value="#{ratingBean.currency}" var="cat"
+													itemValue="#{cat}" itemLabel="#{cat}" />
+											</p:selectOneMenu>
+											<p:outputLabel value="Insured : " for="ins" />
+											<p:inputText id="ins" value="#{offerBean.offer.insured}" />
+											<p:outputLabel value="Broker : " for="brok" />
+											<p:inputText id="brok" value="#{offerBean.offer.broker}" />
+											<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
+											<p:inputMask id="pol" mask="a*-999-a999"
+												value="#{offerBean.offer.policy}" />
+											<p:outputLabel value="Country : " for="CR" />
+											<p:selectOneMenu id="CR" style="width:160px">
+												<f:selectItem itemLabel="Bahrain" />
+											</p:selectOneMenu>
+											<p:outputLabel value="Risk Grade : " for="GR" />
+											<p:inputMask id="GR" mask="9?9"
+												value="#{offerBean.offer.risk_Grade}" />
+											<p:outputLabel value="Insurance  basis : " for="RB" />
+											<p:selectOneMenu id="RB"
+												value="#{offerBean.offer.insurance_Basis}"
+												style="width:160px">
+												<f:selectItem itemLabel="Select one .." />
+												<f:selectItems value="#{ratingBean.currency}" var="cat"
+													itemValue="#{cat}" itemLabel="#{cat}" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+
+
+										<h:panelGrid border="0" columns="1" style="margin-left:100px">
+											<p:panelGrid id="BIMLOP">
+												<f:facet name="header">
+													<p:row>
+														<p:column>BI and MLoP</p:column>
+														<p:column>Selection</p:column>
+														<p:column>Load</p:column>
+													</p:row>
+												</f:facet>
+												<p:row>
+													<p:column>Indemnity Period (BI)</p:column>
+													<p:column>
+														<p:selectOneMenu id="Indemni" style="width:125px">
+															<f:selectItem itemLabel="25" />
+															<f:selectItem itemLabel="45" />
+														</p:selectOneMenu>
+													</p:column>
+													<p:column>%</p:column>
+												</p:row>
+
+												<p:row>
+													<p:column> Indemnity period(MLoP)</p:column>
+													<p:column>
+														<p:selectOneMenu id="ers" style="width:125px">
+															<f:selectItem itemLabel="" />
+														</p:selectOneMenu>
+													</p:column>
+													<p:column>%</p:column>
+												</p:row>
+												<p:row>
+													<p:column> CBI</p:column>
+													<p:column>
+														<p:selectOneMenu id="cf" style="width:125px">
+															<f:selectItem itemLabel="" />
+														</p:selectOneMenu>
+													</p:column>
+													<p:column>%</p:column>
+												</p:row>
+											</p:panelGrid>
+
+											<p:panelGrid id="Deductibles">
+												<f:facet name="header">
+													<p:row>
+														<p:column style="width:160px">Deductibles</p:column>
+														<p:column>Selection</p:column>
+
+														<p:column>Load</p:column>
+													</p:row>
+												</f:facet>
+												<p:row>
+													<p:column> PD_MB Deductibles</p:column>
+													<p:column>
+														<p:selectOneMenu id="deduc" style="width:125px">
+															<f:selectItem itemLabel="" />
+														</p:selectOneMenu>
+													</p:column>
+													<p:column>50%</p:column>
+												</p:row>
+												<p:row>
+													<p:column>% of Claim</p:column>
+													<p:column>
+														<p:selectOneMenu id="claim" style="width:125px">
+															<f:selectItems value="#{ratingBean.currency}" />
+														</p:selectOneMenu>
+													</p:column>
+													<p:column>40%</p:column>
+												</p:row>
+											</p:panelGrid>
+										</h:panelGrid>
+									</h:panelGrid>
+								</h:form>
+
+							</p:panel>
+						</p:tab>
+
+
+						<p:tab id="Assets" title="Assets">
+							<p:panel id="master">
+								<h:form>
+									<p:dataTable emptyMessage="no Assets "
+										value="#{assetsBean.assetsList}" var="prod" rows="5"
+										paginator="true" paginatorPosition="bottom"
+										selectionMode="single" selection="#{assetsBean.assets}"
+										rowKey="#{prod.id}" widgetVar="prodTabW">
+										<p:ajax event="rowSelect"
+											listener="#{assetsBean.OnRowSelected()}" />
+										<f:facet name="header">
+											<h:outputText value="Assets" />
+										</f:facet>
+										<p:column headerText="Loc">
+											<h:outputText value="#{prod.loc}" />
+										</p:column>
+										<p:column headerText="Include">
+											<h:outputText value="#{prod.include}" />
+										</p:column>
+										<p:column headerText="PD/MB Split">
+											<h:outputText value="#{prod.PD_MB_split}" />
+										</p:column>
+										<p:column headerText="Rate Adj.">
+											<h:outputText value="#{prod.rate_Adj}%" />
+										</p:column>
+										<p:column headerText="Curve">
+											<h:outputText value="#{prod.curve}" />
+										</p:column>
+										<p:column headerText="PD_SI">
+											<h:outputText value="#{prod.PD_SI}" />
+										</p:column>
+										<p:column headerText="PD_PML">
+											<h:outputText value="#{prod.PD_PML}%" />
+										</p:column>
+										<p:column headerText="PD_Rate">
+											<h:outputText value="#{prod.PD_Rate/100}%" />
+										</p:column>
+										<p:column headerText="MB_SI">
+											<h:outputText value="#{prod.MB_SI}" />
+										</p:column>
+										<p:column headerText="MB_PML">
+											<h:outputText value="#{prod.MB_PML}%" />
+										</p:column>
+										<p:column headerText="MB_Rate">
+											<h:outputText value="#{prod.MB_Rate/100}%" />
+										</p:column>
+										<p:column headerText="BI_SI">
+											<h:outputText value="#{prod.BI_SI}" />
+										</p:column>
+										<p:column headerText="BI_PML">
+											<h:outputText value="#{prod.BI_PML}%" />
+										</p:column>
+										<p:column headerText="BI_Rate">
+											<h:outputText value="#{prod.BI_Rate/100}%" />
+										</p:column>
+										<p:column headerText="OTHER_SI">
+											<h:outputText value="#{prod.OTHER_SI}" />
+										</p:column>
+										<p:column headerText="OTHER_PML">
+											<h:outputText value="#{prod.OTHER_PML}%" />
+										</p:column>
+										<p:column headerText="OTHER_Rate">
+											<h:outputText value="#{prod.OTHER_Rate/100}%" />
+										</p:column>
+									</p:dataTable>
+								</h:form>
+								
+							</p:panel>
+							<p:panel id="details" visible="#{assetsBean.forrmDisplayed}">
+								<h:panelGrid columns="2">
+									<h:panelGrid columns="2">
+										<h:outputText value="Loc" />
+										<p:inputText id="Loc" value="#{assetsBean.assets.loc}"
+											styleClass="product-form-input" />
+										<h:outputText value="Include" />
+										<p:inputText value="#{assetsBean.assets.PD_SI}"
+											styleClass="product-form-input" />
+										<h:outputText value="PD/MB SPLIT" />
+										<p:inputText value="#{assetsBean.assets.PD_MB_split}"
+											styleClass="product-form-input" />
+										<h:outputText value="Rate Adj." />
+										<p:inputText value="#{assetsBean.assets.rate_Adj}"
+											styleClass="product-form-input" />
+										<h:outputText value="Curve" />
+										<p:inputText value="#{assetsBean.assets.curve}"
+											styleClass="product-form-input" />
+										<h:outputText value="PD_SI" />
+										<p:inputText value="#{assetsBean.assets.PD_SI}"
+											styleClass="product-form-input" />
+										<h:outputText value="PD_PML" />
+										<p:inputText value="#{assetsBean.assets.PD_PML}"
+											styleClass="product-form-input" />
+										<h:outputText value="PD_Rate" />
+										<p:inputText value="#{assetsBean.assets.PD_Rate}"
+											styleClass="product-form-input" />
+										<h:outputText value="MB_SI" />
+										<p:inputText value="#{assetsBean.assets.MB_SI}"
+											styleClass="product-form-input" />
+										<h:outputText value="MB_PML" />
+										<p:inputText value="#{assetsBean.assets.MB_PML}"
+											styleClass="product-form-input" />
+										<h:outputText value="MB_Rate" />
+										<p:inputText value="#{assetsBean.assets.MB_Rate}"
+											styleClass="product-form-input" />
+										<h:outputText value="BI_SI" />
+										<p:inputText value="#{assetsBean.assets.BI_SI}"
+											styleClass="product-form-input" />
+										<h:outputText value="BI_PML" />
+										<p:inputText value="#{assetsBean.assets.BI_PML}"
+											styleClass="product-form-input" />
+										<h:outputText value="BI_Rate" />
+										<p:inputText value="#{assetsBean.assets.BI_Rate}"
+											styleClass="product-form-input" />
+										<h:outputText value="OTHER_SI" />
+										<p:inputText value="#{assetsBean.assets.OTHER_SI}"
+											styleClass="product-form-input" />
+										<h:outputText value="OTHER_PML" />
+										<p:inputText value="#{assetsBean.assets.OTHER_PML}"
+											styleClass="product-form-input" />
+										<h:outputText value="OTHER_Rate" />
+										<p:inputText value="#{assetsBean.assets.OTHER_Rate}"
+											styleClass="product-form-input" />
+										<p:commandButton action="#{assetsBean.AddAsset()}"
+											value="save" />
+										<h:panelGrid columns="2">
+											<p:commandButton actionListener="#{assetsBean.DoDelete()}"
+												value="delete" update="master details" />
+											<p:commandButton immediate="true"
+												actionListener="#{assetsBean.DoCancel()}" value="Cancel"
+												update="details master" />
+										</h:panelGrid>
+									</h:panelGrid>
+								</h:panelGrid>
+							</p:panel>
+						</p:tab>
+
+
+						<p:tab id="Risk" title="Risk Assesment">
+							<h:form id="Form1">
+								<p:panel>
+
+
+
+
+
+									<p:panelGrid style="width:500px;margin-left:300px">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="7">General Factors</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column style="width:250px">Loss Ration </p:column>
+											<p:column>
+
+												<p:selectOneMenu value="#{assesmentBean.lossCharge}"
+													style="width:125px">
+
+													<p:ajax event="valueChange" update="Form1" />
+													<f:selectItem itemLabel="select one" />
+
+													<f:selectItems value="#{assesmentBean.loss_Frequencies}"
+														var="cat" itemValue="#{cat.charge}"
+														itemLabel="#{cat.category}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+							#{assesmentBean.lossCharge} %
+							</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column id="Const" style="width:250px">Construction Class </p:column>
+											<p:column>
+
+												<p:selectOneMenu value="#{assesmentBean.a}"
+													style="width:125px">
+
+													<p:ajax event="valueChange" update="Form1" />
+													<f:selectItem itemLabel="select one" />
+
+													<f:selectItems value="#{assesmentBean.construction_Types}"
+														var="cat" itemValue="#{cat.loading}"
+														itemLabel="#{cat.category}"
+														itemDescription="#{cat.information}" />
+												</p:selectOneMenu>
+
+
+
+
+
+
+
+
+												<p:tooltip for="Const" id="tooltipClass"
+													value="Construction Class  ....A …  ,b means ......,C means ..."></p:tooltip>
+
+											</p:column>
+											<p:column>
+			                 #{assesmentBean.a} %
+							</p:column>
+										</p:row>
+									</p:panelGrid>
+
+									<p:panelGrid style="width:500px;margin-left:300px">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="7"> Safety and Security </p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column style="width:250px">Security Guard 24/365 </p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Management Risk awareness</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:accordionPanel activeIndex="this" dynamic="true"
+												multiple="true" rendered="#{login.Cancelbutton()}"
+												widgetVar="AccoPanRiskAss"></p:accordionPanel>
+											<p:column style="width:250px">Physical barriers</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Access Control and Alarm system</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+									</p:panelGrid>
+
+
+
+									<p:panelGrid style="width:500px;margin-left:300px">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="7"> HouseKeeping </p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column style="width:250px">Smoke Control</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Welding Control</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Fire Prevention Officer</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Stock storage practise</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+									</p:panelGrid>
+
+
+									<p:panelGrid style="width:500px;margin-left:300px">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="7"> Maintenance </p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column style="width:250px">Mechanical Maintenance</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Electrical Maintenance</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Fullfilment of recommendations</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Regular maintenance and self inspection process</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+									</p:panelGrid>
+
+
+
+									<p:panelGrid style="width:500px;margin-left:300px">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="7"> BI Loss prevention </p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column style="width:250px">Backup facilities</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">Business continuity plan</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+										<p:row>
+											<p:column style="width:250px">bottleneck loss minimised</p:column>
+											<p:column>
+												<p:selectOneMenu style="width:125px">
+													<f:selectItems value="#{assesmentBean.quality}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+									#{login.Connected()}
+							</p:column>
+										</p:row>
+
+									</p:panelGrid>
+
+
+
+								</p:panel>
+							</h:form>
+						</p:tab>
+
+
+
+
+						<p:tab id="Summary" title="Summary">
+							<p:panel>
+								<h:panelGrid columns="2" border="1" style="margin-left:300px">
+									<h:outputLabel value="Proposed Share : " for="PRO"
+										style="width:250px" />
+									<h:inputText id="PRO" style="width:150px" />
+									<h:outputLabel value=" MaX Liability : " for="LIA"
+										style="width:250px" />
+									<h:outputLabel id="LIA" style="width:150px">0</h:outputLabel>
+								</h:panelGrid>
+								<br />
+								<p:outputLabel style="margin-right:480px" value="Risk Price"></p:outputLabel>
+								<h:panelGrid columns="2" border="1" style="margin-left:300px">
+									<p:outputLabel value="Rating Factors : " for="RAFA"
+										style="width:250px" />
+									<p:outputLabel id="RAFA" value="0" style="width:150px" />
+									<p:outputLabel value="Nat.Catastrophe : " for="NATCAT"
+										style="width:250px" />
+									<p:outputLabel id="NATCAT"
+										value="#{projectBean.summary.idProj}" style="width:150px" />
+								</h:panelGrid>
+								<p:outputLabel value="Total Risk Price					:	"
+								style="margin-right:460px">0</p:outputLabel>
+								<br />
+								<br />
+								<p:outputLabel value="Internal Costs" style="margin-right:480px" />
+
+								<h:panelGrid columns="2" border="1" style="margin-left:300px">
+									<p:outputLabel value="Expenses : " for="exp"
+										style="width:250px" />
+									<p:outputLabel id="exp" value="#{projectBean.summary.expenses}"
+										style="width:150px" />
+									<p:outputLabel value="Cost of Capital : " for="CCP"
+										style="width:250px" />
+									<p:outputLabel id="CCP" value="0" style="width:150px" />
+									<p:outputLabel value="Reinsurance Costs : " for="RC"
+										style="width:250px" />
+									<p:outputLabel id="RC" value="0" style="width:150px" />
+								</h:panelGrid>
+								<p:outputLabel value="Total Costs				:	"
+									style="margin-right:480px">0</p:outputLabel>
+								<br />
+								<br />
+								<h:panelGrid columns="2" border="1" style="margin-left:300px">
+									<p:outputLabel value="Profit Margin : " for="Pro"
+										style="width:250px" />
+									<h:inputText id="Pro" style="width:150px" />
+									<p:outputLabel value="Brokerage : " for="BROK"
+										style="width:150px" />
+									<h:inputText id="BROK" style="width:150px" />
+								</h:panelGrid>
+								<br />
+								<p:outputLabel value=" Commercial Price				:	"
+									style="margin-right:480px">0</p:outputLabel>
+								<br />
+							</p:panel>
+						</p:tab>
+					</p:wizard>
+				</h:form>
+
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

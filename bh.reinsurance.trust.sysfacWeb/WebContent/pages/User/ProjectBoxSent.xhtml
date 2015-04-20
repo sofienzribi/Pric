@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Sent Projects </ui:define>
+		<ui:define name="content">
+			<h:form id="Mainform">
+
+
+				<p:dataTable id="prodtab" style="width:500px"
+					emptyMessage="no Mails found!" value="#{projectBean.mailBoxs2}"
+					var="prod" rows="5" paginator="true" paginatorPosition="bottom"
+					widgetVar="prodTab">
+					<f:facet name="header">Sent Projects</f:facet>
+					<p:column headerText="To">
+
+
+						<h:outputText value="#{projectBean.GetUserName(prod.user_id)}" />
+					</p:column>
+					<p:column headerText="Project Name">
+						<h:outputText
+							value="#{projectBean.GetNameOfTheProject(prod.id_project)}" />
+					</p:column>
+
+					<p:column headerText="Date">
+						<h:outputText value="#{prod.sentDate}" />
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

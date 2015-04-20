@@ -26,6 +26,85 @@ public class Project implements Serializable {
 	private List<Assets> assets;
 	private int user;
 	private String password;
+	private Date quoted_Date;
+	private String Currency;
+	private String Insured;
+	private String Broker;
+	
+	private String Policy;
+	private String Country;
+	private String Tool;
+	
+	private Date expiry_date;
+	public Date getExpiry_date() {
+		return expiry_date;
+	}
+
+	public void setExpiry_date(Date expiry_date) {
+		this.expiry_date = expiry_date;
+	}
+
+	public Date getQuoted_Date() {
+		return quoted_Date;
+	}
+
+	public void setQuoted_Date(Date quoted_Date) {
+		this.quoted_Date = quoted_Date;
+	}
+
+	public String getCurrency() {
+		return Currency;
+	}
+
+	public void setCurrency(String currency) {
+		Currency = currency;
+	}
+
+	public String getInsured() {
+		return Insured;
+	}
+
+	public void setInsured(String insured) {
+		Insured = insured;
+	}
+
+	public String getBroker() {
+		return Broker;
+	}
+
+	public void setBroker(String broker) {
+		Broker = broker;
+	}
+
+	public String getPolicy() {
+		return Policy;
+	}
+
+	public void setPolicy(String policy) {
+		Policy = policy;
+	}
+
+	public String getCountry() {
+		return Country;
+	}
+
+	public void setCountry(String country) {
+		Country = country;
+	}
+
+	public String getTool() {
+		return Tool;
+	}
+
+	public void setTool(String tool) {
+		Tool = tool;
+	}
+
+	
+
+	
+	
+	
 
 	public Project() {
 		super();

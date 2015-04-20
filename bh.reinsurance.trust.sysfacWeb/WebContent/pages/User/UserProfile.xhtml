@@ -28,7 +28,6 @@
 									style="left:90px" value="Save"
 									actionListener="#{login.SetEmailPwd()}" update=":Mes"></p:commandButton>
 								<p:commandButton style="left:100px"
-									rendered="#{login.Cancelbutton()}"
 									actionListener="#{login.CancelButtonAct()}" value="Cancel"
 									update=":Mes" immediate="true"></p:commandButton>
 							</f:facet>
@@ -53,8 +52,37 @@
 					</h:form>
 
 				</p:tab>
-				<p:tab title="PDF">
+				<p:tab title="Account Credentials">
+					<h:form>
+						<p:growl id="gr3" life="2000" showDetail="true"></p:growl>
+						<p:panelGrid columns="2">
+							<f:facet name="header">Account Cred</f:facet>
+							<p:outputLabel value="Current  Password" />
+							<p:password required="true" requiredMessage="password required"
+								value="#{login.currentPassword}"></p:password>
+							<p:outputLabel value="New Password" />
+							<p:password required="true" requiredMessage="password required"
+								value="#{login.password1}"></p:password>
+							<p:outputLabel value="Verify Password" />
+							<p:password required="true" requiredMessage="password required"
+								value="#{login.password2}"></p:password>
+							<f:facet name="footer">
+								<p:commandButton style="left:100px" update="gr3" value="Save"
+									actionListener="#{login.ChangePassword()}">
+									<p:confirm header="Confirmation"
+										message="Are you sure that you want to change your password  ?"
+										icon="ui-icon-alert" />
+								</p:commandButton>
 
+							</f:facet>
+						</p:panelGrid>
+						<p:confirmDialog global="true" showEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</h:form>
 				</p:tab>
 
 

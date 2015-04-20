@@ -34,6 +34,10 @@
 					<p:inputText id="ins" value="#{offerBean.offer.insured}" />
 					<p:outputLabel value="Broker : " for="brok" />
 					<p:inputText id="brok" value="#{offerBean.offer.broker}" />
+					<p:outputLabel value="Main Occupancy : " for="occu" />
+					<p:inputText id="occu" value="#{offerBean.offer.occupancy}" />
+					<p:outputLabel value="Main Class : " for="class" />
+					<p:inputText id="class" value="#{offerBean.offer.mainclass}" />
 					<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
 					<p:inputMask id="pol" mask="a*-999-a999"
 						value="#{offerBean.offer.policy}" />

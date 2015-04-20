@@ -17,16 +17,19 @@ public class Offer implements Serializable {
 
 	private int id;
 	private int id_underwriter;
+	private int id_project;
 	private Date inception_Date;
 	private Date expiry_date;
 	private Date quoted_Date;
 	private String Currency;
 	private String Insured;
 	private String Broker;
-	private int id_project;
+	
 	private String Policy;
 	private String Country;
 	private int risk_Grade;
+	private String mainclass;
+	private String occupancy;
 	private String insurance_Basis;
 	private static final long serialVersionUID = 1L;
 
@@ -140,6 +143,22 @@ public class Offer implements Serializable {
 
 	public void setExpiry_date(Date expiry_date) {
 		this.expiry_date = expiry_date;
+	}
+
+	public String getMainclass() {
+		return mainclass;
+	}
+
+	public void setMainclass(String mainclass) {
+		this.mainclass = mainclass;
+	}
+
+	public String getOccupancy() {
+		return occupancy;
+	}
+
+	public void setOccupancy(String occupancy) {
+		this.occupancy = occupancy;
 	}
 
 	

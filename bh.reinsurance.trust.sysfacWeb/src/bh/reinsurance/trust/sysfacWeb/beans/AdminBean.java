@@ -73,6 +73,9 @@ public class AdminBean implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public void addthis(){
+		
+	}
 
 	public String getMessa() {
 		return messa;

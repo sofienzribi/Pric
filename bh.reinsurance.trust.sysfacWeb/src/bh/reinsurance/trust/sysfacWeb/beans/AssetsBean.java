@@ -6,10 +6,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
 import al.assu.trust.GestionImageSinistre.domain.Assets;
 import al.assu.trust.GestionImageSinistre.domain.User;
@@ -45,8 +49,9 @@ public class AssetsBean {
 
 	@PostConstruct
 	public void init() {
-
+		assetsList = assetsServicesLocal.GetAllAssets();
 	}
+	
 
 	public List<Assets> GetAssets() {
 		return assetsServicesLocal.GetAllAssets();
@@ -59,25 +64,30 @@ public class AssetsBean {
 		assetsList = assetsServicesLocal.GetAllAssets();
 
 	}
-
-	public String Testconnection() {
-		if (user.getLogin() == null) {
-			return "login?faces-redirect=true";
-
-		}
-		return null;
-	}
+	
+	public void onRowEdit(RowEditEvent event) {
+		
+		assetsServicesLocal.AddAsset(assets);
+		assetsList = assetsServicesLocal.GetAllAssets();
+		FacesMessage msg = new FacesMessage( "Asset Modified","Asset id :"+assets.getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+    	FacesMessage msg = new FacesMessage("Edit Cancelled", "ff");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+	
+	
 
 	public void DoDelete() {
-		forrmDisplayed = false;
+		FacesMessage msg = new FacesMessage( "Asset Deleted","Asset id :"+assets.getId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
 		assetsServicesLocal.DeleteAsset(assets);
 		assetsList = assetsServicesLocal.GetAllAssets();
 	}
 
-	public void DoNew() {
-		assets = new Assets();
-		forrmDisplayed = true;
-	}
+	
 
 	public void DoCancel() {
 		assets = new Assets();

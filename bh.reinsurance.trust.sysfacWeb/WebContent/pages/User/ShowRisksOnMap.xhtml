@@ -9,8 +9,9 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Risks On map </ui:define>
 		<ui:define name="content">
-				<div>
-				<h2 style="color:black;bold:true;font-weight: bold;">Risks On Map</h2>
+			<div>
+				<h2 style="color: black; bold: true; font-weight: bold;">Risks
+					On Map</h2>
 			</div>
 			<p:panel id="master">
 				<h:form>
@@ -19,8 +20,7 @@
 						<p:selectOneMenu value="#{facultativeBean.reg1}"
 							style="width:375px">
 							<p:ajax event="valueChange"
-								listener="#{facultativeBean.OnRegionChange()}"
-								update=":master " />
+								listener="#{facultativeBean.OnRegionChange()}" update=":master" />
 							<f:selectItem itemLabel="All regions" itemValue="all" />
 							<f:selectItems value="#{facultativeBean.reg}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
@@ -29,8 +29,7 @@
 						<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
 							style="width:375px">
 							<p:ajax event="valueChange"
-								listener="#{facultativeBean.affichselec()}"
-								update=":master" />
+								listener="#{facultativeBean.affichselec()}" update=":master" />
 							<f:selectItem itemLabel="select country" />
 							<f:selectItems value="#{facultativeBean.countr}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
@@ -39,7 +38,7 @@
 						<p:selectOneMenu value="#{facultativeBean.occup1}"
 							style="width:375px">
 							<p:ajax event="valueChange"
-								listener="#{facultativeBean.affichselec()}"  />
+								listener="#{facultativeBean.affichselec()}" />
 							<f:selectItem itemLabel="select occupancy" />
 							<f:selectItems value="#{facultativeBean.occup}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
@@ -47,7 +46,7 @@
 					</h:panelGrid>
 				</h:form>
 			</p:panel>
-			
+
 			<div id="map">
 				<p:gmap center="26.0275, 50.5500" zoom="2" type="HYBRID"
 					style="width:1000px;height:400px" model="#{MapBean.simpleModel}">

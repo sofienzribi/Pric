@@ -70,6 +70,21 @@
 									<p:commandLink value="Summary"
 										actionListener="#{redirectionBean.GoToSummary()}"></p:commandLink>
 								</h:form></li>
+							<li><h:form id="FIR">
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Test1"
+										actionListener="#{redirectionBean.GoToTest1()}"></p:commandLink>
+								</h:form></li>
+							<li><h:form id="FIRA">
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Test2"
+										actionListener="#{redirectionBean.GoToTest2()}"></p:commandLink>
+								</h:form></li>
+								<li><h:form id="FIRA2">
+									<i class="fa fa-play"></i>
+									<p:commandLink value="Test3"
+										actionListener="#{redirectionBean.GoToTest3()}"></p:commandLink>
+								</h:form></li>
 						</ul></li>
 
 					<li><a style="display:#{projectBean.displayFacultativeDept}"
@@ -162,6 +177,12 @@
 										actionListener="#{redirectionBean.GoToReceived()}">Received Project (#{projectBean.GetMails()})
 										</p:commandLink>
 								</h:form></li>
+							<li><h:form id="zerzefqsdf">
+									<i class="fa fa-envelope"></i>
+									<p:commandLink disabled="#{projectBean.disabledButtonProject}"
+										value="Sent Project"
+										actionListener="#{redirectionBean.GoToSentProject()}"></p:commandLink>
+								</h:form></li>
 							<li><h:form id="mpl">
 									<i class="fa fa-wrench"></i>
 									<p:commandLink disabled="#{projectBean.disabledButtonProject}"
@@ -204,7 +225,8 @@
 							<li><h:form id="M7">
 									<i class="fa fa-wrench"></i>
 									<p:commandLink disabled="#{measure.disableButtonCloseSet}"
-										value="Test Measure" actionListener="#{redirectionBean.GoToTestSummary()}"></p:commandLink>
+										value="Test Measure"
+										actionListener="#{redirectionBean.GoToTestSummary()}"></p:commandLink>
 								</h:form></li>
 
 

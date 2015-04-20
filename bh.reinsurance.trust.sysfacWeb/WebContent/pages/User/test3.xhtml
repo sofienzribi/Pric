@@ -1,0 +1,752 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title"> Rating Tool</ui:define>
+		<ui:define name="content">
+			<p:panel header="PI Lawyers rating tool - accountants and auditors">
+				<p:tabView style="width:1200px">
+
+					<p:tab title="Summary">
+						<h:panelGrid columns="1" style="margin-left:300px">
+
+
+							<p:panelGrid columns="2" style="width:600px">
+								<f:facet name="header">offer information</f:facet>
+								<p:outputLabel value="Underwriter : " for="Labe1" />
+								<p:outputLabel
+									value="#{projectBean.GetUserName(projectBean.project3.user)}"
+									id="Labe1"></p:outputLabel>
+								<p:outputLabel value="Inception Date : " for="inc1" />
+								<h:outputLabel id="inc1"
+									value="#{projectBean.project3.dateCreation}" />
+								<p:outputLabel value="Expiry date : " for="exp1" />
+								<h:outputLabel id="exp1"
+									value="#{projectBean.project3.expiry_date}" />
+								<p:outputLabel value="Quoted date : " for="quote1" />
+								<h:outputLabel id="quote1"
+									value="#{projectBean.project3.quoted_Date}" />
+								<p:outputLabel value="Currency : " for="curr1" />
+								<h:outputLabel id="curr1"
+									value="#{projectBean.project3.currency}" />
+								<p:outputLabel value="Insured : " for="ins1" />
+								<h:outputLabel id="ins1" value="#{projectBean.project3.insured}" />
+								<p:outputLabel value="Broker : " for="brok1" />
+								<h:outputLabel id="brok1" value="#{projectBean.project3.broker}" />
+								<p:outputLabel value="Policy : " for="pol1" />
+								<h:outputLabel id="pol1" value="#{projectBean.project3.policy}" />
+
+
+							</p:panelGrid>
+
+
+							<p:panelGrid id="summary" style="width:600px">
+								<f:facet name="header">
+									<p:row>
+										<p:column style="width:450px">
+											<p:outputLabel styleClass="old" value="Premium Calculation" />
+										</p:column>
+										<p:column style="width:150px">
+											<p:outputLabel styleClass="old" value="Amount/Percent" />
+										</p:column>
+									</p:row>
+								</f:facet>
+								<p:row>
+									<p:column>
+										<p:outputLabel styleClass="old" value="Base Premium  " />
+									</p:column>
+									<p:column>
+										<p:outputLabel styleClass="old" value="33  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Territory load  " />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="33  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel styleClass="old" value="Total Base Premium " />
+									</p:column>
+									<p:column>
+										<p:outputLabel styleClass="old" value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel styleClass="old"
+											value="Indemnity Limit Premium " />
+									</p:column>
+									<p:column>
+										<p:outputLabel styleClass="old" value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel styleClass="old"
+											value="Premium Before deductible and Loadings" />
+									</p:column>
+									<p:column>
+										<p:outputLabel styleClass="old" value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Deductible Factor" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Loadings" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel styleClass="old" value="Modified Premuim" />
+									</p:column>
+									<p:column>
+										<p:outputLabel styleClass="old" value="34  " />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Coverage Enhancement" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel styleClass="old"
+											value="Premium after Enhancements" />
+									</p:column>
+									<p:column>
+										<p:outputLabel styleClass="old" value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel styleClass="old"
+											value="Premium after Coverage Extensions" />
+									</p:column>
+									<p:column>
+										<p:outputLabel styleClass="old" value="34  " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Expense Loading" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="34  " />
+									</p:column>
+								</p:row>
+
+								<!-- <p:row>
+										<p:column style="background-color:grey"> 
+											<p:outputLabel styleClass="old" value="Average Rate" />
+										</p:column >
+										<p:column style="background-color:green">
+											<p:outputLabel styleClass="old" value="34  " />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column style="background-color:grey">
+											<p:outputLabel styleClass="old" value="Total Premium($)" />
+										</p:column>
+										<p:column style="background-color:green">
+											<p:outputLabel styleClass="old" value="34  " />
+										</p:column>
+									</p:row> -->
+
+
+								<f:facet name="footer">
+									<p:row>
+										<p:column>
+											<p:outputLabel styleClass="old" value="Average Rate" />
+										</p:column>
+										<p:column>
+											<p:outputLabel styleClass="old" value="34  " />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel styleClass="old" value="Total Premium($)" />
+										</p:column>
+										<p:column>
+											<p:outputLabel styleClass="old" value="34  " />
+										</p:column>
+									</p:row>
+								</f:facet>
+							</p:panelGrid>
+
+						</h:panelGrid>
+
+					</p:tab>
+
+					<p:tab title="Rating">
+
+						<p:messages id="messages" autoUpdate="true" closable="true" />
+						<h:form>
+							<p:panelGrid columns="2" border="1" width="1200px">
+								<h:panelGrid style="margin-left:34px">
+
+									<p:panelGrid id="pricespec" style="width:450px">
+										<f:facet name="header">
+											<p:row>
+												<p:column style="width:200px">
+													<p:outputLabel styleClass="old" value="Practice Speciality" />
+												</p:column>
+												<p:column style="width:150px">
+													<p:outputLabel styleClass="old" value="% of practice" />
+												</p:column>
+												<p:column style="width:100px">
+													<p:outputLabel styleClass="old" value="Factor" />
+												</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Book Keeping and Audit" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.bookkeepingandaudit}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="management Advisory" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.managementAdvisory}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Forecast/projections" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu value="#{ratingBean.iaccandAudit.forecast}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Payroll Services" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.payrollservices}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Fiduciary" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.fiduciary}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Tax Preparation" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.taxpreparation}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Securities Related" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.securitiesrelated}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Financial Planning" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.financialPlanning}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<f:facet name="footer">
+											<p:row>
+												<p:column>
+													<p:outputLabel value="Total" />
+												</p:column>
+												<p:column>
+												</p:column>
+												<p:column>
+													<p:outputLabel value="40%" />
+												</p:column>
+											</p:row>
+										</f:facet>
+
+									</p:panelGrid>
+									<p:panelGrid id="Otherlf" style="width:450px">
+										<f:facet name="header">
+											<p:row>
+												<p:column style="width:200px">
+													<p:outputLabel styleClass="old"
+														value="Other loading factors" />
+												</p:column>
+												<p:column style="width:150px">
+													<p:outputLabel styleClass="old" value="Selection" />
+												</p:column>
+												<p:column style="width:100px">
+													<p:outputLabel styleClass="old" value="Load" />
+												</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Loss History-Incurred losses($)" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.incuredlosses}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Loss History-No.of Claims" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.noofclaims}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Special Client profile list" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.specialClientProfileList}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+
+										<f:facet name="footer">
+											<p:row>
+												<p:column>
+													<p:outputLabel value="Total" />
+												</p:column>
+												<p:column>
+												</p:column>
+												<p:column>
+													<p:outputLabel value="50%" />
+												</p:column>
+											</p:row>
+										</f:facet>
+
+									</p:panelGrid>
+
+
+
+								</h:panelGrid>
+
+
+
+								<h:panelGrid style="margin-left:34px">
+									<p:panelGrid id="Occurence" style="width:600px">
+
+										<f:facet name="header">
+											<p:row>
+												<p:column style="width:450px">
+													<p:outputLabel styleClass="old" value="Occurence" />
+												</p:column>
+												<p:column style="width:150px">
+													<p:outputLabel styleClass="old" value="Amount/Times" />
+												</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Each occurence limit " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.occurlimit}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Aggregate limite(Times) " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.aggregatelimit}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Deductible " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.deductible}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+
+
+									<p:panelGrid id="enhancement" style="width:600px">
+
+										<f:facet name="header">
+											<p:row>
+												<p:column style="width:450px">
+													<p:outputLabel styleClass="old" value="Enhancements" />
+												</p:column>
+												<p:column style="width:150px">
+													<p:outputLabel styleClass="old" value="Amount" />
+												</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Loss of document " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.lossofdocument}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Dishonest of employees " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.dishonestofempl}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Libel,Slander " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu value="#{ratingBean.iaccandAudit.libel}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Defence Expenses outside limits " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.defenseexpenses}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+
+
+									<p:panelGrid id="Exploading" style="width:600px">
+
+										<f:facet name="header">
+											<p:row>
+												<p:column style="width:450px">
+													<p:outputLabel styleClass="old" value="Expenses loading " />
+												</p:column>
+												<p:column style="width:150px">
+													<p:outputLabel styleClass="old" value="Load" />
+												</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Commission and Acquisition Costs" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.commissionandaquisition}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="General Expenses" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.generalexpenses}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Profit/Contingency " />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.profitcontingency}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+
+									<p:panelGrid id="coveext" style="width:600px">
+										<f:facet name="header">
+											<p:row>
+												<p:column style="width:300px">
+													<p:outputLabel styleClass="old" value="Coverage extensions" />
+												</p:column>
+												<p:column style="width:200px">
+													<p:outputLabel styleClass="old" value="Period" />
+												</p:column>
+												<p:column style="width:100px">
+													<p:outputLabel styleClass="old" value="Factor" />
+												</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Retrospective Covers(No.of Years)" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.retrocover}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column>
+												<p:outputLabel value="Extended Reporting(No.of Years)" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu
+													value="#{ratingBean.iaccandAudit.extendedreporting}"
+													style="width:160px">
+
+													<f:selectItem itemLabel="Select one .." />
+													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+														itemValue="#{cat}" itemLabel="#{cat}" />
+												</p:selectOneMenu>
+											</p:column>
+											<p:column>
+												<p:outputLabel value="10%" />
+											</p:column>
+										</p:row>
+
+
+										<f:facet name="footer">
+											<p:row>
+												<p:column>
+													<p:outputLabel value="Total" />
+												</p:column>
+												<p:column>
+												</p:column>
+												<p:column>
+													<p:outputLabel value="50%" />
+												</p:column>
+											</p:row>
+										</f:facet>
+
+									</p:panelGrid>
+
+
+								</h:panelGrid>
+
+							</p:panelGrid>
+						</h:form>
+					</p:tab>
+					<p:tab title="Rating Rules">
+					</p:tab>
+
+
+				</p:tabView>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -12,7 +12,7 @@ import al.assu.trust.GestionImageSinistre.domain.Factors;
 import al.assu.trust.GestionImageSinistre.domain.Loss_Frequency;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 
-/**
+/**s
  * Session Bean implementation class FactorsServices
  */
 @Stateless
@@ -65,7 +65,8 @@ public class FactorsServices implements FactorsServicesLocal {
 
 	@Override
 	public boolean CategoryExists(String Category, int IdFactor, String Type) {
-
+		
+		
 		String jpql = "select u from " + Type
 				+ " u where u.category=:param1 and u.idFactor=:param3  ";
 		Query query = entityManager.createQuery(jpql);

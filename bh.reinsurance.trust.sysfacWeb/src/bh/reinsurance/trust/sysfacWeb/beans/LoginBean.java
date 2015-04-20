@@ -44,6 +44,9 @@ public class LoginBean extends HttpServlet implements Serializable {
 	private User user;
 	private boolean connected;
 	private String theme = "redmond";
+	private String password1;
+	private String password2;
+	private String CurrentPassword;
 	// EJB
 	@EJB
 	private UserServicesLocal userServicesLocal;
@@ -52,7 +55,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	// constructor
 	public LoginBean() {
-		
+
 		user = new User();
 	}
 
@@ -82,6 +85,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 		if (user != null) {
 			return true;
 		} else {
+
 			return false;
 		}
 	}
@@ -119,7 +123,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 				theme = "ui-lightness";
 
 				if (Remember == true) {
-
 					HttpServletResponse response = (HttpServletResponse) FacesContext
 							.getCurrentInstance().getExternalContext()
 							.getResponse();
@@ -129,7 +132,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 				}
 				return null;
 			} else {
-
 				if (userFound.getDepartment().equals("actuarialandrisk")) {
 					Department = "Actuarial & Risk";
 					connected = true;
@@ -137,18 +139,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 					FacesContext.getCurrentInstance().getExternalContext()
 							.redirect("pages/User/Fac_info.jsf");
 					if (Remember == true) {
-
 						HttpServletResponse response = (HttpServletResponse) FacesContext
 								.getCurrentInstance().getExternalContext()
 								.getResponse();
 						Cookie cookie = new Cookie("Remember", user.login);
-
 						cookie.setMaxAge(3600);
-
 						response.addCookie(cookie);
 					}
 					return null;
-
 				} else {
 					Department = "Facultative Department";
 					connected = true;
@@ -173,6 +171,35 @@ public class LoginBean extends HttpServlet implements Serializable {
 							"Bad Credentials!", "Bad Credentials"));
 			// setUser(new user());
 			return "";
+		}
+	}
+
+	public void ChangePassword() {
+
+		if (CurrentPassword.equals(user.getPassword())) {
+
+			if (password1.equals(password2)) {
+				user.setPassword(password1);
+				userServicesLocal.UpdateUser(user);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Profile Updated!",
+								"Your Password has been changed"));
+			} else {
+				FacesContext
+						.getCurrentInstance()
+						.addMessage(
+								null,
+								new FacesMessage(FacesMessage.SEVERITY_ERROR,
+										"Bad Password",
+										"Please make sure that both password are the same"));
+			}
+		} else {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Bad Password", "Wrong current password"));
 		}
 	}
 
@@ -253,10 +280,9 @@ public class LoginBean extends HttpServlet implements Serializable {
 		user.setVerified(true);
 	}
 
-	//test
+	// test
 	@PreDestroy
 	public void destroy() {
-		
 
 	}
 
@@ -316,6 +342,30 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void setList(List<LoginBean> list) {
 		this.list = list;
+	}
+
+	public String getPassword1() {
+		return password1;
+	}
+
+	public void setPassword1(String password1) {
+		this.password1 = password1;
+	}
+
+	public String getPassword2() {
+		return password2;
+	}
+
+	public void setPassword2(String password2) {
+		this.password2 = password2;
+	}
+
+	public String getCurrentPassword() {
+		return CurrentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		CurrentPassword = currentPassword;
 	}
 
 }

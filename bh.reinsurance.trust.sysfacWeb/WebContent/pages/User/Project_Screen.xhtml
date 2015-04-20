@@ -67,12 +67,8 @@
 				showEffect="true" hideEffect="explode" resizable="false">
 				<h:form id="form2">
 					<p:messages id="messagesd" autoUpdate="true" closable="true" />
-					<h:panelGrid columns="3">
-						<p:outputLabel for="Name" value="Name of the project : " />
-						<p:inputText id="Name"
-							value="#{projectBean.project2.nameOfTheProject}" required="true"
-							requiredMessage="Name Required" />
-						<p:message id="namemsg" for="Name" display="icon" />
+					<h:panelGrid columns="2">
+
 						<p:outputLabel for="privacy" value="Privacy : " />
 						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
 							required="true" rendered="true"
@@ -82,22 +78,63 @@
 							<p:ajax update="form2" event="valueChange"
 								listener="#{projectBean.displaypasswordmsg()}" />
 						</p:selectOneRadio>
-						<p:message id="radiomsg" for="privacy" />
 						<p:outputLabel value="password : "></p:outputLabel>
 						<p:password id="pass" required="true"
 							disabled="#{projectBean.passwordmsg}"
 							value="#{projectBean.project2.password}"
 							requiredMessage="Please enter a password"></p:password>
-						<p:message id="passmsg" for="pass" display="icon" />
+
+
 						<p:outputLabel value="Use account password : "></p:outputLabel>
 						<p:selectBooleanCheckbox value="#{projectBean.checkbox}"
 							disabled="#{projectBean.checkboxDisplay}">
 							<p:ajax update="form2"
 								listener="#{projectBean.DisablePasswordUsingCheckbox()}"></p:ajax>
 						</p:selectBooleanCheckbox>
+
+
+						<p:outputLabel for="Name" value="Name of the project : " />
+						<p:inputText id="Name"
+							value="#{projectBean.project2.nameOfTheProject}" required="true"
+							requiredMessage="Name Required" />
+
+						<p:outputLabel value="Inception Date : " for="inc" />
+						<p:calendar id="inc" value="#{projectBean.project2.dateCreation}" />
+
+						<p:outputLabel value="Expiry date : " for="exp" />
+						<p:calendar id="exp" value="#{projectBean.project2.expiry_date}"/>
+
+						<p:outputLabel value="Tool : " for="class" />
+						<p:selectOneMenu id="class" value="#{projectBean.project2.tool}" style="width:135px">
+							<f:selectItem itemLabel="Select one .." />
+							<f:selectItems value="#{projectBean.tool}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Currency : " for="curr" />
+						<p:selectOneMenu id="curr" value="#{projectBean.project2.currency}" style="width:135px">
+							<f:selectItem itemLabel="Select one .." />
+							<f:selectItems value="#{ratingBean.currency}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Insured : " for="ins" />
+						<p:inputText id="ins" value="#{projectBean.project2.insured}" />
+
+						<p:outputLabel value="Broker : " for="brok" />
+						<p:inputText id="brok" value="#{projectBean.project2.broker}"/>
+
+						<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
+						<p:inputMask id="pol" value="#{projectBean.project2.policy}" mask="a*-999-a999" />
+
+						<p:outputLabel value="Territory : " for="e" />
+						<p:selectOneMenu id="e" style="width:135px">
+							<f:selectItem itemLabel="Bahrain" />
+						</p:selectOneMenu>
+
 					</h:panelGrid>
 					<p:commandButton value="Create" icon="ui-icon-check"
-						action="#{projectBean.OpenProject()}" update=":form2" />
+						action="#{projectBean.createprojtest()}" update=":form2" />
 					<p:commandButton value="Cancel"
 						actionListener="#{projectBean.CancelNewProj()}" immediate="true" />
 				</h:form>

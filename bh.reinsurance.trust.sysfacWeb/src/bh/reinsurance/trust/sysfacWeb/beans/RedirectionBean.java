@@ -28,6 +28,11 @@ public class RedirectionBean implements Serializable {
 		testaff = "Summary";
 	}
 
+	public void GoToSentProject() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("ProjectBoxSent.jsf");
+	}
+
 	public void GoToAddAdminUser() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Admin_add_user.jsf");
@@ -43,7 +48,7 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Factors.jsf");
 	}
-	
+
 	public void GoToUserProfile() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("UserProfile.jsf");
@@ -107,14 +112,25 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Send_Project.jsf");
 	}
-	
+
 	public void GoToTestSummary() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("TestMesureSummary.jsf");
 	}
-	
-	
-	//getters setters
+	public void GoToTest1() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("test.jsf");
+	}
+	public void GoToTest2() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("test2.jsf");
+	}
+	public void GoToTest3() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("test3.jsf");
+	}
+
+	// getters setters
 
 	public String getTestaff() {
 		return testaff;

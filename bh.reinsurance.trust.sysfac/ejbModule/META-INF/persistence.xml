@@ -7,15 +7,17 @@
 		
 		<class>al.assu.trust.GestionImageSinistre.domain.Assets</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Construction_Type</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.DataUtile</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Factors</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Facultative</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Loss_Frequency</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.MailBox</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Measure</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Offer</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.PIaccandAudit</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Project</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Summary</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.User</class>
-		<class>al.assu.trust.GestionImageSinistre.domain.Loss_Frequency</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

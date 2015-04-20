@@ -9,31 +9,44 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Assets </ui:define>
 		<ui:define name="content">
-			<p:panel id="master">
-				<h:form>
-					<p:dataTable emptyMessage="no Assets "
+			<p:panel id="master" style="width:3000px;margin-left:0px">
+				<h:form id="f">
+					<p:growl id="msgs" showDetail="true" autoUpdate="true" />
+					<p:dataTable editable="true" emptyMessage="no Assets "
 						value="#{assetsBean.assetsList}" var="prod" rows="5"
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{assetsBean.assets}" rowKey="#{prod.id}"
 						widgetVar="prodTabW">
-						<p:ajax event="rowSelect" listener="#{assetsBean.OnRowSelected()}"
-							update=":master :details" />
+
+						<p:ajax event="rowEdit" listener="#{assetsBean.onRowEdit}" />
 						<f:facet name="header">
 							<h:outputText value="Assets" />
 						</f:facet>
-						<p:column headerText="Loc">
+
+						<p:column headerText="Country">
 							<h:outputText value="#{prod.loc}" />
 						</p:column>
-						<p:column headerText="Include">
-							<h:outputText value="#{prod.include}" />
+
+						<p:column headerText="Cresta">
+
 						</p:column>
-						<p:column headerText="PD/MB Split">
-							<h:outputText value="#{prod.PD_MB_split}" />
+						<p:column headerText="Class">
+
+						</p:column>
+						<p:column headerText="Occupancy">
+
 						</p:column>
 						<p:column headerText="Rate Adj.">
-							<h:outputText value="#{prod.rate_Adj}%" />
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{prod.rate_Adj}%" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{prod.rate_Adj}" />
+								</f:facet>
+							</p:cellEditor>
 						</p:column>
-						<p:column headerText="Curve">
+						<p:column headerText="PDCurve">
 							<h:outputText value="#{prod.curve}" />
 						</p:column>
 						<p:column headerText="PD_SI">
@@ -45,6 +58,9 @@
 						<p:column headerText="PD_Rate">
 							<h:outputText value="#{prod.PD_Rate/100}%" />
 						</p:column>
+						<p:column headerText="MB_Curve">
+							<h:outputText value="#{prod.MB_SI}" />
+						</p:column>
 						<p:column headerText="MB_SI">
 							<h:outputText value="#{prod.MB_SI}" />
 						</p:column>
@@ -53,6 +69,9 @@
 						</p:column>
 						<p:column headerText="MB_Rate">
 							<h:outputText value="#{prod.MB_Rate/100}%" />
+						</p:column>
+						<p:column headerText="BI_Curve">
+							<h:outputText value="#{prod.BI_SI}" />
 						</p:column>
 						<p:column headerText="BI_SI">
 							<h:outputText value="#{prod.BI_SI}" />
@@ -63,6 +82,27 @@
 						<p:column headerText="BI_Rate">
 							<h:outputText value="#{prod.BI_Rate/100}%" />
 						</p:column>
+						<p:column headerText="Mlop_SI">
+							<h:outputText value="#{prod.BI_SI}" />
+						</p:column>
+						<p:column headerText="Mlop_SI">
+							<h:outputText value="#{prod.BI_SI}" />
+						</p:column>
+						<p:column headerText="Mlop_PML">
+							<h:outputText value="#{prod.BI_PML}%" />
+						</p:column>
+						<p:column headerText="Mlop_Rate">
+							<h:outputText value="#{prod.BI_Rate/100}%" />
+						</p:column>
+						<p:column headerText="Stock_SI">
+							<h:outputText value="#{prod.OTHER_SI}" />
+						</p:column>
+						<p:column headerText="Stock_PML">
+							<h:outputText value="#{prod.OTHER_PML}%" />
+						</p:column>
+						<p:column headerText="Stock_Rate">
+							<h:outputText value="#{prod.OTHER_Rate/100}%" />
+						</p:column>
 						<p:column headerText="OTHER_SI">
 							<h:outputText value="#{prod.OTHER_SI}" />
 						</p:column>
@@ -72,79 +112,17 @@
 						<p:column headerText="OTHER_Rate">
 							<h:outputText value="#{prod.OTHER_Rate/100}%" />
 						</p:column>
+						<p:column>
+							<p:rowEditor />
+						</p:column>
 					</p:dataTable>
+					<p:commandButton actionListener="#{assetsBean.DoDelete()}"
+						value="Delete" update=":master"></p:commandButton>
 				</h:form>
-				<p:commandButton actionListener="#{assetsBean.DoNew()}" value="Add"
-					update=":master :details"></p:commandButton>
+				<p:commandButton actionListener="#{assetsBean.AddAsset()}"
+					value="Add" update=":master"></p:commandButton>
 			</p:panel>
-			<p:panel id="details" visible="#{assetsBean.forrmDisplayed}">
-				<h:form>
-					<h:panelGrid columns="2">
-						<h:panelGrid columns="2">
-							<h:outputText value="Loc" />
-							<p:inputText id="Loc" value="#{assetsBean.assets.loc}"
-								styleClass="product-form-input" />
-							<h:outputText value="Include" />
-							<p:inputText value="#{assetsBean.assets.PD_SI}"
-								styleClass="product-form-input" />
-							<h:outputText value="PD/MB SPLIT" />
-							<p:inputText value="#{assetsBean.assets.PD_MB_split}"
-								styleClass="product-form-input" />
-							<h:outputText value="Rate Adj." />
-							<p:inputText value="#{assetsBean.assets.rate_Adj}"
-								styleClass="product-form-input" />
-							<h:outputText value="Curve" />
-							<p:inputText value="#{assetsBean.assets.curve}"
-								styleClass="product-form-input" />
-							<h:outputText value="PD_SI" />
-							<p:inputText value="#{assetsBean.assets.PD_SI}"
-								styleClass="product-form-input" />
-							<h:outputText value="PD_PML" />
-							<p:inputText value="#{assetsBean.assets.PD_PML}"
-								styleClass="product-form-input" />
-							<h:outputText value="PD_Rate" />
-							<p:inputText value="#{assetsBean.assets.PD_Rate}"
-								styleClass="product-form-input" />
-							<h:outputText value="MB_SI" />
-							<p:inputText value="#{assetsBean.assets.MB_SI}"
-								styleClass="product-form-input" />
-							<h:outputText value="MB_PML" />
-							<p:inputText value="#{assetsBean.assets.MB_PML}"
-								styleClass="product-form-input" />
-							<h:outputText value="MB_Rate" />
-							<p:inputText value="#{assetsBean.assets.MB_Rate}"
-								styleClass="product-form-input" />
-							<h:outputText value="BI_SI" />
-							<p:inputText value="#{assetsBean.assets.BI_SI}"
-								styleClass="product-form-input" />
-							<h:outputText value="BI_PML" />
-							<p:inputText value="#{assetsBean.assets.BI_PML}"
-								styleClass="product-form-input" />
-							<h:outputText value="BI_Rate" />
-							<p:inputText value="#{assetsBean.assets.BI_Rate}"
-								styleClass="product-form-input" />
-							<h:outputText value="OTHER_SI" />
-							<p:inputText value="#{assetsBean.assets.OTHER_SI}"
-								styleClass="product-form-input" />
-							<h:outputText value="OTHER_PML" />
-							<p:inputText value="#{assetsBean.assets.OTHER_PML}"
-								styleClass="product-form-input" />
-							<h:outputText value="OTHER_Rate" />
-							<p:inputText value="#{assetsBean.assets.OTHER_Rate}"
-								styleClass="product-form-input" />
-							<p:commandButton action="#{assetsBean.AddAsset()}" value="save"
-								update=":master :details" />
-							<h:panelGrid columns="2">
-								<p:commandButton actionListener="#{assetsBean.DoDelete()}"
-									value="delete" update=":master :details" />
-								<p:commandButton immediate="true"
-									actionListener="#{assetsBean.DoCancel()}" value="Cancel"
-									update=":details :master" />
-							</h:panelGrid>
-						</h:panelGrid>
-					</h:panelGrid>
-				</h:form>
-			</p:panel>
+
 		</ui:define>
 	</ui:composition>
 </h:body>

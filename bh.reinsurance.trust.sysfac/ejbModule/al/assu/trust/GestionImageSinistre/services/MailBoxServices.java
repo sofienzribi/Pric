@@ -69,4 +69,11 @@ public class MailBoxServices implements MailBoxServicesLocal {
 
 	}
 
+	@Override
+	public List<MailBox> GetSentMailBox(int id) {
+		return entityManager
+				.createQuery("select u from MailBox u where user_sending_id =:param1")
+				.setParameter("param1", id).getResultList();
+	}
+
 }

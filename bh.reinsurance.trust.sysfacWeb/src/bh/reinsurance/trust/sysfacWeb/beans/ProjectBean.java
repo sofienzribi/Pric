@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -86,6 +88,8 @@ public class ProjectBean implements Serializable {
 	private boolean DisabledButtonProjectSendClose;
 	private boolean DisplayMailSubj;
 	private String DisplaySelection = "all";
+	private List<MailBox> mailBoxs2;
+	private Map<String, String> Tool;
 
 	// const
 
@@ -101,6 +105,10 @@ public class ProjectBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		Tool = new HashMap<String, String>();
+
+		Tool.put("account", "PI lawyer accountant");
+		Tool.put("property", "Property onshore");
 		DisplayMailSubj = false;
 		DisabledButtonProject = false;
 		DisabledButtonProjectSendClose = true;
@@ -118,6 +126,7 @@ public class ProjectBean implements Serializable {
 		projectsbyuser = local.GetProjectsByUser(user2);
 		DisplayButtonMailBox = false;
 		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
+		setMailBoxs2(mailBoxServicesLocal.GetSentMailBox(user2.getId()));
 		NumberProjectReceived = GetMails();
 		passwordmsg = true;
 		PopDisplayed = false;
@@ -227,6 +236,7 @@ public class ProjectBean implements Serializable {
 	public String OpenProject()
 
 	{
+		
 		if (local.Nameexist(project2.getNameOfTheProject())) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -261,6 +271,62 @@ public class ProjectBean implements Serializable {
 			DisabledButtonProject = true;
 			DisabledButtonProjectSendClose = false;
 			return "Fac_info?faces-redirect=true";
+		}
+	}
+
+	public String createprojtest() {
+		System.out.println(project2.getTool());
+		if (local.Nameexist(project2.getNameOfTheProject())) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_FATAL,
+							"Name already exists!!", "Name Exist"));
+			return null;
+		} else {
+
+			if (priv.equals("false")) {
+				project2.setPrivacy(false);
+				if (Checkbox.equals("true")) {
+					project2.setPassword(user2.getPassword());
+				}
+			} else {
+				project2.setPrivacy(true);
+
+			}
+			if (project2.getTool().equals("Property onshore")) {
+				project2.setUser(user2.getId());
+				local.NewProject(project2);
+				project3 = local.GetProjectByName(project2
+						.getNameOfTheProject());
+				summary.setIdProj(project3.getId());
+				offer.setId_project(project3.getId());
+				System.out
+						.println("L id de ce con est" + user2.getDepartment());
+				offer.setId_underwriter(user2.getId());
+				summaryServicesLocal.CreateSummary(summary);
+				offerServicesLocal.AddOffer(offer);
+				project2 = new Project();
+				DisplayRating = "true";
+				projects = local.GetAllProjects();
+				projectsbyuser = local.GetProjectsByUser(user2);
+				DisabledButtonProject = true;
+				DisabledButtonProjectSendClose = false;
+				return "Fac_info?faces-redirect=true";
+			}
+			if (project2.getTool().equals("PI lawyer accountant")) {
+				project2.setUser(user2.getId());
+				local.NewProject(project2);
+				project3 = local.GetProjectByName(project2
+						.getNameOfTheProject());
+				project2 = new Project();
+				projects = local.GetAllProjects();
+				projectsbyuser = local.GetProjectsByUser(user2);
+				DisabledButtonProject = true;
+				DisabledButtonProjectSendClose = false;
+				return "test3?faces-redirect=true";
+			}
+			return null;
+
 		}
 	}
 
@@ -382,10 +448,12 @@ public class ProjectBean implements Serializable {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('verif').hide()");
 	}
-	public void  CancelNewProj(){
+
+	public void CancelNewProj() {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popup').hide()");
 	}
+
 	public void Doitnow() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("UserProfile.jsf");
@@ -794,6 +862,22 @@ public class ProjectBean implements Serializable {
 
 	public void setDisplaySelection(String displaySelection) {
 		DisplaySelection = displaySelection;
+	}
+
+	public List<MailBox> getMailBoxs2() {
+		return mailBoxs2;
+	}
+
+	public void setMailBoxs2(List<MailBox> mailBoxs2) {
+		this.mailBoxs2 = mailBoxs2;
+	}
+
+	public Map<String, String> getTool() {
+		return Tool;
+	}
+
+	public void setTool(Map<String, String> tool) {
+		Tool = tool;
 	}
 
 }
