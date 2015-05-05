@@ -12,11 +12,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 import al.assu.trust.GestionImageSinistre.domain.Assets;
-import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.impl.AssetsServicesLocal;
 
 @ManagedBean
@@ -24,18 +23,18 @@ import al.assu.trust.GestionImageSinistre.impl.AssetsServicesLocal;
 public class AssetsBean {
 	// models
 
-	@ManagedProperty("#{login.getUser()}")
-	private User user;
+	@ManagedProperty("#{projectBean.getProject3()}")
+	private Project project3;
 
 	private static final long serialVersionUID = 1L;
 
 	private Assets assets;
 	private List<Assets> assetsList;
 	private boolean forrmDisplayed;
+
 	@EJB
 	private AssetsServicesLocal assetsServicesLocal;
 
-	LoginBean bean;
 	ExternalContext context = FacesContext.getCurrentInstance()
 			.getExternalContext();
 
@@ -49,45 +48,49 @@ public class AssetsBean {
 
 	@PostConstruct
 	public void init() {
-		assetsList = assetsServicesLocal.GetAllAssets();
+		assetsList = assetsServicesLocal.GetAssetsByIdProject(project3.getId());
 	}
-	
 
 	public List<Assets> GetAssets() {
-		return assetsServicesLocal.GetAllAssets();
+		return 	assetsList = assetsServicesLocal.GetAssetsByIdProject(project3.getId());
+	}
+
+	public List<Assets> GetAssetsByidproj() {
+		System.out.println(project3.getId());
+		// return assetsServicesLocal.GetAssetsByIdProject(project3.getId());
+		return null;
 	}
 
 	// methods
 	public void AddAsset() {
+		assets.setIdproject(project3.getId());
 		assetsServicesLocal.AddAsset(assets);
 		forrmDisplayed = false;
 		assetsList = assetsServicesLocal.GetAllAssets();
 
 	}
-	
+
 	public void onRowEdit(RowEditEvent event) {
 		
 		assetsServicesLocal.AddAsset(assets);
 		assetsList = assetsServicesLocal.GetAllAssets();
-		FacesMessage msg = new FacesMessage( "Asset Modified","Asset id :"+assets.getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-     
-    public void onRowCancel(RowEditEvent event) {
-    	FacesMessage msg = new FacesMessage("Edit Cancelled", "ff");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-	
-	
+		FacesMessage msg = new FacesMessage("Asset Modified", "Asset id :"
+				+ assets.getId());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Edit Cancelled", "ff");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
 
 	public void DoDelete() {
-		FacesMessage msg = new FacesMessage( "Asset Deleted","Asset id :"+assets.getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+		FacesMessage msg = new FacesMessage("Asset Deleted", "Asset id :"
+				+ assets.getId());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		assetsServicesLocal.DeleteAsset(assets);
 		assetsList = assetsServicesLocal.GetAllAssets();
 	}
-
-	
 
 	public void DoCancel() {
 		assets = new Assets();
@@ -123,8 +126,8 @@ public class AssetsBean {
 		this.forrmDisplayed = forrmDisplayed;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setProject3(Project project3) {
+		this.project3 = project3;
 	}
 
 }

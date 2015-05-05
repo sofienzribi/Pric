@@ -2,6 +2,7 @@ package al.assu.trust.GestionImageSinistre.domain;
 
 import java.io.Serializable;
 import java.lang.String;
+
 import javax.persistence.*;
 
 /**
@@ -32,12 +33,14 @@ public class Assets implements Serializable {
 	private int OTHER_PML;
 	private int OTHER_Rate;
 	private Project project;
+	private int idproject;
 	private static final long serialVersionUID = 1L;
 
 	public Assets() {
 		super();
 	}   
 	@Id    
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
 		return this.id;
 	}
@@ -170,6 +173,12 @@ public class Assets implements Serializable {
 	}
 	public void setProject(Project project) {
 		this.project = project;
+	}
+	public int getIdproject() {
+		return idproject;
+	}
+	public void setIdproject(int idproject) {
+		this.idproject = idproject;
 	}
    
 }

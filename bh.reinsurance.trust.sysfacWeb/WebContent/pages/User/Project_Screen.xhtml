@@ -9,44 +9,77 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Projects</ui:define>
 		<ui:define name="content">
-			<p:panel id="pan1">
-				<h:form id="dialog1">
-					<p:dataTable style="width:650px" emptyMessage="no Projects found!"
-						value="#{projectBean.projects}" var="prod" rows="13"
-						paginator="true" paginatorPosition="bottom" selectionMode="single"
-						selection="#{projectBean.project}" rowKey="#{prod.id}"
-						widgetVar="prodTabW2">
-						<f:facet name="header">Please select a project</f:facet>
-						<p:ajax event="rowSelect" listener="#{projectBean.DisplayPop()}"
-							update=":dialog1" />
-						<p:column headerText="Name " filterBy="#{prod.nameOfTheProject}"
-							filterMatchMode="contains">
-							<h:outputText value="#{prod.nameOfTheProject}" />
-						</p:column>
-						<p:column headerText="Creation Date"
-							filterBy="#{prod.dateCreation}" filterMatchMode="contains">
-							<h:outputText value="#{prod.dateCreation}" />
-						</p:column>
-						<p:column headerText="User">
-							<h:outputText value="#{projectBean.getLogin(prod.user)}" />
-						</p:column>
-						<p:column headerText="Privacy">
-							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
-						</p:column>
-						<f:facet name="footer">
-							<p:commandButton icon="ui-icon-refresh" value="refresh"
-								update=":dialog1"
-								actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
-							<p:commandButton value="Open"
-								action="#{projectBean.openingproject()}"
-								rendered="#{projectBean.popDisplayed}"
-								icon="ui-icon-folder-open" />
-							<p:commandButton icon="ui-icon-plusthick" value="New Project"
-								onclick="PF('popup').show()" />
-						</f:facet>
-					</p:dataTable>
-				</h:form>
-			</p:panel>
+			<h:form id="dialog1">
+				<p:panel id="pan1">
+
+					<h:panelGrid columns="4">
+						<h:panelGrid columns="2">
+							<p:outputLabel for="console" value="Show :"></p:outputLabel>
+							<p:selectOneRadio id="console"
+								value="#{projectBean.displayProjectSelectionByuser}"
+								onchange="#{projectBean.Displayprojectbyfilters()}">
+
+								<f:selectItem itemLabel="All" itemValue="all" />
+								<f:selectItem itemLabel="My Projects" itemValue="Mine" />
+								<p:ajax listener="#{projectBean.Displayprojectbyfilters()}"
+									update=":dialog1" />
+							</p:selectOneRadio>
+						</h:panelGrid>
+
+						<h:panelGrid style="margin-left:200px" columns="2">
+							<p:outputLabel value="Tool :"></p:outputLabel>
+							<p:selectOneMenu id="tool"
+								value="#{projectBean.displayProjectByTool}" style="width:135px">
+								<p:ajax event="valueChange"
+									listener="#{projectBean.Displayprojectbyfilters()}"
+									update=":dialog1 " />
+								<f:selectItem itemLabel="All tools .." itemValue="all" />
+								<f:selectItems value="#{projectBean.tool}" var="cat"
+									itemValue="#{cat}" itemLabel="#{cat}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+
+
+					</h:panelGrid>
+				</p:panel>
+
+				<p:dataTable style="width:650px" emptyMessage="no Projects found!"
+					value="#{projectBean.projects}" var="prod" rows="13"
+					paginator="true" paginatorPosition="bottom" selectionMode="single"
+					selection="#{projectBean.project}" rowKey="#{prod.id}"
+					widgetVar="prodTabW2">
+					<f:facet name="header">Please select a project</f:facet>
+					<p:ajax event="rowSelect" listener="#{projectBean.DisplayPop()}"
+						update=":dialog1" />
+					<p:column headerText="Name " filterBy="#{prod.nameOfTheProject}"
+						filterMatchMode="contains">
+						<h:outputText value="#{prod.nameOfTheProject}" />
+					</p:column>
+					<p:column headerText="Creation Date"
+						filterBy="#{prod.dateCreation}" filterMatchMode="contains">
+						<h:outputText value="#{prod.dateCreation}" />
+					</p:column>
+					<p:column headerText="User">
+						<h:outputText value="#{projectBean.getLogin(prod.user)}" />
+					</p:column>
+					<p:column headerText="Tool">
+						<h:outputText value="#{prod.tool}" />
+					</p:column>
+					<p:column headerText="Privacy">
+						<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton icon="ui-icon-refresh" value="refresh"
+							update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
+						<p:commandButton value="Open"
+							action="#{projectBean.openprojecttest()}"
+							rendered="#{projectBean.popDisplayed}" icon="ui-icon-folder-open" />
+						<p:commandButton icon="ui-icon-plusthick" value="New Project"
+							onclick="PF('popup').show()" />
+					</f:facet>
+				</p:dataTable>
+			</h:form>
+
 
 			<p:dialog header="Password" modal="true" id="popup1"
 				widgetVar="popup1" showEffect="true" hideEffect="explode"
@@ -69,13 +102,63 @@
 					<p:messages id="messagesd" autoUpdate="true" closable="true" />
 					<h:panelGrid columns="2">
 
+
+
+
+						<p:outputLabel for="Name" value="Name of the project : " />
+						<p:inputText id="Name"
+							value="#{projectBean.project2.nameOfTheProject}" required="true"
+							requiredMessage="Name Required" />
+
+
+						<p:outputLabel value="Expiry date : " for="exp" />
+						<p:calendar id="exp" value="#{projectBean.project2.expiry_date}" />
+
+						<p:outputLabel value="Tool : " for="class" />
+						<p:selectOneMenu id="class" value="#{projectBean.project2.tool}"
+							style="width:135px" required="true"
+							requiredMessage="please select a tool">
+							<f:selectItem itemLabel="Select one .." />
+							<f:selectItems value="#{projectBean.tool}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Currency : " for="curr" />
+						<p:selectOneMenu id="curr"
+							value="#{projectBean.project2.currency}" style="width:135px"
+							required="true" requiredMessage="please select currency">
+							<f:selectItem itemLabel="Select one .." />
+							<f:selectItems value="#{ratingBean.currency}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Insured : " for="ins" />
+						<p:inputText id="ins" value="#{projectBean.project2.insured}"
+							required="true" requiredMessage="please enter the insured" />
+
+						<p:outputLabel value="Broker : " for="brok" />
+						<p:inputText id="brok" value="#{projectBean.project2.broker}"
+							required="true" requiredMessage="please enter the broker" />
+
+						<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
+						<p:inputMask id="pol" value="#{projectBean.project2.policy}"
+							mask="a*-999-a999" required="true"
+							requiredMessage="please enter the policy" />
+
+						<p:outputLabel value="Territory : " for="e" />
+						<p:selectOneMenu id="e" value="#{projectBean.territoryChoice}"
+							style="width:135px">
+							
+							<f:selectItems value="#{projectBean.territory}"
+								var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
 						<p:outputLabel for="privacy" value="Privacy : " />
 						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
 							required="true" rendered="true"
 							requiredMessage="Privacy required">
 							<f:selectItem itemLabel="Private" itemValue="false" />
 							<f:selectItem itemLabel="Public" itemValue="true" />
-							<p:ajax update="form2" event="valueChange"
+							<p:ajax update="pass ch" event="valueChange"
 								listener="#{projectBean.displaypasswordmsg()}" />
 						</p:selectOneRadio>
 						<p:outputLabel value="password : "></p:outputLabel>
@@ -86,52 +169,11 @@
 
 
 						<p:outputLabel value="Use account password : "></p:outputLabel>
-						<p:selectBooleanCheckbox value="#{projectBean.checkbox}"
+						<p:selectBooleanCheckbox id="ch" value="#{projectBean.checkbox}"
 							disabled="#{projectBean.checkboxDisplay}">
-							<p:ajax update="form2"
+							<p:ajax update="pass ch"
 								listener="#{projectBean.DisablePasswordUsingCheckbox()}"></p:ajax>
 						</p:selectBooleanCheckbox>
-
-
-						<p:outputLabel for="Name" value="Name of the project : " />
-						<p:inputText id="Name"
-							value="#{projectBean.project2.nameOfTheProject}" required="true"
-							requiredMessage="Name Required" />
-
-						<p:outputLabel value="Inception Date : " for="inc" />
-						<p:calendar id="inc" value="#{projectBean.project2.dateCreation}" />
-
-						<p:outputLabel value="Expiry date : " for="exp" />
-						<p:calendar id="exp" value="#{projectBean.project2.expiry_date}"/>
-
-						<p:outputLabel value="Tool : " for="class" />
-						<p:selectOneMenu id="class" value="#{projectBean.project2.tool}" style="width:135px">
-							<f:selectItem itemLabel="Select one .." />
-							<f:selectItems value="#{projectBean.tool}" var="cat"
-								itemValue="#{cat}" itemLabel="#{cat}" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="Currency : " for="curr" />
-						<p:selectOneMenu id="curr" value="#{projectBean.project2.currency}" style="width:135px">
-							<f:selectItem itemLabel="Select one .." />
-							<f:selectItems value="#{ratingBean.currency}" var="cat"
-								itemValue="#{cat}" itemLabel="#{cat}" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="Insured : " for="ins" />
-						<p:inputText id="ins" value="#{projectBean.project2.insured}" />
-
-						<p:outputLabel value="Broker : " for="brok" />
-						<p:inputText id="brok" value="#{projectBean.project2.broker}"/>
-
-						<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
-						<p:inputMask id="pol" value="#{projectBean.project2.policy}" mask="a*-999-a999" />
-
-						<p:outputLabel value="Territory : " for="e" />
-						<p:selectOneMenu id="e" style="width:135px">
-							<f:selectItem itemLabel="Bahrain" />
-						</p:selectOneMenu>
-
 					</h:panelGrid>
 					<p:commandButton value="Create" icon="ui-icon-check"
 						action="#{projectBean.createprojtest()}" update=":form2" />

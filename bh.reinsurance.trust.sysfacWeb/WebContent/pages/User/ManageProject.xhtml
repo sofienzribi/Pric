@@ -27,8 +27,8 @@
 					<p:column headerText="Privacy ">
 						<h:outputText value="#{prod.privacy}" />
 					</p:column>
-					<p:column headerText="Password  ">
-						<h:outputText value="#{prod.password}" />
+					<p:column headerText="Tool  ">
+						<h:outputText value="#{prod.tool}" />
 					</p:column>
 					<f:facet name="footer">
 						<p:commandButton value="Modify"
@@ -37,7 +37,8 @@
 							update=":form3" />
 						<p:commandButton value="Delete" icon="ui-icon-trash"
 							rendered="#{projectBean.displayProjectManagButton}"
-							actionListener="#{projectBean.DeleteProject()}" update=":dialog1">
+							actionListener="#{projectBean.DeleteProjectTest()}"
+							update=":dialog1">
 							<p:confirm header="Confirmation"
 								message="Are you sure that you want to delete this Project ?"
 								icon="ui-icon-alert" />
@@ -56,13 +57,44 @@
 
 			<p:dialog header="Project management" modal="true" id="popup"
 				widgetVar="popup">
+				<p:messages id="messages" autoUpdate="true" closable="true" />
 				<h:form id="form3">
+				
 					<h:panelGrid id="pan2" columns="2">
 						<h:outputLabel for="Names" value="Name of the project : " />
 						<p:inputText id="Names"
 							value="#{projectBean.proojectbyuser.nameOfTheProject}"
 							required="true" requiredMessage="Name required" />
+						<h:outputLabel value="Insured : " />
+						<p:inputText value="#{projectBean.proojectbyuser.insured}"
+							required="true" requiredMessage="insured required" />
+
+						<h:outputLabel value="broker : " />
+						<p:inputText value="#{projectBean.proojectbyuser.broker}"
+							required="true" requiredMessage="broker required" />
+
+						<p:outputLabel value="Currency : " for="curr" />
+						<p:selectOneMenu id="curr"
+							value="#{projectBean.proojectbyuser.currency}"
+							style="width:135px" required="true"
+							requiredMessage="please select currency">
+							<f:selectItem itemLabel="Select one .." />
+							<f:selectItems value="#{ratingBean.currency}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Policy (e.g a*-999-a999) : " for="pol" />
+						<p:inputMask id="pol" value="#{projectBean.proojectbyuser.policy}"
+							mask="a*-999-a999" required="true"
+							requiredMessage="please enter the policy" />
+
+						<p:outputLabel value="Expiry date : " for="exp" />
+						<p:calendar id="exp"
+							value="#{projectBean.proojectbyuser.expiry_date}" />
+
+
 					</h:panelGrid>
+
 					<p:commandButton value="Save" style="margin-left:30px"
 						icon="ui-icon-disk"
 						actionListener="#{projectBean.UpdateProject()}" update=":dialog1" />

@@ -11,4 +11,5 @@ public interface AssetsServicesLocal {
 		public List<Assets> GetAllAssets();
 		public void AddAsset(Assets assets);
 		public void DeleteAsset(Assets assets);
+		public List<Assets> GetAssetsByIdProject(int id);
 }

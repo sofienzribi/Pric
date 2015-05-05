@@ -57,8 +57,21 @@
 
 
 
+
+				<!-- 		Abacus tool -->
+
 				<p:tab title="Test">
-					<p:panel id="mas3">
+
+
+					<p:chart type="line" model="#{chartBean.lineModel1}"
+						style="height:300px;smooth:true" />
+		
+				</p:tab>
+			</p:tabView>
+		</ui:define>
+	</ui:composition>
+</h:body>
+<!-- <p:panel id="mas3">
 						<h:form>
 							<h:panelGrid id="eu" columns="2">
 								<h:outputLabel value="Region" />
@@ -93,18 +106,5 @@
 							</h:panelGrid>
 						</h:form>
 					</p:panel>
-
-
-					<p:chart type="line" model="#{chartBean.lineModel1}"
-						style="height:300px;smooth:true" />
-
-
-
-
-
-				</p:tab>
-			</p:tabView>
-		</ui:define>
-	</ui:composition>
-</h:body>
+ -->
 </html>

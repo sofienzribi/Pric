@@ -3,7 +3,9 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -39,7 +41,7 @@ public class MeasureBean implements Serializable {
 	MeasureServicesLocal measureServicesLocal;
 	private static final long serialVersionUID = 1L;
 	private Factors factors;
-
+	private Map<String, String> Tool;
 	@EJB
 	private FactorsServicesLocal factorsServicesLocal;
 	private boolean DisableButtonMeasure;
@@ -52,12 +54,17 @@ public class MeasureBean implements Serializable {
 
 	// const
 	public MeasureBean() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@PostConstruct
 	public void init() {
-		searchmeasure=new  ArrayList<Measure>();
+		searchmeasure = new ArrayList<Measure>();
+		Tool = new HashMap<String, String>();
+
+		Tool.put("account", "PI accountants and auditors");
+		Tool.put("property", "Property and Onshore");
+
+		// for the property
 		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure("Property");
 		PasswordCheck = null;
 		DisplayMeasureMenu = "none";
@@ -99,6 +106,7 @@ public class MeasureBean implements Serializable {
 			Measure measuree = measures.get(i);
 			measuree.setActiveTest(false);
 			measureServicesLocal.UpdateMeasure(measuree);
+			
 
 		}
 		measure = new Measure();
@@ -162,7 +170,7 @@ public class MeasureBean implements Serializable {
 	}
 
 	public void MakeWorkingMeasure() throws IOException, InterruptedException {
-		if (!PasswordCheck.equals("sofien")) {
+		if (!PasswordCheck.equals("TRUST")) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_FATAL,
@@ -173,7 +181,9 @@ public class MeasureBean implements Serializable {
 			measureServicesLocal.UpdateMeasure(WorkingMeasure);
 			measures = measureServicesLocal.GetAllMeasures();
 			for (int i = 0; i < measures.size(); i++) {
-				if (measures.get(i).getId() != WorkingMeasure.getId() && measures.get(i).getClassofbusiness().equals(WorkingMeasure.getClassofbusiness())) {
+				if (measures.get(i).getId() != WorkingMeasure.getId()
+						&& measures.get(i).getClassofbusiness()
+								.equals(WorkingMeasure.getClassofbusiness())) {
 					Measure measuree = measures.get(i);
 					measuree.setActive(false);
 					measureServicesLocal.UpdateMeasure(measuree);
@@ -324,6 +334,12 @@ public class MeasureBean implements Serializable {
 		this.searchmeasure = searchmeasure;
 	}
 
-	
+	public Map<String, String> getTool() {
+		return Tool;
+	}
+
+	public void setTool(Map<String, String> tool) {
+		Tool = tool;
+	}
 
 }

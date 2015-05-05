@@ -1,12 +1,16 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRException;
@@ -21,10 +25,14 @@ import al.assu.trust.GestionImageSinistre.domain.Facultative;
 import al.assu.trust.GestionImageSinistre.domain.Sysfacus;
 import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 
-@javax.faces.bean.ManagedBean
-@SessionScoped
+@javax.faces.bean.ManagedBean()
+@ViewScoped
 public class ReportBean {
 	// models
+	private String URLDestination;
+	private String URLJasperModel;
+	
+
 	private List<Facultative> facultatives;
 	private JasperPrint jasperPrint;
 	@EJB
@@ -35,7 +43,8 @@ public class ReportBean {
 
 	// const
 	public ReportBean() {
-		// TODO Auto-generated constructor stub
+		URLJasperModel = "/Users/zribisofien/Desktop/ModelReport/";
+		URLDestination = "/Users/zribisofien/Desktop/PDFGEN/";
 	}
 
 	@PostConstruct
@@ -60,6 +69,7 @@ public class ReportBean {
 				"/Users/zribisofien/report1.jasper", new HashMap(),
 				beanCollectionDataSource));
 	}
+
 	public void addchoicetoreport(List<Facultative> facultatives1)
 			throws JRException {
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
@@ -100,8 +110,6 @@ public class ReportBean {
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"File Created", ""));
 	}
-	
-	
 
 	public void ExportToPDF() throws JRException, IOException {
 		init();
@@ -151,17 +159,13 @@ public class ReportBean {
 	public void setFacultativesbychoice(List<Facultative> facultativesbychoice) {
 		this.facultativesbychoice = facultativesbychoice;
 	}
-	
-	//Tests
-	
-	
-	
-	
-	
+
+	// Tests
+
 	public void Test(List<Sysfacus> sysfacus) throws JRException {
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
 				sysfacus);
-		
+
 		setJasperPrint(JasperFillManager.fillReport(
 				"/Users/zribisofien/Desktop/ModelReport/report23.jasper",
 				new HashMap(), beanCollectionDataSource));
@@ -176,4 +180,54 @@ public class ReportBean {
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"File Created", ""));
 	}
+
+	public void ExportAccountantAndAuditorsSummary() throws JRException {
+		List<Object> projects = new ArrayList<Object>();
+
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("name", "Sofien");
+		param.put("insured", "");
+		param.put("broker", "");
+		param.put("basepremium", "2000 $");
+		param.put("territoryload", "1");
+		param.put("totalbasepremium", "");
+
+		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
+				projects);
+
+		setJasperPrint(JasperFillManager.fillReport(URLJasperModel
+				+ "AccountantsAndAuditorsModel.jasper", param,
+				beanCollectionDataSource));
+
+		JasperExportManager.exportReportToPdfFile(jasperPrint, URLDestination
+				+ ProjectName + ".pdf");
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('popuppdf').hide();");
+		FacesContext.getCurrentInstance()
+				.addMessage(
+						"messages1",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"File Created", ""));
+		System.out.println("OP");
+	}
+
+	public String getURLDestination() {
+		return URLDestination;
+	}
+
+	public void setURLDestination(String uRLDestination) {
+		URLDestination = uRLDestination;
+	}
+
+	public String getURLJasperModel() {
+		return URLJasperModel;
+	}
+
+	public void setURLJasperModel(String uRLJasperModel) {
+		URLJasperModel = uRLJasperModel;
+	}
+
+
+	
+
 }

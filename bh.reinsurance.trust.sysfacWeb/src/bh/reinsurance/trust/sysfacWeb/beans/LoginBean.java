@@ -349,7 +349,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 	}
 
 	public void setPassword1(String password1) {
-		this.password1 = password1;
 	}
 
 	public String getPassword2() {

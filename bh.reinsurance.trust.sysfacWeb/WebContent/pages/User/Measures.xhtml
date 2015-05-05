@@ -54,7 +54,7 @@
 						<p:commandButton value="open" action="#{measure.OpenMeasure()}"
 							rendered="#{measure.displayButtons}" icon="ui-icon-folder-open" />
 					</f:facet>
-					
+
 				</p:dataTable>
 			</h:form>
 
@@ -67,9 +67,13 @@
 						<p:outputLabel for="Name" value="Name: " />
 						<p:inputText id="Name" value="#{measure.newmeasure.name}"
 							required="true" requiredMessage="Name Required" />
-						<p:outputLabel for="class" value="Class : " />
-						<p:selectOneMenu id="class" style="width:130px">
-							<f:selectItem itemLabel="Select one .." />
+						<p:outputLabel value="Class : " />
+						<p:selectOneMenu value="#{measure.newmeasure.classofbusiness}"
+							id="tool" style="width:135px">
+
+							<f:selectItem itemLabel="All tools .." itemValue="all" />
+							<f:selectItems value="#{measure.tool}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
 						</p:selectOneMenu>
 						<p:outputLabel for="Desc" value="Descripton : " />
 						<p:inputText id="Desc" value="#{measure.newmeasure.description}"

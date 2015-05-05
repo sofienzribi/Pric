@@ -11,5 +11,6 @@ public interface PlaccandAuditServicesLocal {
 		public void update(PIaccandAudit audit);
 		public PIaccandAudit searchById(int id);
 		public void delete(PIaccandAudit audit);
+		public PIaccandAudit GetByIdProject(int id);
 	
 }

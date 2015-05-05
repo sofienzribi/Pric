@@ -52,6 +52,7 @@ public class ChartBean implements Serializable {
 		animatedModel2.setAnimate(true);
 		animatedModel2.setLegendPosition("ne");
 		Axis dAxis = animatedModel2.getAxis(AxisType.Y);
+		
 		dAxis.setMin(0);
 		dAxis.setMax(200);
 
@@ -100,42 +101,23 @@ public class ChartBean implements Serializable {
 		series1.set(3, 6);
 		series1.set(4, 5);
 		series1.set(5, 4);
+		series1.set(6, 3);
+		series1.set(7, 2.5);
+		series1.set(8, 2.4);
+		
+		series1.set(9, 2.3);
+		series1.set(10, 2.2);
+		series1.set(11, 2.1);
+		series1.set(12, 2);
+		series1.set(13, 1.9);
 
 		series1.setShowMarker(false);
-		LineChartSeries series2 = new LineChartSeries();
-		series2.setLabel("L/R=100%");
-		series2.set(0, 7);
-		series2.set(1, 6);
-		series2.set(2, 5);
-		series2.set(3, 4);
-		series2.set(4, 3);
-		series2.set(5, 2);
-		series2.setShowMarker(false);
+		
 
-		LineChartSeries series3 = new LineChartSeries();
-		series3.setLabel("L/R=65%");
-		series3.set(0, 8);
-		series3.set(1, 7);
-		series3.set(2, 6);
-		series3.set(3, 5);
-		series3.set(4, 4);
-		series3.set(5, 3);
-		series3.setShowMarker(false);
+		
 
-		LineChartSeries series4 = new LineChartSeries();
-		series4.setLabel("L/R=32%");
-		series4.set(0, 6);
-		series4.set(1, 5);
-		series4.set(2, 4);
-		series4.set(3, 3);
-		series4.set(4, 2);
-		series4.set(5, 1);
-		series4.setShowMarker(false);
 
 		model.addSeries(series1);
-		model.addSeries(series3);
-		model.addSeries(series2);
-		model.addSeries(series4);
 		model.setShadow(true);
 
 		return model;

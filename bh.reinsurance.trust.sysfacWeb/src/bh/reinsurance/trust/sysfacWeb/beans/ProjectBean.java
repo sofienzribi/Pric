@@ -27,13 +27,17 @@ import javax.mail.internet.MimeMessage;
 
 import org.primefaces.context.RequestContext;
 
+import al.assu.trust.GestionImageSinistre.domain.Assets;
 import al.assu.trust.GestionImageSinistre.domain.MailBox;
 import al.assu.trust.GestionImageSinistre.domain.Offer;
+import al.assu.trust.GestionImageSinistre.domain.PIaccandAudit;
 import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.domain.Summary;
 import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.impl.AssetsServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.MailBoxServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.OfferServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.PlaccandAuditServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.SummaryServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
@@ -48,6 +52,8 @@ public class ProjectBean implements Serializable {
 	private User user2;
 	private boolean passwordmsg;
 	private String pwdcheck;
+	private String DisplayProjectSelectionByuser = "all";
+	private String DisplayProjectByTool = "all";
 	private String Checkbox;
 	private static final long serialVersionUID = 1L;
 	private List<Project> projects = new ArrayList<Project>();
@@ -57,13 +63,17 @@ public class ProjectBean implements Serializable {
 	private boolean PopDisplayed;
 	private boolean CheckboxDisplay;
 	private String priv;
+
 	private MailBox box;
 	private Offer offer;
 	private Project project3;
 	@EJB
+	private AssetsServicesLocal assetsServicesLocal;
+	@EJB
 	private OfferServicesLocal offerServicesLocal;
 	@EJB
 	private ProjectServicesLocal local;
+
 	@EJB
 	private UserServicesLocal local2;
 	private List<User> SendToUsers;
@@ -72,6 +82,9 @@ public class ProjectBean implements Serializable {
 	private SummaryServicesLocal summaryServicesLocal;
 	@EJB
 	private MailBoxServicesLocal mailBoxServicesLocal;
+	@EJB
+	private PlaccandAuditServicesLocal auditServicesLocal;
+
 	private User UserDestination;
 	private MailBox mailBox;
 	private List<MailBox> mailBoxs;
@@ -90,6 +103,9 @@ public class ProjectBean implements Serializable {
 	private String DisplaySelection = "all";
 	private List<MailBox> mailBoxs2;
 	private Map<String, String> Tool;
+	private List<Assets> assets2;
+	private Map<String, String> Territory;
+	private String TerritoryChoice;
 
 	// const
 
@@ -106,9 +122,11 @@ public class ProjectBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		Tool = new HashMap<String, String>();
-
-		Tool.put("account", "PI lawyer accountant");
-		Tool.put("property", "Property onshore");
+		Territory = new HashMap<String, String>();
+		Territory.put("1", "GCC");
+		Territory.put("1.25", "Outside GCC");
+		Tool.put("account", "PI accountants and auditors");
+		Tool.put("property", "Property and Onshore");
 		DisplayMailSubj = false;
 		DisabledButtonProject = false;
 		DisabledButtonProjectSendClose = true;
@@ -172,6 +190,41 @@ public class ProjectBean implements Serializable {
 
 	}
 
+	public void Displayprojectbyfilters() {
+		if (DisplayProjectSelectionByuser.equals("all")
+				&& DisplayProjectByTool.equals("all")) {
+			projects = local.GetAllProjects();
+		} else {
+			if (DisplayProjectSelectionByuser.equals("Mine")
+					&& DisplayProjectByTool.equals("all")) {
+				projects = local.GetProjectsByUser(user2);
+			} else {
+				if (DisplayProjectSelectionByuser.equals("Mine")) {
+					List<Project> a = local.GetProjectsByUser(user2);
+					List<Project> b = new ArrayList<Project>();
+					for (int i = 0; i < a.size(); i++) {
+						if (a.get(i).getTool().equals(DisplayProjectByTool)) {
+							b.add(a.get(i));
+						}
+
+					}
+					projects = b;
+				} else {
+					List<Project> a = local.GetAllProjects();
+					List<Project> b = new ArrayList<Project>();
+					for (int i = 0; i < a.size(); i++) {
+						if (a.get(i).getTool().equals(DisplayProjectByTool)) {
+							b.add(a.get(i));
+						}
+
+					}
+					projects = b;
+				}
+			}
+		}
+
+	}
+
 	public void DeleteProject() {
 		local.DeleteProject(proojectbyuser.getId());
 		Offer offer2 = offerServicesLocal.GetOffer(proojectbyuser.getId());
@@ -179,6 +232,30 @@ public class ProjectBean implements Serializable {
 				.getId());
 		summaryServicesLocal.DeleteSummary(summary2);
 		offerServicesLocal.DeleteOfferByIdProject(offer2);
+		projectsbyuser = local.GetProjectsByUser(user2);
+		DisplayProjectManagButton = false;
+		DisplayRating = "none";
+		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
+		projects = local.GetAllProjects();
+	}
+
+	public void DeleteProjectTest() {
+		assets2 = assetsServicesLocal.GetAssetsByIdProject(proojectbyuser
+				.getId());
+		if (proojectbyuser.getTool().equals("Property and Onshore")) {
+			for (int i = 0; i < assets2.size(); i++) {
+				assetsServicesLocal.DeleteAsset(assets2.get(i));
+			}
+		}
+
+		if (proojectbyuser.getTool().equals("PI accountants and auditors")) {
+			PIaccandAudit audit1 = auditServicesLocal
+					.GetByIdProject(proojectbyuser.getId());
+			auditServicesLocal.delete(audit1);
+		}
+
+		local.DeleteProject(proojectbyuser.getId());
+
 		projectsbyuser = local.GetProjectsByUser(user2);
 		DisplayProjectManagButton = false;
 		DisplayRating = "none";
@@ -236,7 +313,7 @@ public class ProjectBean implements Serializable {
 	public String OpenProject()
 
 	{
-		
+
 		if (local.Nameexist(project2.getNameOfTheProject())) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -274,6 +351,50 @@ public class ProjectBean implements Serializable {
 		}
 	}
 
+	public String openprojecttest() {
+
+		if (project.getPrivacy() == true) {
+			project3 = project;
+			project = new Project();
+			PopDisplayed = false;
+			DisplayRating = "true";
+			DisabledButtonProject = true;
+			DisabledButtonProjectSendClose = false;
+			if (project3.getTool().equals("PI accountants and auditors")) {
+				return "test3?faces-redirect=true";
+			}
+			if (project3.getTool().equals("Property and Onshore")) {
+				return "test2?faces-redirect=true";
+			}
+
+			return null;
+		} else {
+			if (project.getUser() == user2.getId()) {
+				project3 = project;
+				project = new Project();
+				PopDisplayed = false;
+				DisplayRating = "true";
+				DisabledButtonProject = true;
+				DisabledButtonProjectSendClose = false;
+				System.out.println(project3.getTool());
+				if (project3.getTool().equals("PI accountants and auditors")) {
+					return "test3?faces-redirect=true";
+				}
+				if (project3.getTool().equals("Property and Onshore")) {
+					return "test2?faces-redirect=true";
+				}
+
+				return null;
+
+			} else {
+				RequestContext context = RequestContext.getCurrentInstance();
+				context.execute("PF('popup1').show();");
+				return null;
+			}
+		}
+
+	}
+
 	public String createprojtest() {
 		System.out.println(project2.getTool());
 		if (local.Nameexist(project2.getNameOfTheProject())) {
@@ -293,27 +414,21 @@ public class ProjectBean implements Serializable {
 				project2.setPrivacy(true);
 
 			}
-			if (project2.getTool().equals("Property onshore")) {
+			if (project2.getTool().equals("Property and Onshore")) {
 				project2.setUser(user2.getId());
 				local.NewProject(project2);
 				project3 = local.GetProjectByName(project2
 						.getNameOfTheProject());
-				summary.setIdProj(project3.getId());
-				offer.setId_project(project3.getId());
-				System.out
-						.println("L id de ce con est" + user2.getDepartment());
-				offer.setId_underwriter(user2.getId());
-				summaryServicesLocal.CreateSummary(summary);
-				offerServicesLocal.AddOffer(offer);
 				project2 = new Project();
 				DisplayRating = "true";
 				projects = local.GetAllProjects();
+
 				projectsbyuser = local.GetProjectsByUser(user2);
 				DisabledButtonProject = true;
 				DisabledButtonProjectSendClose = false;
-				return "Fac_info?faces-redirect=true";
+				return "test2?faces-redirect=true";
 			}
-			if (project2.getTool().equals("PI lawyer accountant")) {
+			if (project2.getTool().equals("PI accountants and auditors")) {
 				project2.setUser(user2.getId());
 				local.NewProject(project2);
 				project3 = local.GetProjectByName(project2
@@ -321,6 +436,10 @@ public class ProjectBean implements Serializable {
 				project2 = new Project();
 				projects = local.GetAllProjects();
 				projectsbyuser = local.GetProjectsByUser(user2);
+				PIaccandAudit audit = new PIaccandAudit();
+				audit.setTerritory(TerritoryChoice);
+				audit.setIdproj(project3.getId());
+				auditServicesLocal.add(audit);
 				DisabledButtonProject = true;
 				DisabledButtonProjectSendClose = false;
 				return "test3?faces-redirect=true";
@@ -466,21 +585,29 @@ public class ProjectBean implements Serializable {
 			project3 = project;
 			project = new Project();
 			PopDisplayed = false;
-			summary = summaryServicesLocal.GetSummary(project3.getId());
+
 			DisplayRating = "true";
 			DisabledButtonProject = true;
 			DisabledButtonProjectSendClose = false;
-			return "Summary2?faces-redirect=true";
+			if (project3.getTool().equals("PI accountants and auditors")) {
+				return "test3?faces-redirect=true";
+			} else {
+				if (project3.getTool().equals("Property and Onshore")) {
+					return "test2?faces-redirect=true";
+				}
+			}
+			return null;
 		} else {
 
 			FacesContext.getCurrentInstance().addMessage(
 					null,
-					new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Bad Credentials!", "Bad Credentials"));
 			return null;
 		}
 	}
 
+	// complete name
 	public List<User> completeName(String query) {
 		List<User> allThemes = local2.GetAllUsers();
 		List<User> filteredThemes = new ArrayList<User>();
@@ -564,7 +691,6 @@ public class ProjectBean implements Serializable {
 
 		project = local.GetProjectById(mailBox.getId_project());
 		project3 = project;
-		summary = summaryServicesLocal.GetSummary(project3.getId());
 		MailBox box2 = mailBoxServicesLocal.GetMailBox(mailBox.getId());
 		box2.setState("SEEN");
 
@@ -576,7 +702,14 @@ public class ProjectBean implements Serializable {
 		DisabledButtonProject = true;
 		DisabledButtonProjectSendClose = false;
 		DisplayRating = "true";
-		return "Summary2?faces-redirect=true";
+		if (project3.getTool().equals("PI accountants and auditors")) {
+			return "test3?faces-redirect=true";
+		} else {
+			if (project3.getTool().equals("Property and Onshore")) {
+				return "test2?faces-redirect=true";
+			}
+		}
+		return null;
 	}
 
 	public void CloseDProject() throws IOException {
@@ -878,6 +1011,47 @@ public class ProjectBean implements Serializable {
 
 	public void setTool(Map<String, String> tool) {
 		Tool = tool;
+	}
+
+	public List<Assets> getAssets2() {
+		return assets2;
+	}
+
+	public void setAssets2(List<Assets> assets2) {
+		this.assets2 = assets2;
+	}
+
+	public String getDisplayProjectSelectionByuser() {
+		return DisplayProjectSelectionByuser;
+	}
+
+	public void setDisplayProjectSelectionByuser(
+			String displayProjectSelectionByuser) {
+		DisplayProjectSelectionByuser = displayProjectSelectionByuser;
+	}
+
+	public String getDisplayProjectByTool() {
+		return DisplayProjectByTool;
+	}
+
+	public void setDisplayProjectByTool(String displayProjectByTool) {
+		DisplayProjectByTool = displayProjectByTool;
+	}
+
+	public Map<String, String> getTerritory() {
+		return Territory;
+	}
+
+	public void setTerritory(Map<String, String> territory) {
+		Territory = territory;
+	}
+
+	public String getTerritoryChoice() {
+		return TerritoryChoice;
+	}
+
+	public void setTerritoryChoice(String territoryChoice) {
+		TerritoryChoice = territoryChoice;
 	}
 
 }

@@ -18,6 +18,7 @@ public class PIaccandAudit implements Serializable {
 	private int idproj;
 	private String bookkeepingandaudit;
 	private String managementAdvisory;
+	private String Territory;
 	private String forecast;
 	private String payrollservices;
 	private String fiduciary;
@@ -41,11 +42,36 @@ public class PIaccandAudit implements Serializable {
 	private String profitcontingency;
 	private String Averagerate;
 	private String TotalPremium;
+	private String GrossRevenue;
 
 	private static final long serialVersionUID = 1L;
 
 	public PIaccandAudit() {
-		super();
+		this.bookkeepingandaudit = "null";
+		this.managementAdvisory = "null";
+		this.forecast = "null";
+		this.payrollservices = "null";
+		this.fiduciary = "null";
+		this.securitiesrelated = "null";
+		this.incuredlosses = "null";
+		this.noofclaims = "null";
+		this.financialPlanning = "null";
+		this.specialClientProfileList = "null";
+		this.Taxpreparation = "null";
+		this.commissionandaquisition = "0";
+		this.profitcontingency = "0";
+		this.Generalexpenses = "0";
+		this.retrocover = "0";
+		this.extendedreporting = "0";
+		this.Deductible = "0";
+		this.GrossRevenue = "0";
+		this.aggregatelimit = "0";
+		this.occurlimit = "1";
+		this.lossofdocument = "0";
+		this.dishonestofempl = "0";
+		this.libel = "0";
+		this.defenseexpenses = "0";
+
 	}
 
 	public int getIdproj() {
@@ -303,6 +329,22 @@ public class PIaccandAudit implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getTerritory() {
+		return Territory;
+	}
+
+	public void setTerritory(String territory) {
+		Territory = territory;
+	}
+
+	public String getGrossRevenue() {
+		return GrossRevenue;
+	}
+
+	public void setGrossRevenue(String grossRevenue) {
+		GrossRevenue = grossRevenue;
 	}
 
 }

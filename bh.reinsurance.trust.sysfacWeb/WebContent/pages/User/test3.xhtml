@@ -5,18 +5,17 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:head>
-	
+
 </h:head>
 <h:body>
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Rating Tool</ui:define>
 		<ui:define name="content">
-			<p:panel header="PI Lawyers rating tool - accountants and auditors">
-				<p:tabView style="width:1200px">
+			<p:panel header="PI rating tool - accountants and auditors">
+				<p:tabView id="tab" style="width:1200px">
 
-					<p:tab title="Summary">
+					<p:tab id="summarytab" title="Summary">
 						<h:panelGrid columns="1" style="margin-left:300px">
-
 
 							<p:panelGrid columns="2" style="width:600px">
 								<f:facet name="header">offer information</f:facet>
@@ -36,17 +35,16 @@
 								<p:outputLabel value="Currency : " for="curr1" />
 								<h:outputLabel id="curr1"
 									value="#{projectBean.project3.currency}" />
+								<p:outputLabel value="Territory : " for="ter" />
+								<h:outputLabel id="ter"
+									value="#{plAccountAuditorsRatingBean.iaccandAudittosave.territory}" />
 								<p:outputLabel value="Insured : " for="ins1" />
 								<h:outputLabel id="ins1" value="#{projectBean.project3.insured}" />
 								<p:outputLabel value="Broker : " for="brok1" />
 								<h:outputLabel id="brok1" value="#{projectBean.project3.broker}" />
 								<p:outputLabel value="Policy : " for="pol1" />
 								<h:outputLabel id="pol1" value="#{projectBean.project3.policy}" />
-
-
 							</p:panelGrid>
-
-
 							<p:panelGrid id="summary" style="width:600px">
 								<f:facet name="header">
 									<p:row>
@@ -63,7 +61,7 @@
 										<p:outputLabel styleClass="old" value="Base Premium  " />
 									</p:column>
 									<p:column>
-										<p:outputLabel styleClass="old" value="33  " />
+									#{plAccountAuditorsRatingBean.FormatBasePremium()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -71,7 +69,7 @@
 										<p:outputLabel value="Territory load  " />
 									</p:column>
 									<p:column>
-										<p:outputLabel value="33  " />
+										#{plAccountAuditorsRatingBean.territoryLoad}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -79,7 +77,7 @@
 										<p:outputLabel styleClass="old" value="Total Base Premium " />
 									</p:column>
 									<p:column>
-										<p:outputLabel styleClass="old" value="34  " />
+										#{plAccountAuditorsRatingBean.FormatTotalBasePremium()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -88,7 +86,7 @@
 											value="Indemnity Limit Premium " />
 									</p:column>
 									<p:column>
-										<p:outputLabel styleClass="old" value="34  " />
+										#{plAccountAuditorsRatingBean.FormatIndemnityLimitPremium()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -97,7 +95,7 @@
 											value="Premium Before deductible and Loadings" />
 									</p:column>
 									<p:column>
-										<p:outputLabel styleClass="old" value="34  " />
+										#{plAccountAuditorsRatingBean.FormatPremiumBeforeLoading()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -105,7 +103,7 @@
 										<p:outputLabel value="Deductible Factor" />
 									</p:column>
 									<p:column>
-										<p:outputLabel value="34  " />
+										#{plAccountAuditorsRatingBean.FormatDeductibleFactor()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -113,7 +111,7 @@
 										<p:outputLabel value="Loadings" />
 									</p:column>
 									<p:column>
-										<p:outputLabel value="34  " />
+										#{plAccountAuditorsRatingBean.FormatLoadings()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -121,7 +119,7 @@
 										<p:outputLabel styleClass="old" value="Modified Premuim" />
 									</p:column>
 									<p:column>
-										<p:outputLabel styleClass="old" value="34  " />
+								#{plAccountAuditorsRatingBean.FormatModifiedPremium()}
 									</p:column>
 								</p:row>
 
@@ -130,7 +128,7 @@
 										<p:outputLabel value="Coverage Enhancement" />
 									</p:column>
 									<p:column>
-										<p:outputLabel value="34  " />
+										#{plAccountAuditorsRatingBean.CoverageEnhacements()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -139,7 +137,7 @@
 											value="Premium after Enhancements" />
 									</p:column>
 									<p:column>
-										<p:outputLabel styleClass="old" value="34  " />
+										#{plAccountAuditorsRatingBean.FormatPremiumAfterEnhacement()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -148,7 +146,7 @@
 											value="Premium after Coverage Extensions" />
 									</p:column>
 									<p:column>
-										<p:outputLabel styleClass="old" value="34  " />
+									#{plAccountAuditorsRatingBean.FormatPremiumAfterCoverageExtensions()}
 									</p:column>
 								</p:row>
 								<p:row>
@@ -156,26 +154,11 @@
 										<p:outputLabel value="Expense Loading" />
 									</p:column>
 									<p:column>
-										<p:outputLabel value="34  " />
+									#{plAccountAuditorsRatingBean.FormatExpensesLoading()}
 									</p:column>
 								</p:row>
 
-								<!-- <p:row>
-										<p:column style="background-color:grey"> 
-											<p:outputLabel styleClass="old" value="Average Rate" />
-										</p:column >
-										<p:column style="background-color:green">
-											<p:outputLabel styleClass="old" value="34  " />
-										</p:column>
-									</p:row>
-									<p:row>
-										<p:column style="background-color:grey">
-											<p:outputLabel styleClass="old" value="Total Premium($)" />
-										</p:column>
-										<p:column style="background-color:green">
-											<p:outputLabel styleClass="old" value="34  " />
-										</p:column>
-									</p:row> -->
+
 
 
 								<f:facet name="footer">
@@ -184,7 +167,7 @@
 											<p:outputLabel styleClass="old" value="Average Rate" />
 										</p:column>
 										<p:column>
-											<p:outputLabel styleClass="old" value="34  " />
+										#{plAccountAuditorsRatingBean.FormatAverageRate()}
 										</p:column>
 									</p:row>
 									<p:row>
@@ -192,7 +175,20 @@
 											<p:outputLabel styleClass="old" value="Total Premium($)" />
 										</p:column>
 										<p:column>
-											<p:outputLabel styleClass="old" value="34  " />
+										
+									
+				
+										
+								#{plAccountAuditorsRatingBean.FormatTotalPremium()}
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+											<p:commandLink onclick="PF('PopupPdf').show()"
+												style="margin-left:270px">
+												<p:graphicImage
+													value="/resources/images/pdf.png.xhtml-2.png" width="24" />
+											</p:commandLink>
 										</p:column>
 									</p:row>
 								</f:facet>
@@ -202,13 +198,37 @@
 
 					</p:tab>
 
-					<p:tab title="Rating">
+					<p:tab id="rating" title="Rating">
 
 						<p:messages id="messages" autoUpdate="true" closable="true" />
-						<h:form>
-							<p:panelGrid columns="2" border="1" width="1200px">
-								<h:panelGrid style="margin-left:34px">
+						<h:form id="ratingform">
 
+
+
+							<p:panelGrid id="ratingpannel" columns="2" border="1"
+								width="1200px">
+								<h:panelGrid style="margin-left:34px">
+									<p:panelGrid>
+										<f:facet name="header">
+											<p:row>
+												<p:column>Gross Revenue Of the firm</p:column>
+												<p:column>
+													<p:inplace editor="true">
+
+														<p:inputMask
+															value="#{plAccountAuditorsRatingBean.iaccandAudittosave.grossRevenue}"
+															label="text" maxlength="7">
+															<pe:keyFilter regEx="/[0-9]/" />
+															<p:ajax event="valueChange"
+																listener="#{plAccountAuditorsRatingBean.GetBasePremium()}"
+																update="@form :tab:summary" />
+														</p:inputMask>
+
+													</p:inplace>
+												</p:column>
+											</p:row>
+										</f:facet>
+									</p:panelGrid>
 									<p:panelGrid id="pricespec" style="width:450px">
 										<f:facet name="header">
 											<p:row>
@@ -229,16 +249,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.bookkeepingandaudit}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.bookkeepingandaudit}"
 													style="width:160px">
-
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.bookingandauditChange()}"
+														update="@form :tab:summary" />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.bookingandauditfactor *100} %
 											</p:column>
 										</p:row>
 										<p:row>
@@ -247,16 +270,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.managementAdvisory}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.managementAdvisory}"
 													style="width:160px">
-
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.Manageadvisorychange()}"
+														update="@form :tab:summary" />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.managementadvisoryfactor *100} %
 											</p:column>
 										</p:row>
 										<p:row>
@@ -264,16 +290,21 @@
 												<p:outputLabel value="Forecast/projections" />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu value="#{ratingBean.iaccandAudit.forecast}"
+												<p:selectOneMenu
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.forecast}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.forecastChange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
+
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.forecastsfactor *100} %
 											</p:column>
 										</p:row>
 										<p:row>
@@ -282,16 +313,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.payrollservices}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.payrollservices}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.payrollChange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.payrollfactor *100} %
 											</p:column>
 										</p:row>
 										<p:row>
@@ -300,16 +334,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.fiduciary}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.fiduciary}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.fiduciaryChange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+											#{plAccountAuditorsRatingBean.fiduciaryfactor *100} %
 											</p:column>
 										</p:row>
 										<p:row>
@@ -318,16 +355,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.taxpreparation}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.taxpreparation}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.TaxChange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.taxpreparationfactor *100} %
 											</p:column>
 										</p:row>
 										<p:row>
@@ -336,16 +376,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.securitiesrelated}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.securitiesrelated}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.securitieschanges()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.securitiesrelatedfactor *100} %
 											</p:column>
 										</p:row>
 										<p:row>
@@ -354,16 +397,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.financialPlanning}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.financialPlanning}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.planningchange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
 														itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.financialplanningfactor *100} %
 											</p:column>
 										</p:row>
 										<f:facet name="footer">
@@ -374,12 +420,14 @@
 												<p:column>
 												</p:column>
 												<p:column>
-													<p:outputLabel value="40%" />
+													#{plAccountAuditorsRatingBean.FormatTotalPracticeSpeciality()}
 												</p:column>
 											</p:row>
 										</f:facet>
-
 									</p:panelGrid>
+
+
+
 									<p:panelGrid id="Otherlf" style="width:450px">
 										<f:facet name="header">
 											<p:row>
@@ -401,16 +449,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.incuredlosses}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.incuredlosses}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.incuredLossAndNoOfClaimsChange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.incuredlosseslist}"
+														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.incuredlossesandnumberofclaimsfactor *100}%
 											</p:column>
 										</p:row>
 
@@ -420,16 +471,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.noofclaims}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.noofclaims}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.incuredLossAndNoOfClaimsChange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.numberOfClaimsList}"
+														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.incuredlossesandnumberofclaimsfactor *100}%
 											</p:column>
 										</p:row>
 										<p:row>
@@ -438,16 +492,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.specialClientProfileList}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.specialClientProfileList}"
 													style="width:160px">
-
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.SpecialClientChange()}"
+														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.specialClientProfileList}"
+														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+													#{plAccountAuditorsRatingBean.specialclientlistfactor *100}%
 											</p:column>
 										</p:row>
 
@@ -459,14 +516,12 @@
 												<p:column>
 												</p:column>
 												<p:column>
-													<p:outputLabel value="50%" />
+													#{plAccountAuditorsRatingBean.FormatTotalOtherLoadingFactor()}
 												</p:column>
 											</p:row>
 										</f:facet>
 
 									</p:panelGrid>
-
-
 
 								</h:panelGrid>
 
@@ -490,14 +545,18 @@
 												<p:outputLabel value="Each occurence limit " />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.occurlimit}"
-													style="width:160px">
+												<p:inplace editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.occurlimit}"
+														label="text" maxlength="7">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetIndemnityLimitPremium()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
 											</p:column>
 										</p:row>
 										<p:row>
@@ -506,12 +565,15 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.aggregatelimit}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.aggregatelimit}"
 													style="width:160px">
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.AggregateChange()}"
+														update="@form :tab:summary" />
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.aggregateLimitList}"
+														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 										</p:row>
@@ -520,14 +582,18 @@
 												<p:outputLabel value="Deductible " />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.deductible}"
-													style="width:160px">
+												<p:inplace editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.deductible}"
+														label="text" maxlength="7">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetDeductibleFactor()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
 											</p:column>
 										</p:row>
 									</p:panelGrid>
@@ -550,14 +616,18 @@
 												<p:outputLabel value="Loss of document " />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.lossofdocument}"
-													style="width:160px">
+												<p:inplace editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.lossofdocument}"
+														label="text" maxlength="7">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetEnhancements()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
 											</p:column>
 										</p:row>
 										<p:row>
@@ -565,14 +635,18 @@
 												<p:outputLabel value="Dishonest of employees " />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.dishonestofempl}"
-													style="width:160px">
+												<p:inplace editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.dishonestofempl}"
+														label="text" maxlength="7">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetEnhancements()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
 											</p:column>
 										</p:row>
 										<p:row>
@@ -580,13 +654,18 @@
 												<p:outputLabel value="Libel,Slander " />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu value="#{ratingBean.iaccandAudit.libel}"
-													style="width:160px">
+												<p:inplace editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.libel}"
+														label="text" maxlength="7">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetEnhancements()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
 											</p:column>
 										</p:row>
 										<p:row>
@@ -594,14 +673,18 @@
 												<p:outputLabel value="Defence Expenses outside limits " />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.defenseexpenses}"
-													style="width:160px">
+												<p:inplace editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.defenseexpenses}"
+														label="text" maxlength="7">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetEnhancements()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
 											</p:column>
 										</p:row>
 									</p:panelGrid>
@@ -612,7 +695,7 @@
 										<f:facet name="header">
 											<p:row>
 												<p:column style="width:450px">
-													<p:outputLabel styleClass="old" value="Expenses loading " />
+													<p:outputLabel styleClass="old" value="Expenses loadings " />
 												</p:column>
 												<p:column style="width:150px">
 													<p:outputLabel styleClass="old" value="Load" />
@@ -624,14 +707,21 @@
 												<p:outputLabel value="Commission and Acquisition Costs" />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.commissionandaquisition}"
-													style="width:160px">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+												<p:inplace id="ajax" editor="true">
+
+													<p:inputMask id="e"
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.commissionandaquisition}"
+														label="text" maxlength="3">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetExpensesLoading()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
+													%
+												
 											</p:column>
 										</p:row>
 										<p:row>
@@ -639,14 +729,19 @@
 												<p:outputLabel value="General Expenses" />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.generalexpenses}"
-													style="width:160px">
+												<p:inplace id="ajax3" editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask id="e2"
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.generalexpenses}"
+														label="text" maxlength="3">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetExpensesLoading()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
+													%
 											</p:column>
 										</p:row>
 										<p:row>
@@ -654,14 +749,19 @@
 												<p:outputLabel value="Profit/Contingency " />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.profitcontingency}"
-													style="width:160px">
+												<p:inplace id="ajax2" editor="true">
 
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
-												</p:selectOneMenu>
+													<p:inputMask id="e3"
+														value="#{plAccountAuditorsRatingBean.iaccandAudittosave.profitcontingency}"
+														label="text" maxlength="3">
+														<pe:keyFilter regEx="/[0-9]/" />
+														<p:ajax event="valueChange"
+															listener="#{plAccountAuditorsRatingBean.GetExpensesLoading()}"
+															update="@form :tab:summary" />
+													</p:inputMask>
+
+												</p:inplace>
+													%
 											</p:column>
 										</p:row>
 									</p:panelGrid>
@@ -686,16 +786,19 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.retrocover}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.retrocover}"
 													style="width:160px">
-
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.retrocoverChange()}"
+														update="@form :tab:summary" />
+													<f:selectItem itemLabel="Select one .." itemValue="0" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.coverExtensionsList}"
+														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+											#{plAccountAuditorsRatingBean.retrospectiveCovers *100} %
 											</p:column>
 										</p:row>
 
@@ -705,19 +808,21 @@
 											</p:column>
 											<p:column>
 												<p:selectOneMenu
-													value="#{ratingBean.iaccandAudit.extendedreporting}"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.extendedreporting}"
 													style="width:160px">
-
-													<f:selectItem itemLabel="Select one .." />
-													<f:selectItems value="#{ratingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+													<p:ajax event="valueChange"
+														listener="#{plAccountAuditorsRatingBean.extendedReportChange()}"
+														update="@form :tab:summary" />
+													<f:selectItem itemLabel="Select one .." itemValue="0" />
+													<f:selectItems
+														value="#{plAccountAuditorsRatingBean.coverExtensionsList2}"
+														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
-												<p:outputLabel value="10%" />
+												#{plAccountAuditorsRatingBean.extendedReporting *100}%
 											</p:column>
 										</p:row>
-
 
 										<f:facet name="footer">
 											<p:row>
@@ -727,25 +832,315 @@
 												<p:column>
 												</p:column>
 												<p:column>
-													<p:outputLabel value="50%" />
+
+												#{(plAccountAuditorsRatingBean.extendedReporting + plAccountAuditorsRatingBean.retrospectiveCovers)*100} %
 												</p:column>
 											</p:row>
 										</f:facet>
 
 									</p:panelGrid>
 
-
 								</h:panelGrid>
-
 							</p:panelGrid>
+							<p:commandButton value="save rating"
+								actionListener="#{plAccountAuditorsRatingBean.SaveRating()}"
+								update=":tab:summary"></p:commandButton>
 						</h:form>
 					</p:tab>
 					<p:tab title="Rating Rules">
+
+						<p style="font-weight: bold;">1)Application</p>
+						<br />
+    The Accountants Professional Liability (APL) may be written to provide coverage to risks that meet the following underwriting criteria: 
+    <br />
+	1.  Applicant(s) must be a licensed Certified Public Accountant or accounting firm<br />
+	2.  Excluding big 5 accounting firm in the world <br />
+	3.  Applicant must complete and sign an application for insurance and supplemental application(s) if applicable<br />
+
+						<br />
+						<p style="font-weight: bold;">2)Policy term</p>		
+	Policies are written for a term up to one year, plus odd time up to a maximum of 18 months<br />
+	All premiums and rates contained in this manual are annual, unless otherwise specifically identified.<br />
+	Each renewal or anniversay premium shall be computed according to the then current rules, rates and forms <br />
+						<br />
+						<p style="font-weight: bold;">3)Rounding procedure</p>
+						<br />
+	Round any amount involving $ .50 or over to the next higher whole dollar<br />
+	Round any amount involving $ 0.49 or less to the next lower whole dollar<br />
+						<br />
+						<p style="font-weight: bold;">4) Factors or Multipliers</p>
+						<br />
+		Unless otherwise indicated in this manual, factors or multipliers are to be applied consecutively and not added together<br />
+						<br />
+						<p style="font-weight: bold;">5)Additional premium changes</p>
+						<br />
+		a.  Pro rate all changes requiring additional premium<br />
+b.  Apply the rates and rules in effect on the effective date of the policy.  In computing the additional premium, <br />
+charge the amount applicable on the effective date of the change<br />
+c.  Waive additional premium of $ 15.00 or less.<br />
+						<br />
+
+						<p style="font-weight: bold;">6)Return Premium Changes (for
+							other than policy cancellations)</p>
+						<br />
+A.  Deletion of any coverage, other than optional coverages, is not permitted unless the entire policy is cancelled<br />
+b.  Compute return premium at the rates used to calculate the policy premium at policy inception<br />
+c.  Compute return premium pro rata and round to the next higher whole dollar when any coverage or exposure <br />
+is deleted or an amount of insurance is reduced<br />
+d.  Waive return premium of $ 15.00 or less.  Grant any return premium due if requested by the insured.<br />
+						<br />
+						<p style="font-weight: bold;">7)Limit of Liability</p>
+						<br />
+A.  Basic Limits :  $ 250,000 each claim and aggregate<br />
+Manual rates provide a basic limit of $ 250,000 for each claim that is first made against the insured during the policy 
+period by reason of an act or omission in the performance of legal services by the insured or any person for whom the 
+insured is legally liable, regardless of the number of claims or claimants, subject to a basic aggregate limit of $ 250,000
+<br />
+B.  Increased Limits<br />
+Refer to the Rule D.1 for available increased limits and factors<br />
+						<br />
+
+						<p style="font-weight: bold;">8)Policy Cancellations</p>
+						<br />
+a.  Policies are non-cancellable except for the following reasons:<br />
+1.  the policy is cancelled at the Company's request for non-payment of premium<br />
+2.  the policy is cancelled at the insured's request.<br />
+
+b.  Compute the return premium at 0.90 of the pro rata unearned premium for the one year period and round in 
+accordance with the rounding rule<br />
+
+						<br />
+						<p style="font-weight: bold;">9)Deductibles</p>
+Rates contained in this manual are based upon a $ 2,500 aggregate deductible.  Refer to Rule D.2 for  deductible factors<br />
+						<br />
+						<p style="font-weight: bold;">10)Calculation of Premium</p>
+						<br />
+The total policy premium for an APL is determined in the following order:<br />
+1.  Determine the final base premium<br />
+						<p style="font-weight: bold;">A. calculate a base premium from
+							the chart below according to the revenue of the firm</p>
+						<br />
+						<p:panelGrid style="margin-left:400px">
+							<f:facet name="header">
+								<p:row>
+									<p:column styleClass="bold">Gross Revenue ($)	</p:column>
+									<p:column styleClass="bold">	Rate per $ 1000 of Gross revenue in excess of:</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column>up to 100,000</p:column>
+								<p:column> Flat  $ 300</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next 400,000</p:column>
+								<p:column>4,75</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next 500,000</p:column>
+								<p:column>3,5</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next 1,000,000</p:column>
+								<p:column>2,75</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">B. Territory Factors</p>
+Apply the factors below to the appropriate  territory where the firm is located<br />
+						<br />
+						<p:panelGrid style="margin-left:400px">
+							<f:facet name="header">
+								<p:row>
+									<p:column>Territory</p:column>
+									<p:column>Factor</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column>GCC:  Oman, UAE, Bahrain, Qatar, KSA, Kuwait</p:column>
+								<p:column>1,00</p:column>
+							</p:row>
+							<p:row>
+								<p:column>outside GCC (excluding USA/Canada/Europe/Australia/NZ/ Japan</p:column>
+								<p:column>1,25</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">Note: the above base rate apply
+							for the following:</p>		
+						1.  limit  of Liability of US $ 250,000 any one occurrence and aggregate during the policy period		<br />
+						2.  Deductible of US $ 2,500 each and every loss occurrence		<br />
+						<br />
+						<p style="font-weight: bold;">C. Determine the total base
+							premium</p>	
+						Multiply the base premium from Step A above by the terroritoral factor in Step B above		<br />
+						<br />
+						<p style="font-weight: bold;">D. Determine premium on
+							Indemnity limits</p>	
+						The above base premium are for indemnity of US $ 250,000 per occurrence and aggregate with a minimum deductible of US $ 5,000		<br />
+						Exceeding US $ 250,000 limits are charged additional premium as per rate below		<br />
+						<br />
+						<p style="font-weight: bold;">Calculate premium based on the
+							indemnity limits selected by the Insured</p>	
+						rates based on indemnity limits shall apply on the basis of:		<br />
+						1.  any one occurrence (Per occurrence limit)		<br />
+						2.  any one policy period (aggregate limit)		<br />
+						<br />
+						<p style="font-weight: bold;">1.Each occurrence Limit</p>
+						<br />
+						<p:panelGrid style="margin-left:400px">
+							<f:facet name="header">
+								<p:row>
+									<p:column styleClass="bold">Each occurrence Limit</p:column>
+									<p:column styleClass="bold">	Rate (p.c) applied on the limits</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column>up to US $ 500,000</p:column>
+								<p:column> 0,5625%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>Next US $ 500,000</p:column>
+								<p:column>0,4875%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next US $ 1,000,000</p:column>
+								<p:column>0,4250%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next US $ 2,000,000</p:column>
+								<p:column>0,2850%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next US 4,000,000</p:column>
+								<p:column>0,2450%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next US $ 5,000,000</p:column>
+								<p:column>0,1715%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next US $ 5,000,000</p:column>
+								<p:column>0,1375%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next US $ 5,000,000</p:column>
+								<p:column>0,3375%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>next US $ 10,000,000</p:column>
+								<p:column>0,0875%</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">2. Aggregate limit</p>
+						If the Insured opt for more than one aggregate limits, following factors in the rate shall apply.  <br />
+						maximum aggregate limit shall not exceed 4 times any one occurrence limit<br />
+						<br />
+
+						<p:panelGrid style="margin-left:440px">
+							<f:facet name="header">
+								<p:row>
+									<p:column styleClass="bold">Aggregate limit</p:column>
+									<p:column styleClass="bold">	Factor</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column styleClass="bold">2 times any one occurrence limit</p:column>
+								<p:column styleClass="bold">	1,15</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="bold">3 times any one occurrence limit</p:column>
+								<p:column styleClass="bold">	1,25</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="bold">4 times any one occurrence limit</p:column>
+								<p:column styleClass="bold">	1,40</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">E. Add premium together of C and
+							D computed above, which gives total premium before modification</p>
+
+						<p style="font-weight: bold;">F. Deductible Factor</p>
+						Premium calculated as per E above are further adjusted for deductible factors<br />
+						<br />
+						<p:panelGrid style="margin-left:500px">
+							<f:facet name="header">
+								<p:row>
+									<p:column colspan="2">Deductible Factor</p:column>
+								</p:row>
+								<p:row>
+									<p:column>Amount</p:column>
+									<p:column>Load</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column>2 500</p:column>
+								<p:column>10,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>5 000</p:column>
+								<p:column>0,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>10 000</p:column>
+								<p:column>-5,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>20 000</p:column>
+								<p:column>-10,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>40 000</p:column>
+								<p:column>-12,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>50 000</p:column>
+								<p:column>-15,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>100 000</p:column>
+								<p:column>-17,50%</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">G. Determine Modification Factor
+							for the Firm</p>
+						The above  premiums may be adjusted by the following:	<br />
+						1.  Client Profile	<br />
+						2.  Practice Profile	<br />
+						3.  Experience Rating Plan	<br />
+						4.  Individual Risk Modifiers	<br />
+
+
 					</p:tab>
-
-
 				</p:tabView>
 			</p:panel>
+			<p:dialog widgetVar="PopupPdf" id="PopupPdf" modal="true"
+				header="PDF">
+				<h:form>
+					<p:panelGrid>
+						<p:row>
+							<p:column>Please enter File Name</p:column>
+							<p:column>
+								<p:inputText value="#{report.projectName}"></p:inputText>
+							</p:column>
+
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:commandButton value="Create"
+									actionListener="#{plAccountAuditorsRatingBean.ExportAccountantAndAuditorsSummary()}"></p:commandButton>
+							</p:column>
+							<p:column>
+								<p:commandButton value="Cancel" onclick="PF('PopupPdf').hide()"></p:commandButton>
+							</p:column>
+
+						</p:row>
+					</p:panelGrid>
+
+				</h:form>
+			</p:dialog>
 		</ui:define>
 	</ui:composition>
 </h:body>
