@@ -126,9 +126,7 @@ public class MapBean implements Serializable {
 		this.user2 = user2;
 	}
 
-	public void addField() {
-
-	}
+	
 
 	private UploadedFile uploadedFile;
 
@@ -190,6 +188,8 @@ public class MapBean implements Serializable {
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					to));
 			message.setSubject("PING");
+			
+			
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			// Fill the message

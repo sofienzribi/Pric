@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.context.RequestContext;
@@ -126,8 +127,13 @@ public class FacultativeBean implements Serializable {
 		DisplayDeatils = true;
 
 	}
+	
+	
+	
 
 	public void plusLiabilityBand() {
+		
+		
 		if (RadioValue.equals("Liability")) {
 			PasLiability = PasLiability * 2;
 			Filllist();

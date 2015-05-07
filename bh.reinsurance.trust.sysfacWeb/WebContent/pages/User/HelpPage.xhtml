@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+</h:head>
+<h:body>
+	<p:panel>
+		<h:form>
+			<p:inputText placeholder="Search ...">
+				<p:graphicImage value="/resources/images/search1.png" width="24" />
+			</p:inputText>
+		</h:form>
+	</p:panel>
+	<p:tabView style="height:auto" orientation="left">
+
+		<p:tab title="Information Tools">
+			<p:accordionPanel activeIndex="none">
+				<p:tab title="Fac info">
+					<pe:documentViewer height="500" library="Report"
+						name="UserGuideOpenProject.pdf" />
+				</p:tab>
+				<p:tab title="Calculation Tool">
+				</p:tab>
+				<p:tab title="Risks on map">
+				</p:tab>
+			</p:accordionPanel>
+		</p:tab>
+		<p:tab title="Rating Tools">
+
+			<h:outputText
+				value="To use the rating tool the first step is to create or open a project" />
+
+			<p:accordionPanel activeIndex="none" style="text-align:left">
+				<p:tab title="Open a project" >
+				<p style="font-weight: bold;">
+				1.Go under Project and Click "Create/Open Project".<br/>
+				2.Select a project.<br/>
+				3.Click "Open".
+				</p>
+				</p:tab>
+				<p:tab title="Create a project">
+				</p:tab>
+				<p:tab title="Send a project">
+				</p:tab>
+			</p:accordionPanel>
+		</p:tab>
+		<p:tab title="Account Management">
+			<p:accordionPanel activeIndex="none">
+				<p:tab title="Change email credentials">
+				</p:tab>
+				<p:tab title="Change account credentials">
+				</p:tab>
+			</p:accordionPanel>
+		</p:tab>
+	</p:tabView>
+	<p:panel>
+		<h:form>
+			<p:commandLink>Download the user guide	<p:graphicImage
+					value="/resources/images/dwl.png" width="24" />
+			</p:commandLink>
+
+
+		</h:form>
+	</p:panel>
+</h:body>
+</html>

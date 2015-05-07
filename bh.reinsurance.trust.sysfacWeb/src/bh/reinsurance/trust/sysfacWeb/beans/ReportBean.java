@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -22,6 +21,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Facultative;
+import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.domain.Sysfacus;
 import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 
@@ -31,7 +31,6 @@ public class ReportBean {
 	// models
 	private String URLDestination;
 	private String URLJasperModel;
-	
 
 	private List<Facultative> facultatives;
 	private JasperPrint jasperPrint;
@@ -181,9 +180,10 @@ public class ReportBean {
 								"File Created", ""));
 	}
 
-	public void ExportAccountantAndAuditorsSummary() throws JRException {
+	public void ExportAccountantAndAuditorsSummary(Project project)
+			throws JRException {
 		List<Object> projects = new ArrayList<Object>();
-
+		projects.add(project);
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("name", "Sofien");
 		param.put("insured", "");
@@ -226,8 +226,5 @@ public class ReportBean {
 	public void setURLJasperModel(String uRLJasperModel) {
 		URLJasperModel = uRLJasperModel;
 	}
-
-
-	
 
 }

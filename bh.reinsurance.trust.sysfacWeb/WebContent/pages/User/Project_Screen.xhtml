@@ -48,6 +48,7 @@
 					paginator="true" paginatorPosition="bottom" selectionMode="single"
 					selection="#{projectBean.project}" rowKey="#{prod.id}"
 					widgetVar="prodTabW2">
+					
 					<f:facet name="header">Please select a project</f:facet>
 					<p:ajax event="rowSelect" listener="#{projectBean.DisplayPop()}"
 						update=":dialog1" />

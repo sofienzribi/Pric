@@ -8,11 +8,11 @@
 
 
 	<nav class="navbar navbar-default navbar-fixed-top ">
-		<div class="container">
-			<div class="navbar-header">
+		<div>
+			<div class="navbar-header" style="margin-left: 80px">
 				<h:outputText value="#{login.department}" styleClass="textima" />
 				<p:graphicImage value="/resources/images/logo_small.png"></p:graphicImage>
-
+				
 			</div>
 
 			<div class="navbar-collapse collapse">
@@ -80,7 +80,7 @@
 									<p:commandLink value="Test2"
 										actionListener="#{redirectionBean.GoToTest2()}"></p:commandLink>
 								</h:form></li>
-								<li><h:form id="FIRA2">
+							<li><h:form id="FIRA2">
 									<i class="fa fa-play"></i>
 									<p:commandLink value="Test3"
 										actionListener="#{redirectionBean.GoToTest3()}"></p:commandLink>
@@ -132,7 +132,7 @@
 				<!-- left menu
  -->
 
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right" > 
 					<li class="dropdown"><a href="#"
 						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
 							class="fa fa-user"></i> <span>#{login.Connected()}</span> <b
@@ -243,9 +243,16 @@
 										actionListener="#{measure.CloseMeasure()}"></p:commandLink>
 								</h:form></li>
 						</ul></li>
-
+						<li >
+						<p:commandLink  onclick="PF('Diaghelp').show()">
+					<p:graphicImage value="/resources/images/help.png"
+						width="24" />
+				</p:commandLink>
+</li>
 				</ul>
+				
 			</div>
+			
 		</div>
 		<!--/.navbar-collapse -->
 	</nav>

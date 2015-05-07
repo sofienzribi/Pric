@@ -11,7 +11,14 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Rating Tool</ui:define>
 		<ui:define name="content">
-			<p:panel header="PI rating tool - accountants and auditors">
+			<p:panel >
+			
+			<f:facet name="header" >
+			PI rating tool - accountants and auditors
+			
+			</f:facet>
+				<p:growl id="growl4" autoUpdate="true">
+				</p:growl>
 				<p:tabView id="tab" style="width:1200px">
 
 					<p:tab id="summarytab" title="Summary">
@@ -200,7 +207,6 @@
 
 					<p:tab id="rating" title="Rating">
 
-						<p:messages id="messages" autoUpdate="true" closable="true" />
 						<h:form id="ratingform">
 
 
@@ -847,6 +853,7 @@
 								update=":tab:summary"></p:commandButton>
 						</h:form>
 					</p:tab>
+
 					<p:tab title="Rating Rules">
 
 						<p style="font-weight: bold;">1)Application</p>
@@ -1111,36 +1118,386 @@ Apply the factors below to the appropriate  territory where the firm is located<
 						2.  Practice Profile	<br />
 						3.  Experience Rating Plan	<br />
 						4.  Individual Risk Modifiers	<br />
+						<p:panelGrid style="margin-left:400px">
+							<f:facet name="header">
+								<p:row>
+									<p:column style="font-weight: bold;">1.Client Profile</p:column>
+								</p:row>
 
+							</f:facet>
+							<p:row>
+								<p:column>A debit of 25% to apply for the following type of client</p:column>
+							</p:row>
+							<p:row>
+								<p:column>Construction</p:column>
+							</p:row>
+							<p:row>
+								<p:column>Financial Institutions</p:column>
+							</p:row>
+							<p:row>
+								<p:column>Pension funds (including Annuties)</p:column>
+							</p:row>
+							<p:row>
+								<p:column>Real Estate Developers</p:column>
+							</p:row>
+							<p:row>
+								<p:column>Significant reliance (> 25% of revenue) on Major client</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">2. Practice Profile</p>
+							An adjustment as follows shall apply for the following type of services
+			            <p:panelGrid style="margin-left:300px">
+							<f:facet name="header">
+								<p:row>
+									<p:column>Practice Speciality</p:column>
+									<p:column>%Speciality</p:column>
+									<p:column>%Factor</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column rowspan="2">Book keeping and Audit<br />Management Advisory<br />Practice Speciality<br />Payroll Services</p:column>
+								<p:column rowspan="1">60-79</p:column>
+								<p:column rowspan="1">10</p:column>
+							</p:row>
+							<p:row>
+
+								<p:column rowspan="1">80 or More</p:column>
+								<p:column rowspan="1">15</p:column>
+							</p:row>
+							<p:row>
+								<p:column rowspan="2">Fiduciary/Trustee<br />Securities related<br />Tax Preparation<br />Financial planning</p:column>
+								<p:column rowspan="1">25-49</p:column>
+								<p:column rowspan="1">10</p:column>
+							</p:row>
+							<p:row>
+
+								<p:column rowspan="1">50 or More</p:column>
+								<p:column rowspan="1">15</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="3">For areas of practice not shown in the table above, the classification plan factor is 0%</p:column>
+							</p:row>
+						</p:panelGrid>
+						<p style="font-weight: bold;">3. Experience Rating Plan</p>
+						The following factors shall apply based on five years of Insured's experience.
+ 						<p:panelGrid style="margin-left:280px">
+							<f:facet name="header">
+								<p:row>
+									<p:column colspan="4">Loss History Factor</p:column>
+								</p:row>
+								<p:row>
+									<p:column></p:column>
+									<p:column colspan="3"> Number of claims</p:column>
+								</p:row>
+								<p:row>
+									<p:column>Total incured losses($)</p:column>
+									<p:column>0</p:column>
+									<p:column>Greater than 0 but lesser or= 2</p:column>
+									<p:column>Greater than 2</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column>0</p:column>
+								<p:column>0,95</p:column>
+								<p:column>1,00</p:column>
+								<p:column>1,00</p:column>
+							</p:row>
+							<p:row>
+								<p:column>>0 but lesser= 100,000</p:column>
+								<p:column>0</p:column>
+								<p:column>1,20</p:column>
+								<p:column>1,30</p:column>
+							</p:row>
+							<p:row>
+								<p:column>>100,000 but lesser or =500,000</p:column>
+								<p:column>0</p:column>
+								<p:column>1,30</p:column>
+								<p:column>1,50</p:column>
+							</p:row>
+							<p:row>
+								<p:column> > 500,000 but lesser or= 1,000,000</p:column>
+								<p:column>0</p:column>
+								<p:column>1,40</p:column>
+								<p:column>1,70</p:column>
+							</p:row>
+							<p:row>
+								<p:column>greater than 1,000,000</p:column>
+								<p:column>0</p:column>
+								<p:column>1,50</p:column>
+								<p:column>1,80</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">4. Individual Risk Modifiers</p>
+
+						<p style="font-weight: bold;">H. Arrive at modified premium
+							after application of deductible and RM factors</p>
+
+						<p style="font-weight: bold;">I. Determine Rates for any
+							optional coverage/enhancements</p>
+						Following addditional premium shall apply for each enhancements
+						<p:panelGrid style="margin-left:280px">
+							<f:facet name="header">
+								<p:row>
+									<p:column colspan="2">Coverage Enhancements</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column colspan="2"> up to 10% of policy limits not exceeding US $ 100,000 - no additional AP</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="2">exceeding US $ 100,000; additional premium at rates applied on the excess limit shall be charged</p:column>
+							</p:row>
+							<p:row>
+								<p:column style="font-weight: bold;">Enhancements</p:column>
+								<p:column style="font-weight: bold;">Rate (%) on the excess limits</p:column>
+							</p:row>
+							<p:row>
+								<p:column>a.Loss of Documents</p:column>
+								<p:column>0,25%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>b.Dishonesty of employees</p:column>
+								<p:column>0,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>c.Libel, slander</p:column>
+								<p:column>0,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>d.Defense Expenses outside limits</p:column>
+								<p:column>0,25%</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">J. Add together premiums arrived
+							at E and F above</p>
+						<p style="font-weight: bold;">Coverage Extensions</p>
+			The premium arrived at J above are annual period (12 months period) with both inception date of policy and wrongful acts are same.
+			Any changes in the period of cover and wrongful acts requires premium adjustments as follows:
+			<p style="font-weight: bold;">1. Retroactive Dates</p>
+			If the policy to apply for Wrongful Acts to apply retrospectively, the Company shall  be liable for any Wrongful Act which 
+			occurr prior to the policy inception date. In the case of a new account with no prior similar coverage, this retroactive date 
+			would typically be the policy inception date. 
+			A  prior acts factor will be applied based on the retroactive dates the policy.
+			<br />
+						<p:panelGrid style="margin-left:380px">
+							<f:facet name="header">
+								<p:row>
+									<p:column>Retrospective covers (No. of Years)</p:column>
+									<p:column>	% Loading Factor</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column>1</p:column>
+								<p:column>7,50%
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>2</p:column>
+								<p:column>9,00%
+								</p:column>
+							</p:row>
+
+							<p:row>
+								<p:column>3</p:column>
+								<p:column>10,50%
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>4</p:column>
+								<p:column>12,00%
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>5</p:column>
+								<p:column>13,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>6</p:column>
+								<p:column>15,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>7</p:column>
+								<p:column>16,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>8</p:column>
+								<p:column>18,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>9</p:column>
+								<p:column>19,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>10</p:column>
+								<p:column>21,00%</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">2. Extended Reporting Period
+							(applies in the case of cancellation/non-renewals)</p>
+						<p style="font-weight: bold;">A. Automatic Extended Reporting
+							Period - 90 days</p>
+no additional premium charge
+<br />
+						<p style="font-weight: bold;">B. Optional Extended Reporting
+							Period</p>
+Additonal premium for the optional ERP shall be based on the premium (after application of minimum premium) for such coverage
+ in effect on the date the policy was issued or last renewed
+
+						<p:panelGrid style="margin-left:480px">
+							<f:facet name="header">
+								<p:row>
+									<p:column colspan="2">Available options	</p:column>
+								</p:row>
+								<p:row>
+									<p:column>Months</p:column>
+									<p:column>% of premium</p:column>
+								</p:row>
+
+							</f:facet>
+							<p:row>
+								<p:column>	12</p:column>
+								<p:column>110,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	24</p:column>
+								<p:column>115,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	36</p:column>
+								<p:column>122,50%</p:column>
+							</p:row>
+
+							<p:row>
+								<p:column>	48</p:column>
+								<p:column>132,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	60</p:column>
+								<p:column>142,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	72</p:column>
+								<p:column>150,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	84</p:column>
+								<p:column>162,50%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	96</p:column>
+								<p:column>165,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	108</p:column>
+								<p:column>170,00%</p:column>
+							</p:row>
+							<p:row>
+								<p:column>	120</p:column>
+								<p:column>175,00%</p:column>
+							</p:row>
+						</p:panelGrid>
+						<p style="font-weight: bold;">L. Minimum Premium</p>
+						Flat US $ 2,500 each proposal	
+	<br />
+						<p style="font-weight: bold;">M. Load premium for acquisition,
+							general expenses, contingency factors</p>
+						<p:panelGrid style="margin-left:360px">
+							<f:facet name="header">
+								<p:row>
+									<p:column> Prospective Expenses	</p:column>
+									<p:column>% of Premium ( I/(1-%))	</p:column>
+								</p:row>
+							</f:facet>
+							<p:row>
+								<p:column> 1.Commission and acquisition costs</p:column>
+								<p:column>25</p:column>
+							</p:row>
+							<p:row>
+								<p:column> 2.General Expenses</p:column>
+								<p:column>5	</p:column>
+							</p:row>
+							<p:row>
+								<p:column> 3. Profit/Contingency</p:column>
+								<p:column>5	</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<p style="font-weight: bold;">N. Taxes, Duties, levies,
+							fronting fees</p>
+								are in addition	
 
 					</p:tab>
+
 				</p:tabView>
 			</p:panel>
+
 			<p:dialog widgetVar="PopupPdf" id="PopupPdf" modal="true"
 				header="PDF">
-				<h:form>
+				<h:form id="main">
 					<p:panelGrid>
 						<p:row>
 							<p:column>Please enter File Name</p:column>
 							<p:column>
-								<p:inputText value="#{report.projectName}"></p:inputText>
+								<p:inputText value="#{plAccountAuditorsRatingBean.projectName}"
+									required="true" requiredMessage="Please enter file name"></p:inputText>
 							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>Add Rating Details To report</p:column>
+							<p:column>
+								<p:selectBooleanCheckbox id="ratingdetails"
+									value="#{plAccountAuditorsRatingBean.checkBoxRatingDetailsValue}">
 
+								</p:selectBooleanCheckbox>
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column>Add Text To report</p:column>
+							<p:column>
+								<p:selectBooleanCheckbox id="ch"
+									value="#{plAccountAuditorsRatingBean.checkboxvalue}">
+									<p:ajax update="@form"
+										listener="#{plAccountAuditorsRatingBean.DisplayTextBox()}"></p:ajax>
+								</p:selectBooleanCheckbox>
+							</p:column>
+						</p:row>
+
+						<p:row id="rowtext"
+							rendered="#{plAccountAuditorsRatingBean.displayTextArea}">
+							<p:column colspan="2">
+								<h:panelGrid columns="1"
+									rendered="#{plAccountAuditorsRatingBean.displayTextArea}">
+									<p:inputTextarea style="Width:400px"
+										value="#{plAccountAuditorsRatingBean.textToAddToreport}"
+										required="true" requiredMessage="Please enter Text" rows="5"
+										cols="30" counter="display" maxlength="250"
+										counterTemplate="{0} characters remaining." autoResize="true" />
+									<h:outputText id="display" />
+								</h:panelGrid>
+							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
 								<p:commandButton value="Create"
-									actionListener="#{plAccountAuditorsRatingBean.ExportAccountantAndAuditorsSummary()}"></p:commandButton>
+									actionListener="#{plAccountAuditorsRatingBean.ExportAccountantAndAuditorsSummary()}"
+									update="@form"></p:commandButton>
 							</p:column>
 							<p:column>
-								<p:commandButton value="Cancel" onclick="PF('PopupPdf').hide()"></p:commandButton>
+								<p:commandButton value="Cancel" onclick="PF('PopupPdf').hide()"
+									immediate="true"></p:commandButton>
 							</p:column>
-
 						</p:row>
 					</p:panelGrid>
-
 				</h:form>
+
 			</p:dialog>
+
+
 		</ui:define>
 	</ui:composition>
 </h:body>

@@ -60,7 +60,16 @@ body {
 								actionListener="#{measure.MakeWorkingMeasure()}" />
 						</p:dialog>
 					</h:form>
-
+					<p:dialog     width="1400" height="600"  resizable="false" draggable="false"
+							modal="true" widgetVar="Diaghelp" id="Diaghelp">
+							<f:facet  name="header">
+						<p:outputLabel >Help Center</p:outputLabel>
+							
+							
+							
+							</f:facet>
+							<ui:include src="/pages/User/HelpPage.xhtml" />
+					</p:dialog>
 					<p:dialog showEffect="true" hideEffect="explode" resizable="false"
 						modal="true" widgetVar="POPMeasure" id="POPMeasure">
 						<f:facet name="header">Change Measure</f:facet>
@@ -105,16 +114,13 @@ body {
 		</div>
 	</div>
 
-	<!-- <div id="footer">
-		<div class="container ">
-			<div class="container text-left">
-				<div class="text-muted credit"
-					style="display: inline-block; padding: 6px;"></div>
-			</div>
+ <!-- <div id="footer" >
+		<div class="container " >
+			
 			<div class="container text-center">
 				<div class="text-muted credit"
-					style="display: inline-block; padding: 6px;">
-					<ui:insert name="log"></ui:insert>
+					style="display: inline-block; padding:2px;">
+					dd
 					<a href="" target="_blank" class=""> <span
 						class="inline-hidden-xs inline-hidden-sm"></span>
 					</a>
@@ -122,7 +128,8 @@ body {
 			</div>
 
 		</div>
-	</div> -->
+	</div>  -->
+	
 	<p:socket onMessage="handleMessage" channel="/NotifyUsers"
 		transport="long-polling" />
 

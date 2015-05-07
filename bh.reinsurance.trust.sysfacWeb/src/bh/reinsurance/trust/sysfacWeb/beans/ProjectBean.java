@@ -1,6 +1,12 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -10,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -17,15 +26,23 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import al.assu.trust.GestionImageSinistre.domain.Assets;
 import al.assu.trust.GestionImageSinistre.domain.MailBox;
@@ -50,6 +67,7 @@ public class ProjectBean implements Serializable {
 
 	@ManagedProperty("#{login.getUser()}")
 	private User user2;
+
 	private boolean passwordmsg;
 	private String pwdcheck;
 	private String DisplayProjectSelectionByuser = "all";
@@ -466,57 +484,141 @@ public class ProjectBean implements Serializable {
 
 	}
 
-	public void SendProject() throws MessagingException, UnknownHostException {
-		// Internet check !!!
-		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
-				.toString())) {
-			FacesContext
-					.getCurrentInstance()
-					.addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR,
-									"Internet Problems",
-									"Please make sure that you are connected to the internet"));
+	// sending proj : displaymailsubj means if sendbyemail checked or not
+
+	private UploadedFile uploadedFile;
+
+	public void CopyPDFifDontExist(FileUploadEvent event) throws IOException {
+		uploadedFile = event.getFile();
+
+		File sourceFile;
+		boolean testName;
+		try {
+			sourceFile = new File("/Users/zribisofien/Desktop/PDFGEN/"
+					+ uploadedFile.getFileName());
+			FileInputStream fis = new FileInputStream(sourceFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			testName = true;
+
+		} catch (Exception e) {
+			testName = false;
+		}
+		if (testName == true) {
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('UploadPDF').hide()");
 		} else {
 
+			String filename = FilenameUtils.getName(uploadedFile.getFileName());
+			InputStream input = uploadedFile.getInputstream();
+			OutputStream output = new FileOutputStream(new File(
+					"/Users/zribisofien/Desktop/PDFGEN/", filename));
+			try {
+				IOUtils.copy(input, output);
+			} finally {
+				IOUtils.closeQuietly(input);
+				IOUtils.closeQuietly(output);
+			}
+
 			RequestContext context = RequestContext.getCurrentInstance();
-			String from = user2.getEmail();
-			final String username = user2.getEmail();
-			final String password = user2.getEmailPwd();
-			Properties props = new Properties();
-			// GMAIL SMTP
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.gmail.com");
-			props.put("mail.smtp.port", "587");
+			context.execute("PF('UploadPDF').hide()");
+		}
 
-			Session session = Session.getInstance(props,
-					new javax.mail.Authenticator() {
-						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(username,
-									password);
-						}
-					});
+	}
 
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.setSubject(box.getSubj());
-			message.setText(box.getMessage());
+	public void SendProject() throws MessagingException, UnknownHostException {
 
+		RequestContext context = RequestContext.getCurrentInstance();
+		if (DisplayMailSubj == false) {
 			box.setId_project(project3.getId());
 			box.setUser_sending_id(user2.getId());
 			box.setState("NOT SEEN");
 			for (int i = 0; i < SendToUsers.size(); i++) {
-				if (DisplayMailSubj == true) {
-					message.addRecipient(Message.RecipientType.TO,
-							new InternetAddress(SendToUsers.get(i).getEmail()));
-
-				}
-
 				box.setUser_id(SendToUsers.get(i).getId());
 				mailBoxServicesLocal.CreateMailBox(box);
+				setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2
+						.getId()));
+				NumberProjectReceived = GetMails();
+				box = new MailBox();
+				SendToUsers = new ArrayList<User>();
+				System.out.println("am here");
+				context.execute("PF('statusDialog').hide();");
+				FacesContext.getCurrentInstance().addMessage(
+						"e",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"project Sent!", ""));
+
 			}
-			if (DisplayMailSubj) {
+
+		} else {
+			// Internet check !!!
+			if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
+					.toString())) {
+				FacesContext
+						.getCurrentInstance()
+						.addMessage(
+								null,
+								new FacesMessage(FacesMessage.SEVERITY_ERROR,
+										"Internet Problems",
+										"Please make sure that you are connected to the internet"));
+			} else {
+
+				String from = user2.getEmail();
+				final String username = user2.getEmail();
+				final String password = user2.getEmailPwd();
+				Properties props = new Properties();
+				// GMAIL SMTP
+				props.put("mail.smtp.auth", "true");
+				props.put("mail.smtp.starttls.enable", "true");
+				props.put("mail.smtp.host", "smtp.gmail.com");
+				props.put("mail.smtp.port", "587");
+
+				Session session = Session.getInstance(props,
+						new javax.mail.Authenticator() {
+							protected PasswordAuthentication getPasswordAuthentication() {
+								return new PasswordAuthentication(username,
+										password);
+							}
+						});
+				MimeMessage message = new MimeMessage(session);
+				message.setFrom(new InternetAddress(from));
+				message.setSubject(box.getSubj());
+				box.setId_project(project3.getId());
+				box.setUser_sending_id(user2.getId());
+				box.setState("NOT SEEN");
+				for (int i = 0; i < SendToUsers.size(); i++) {
+					if (DisplayMailSubj == true) {
+						message.addRecipient(Message.RecipientType.TO,
+								new InternetAddress(SendToUsers.get(i)
+										.getEmail()));
+					}
+
+					box.setUser_id(SendToUsers.get(i).getId());
+					mailBoxServicesLocal.CreateMailBox(box);
+				}
+
+				BodyPart messageBodyPart = new MimeBodyPart();
+
+				// Fill the message
+				messageBodyPart.setText(box.getMessage());
+
+				// Create a multipar message
+				Multipart multipart = new MimeMultipart();
+
+				// Set text message part
+				multipart.addBodyPart(messageBodyPart);
+
+				// Part two is attachment
+
+				messageBodyPart = new MimeBodyPart();
+				String filename = "/Users/zribisofien/Desktop/PDFGEN/"
+						+ uploadedFile.getFileName();
+				DataSource source = new FileDataSource(filename);
+
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName(filename);
+				multipart.addBodyPart(messageBodyPart);
+
+				message.setContent(multipart);
 				try {
 
 					// Send message
@@ -537,17 +639,7 @@ public class ProjectBean implements Serializable {
 
 					e.printStackTrace();
 				}
-			} else {
-				setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2
-						.getId()));
-				NumberProjectReceived = GetMails();
-				box = new MailBox();
-				SendToUsers = new ArrayList<User>();
-				context.execute("PF('statusDialog').hide();");
-				FacesContext.getCurrentInstance().addMessage(
-						"e",
-						new FacesMessage(FacesMessage.SEVERITY_INFO,
-								"project Sent!", ""));
+
 			}
 
 		}
@@ -555,18 +647,39 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void VerifyMail() {
-		if (user2.isVerified() == false) {
-			RequestContext context = RequestContext.getCurrentInstance();
-			context.execute("PF('verif').show()");
+		if (DisplayMailSubj == true) {
+
+			if (user2.isVerified() == false) {
+				RequestContext context = RequestContext.getCurrentInstance();
+				context.execute("PF('verif').show()");
+			} else {
+				RequestContext context = RequestContext.getCurrentInstance();
+				context.execute("PF('UploadPDF').show()");
+			}
+
 		}
 
 	}
 
+	public void CancelButtonPDF() {
+		DisplayMailSubj = false;
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('UploadPDF').hide()");
+	}
+
+	
+	
+	
 	public void cancelbutton() {
 		DisplayMailSubj = false;
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('verif').hide()");
 	}
+	// send proj ends
+	
+	
+	
+	
 
 	public void CancelNewProj() {
 		RequestContext context = RequestContext.getCurrentInstance();
@@ -1052,6 +1165,14 @@ public class ProjectBean implements Serializable {
 
 	public void setTerritoryChoice(String territoryChoice) {
 		TerritoryChoice = territoryChoice;
+	}
+
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
 	}
 
 }

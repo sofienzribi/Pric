@@ -43,21 +43,27 @@
 					<p:outputLabel id="s" value=" Subject :" />
 					<p:inputText value="#{projectBean.box.subj}" style="width:400px"
 						required="true" requiredMessage="Please enter the subject"></p:inputText>
+
+
+
 					<f:facet name="footer">
 
 						<p:outputLabel for="check" value="Send Via Email : " />
 						<p:selectBooleanCheckbox id="check"
 							value="#{projectBean.displayMailSubj}">
-							<p:ajax listener="#{projectBean.VerifyMail()}" />
+							<p:ajax listener="#{projectBean.VerifyMail()}"
+								update="@this SendProject" />
 
 						</p:selectBooleanCheckbox>
-
 
 
 						<p:commandButton style="left:155px" value="Send"
 							icon="ui-icon-check"
 							actionListener="#{projectBean.SendProject()}" update="@this">
 						</p:commandButton>
+
+						<p:outputLabel value="#{projectBean.uploadedFile.fileName}"
+							rendered="#{projectBean.displayMailSubj}"></p:outputLabel>
 					</f:facet>
 
 				</p:panelGrid>
@@ -65,6 +71,8 @@
 					onsuccess="PF('statusDialog').hide()" />
 
 			</h:form>
+
+
 			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 				closable="false" resizable="false" showHeader="false">
 				<p:graphicImage value="/resources/images/ajax-loader2.gif"></p:graphicImage>
@@ -73,10 +81,37 @@
 				closable="true" resizable="false" showHeader="false">
 			Please Complete your account configuration !!
 			<br />
-				<p:commandLink actionListener="#{projectBean.Doitnow()}" >"username"->Edit Account</p:commandLink>
+				<p:commandLink actionListener="#{projectBean.Doitnow()}">"username"->Edit Account</p:commandLink>
 				<br />
-				<p:commandButton value="cancel" actionListener="#{projectBean.cancelbutton()}" update="SendProject"></p:commandButton>
+				<p:commandButton value="cancel"
+					actionListener="#{projectBean.cancelbutton()}" update="SendProject"></p:commandButton>
 			</p:dialog>
+
+
+			<p:dialog widgetVar="UploadPDF" modal="true" draggable="false"
+				resizable="false"
+				header="To send the project by email you need to upload a Report">
+
+				<br />
+				<h:form id="e">
+
+					<p:fileUpload
+						fileUploadListener="#{projectBean.CopyPDFifDontExist}"
+						mode="advanced" dragDropSupport="true" sizeLimit="100000"
+						fileLimit="3" allowTypes="/(\.|\/)(pdf)$/" update=":SendProject" />
+
+					<br />
+
+					<p:commandButton value="Cancel "
+						actionListener="#{projectBean.CancelButtonPDF()}"
+						update=":SendProject"></p:commandButton>
+
+				</h:form>
+
+			</p:dialog>
+
+
+
 
 
 		</ui:define>

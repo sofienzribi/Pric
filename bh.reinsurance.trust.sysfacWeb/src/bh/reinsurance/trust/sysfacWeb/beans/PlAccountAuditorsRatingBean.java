@@ -1,5 +1,9 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -14,7 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRException;
@@ -27,11 +31,14 @@ import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.PIaccandAudit;
 import al.assu.trust.GestionImageSinistre.domain.Project;
+import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.PlaccandAuditServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class PlAccountAuditorsRatingBean implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -66,17 +73,23 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private double LossOfDocumentsFactor = 0;
 	private double Incuredlossesandnumberofclaimsfactor = 0;
 	private double specialclientlistfactor = 0;
-	@EJB
-	private PlaccandAuditServicesLocal auditServicesLocal;
 
 	private double totalpracticespeciality = 0;
 	private double totalOtherLoadingFactors = 0;
 
+	// reporting var
+	private String URLDestination;
+	private String URLJasperModel;
+	private String ProjectName;
+	private JasperPrint jasperPrint;
+	private String TextToAddToreport = "";
+	private boolean DisplayTextArea;
+	private String Checkboxvalue;
+	private String CheckBoxRatingDetailsValue;
+
 	// summary var
 	private double DeductibleFactor = 0;
-
 	private float CoverageEnhancement = 0;
-
 	private float BasePremium = 0;
 	private float TotalBasePremium;
 	private double TerritoryLoad = 1;
@@ -87,31 +100,31 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private float PremiumAfterenhancements = 0;
 	private float PremiumAftercoverageextensions = 0;
 	private float PremiumAfterLoadingAndDeductible = 0;
-
 	private float IndemnityLimitPremium = 0;
-
 	private double Loadings = 0;
+
+	// managed prop
 
 	@ManagedProperty("#{projectBean.getProject3()}")
 	private Project project3;
 
-	@ManagedProperty("#{report}")
-	private ReportBean reportBean;
+	// EJB
+	@EJB
+	private PlaccandAuditServicesLocal auditServicesLocal;
+	@EJB
+	private UserServicesLocal userServicesLocal;
 
-	private JasperPrint jasperPrint;
-
-	public Project getProject3() {
-		return project3;
-	}
-
+	// constr
 	public PlAccountAuditorsRatingBean() {
-
+		URLJasperModel = "/Users/zribisofien/Desktop/ModelReport/";
+		URLDestination = "/Users/zribisofien/Desktop/PDFGEN/";
 		FillLists();
 
 	}
 
 	@PostConstruct
 	public void init() {
+		DisplayTextArea = false;
 		iaccandAudittosave = auditServicesLocal
 				.GetByIdProject(project3.getId());
 		OperationWhenopeningTool();
@@ -181,6 +194,11 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	public void SaveRating() {
 		iaccandAudittosave.setIdproj(project3.getId());
 		auditServicesLocal.update(iaccandAudittosave);
+		FacesContext.getCurrentInstance()
+				.addMessage(
+						"messages1",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Rating Saved", ""));
 	}
 
 	public void OperationWhenopeningTool() {
@@ -230,7 +248,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	// calculate the total premium and rate
 	public void GetPremiumAndRate() {
-		System.out.println(TotalPremium);
 		AverageRate = TotalPremium
 				/ ((Double.parseDouble(iaccandAudittosave.getOccurlimit()) * Double
 						.parseDouble(iaccandAudittosave.getAggregatelimit())));
@@ -333,6 +350,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		totalOtherLoadingFactors = specialclientlistfactor
 				+ Incuredlossesandnumberofclaimsfactor;
 		CalculateLoadings();
+
 	}
 
 	public void incuredLossAndNoOfClaimsChange() {
@@ -887,37 +905,102 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	// format result end
 
 	// Report Generation begin
-	public void ExportAccountantAndAuditorsSummary() throws JRException {
-		List<Object> projects = new ArrayList<Object>();
+	public void DisplayTextBox() {
+		if (Checkboxvalue.equals("true")) {
+			DisplayTextArea = true;
+		} else {
+			DisplayTextArea = false;
+		}
+	}
 
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("name", "Sofien");
-		param.put("insured", "");
-		param.put("broker", "");
-		param.put("basepremium", "2000 $");
-		param.put("territoryload", "1");
-		param.put("totalbasepremium", "");
-		System.out.println(reportBean.getURLDestination());
+	/**
+	 * @throws JRException
+	 * @throws IOException
+	 */
+	public void ExportAccountantAndAuditorsSummary() throws JRException,
+			IOException {
+		File sourceFile;
+		boolean testName;
+		try {
+			sourceFile = new File(URLDestination + ProjectName + ".pdf");
+			FileInputStream fis = new FileInputStream(sourceFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			testName = true;
 
-		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
-				projects);
+		} catch (Exception e) {
+			testName = false;
+		}
+		if (testName == true) {
+			RequestContext context = RequestContext.getCurrentInstance();
 
-		jasperPrint = JasperFillManager.fillReport(
-				reportBean.getURLJasperModel()
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"messages1",
+							new FacesMessage(
+									FacesMessage.SEVERITY_ERROR,
+									"The name "
+											+ ProjectName
+											+ ".pdf already exists. Please choose another name.",
+									""));
+		} else {
+			List<Object> projects = new ArrayList<Object>();
+			projects.add(iaccandAudittosave);
+			Map<String, Object> param = new HashMap<String, Object>();
+			User user = new User();
+			user = userServicesLocal.GetUserByid(project3.getUser());
+			param.put("Title", project3.getNameOfTheProject());
+			param.put("name", user.getFirst_Name() + " " + user.getLast_Name());
+			param.put("insured", project3.getInsured());
+			param.put("broker", project3.getBroker());
+			param.put("basepremium", FormatBasePremium());
+			param.put("territoryload", String.valueOf(TerritoryLoad));
+			param.put("totalbasepremium", FormatTotalBasePremium());
+			param.put("inception", project3.getDateCreation().toString());
+			param.put("policy", project3.getPolicy());
+			param.put("indemnitylimitpremium", FormatIndemnityLimitPremium());
+			param.put("Prembeforeded", FormatPremiumBeforeLoading());
+			param.put("dedfactor", FormatDeductibleFactor());
+			param.put("loadings", FormatLoadings());
+			param.put("modifiedpremium", FormatModifiedPremium());
+			param.put("coverageenh", CoverageEnhacements());
+			param.put("premafterenh", FormatPremiumAfterEnhacement());
+			param.put("premaftercov", FormatPremiumAfterCoverageExtensions());
+			param.put("exploadings", FormatExpensesLoading());
+			param.put("avgrate", FormatAverageRate());
+			param.put("totalpremium", FormatTotalPremium());
+			System.out.println(TextToAddToreport);
+			if (Checkboxvalue.equals("true")) {
+				param.put("Comment", TextToAddToreport);
+			} else {
+				param.put("Comment", "No Comments");
+			}
+			JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
+					projects);
+			if (CheckBoxRatingDetailsValue.equals("true")) {
+				jasperPrint = JasperFillManager.fillReport(URLJasperModel
+						+ "AccountantsAndAuditorsModelwithrating.jasper",
+						param, beanCollectionDataSource);
+			} else {
+				jasperPrint = JasperFillManager.fillReport(URLJasperModel
 						+ "AccountantsAndAuditorsModel.jasper", param,
-				beanCollectionDataSource);
+						beanCollectionDataSource);
+			}
 
-		JasperExportManager.exportReportToPdfFile(jasperPrint,
-				reportBean.getURLDestination() + reportBean.getProjectName()
-						+ ".pdf");
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("PF('popuppdf').hide();");
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						"messages1",
-						new FacesMessage(FacesMessage.SEVERITY_INFO,
-								"File Created", ""));
-		System.out.println("OP");
+			JasperExportManager.exportReportToPdfFile(jasperPrint,
+					URLDestination + ProjectName + ".pdf");
+
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('PopupPdf').hide();");
+			FacesContext.getCurrentInstance().addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"File Created", ""));
+			ProjectName = null;
+			Checkboxvalue = "false";
+			DisplayTextArea = false;
+		}
+
 	}
 
 	// Report Generation ends
@@ -1285,11 +1368,68 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		this.jasperPrint = jasperPrint;
 	}
 
-	public ReportBean getReportBean() {
-		return reportBean;
+	public String getURLDestination() {
+		return URLDestination;
 	}
 
-	public void setReportBean(ReportBean reportBean) {
-		this.reportBean = reportBean;
+	public void setURLDestination(String uRLDestination) {
+		URLDestination = uRLDestination;
 	}
+
+	public String getProjectName() {
+		return ProjectName;
+	}
+
+	public void setProjectName(String projectName) {
+		ProjectName = projectName;
+	}
+
+	public String getURLJasperModel() {
+		return URLJasperModel;
+	}
+
+	public void setURLJasperModel(String uRLJasperModel) {
+		URLJasperModel = uRLJasperModel;
+	}
+
+	public Project getProject3() {
+		return project3;
+	}
+
+	public String getTextToAddToreport() {
+		return TextToAddToreport;
+	}
+
+	public void setTextToAddToreport(String textToAddToreport) {
+		TextToAddToreport = textToAddToreport;
+	}
+
+	public boolean isDisplayTextArea() {
+		return DisplayTextArea;
+	}
+
+	public void setDisplayTextArea(boolean displayTextArea) {
+		DisplayTextArea = displayTextArea;
+	}
+
+	public String getCheckboxvalue() {
+		return Checkboxvalue;
+	}
+
+	public void setCheckboxvalue(String checkboxvalue) {
+		Checkboxvalue = checkboxvalue;
+	}
+
+	public String getCheckBoxRatingDetailsValue() {
+		return CheckBoxRatingDetailsValue;
+	}
+
+	public void setCheckBoxRatingDetailsValue(String checkBoxRatingDetailsValue) {
+		CheckBoxRatingDetailsValue = checkBoxRatingDetailsValue;
+	}
+
+	public void test() {
+		System.out.println("yooopi");
+	}
+
 }
