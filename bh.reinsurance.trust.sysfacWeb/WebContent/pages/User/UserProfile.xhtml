@@ -15,7 +15,8 @@
 						<p:growl id="gr1" sticky="true" showDetail="true"></p:growl>
 
 
-						<p:panelGrid columns="2" rendered="#{!login.user.verified}">
+						<p:panelGrid columns="2" rendered="#{!login.user.verified}"
+							style="position:relative;left:400px">
 							<f:facet name="header">Email Cred</f:facet>
 							<p:outputLabel value="Email" />
 							<p:inputText value="#{login.user.email}" required="true"
@@ -33,14 +34,15 @@
 							</f:facet>
 						</p:panelGrid>
 
-						<p:panelGrid columns="2" rendered="#{login.user.verified}">
+						<p:panelGrid columns="2" rendered="#{login.user.verified}"
+							style="position:relative;left:400px">
 							<f:facet name="header">Email Cred</f:facet>
 							<p:outputLabel value="Email" />
 							<p:outputLabel value="#{login.user.email}" />
 							<p:outputLabel value="password" />
 							<p:outputLabel value="#{login.user.emailPwd}" />
 							<f:facet name="footer">
-								<p:commandButton style="left:90px"
+								<p:commandButton style="left:80px"
 									actionListener="#{login.ModifyButton()}" value="Modify"
 									update=":Mes"></p:commandButton>
 							</f:facet>
@@ -55,7 +57,7 @@
 				<p:tab title="Account Credentials">
 					<h:form>
 						<p:growl id="gr3" life="2000" showDetail="true"></p:growl>
-						<p:panelGrid columns="2">
+						<p:panelGrid columns="2" style="position:relative;left:400px">
 							<f:facet name="header">Account Cred</f:facet>
 							<p:outputLabel value="Current  Password" />
 							<p:password required="true" requiredMessage="password required"
@@ -67,7 +69,7 @@
 							<p:password required="true" requiredMessage="password required"
 								value="#{login.password2}"></p:password>
 							<f:facet name="footer">
-								<p:commandButton style="left:100px" update="gr3" value="Save"
+								<p:commandButton style="left:130px" update="gr3" value="Save"
 									actionListener="#{login.ChangePassword()}">
 									<p:confirm header="Confirmation"
 										message="Are you sure that you want to change your password  ?"
@@ -84,7 +86,31 @@
 						</p:confirmDialog>
 					</h:form>
 				</p:tab>
+				<p:tab title="Change Theme">
+					<h:form>
+						<p:panelGrid style="position:relative;left:400px">
+							<p:row>
+								<p:column>
+									<p:outputLabel>Please select a theme :  </p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:themeSwitcher id="basic" style="width:165px"
+										value="#{login.theme}">
 
+										<f:selectItem itemLabel="Choose Theme" itemValue="" />
+										<f:selectItems value="#{login.themes}" var="cat"
+											itemLabel="#{cat}" itemValue="#{cat}" />
+									</p:themeSwitcher>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="2">
+									<p:commandButton value="save" actionListener="#{login.test()}"></p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</h:form>
+				</p:tab>
 
 			</p:tabView>
 

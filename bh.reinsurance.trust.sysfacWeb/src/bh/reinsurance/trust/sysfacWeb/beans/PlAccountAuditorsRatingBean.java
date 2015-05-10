@@ -850,7 +850,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	public String FormatModifiedPremium() {
 		return NumberFormat.getCurrencyInstance(us).format(
-				PremiumBeforeLoadingAnddeductible);
+				PremiumAfterLoadingAndDeductible);
 	}
 
 	public String CoverageEnhacements() {

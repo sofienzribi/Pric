@@ -34,9 +34,9 @@
 
 			<p:accordionPanel activeIndex="none" style="text-align:left">
 				<p:tab title="Open a project">
-					<p style="font-weight: bold;">
-						1.Go under Project and Click "Create/Open Project".<br /> 2.Select
-						a project.<br /> 3.Click "Open".
+					<p style="font-weight: bold;font-family: times;font-size: 14px">
+						1. Go under Project and Click "Create/Open Project".<br /> 2.  Select
+						a project.<br /> 3.  Click "Open".
 					</p>
 				</p:tab>
 				<p:tab title="Create a project">
@@ -57,9 +57,12 @@
 	<p:panel>
 		<h:form>
 
-			<p:commandLink>Download the user guide	<p:graphicImage
+			<p:commandLink ajax="false">Download the user guide
+			  <p:fileDownload value="#{fileDownload.file}" />
+				<p:graphicImage
 					value="/resources/images/dwl.png" width="24" />
 			</p:commandLink>
+			
 
 
 		</h:form>

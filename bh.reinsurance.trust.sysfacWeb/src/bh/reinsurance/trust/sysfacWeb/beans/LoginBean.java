@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -47,6 +48,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	private String password1;
 	private String password2;
 	private String CurrentPassword;
+	private Map<Integer, String> themes;
 	// EJB
 	@EJB
 	private UserServicesLocal userServicesLocal;
@@ -62,6 +64,18 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// init methode
 	@PostConstruct
 	public void init() {
+		themes = new HashMap<Integer, String>();
+		themes.put(1, "afterwork");
+		themes.put(2, "redmond");
+		themes.put(3, "ui-lightness");
+		themes.put(4, "blitzer");
+		themes.put(5, "sunny");
+		themes.put(6, "sam");
+		themes.put(7, "cupertino");
+		themes.put(8, "start");
+		themes.put(9, "south-street");
+		themes.put(10, "pepper-grinder");
+		themes.put(11, "humanity");
 
 		Remember = false;
 		list.add(this);
@@ -76,6 +90,16 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 		}
 		connected = false;
+
+	}
+
+	public void test() {
+		user.setTheme(theme);
+		userServicesLocal.UpdateUser(user);
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Theme changed!",
+						""));
 
 	}
 
@@ -120,7 +144,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext()
 						.redirect("pages/admin/AdminHome.jsf");
 				connected = true;
-				theme = "ui-lightness";
+
+			
+					if (user.getTheme().equals("null")) {
+						theme = "ui-lightness";
+					}
+					else {
+					theme = user.getTheme();
+				}
 
 				if (Remember == true) {
 					HttpServletResponse response = (HttpServletResponse) FacesContext
@@ -135,7 +166,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 				if (userFound.getDepartment().equals("actuarialandrisk")) {
 					Department = "Actuarial & Risk";
 					connected = true;
-					theme = "redmond";
+				
+						if (user.getTheme().equals("null")) {
+							theme ="redmond";
+
+						}
+						else {
+						theme = user.getTheme();
+					}
 					FacesContext.getCurrentInstance().getExternalContext()
 							.redirect("pages/User/Fac_info.jsf");
 					if (Remember == true) {
@@ -150,7 +188,15 @@ public class LoginBean extends HttpServlet implements Serializable {
 				} else {
 					Department = "Facultative Department";
 					connected = true;
-					theme = "blitzer";
+					
+						if (user.getTheme().equals("null")) {
+							theme = "blitzer";
+
+						}
+						else {
+						theme = user.getTheme();
+					}
+
 					if (Remember == true) {
 
 						HttpServletResponse response = (HttpServletResponse) FacesContext
@@ -365,6 +411,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void setCurrentPassword(String currentPassword) {
 		CurrentPassword = currentPassword;
+	}
+
+	public Map<Integer, String> getThemes() {
+		return themes;
+	}
+
+	public void setThemes(Map<Integer, String> themes) {
+		this.themes = themes;
 	}
 
 }

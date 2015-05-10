@@ -17,3 +17,10 @@
 	height: 41px;
 	border: none;
 }
+.panelheadertext{
+	font-family: times;
+	font-size: 15px;
+	font-weight: bold;
+	position:relative;
+	left:600px;
+}

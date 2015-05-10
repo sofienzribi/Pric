@@ -25,12 +25,14 @@ public class User implements Serializable {
 	public String login;
 	private boolean verified;
 	private String emailPwd;
+	private String Theme;
 
 	private String password;
 	private static final long serialVersionUID = 1L;
 
 	public User() {
 		super();
+		this.Theme = "null";
 	}
 
 	@Id
@@ -129,6 +131,14 @@ public class User implements Serializable {
 
 	public void setEmailPwd(String emailPwd) {
 		this.emailPwd = emailPwd;
+	}
+
+	public String getTheme() {
+		return Theme;
+	}
+
+	public void setTheme(String theme) {
+		Theme = theme;
 	}
 
 }
