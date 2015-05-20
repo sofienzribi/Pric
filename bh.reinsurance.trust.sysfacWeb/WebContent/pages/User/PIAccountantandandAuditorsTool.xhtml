@@ -11,9 +11,21 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Rating Tool</ui:define>
 		<ui:define name="content">
-			<p:panel >
-			
-			<f:facet name="header" >
+			<h:form id="testform">
+		Test
+		<p:selectOneMenu id="tool" value="#{plAccountAuditorsRatingBean.es}"
+					style="width:135px">
+					<p:ajax event="valueChange" update="@form" />
+					<f:selectItem itemLabel="Book keeping and audit .." itemValue="all" />
+					<f:selectItems
+						value="#{plAccountAuditorsRatingBean.measureFactors.bookKeepingAndAudit.entrySet()}"
+						var="cat" itemValue="#{cat.value}" itemLabel="#{cat.key}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="#{plAccountAuditorsRatingBean.es}"></p:outputLabel>
+			</h:form>
+			<p:panel>
+
+				<f:facet name="header">
 			PI rating tool - accountants and auditors
 			
 			</f:facet>
@@ -118,6 +130,8 @@
 										<p:outputLabel value="Loadings" />
 									</p:column>
 									<p:column>
+									
+									
 										#{plAccountAuditorsRatingBean.FormatLoadings()}
 									</p:column>
 								</p:row>
@@ -183,10 +197,9 @@
 										</p:column>
 										<p:column>
 										
-									
-				
 										
-								#{plAccountAuditorsRatingBean.FormatTotalPremium()}
+									
+									#{plAccountAuditorsRatingBean.FormatTotalPremium()}
 										</p:column>
 									</p:row>
 									<p:row>
@@ -230,7 +243,7 @@
 																update="@form :tab:summary" />
 														</p:inputMask>
 
-													</p:inplace>
+													</p:inplace>$
 												</p:column>
 											</p:row>
 										</f:facet>
@@ -848,9 +861,14 @@
 
 								</h:panelGrid>
 							</p:panelGrid>
-							<p:commandButton value="save rating"
+							<p:commandButton id="saverating" value="save rating"
 								actionListener="#{plAccountAuditorsRatingBean.SaveRating()}"
 								update=":tab:summary"></p:commandButton>
+							<p:tooltip id="toolTipFade" for="saverating"
+								value="you can also use ctrl+shift+s  to save the rating" />
+							<p:hotkey bind="ctrl+shift+s"
+								actionListener="#{plAccountAuditorsRatingBean.SaveRating()}"
+								update=":tab:summary" />
 						</h:form>
 					</p:tab>
 
@@ -858,72 +876,72 @@
 
 						<p style="font-weight: bold;">1)Application</p>
 						<br />
-    The Accountants Professional Liability (APL) may be written to provide coverage to risks that meet the following underwriting criteria: 
-    <br />
-	1.  Applicant(s) must be a licensed Certified Public Accountant or accounting firm<br />
-	2.  Excluding big 5 accounting firm in the world <br />
-	3.  Applicant must complete and sign an application for insurance and supplemental application(s) if applicable<br />
+					    The Accountants Professional Liability (APL) may be written to provide coverage to risks that meet the following underwriting criteria: 
+					    <br />
+						1.  Applicant(s) must be a licensed Certified Public Accountant or accounting firm<br />
+						2.  Excluding big 5 accounting firm in the world <br />
+						3.  Applicant must complete and sign an application for insurance and supplemental application(s) if applicable<br />
 
 						<br />
 						<p style="font-weight: bold;">2)Policy term</p>		
-	Policies are written for a term up to one year, plus odd time up to a maximum of 18 months<br />
-	All premiums and rates contained in this manual are annual, unless otherwise specifically identified.<br />
-	Each renewal or anniversay premium shall be computed according to the then current rules, rates and forms <br />
+						Policies are written for a term up to one year, plus odd time up to a maximum of 18 months<br />
+						All premiums and rates contained in this manual are annual, unless otherwise specifically identified.<br />
+						Each renewal or anniversay premium shall be computed according to the then current rules, rates and forms <br />
 						<br />
 						<p style="font-weight: bold;">3)Rounding procedure</p>
 						<br />
-	Round any amount involving $ .50 or over to the next higher whole dollar<br />
-	Round any amount involving $ 0.49 or less to the next lower whole dollar<br />
+						Round any amount involving $ .50 or over to the next higher whole dollar<br />
+						Round any amount involving $ 0.49 or less to the next lower whole dollar<br />
 						<br />
 						<p style="font-weight: bold;">4) Factors or Multipliers</p>
 						<br />
-		Unless otherwise indicated in this manual, factors or multipliers are to be applied consecutively and not added together<br />
+						Unless otherwise indicated in this manual, factors or multipliers are to be applied consecutively and not added together<br />
 						<br />
 						<p style="font-weight: bold;">5)Additional premium changes</p>
 						<br />
-		a.  Pro rate all changes requiring additional premium<br />
-b.  Apply the rates and rules in effect on the effective date of the policy.  In computing the additional premium, <br />
-charge the amount applicable on the effective date of the change<br />
-c.  Waive additional premium of $ 15.00 or less.<br />
+						a.  Pro rate all changes requiring additional premium<br />
+						b.  Apply the rates and rules in effect on the effective date of the policy.  In computing the additional premium, <br />
+						charge the amount applicable on the effective date of the change<br />
+						c.  Waive additional premium of $ 15.00 or less.<br />
 						<br />
 
 						<p style="font-weight: bold;">6)Return Premium Changes (for
 							other than policy cancellations)</p>
 						<br />
-A.  Deletion of any coverage, other than optional coverages, is not permitted unless the entire policy is cancelled<br />
-b.  Compute return premium at the rates used to calculate the policy premium at policy inception<br />
-c.  Compute return premium pro rata and round to the next higher whole dollar when any coverage or exposure <br />
-is deleted or an amount of insurance is reduced<br />
-d.  Waive return premium of $ 15.00 or less.  Grant any return premium due if requested by the insured.<br />
+						A.  Deletion of any coverage, other than optional coverages, is not permitted unless the entire policy is cancelled<br />
+						b.  Compute return premium at the rates used to calculate the policy premium at policy inception<br />
+						c.  Compute return premium pro rata and round to the next higher whole dollar when any coverage or exposure <br />
+						is deleted or an amount of insurance is reduced<br />
+						d.  Waive return premium of $ 15.00 or less.  Grant any return premium due if requested by the insured.<br />
 						<br />
 						<p style="font-weight: bold;">7)Limit of Liability</p>
 						<br />
-A.  Basic Limits :  $ 250,000 each claim and aggregate<br />
-Manual rates provide a basic limit of $ 250,000 for each claim that is first made against the insured during the policy 
-period by reason of an act or omission in the performance of legal services by the insured or any person for whom the 
-insured is legally liable, regardless of the number of claims or claimants, subject to a basic aggregate limit of $ 250,000
-<br />
-B.  Increased Limits<br />
-Refer to the Rule D.1 for available increased limits and factors<br />
+						A.  Basic Limits :  $ 250,000 each claim and aggregate<br />
+						Manual rates provide a basic limit of $ 250,000 for each claim that is first made against the insured during the policy 
+						period by reason of an act or omission in the performance of legal services by the insured or any person for whom the 
+						insured is legally liable, regardless of the number of claims or claimants, subject to a basic aggregate limit of $ 250,000
+						<br />
+						B.  Increased Limits<br />
+						Refer to the Rule D.1 for available increased limits and factors<br />
 						<br />
 
 						<p style="font-weight: bold;">8)Policy Cancellations</p>
 						<br />
-a.  Policies are non-cancellable except for the following reasons:<br />
-1.  the policy is cancelled at the Company's request for non-payment of premium<br />
-2.  the policy is cancelled at the insured's request.<br />
-
-b.  Compute the return premium at 0.90 of the pro rata unearned premium for the one year period and round in 
-accordance with the rounding rule<br />
+						a.  Policies are non-cancellable except for the following reasons:<br />
+						1.  the policy is cancelled at the Company's request for non-payment of premium<br />
+						2.  the policy is cancelled at the insured's request.<br />
+						
+						b.  Compute the return premium at 0.90 of the pro rata unearned premium for the one year period and round in 
+						accordance with the rounding rule<br />
 
 						<br />
 						<p style="font-weight: bold;">9)Deductibles</p>
-Rates contained in this manual are based upon a $ 2,500 aggregate deductible.  Refer to Rule D.2 for  deductible factors<br />
+						Rates contained in this manual are based upon a $ 2,500 aggregate deductible.  Refer to Rule D.2 for  deductible factors<br />
 						<br />
 						<p style="font-weight: bold;">10)Calculation of Premium</p>
 						<br />
-The total policy premium for an APL is determined in the following order:<br />
-1.  Determine the final base premium<br />
+						The total policy premium for an APL is determined in the following order:<br />
+						1.  Determine the final base premium<br />
 						<p style="font-weight: bold;">A. calculate a base premium from
 							the chart below according to the revenue of the firm</p>
 						<br />
@@ -953,7 +971,7 @@ The total policy premium for an APL is determined in the following order:<br />
 						</p:panelGrid>
 						<br />
 						<p style="font-weight: bold;">B. Territory Factors</p>
-Apply the factors below to the appropriate  territory where the firm is located<br />
+						Apply the factors below to the appropriate  territory where the firm is located<br />
 						<br />
 						<p:panelGrid style="margin-left:400px">
 							<f:facet name="header">
@@ -983,7 +1001,7 @@ Apply the factors below to the appropriate  territory where the firm is located<
 						<br />
 						<p style="font-weight: bold;">D. Determine premium on
 							Indemnity limits</p>	
-						The above base premium are for indemnity of US $ 250,000 per occurrence and aggregate with a minimum deductible of US $ 5,000		<br />
+						The above base premium are for indemnity of US $ 250,000 per occurrence and aggregate with a minimum deductible of US $ 5,000<br />
 						Exceeding US $ 250,000 limits are charged additional premium as per rate below		<br />
 						<br />
 						<p style="font-weight: bold;">Calculate premium based on the
@@ -1274,14 +1292,14 @@ Apply the factors below to the appropriate  territory where the firm is located<
 						<p style="font-weight: bold;">J. Add together premiums arrived
 							at E and F above</p>
 						<p style="font-weight: bold;">Coverage Extensions</p>
-			The premium arrived at J above are annual period (12 months period) with both inception date of policy and wrongful acts are same.
-			Any changes in the period of cover and wrongful acts requires premium adjustments as follows:
-			<p style="font-weight: bold;">1. Retroactive Dates</p>
-			If the policy to apply for Wrongful Acts to apply retrospectively, the Company shall  be liable for any Wrongful Act which 
-			occurr prior to the policy inception date. In the case of a new account with no prior similar coverage, this retroactive date 
-			would typically be the policy inception date. 
-			A  prior acts factor will be applied based on the retroactive dates the policy.
-			<br />
+						The premium arrived at J above are annual period (12 months period) with both inception date of policy and wrongful acts are same.
+						Any changes in the period of cover and wrongful acts requires premium adjustments as follows:
+						<p style="font-weight: bold;">1. Retroactive Dates</p>
+						If the policy to apply for Wrongful Acts to apply retrospectively, the Company shall  be liable for any Wrongful Act which 
+						occurr prior to the policy inception date. In the case of a new account with no prior similar coverage, this retroactive date 
+						would typically be the policy inception date. 
+						A  prior acts factor will be applied based on the retroactive dates the policy.
+						<br />
 						<p:panelGrid style="margin-left:380px">
 							<f:facet name="header">
 								<p:row>
@@ -1340,12 +1358,12 @@ Apply the factors below to the appropriate  territory where the firm is located<
 							(applies in the case of cancellation/non-renewals)</p>
 						<p style="font-weight: bold;">A. Automatic Extended Reporting
 							Period - 90 days</p>
-no additional premium charge
-<br />
+					no additional premium charge
+						<br />
 						<p style="font-weight: bold;">B. Optional Extended Reporting
 							Period</p>
-Additonal premium for the optional ERP shall be based on the premium (after application of minimum premium) for such coverage
- in effect on the date the policy was issued or last renewed
+					Additonal premium for the optional ERP shall be based on the premium (after application of minimum premium) for such coverage
+						 in effect on the date the policy was issued or last renewed
 
 						<p:panelGrid style="margin-left:480px">
 							<f:facet name="header">
@@ -1402,7 +1420,7 @@ Additonal premium for the optional ERP shall be based on the premium (after appl
 						</p:panelGrid>
 						<p style="font-weight: bold;">L. Minimum Premium</p>
 						Flat US $ 2,500 each proposal	
-	<br />
+					<br />
 						<p style="font-weight: bold;">M. Load premium for acquisition,
 							general expenses, contingency factors</p>
 						<p:panelGrid style="margin-left:360px">
@@ -1496,6 +1514,57 @@ Additonal premium for the optional ERP shall be based on the premium (after appl
 				</h:form>
 
 			</p:dialog>
+
+			<p:dialog showEffect="true" hideEffect="explode" resizable="false"
+				modal="true" widgetVar="POPMeasure" id="POPMeasure">
+				<f:facet name="header">Change Measure</f:facet>
+				<h:form id="ee">
+					<p:dataTable style="width:650px" emptyMessage="No Measures found!"
+						value="#{plAccountAuditorsRatingBean.measures}" var="prod"
+						rows="5" paginator="true" paginatorPosition="bottom"
+						selectionMode="single"
+						selection="#{plAccountAuditorsRatingBean.testMeasure}"
+						rowKey="#{prod.id}" widgetVar="prodTab2">
+						<p:ajax event="rowSelect" update=":ee"
+							listener="#{measure.OnRowSelected()}" />
+						<f:facet name="header">Measures</f:facet>
+						<p:column headerText="Name">
+							<h:outputText value="#{prod.name}" />
+						</p:column>
+						<p:column headerText="Creation Date">
+							<h:outputText value="#{prod.creationDate}" />
+						</p:column>
+						<p:column headerText="User">
+							<h:outputText value="#{measure.GetUserName(prod.userId)}" />
+						</p:column>
+						<p:column headerText="Active Measure">
+							<h:outputText value="#{measure.testactive(prod.active)}" />
+						</p:column>
+						<p:column headerText="Testing Measure">
+							<h:outputText value="#{measure.testactive(prod.activeTest)}" />
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton value="Set Measure" update="@form :testform"
+								actionListener="#{plAccountAuditorsRatingBean.TestingOtherMeasure()}"
+								icon="ui-icon-check" />
+							<p:commandButton value="Reset Measure"
+								actionListener="#{plAccountAuditorsRatingBean.ResetMeasureOnClick()}"
+								icon="ui-icon-refresh" update="@form :testform" />
+						</f:facet>
+					</p:dataTable>
+				</h:form>
+			</p:dialog>
+
+
+
+
+			<script type="text/javascript">
+        
+     
+        window.onbeforeunload = function() {
+        	 return 'Make sure that you saved the rating else all the informations entered will be lost';
+       	}
+      </script>
 
 
 		</ui:define>

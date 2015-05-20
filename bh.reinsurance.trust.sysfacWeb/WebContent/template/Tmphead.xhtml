@@ -3,257 +3,191 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
+
 	<h:outputStylesheet library="css" name="style.css" />
 
-
-
 	<nav class="navbar navbar-default navbar-fixed-top ">
+
 		<div>
+
 			<div class="navbar-header" style="margin-left: 80px">
+
 				<h:outputText value="#{login.department}" styleClass="textima" />
-				<p:graphicImage value="/resources/images/logo_small.png"></p:graphicImage>
-				
+
+				<a href="HomePage.jsf"><p:graphicImage
+						value="/resources/images/logo_small.png"></p:graphicImage></a>
 			</div>
 
 			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
+				<h:form>
+					<ul class="nav navbar-nav">
 
+						<li class="dropdown"><a href="#"
+							class="dropdown-toggle needsclick" data-toggle="dropdown"><p:graphicImage
+									width="19px" value="/resources/images/information.png"></p:graphicImage>
 
-					<li class="dropdown"><a href="#"
-						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-info-circle"></i> <span>Information Tool</span> <b
-							class="caret"></b>
-					</a>
-						<ul class="dropdown-menu">
+								<span>Information Tool</span> <b class="caret"></b> </a>
+							<ul class="dropdown-menu">
 
-							<li><h:form>
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Fac Info"
-										actionListener="#{redirectionBean.GoToFacInfo()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form>
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Calculation Tool"
+								<li><p:commandLink value="Fac Info"
+										actionListener="#{redirectionBean.GoToFacInfo()}" /></li>
+								<li><p:commandLink value="Calculation Tool"
 										actionListener="#{redirectionBean.GoToCalcTool()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="FIFTHb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Risks On Map"
+								</li>
+								<li><p:commandLink value="Risks On Map"
 										actionListener="#{redirectionBean.GoToMap()}"></p:commandLink>
-								</h:form></li>
-						</ul></li>
+
+								</li>
+								<li><p:commandLink value="Charts"
+										actionListener="#{redirectionBean.GoToChartPage()}" /></li>
+							</ul></li>
+
+						<li class="dropdown" style="display:#{projectBean.displayRating}"><a
+							onclick="rc();" class="dropdown-toggle needsclick"
+							data-toggle="dropdown"> <p:graphicImage width="19px"
+									value="/resources/images/percentage.png" /> <span>Rating
+									tool</span>
+						</a></li>
 
 
-					<li class="dropdown" style="display:#{projectBean.displayRating}"><a
-						href="#" class="dropdown-toggle needsclick" data-toggle="dropdown">
-							<i class="fa fa-tasks"></i> <span>Rating tool</span> <b
-							class="caret"></b>
-					</a>
-						<ul class="dropdown-menu">
-							<li><h:form id="firstb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Rating"
-										actionListener="#{redirectionBean.GoToRating()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="secondb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Assets"
-										actionListener="#{redirectionBean.GoToAssets()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="thirdb">
-									<i class="fa fa-play"> </i>
-									<p:commandLink value="Risk Assessment"
-										actionListener="#{redirectionBean.GoToRiskAssesment()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="fourthb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Summary"
-										actionListener="#{redirectionBean.GoToSummary()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="FIR">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Test1"
-										actionListener="#{redirectionBean.GoToTest1()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="FIRA">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Test2"
-										actionListener="#{redirectionBean.GoToTest2()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="FIRA2">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Test3"
-										actionListener="#{redirectionBean.GoToTest3()}"></p:commandLink>
-								</h:form></li>
-						</ul></li>
 
-					<li><a style="display:#{projectBean.displayFacultativeDept}"
-						href="/bh.reinsurance.trust.sysfacWeb/pages/User/Chart_Page.jsf"><i
-							class="fa fa-certificate"></i> Abacus tool</a></li>
+						<li class="dropdown" style="display:#{measure.displayMeasureMenu}"><a
+							href="#" class="dropdown-toggle needsclick"
+							data-toggle="dropdown"> <i class="fa fa-tasks"></i> <span>Measures</span>
+								<b class="caret"></b>
 
-					<li class="dropdown" style="display:#{measure.displayMeasureMenu}"><a
-						href="#" class="dropdown-toggle needsclick" data-toggle="dropdown">
-							<i class="fa fa-tasks"></i> <span>Measures</span> <b
-							class="caret"></b>
-					</a>
-						<ul class="dropdown-menu">
-							<li><h:form id="zerzerze">
-									<i class="fa fa-play"></i>
-									<p:commandLink
+						</a>
+
+							<ul class="dropdown-menu">
+								<li><p:commandLink
 										actionListener="#{redirectionBean.GoToFactors()}"
-										value="Factors" />
-								</h:form></li>
-							<li><h:form id="secoqsdfndb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Occupancies" />
-								</h:form></li>
-							<li><h:form id="dsfsqdfqsde">
-									<i class="fa fa-play"> </i>
-									<p:commandLink value="Ded Tables" />
-								</h:form></li>
-							<li><h:form id="fourtddsfhb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Loss prevention" />
-								</h:form></li>
-							<li><h:form id="zeorbihb">
-									<i class="fa fa-play"> </i>
-									<p:commandLink value="Fire Fighting" />
+										value="Factors" /></li>
+								<li><p:commandLink value="Occupancies" /></li>
 
-								</h:form></li>
-
-						</ul></li>
-
-					<li style="display:#{projectBean.displayFacultativeDept}"><a
-						href="/bh.reinsurance.trust.sysfacWeb/pages/User/Report_page.jsf"><i
-							class="fa fa-files-o"></i> <span>Reporting tool</span></a></li>
-				</ul>
+								<li><p:commandLink value="Ded Tables" /></li>
+								<li><p:commandLink value="Loss prevention" /></li>
+								<li><p:commandLink value="Fire Fighting" /></li>
+							</ul></li>
 
 
-				<!-- left menu
+
+					</ul>
+
+					<!-- left menu 
+
  -->
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown"><a href="#"
+							class="dropdown-toggle needsclick" data-toggle="dropdown"> <p:graphicImage
+									width="19px" value="/resources/images/adm.png"></p:graphicImage>
 
-				<ul class="nav navbar-nav navbar-right" > 
-					<li class="dropdown"><a href="#"
-						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-user"></i> <span>#{login.Connected()}</span> <b
-							class="caret"></b>
-					</a>
-						<ul class="dropdown-menu">
-							<li><h:form id="mmmi">
-									<i class="fa fa-wrench"></i>
-									<p:commandLink value="Edit Account"
+								<span>#{login.Connected()}</span> <b class="caret"></b>
+
+						</a>
+
+							<ul class="dropdown-menu">
+
+								<li><p:commandLink value="Edit Account"
 										actionListener="#{redirectionBean.GoToUserProfile()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="juij">
-									<i class="fa fa-sign-out"></i>
-									<p:commandLink value="Signout"
-										actionListener="#{login.doGet()}"></p:commandLink>
-								</h:form></li>
+								</li>
 
-						</ul></li>
+								<li><p:commandLink value="Signout"
+										actionListener="#{login.LogOut()}"></p:commandLink></li>
 
-					<li class="dropdown"><a href="#"
-						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-folder"></i> <span>Project
-								#{projectBean.project3.nameOfTheProject} </span> <b class="caret"></b>
-					</a>
-						<ul class="dropdown-menu">
-							<li><h:form id="sdfvssq">
-									<i class="fa fa-folder-open-o"></i>
-									<p:commandLink disabled="#{projectBean.disabledButtonProject}"
+							</ul></li>
+
+						<li class="dropdown"><a href="#"
+							class="dropdown-toggle needsclick" data-toggle="dropdown"> <p:graphicImage
+									width="19px" value="/resources/images/folder.png" /> <span>Project
+
+									#{projectBean.project3.nameOfTheProject} </span> <b class="caret"></b>
+						</a>
+
+							<ul class="dropdown-menu">
+
+								<li><p:commandLink
+										rendered="#{!projectBean.disabledButtonProject}"
 										value="Create/Open Project"
 										actionListener="#{redirectionBean.GoToProjectScreen()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="sdfv">
-									<i class="fa fa-envelope"></i>
-									<p:commandLink
-										disabled="#{projectBean.disabledButtonProjectSendClose}"
+								</li>
+
+								<li><p:commandLink
+										rendered="#{!projectBean.disabledButtonProjectSendClose}"
 										value="Send Project"
 										actionListener="#{redirectionBean.GoToSendProject()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="formreceived">
-									<i class="fa fa-archive"></i>
-									<p:commandLink disabled="#{projectBean.disabledButtonProject}"
+
+								</li>
+
+								<li><p:commandLink
+										rendered="#{!projectBean.disabledButtonProject}"
 										actionListener="#{redirectionBean.GoToReceived()}">Received Project (#{projectBean.GetMails()})
-										</p:commandLink>
-								</h:form></li>
-							<li><h:form id="zerzefqsdf">
-									<i class="fa fa-envelope"></i>
-									<p:commandLink disabled="#{projectBean.disabledButtonProject}"
+
+</p:commandLink></li>
+
+								<li><p:commandLink
+										rendered="#{!projectBean.disabledButtonProject}"
 										value="Sent Project"
 										actionListener="#{redirectionBean.GoToSentProject()}"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="mpl">
-									<i class="fa fa-wrench"></i>
-									<p:commandLink disabled="#{projectBean.disabledButtonProject}"
-										value="Manage Projects"
-										actionListener="#{redirectionBean.GoToManageProject()}"></p:commandLink>
-								</h:form></li>
 
-							<li style="display:#{projectBean.displayActuarial}"><h:form
-									id="M30">
-									<i class="fa fa-wrench"></i>
-									<p:commandLink value="Test/Reset Measure"
-										disabled="#{projectBean.disabledButtonProjectSendClose}"
-										onclick="PF('POPMeasure').show()"></p:commandLink>
-								</h:form></li>
-
-							<li><h:form id="dfds">
-									<i class="fa fa-folder"></i>
-									<p:commandLink
-										disabled="#{projectBean.disabledButtonProjectSendClose}"
+								</li>
+								<li><p:commandLink
+										rendered="#{!projectBean.disabledButtonProject}"
+										actionListener="#{redirectionBean.GoToManageProject()}"
+										value="Manage Projects" /></li>
+								<li style="display:#{projectBean.displayActuarial}"><p:commandLink
+										value="Test/Reset Measure"
+										rendered="#{!projectBean.disabledButtonProjectSendClose}"
+										onclick="PF('POPMeasure').show()" /></li>
+								<li><p:commandLink
+										rendered="#{!projectBean.disabledButtonProjectSendClose}"
 										value="Close Project"
-										actionListener="#{projectBean.CloseDProject()}"></p:commandLink>
-								</h:form></li>
-						</ul></li>
+										actionListener="#{projectBean.CloseDProject()}" /></li>
+							</ul></li>
+						<li class="dropdown"
+							style="display:#{projectBean.displayActuarial}"><a href="#"
+							class="dropdown-toggle needsclick" data-toggle="dropdown"> <p:graphicImage
+									width="19px" value="/resources/images/folder.png" /><span>Measure
+									#{measure.workingMeasure.name} </span> <b class="caret"></b>
+						</a>
+							<ul class="dropdown-menu">
 
-					<li class="dropdown"
-						style="display:#{projectBean.displayActuarial}"><a href="#"
-						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-folder"></i> <span>Measure
-								#{measure.workingMeasure.name} </span> <b class="caret"></b>
-					</a>
-						<ul class="dropdown-menu">
-							<li><h:form id="M1">
-									<i class="fa fa-folder-open-o"></i>
-									<p:commandLink disabled="#{measure.disableButtonMeasure}"
+								<li><p:commandLink
+										rendered="#{!measure.disableButtonMeasure}"
 										value="Create/Open Measure"
 										actionListener="#{redirectionBean.GoToMeasures()}"></p:commandLink>
-								</h:form></li>
-
-
-							<li><h:form id="M7">
-									<i class="fa fa-wrench"></i>
-									<p:commandLink disabled="#{measure.disableButtonCloseSet}"
+								</li>
+								<li><p:commandLink
+										rendered="#{!measure.disableButtonCloseSet}"
 										value="Test Measure"
 										actionListener="#{redirectionBean.GoToTestSummary()}"></p:commandLink>
-								</h:form></li>
-
-
-							<li><h:form id="M4">
-									<i class="fa fa-wrench"></i>
-									<p:commandLink disabled="#{measure.disableButtonCloseSet}"
+								</li>
+								<li><p:commandLink
+										rendered="#{!measure.disableButtonCloseSet}"
 										value="Set Working Measure" onclick="PF('POPSET').show()"></p:commandLink>
-								</h:form></li>
 
-							<li><h:form id="M5">
-									<i class="fa fa-folder"></i>
-									<p:commandLink disabled="#{measure.disableButtonCloseSet}"
+								</li>
+
+								<li><p:commandLink
+										rendered="#{!measure.disableButtonCloseSet}"
 										value="Close Measure"
-										actionListener="#{measure.CloseMeasure()}"></p:commandLink>
-								</h:form></li>
-						</ul></li>
-						<li >
-						<p:commandLink  onclick="PF('Diaghelp').show()">
-					<p:graphicImage value="/resources/images/help.png"
-						width="24" />
-				</p:commandLink>
-</li>
-				</ul>
-		
+										actionListener="#{measure.CloseMeasure()}"></p:commandLink></li>
+							</ul></li>
+
+						<li><p:commandLink onclick="PF('Diaghelp').show()">
+
+								<p:graphicImage value="/resources/images/help.png" width="24" />
+
+							</p:commandLink></li>
+					</ul>
+					<p:remoteCommand name="rc"
+						actionListener="#{projectBean.GoToRatingTool()}"></p:remoteCommand>
+				</h:form>
+
 			</div>
-			
 		</div>
+
 		<!--/.navbar-collapse -->
+
 	</nav>
+
 </ui:composition>

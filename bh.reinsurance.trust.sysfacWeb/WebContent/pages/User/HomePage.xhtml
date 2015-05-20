@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title">Home Page </ui:define>
+		<ui:define name="content">
+			<p:panel>
+				<f:facet name="header">
+					<p:outputLabel style="font-style:bold-italic;font-size:18px"> Welcome #{login.userServicesLocal.GetFirstAndLast(login.user.id)}</p:outputLabel>
+
+				</f:facet>
+
+
+				<h:panelGrid columns="2">
+					<p:panel style="height:156px" header="Received Projects">
+						<h:panelGrid columns="2">
+							<p:graphicImage width="50px"
+								value="/resources/images/mailicone.png"></p:graphicImage>
+							<p:commandLink actionListener="#{redirectionBean.GoToReceived()}"
+								style="font-family: times;font-size: 16px">	You received #{projectBean.GetMails()} new project(s)</p:commandLink>
+
+							<p:graphicImage width="50px" value="/resources/images/Clock.png"></p:graphicImage>
+							<p:commandLink style="font-family: times;font-size: 16px">	You have #{projectBean.GetMails()} project(s) expiring this month</p:commandLink>
+						</h:panelGrid>
+					</p:panel>
+
+
+				</h:panelGrid>
+			</p:panel>
+			<!-- <p:panel header="Latest News"
+				style="width:150px;position:relative;top:-100px;left:705px">
+				<p:feedReader
+					value="https://www.insuranceday.com/reinsurance/?service=rss"
+					size="6" var="feed">
+					<h:outputText value="#{feed.title}"
+						style="font-weight: bold;display:block" />
+
+					<p:separator />
+				</p:feedReader>
+			</p:panel> -->
+
+
+			
+
+			
+
+
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

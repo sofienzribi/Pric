@@ -6,29 +6,27 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-
 	<title><ui:insert name="title"></ui:insert></title>
 	<h:outputStylesheet library="css" name="5670482863bb.css" />
+	<h:outputStylesheet library="css" name="styless.css" />
 	<h:outputStylesheet library="css" name="style.css" />
 	<h:outputStylesheet library="css" name="style1.css" />
 	<p:growl widgetVar="growl" id="growl" showDetail="true" sticky="true"
 		severity="info" />
-
-
 	<script src="http://maps.google.com/maps/api/js?sensor=false"
 		type="text/javascript"></script>
 	<!-- 	remove this style -->
 	<style>
 body {
 	/*background: #F2F2F2;*/
-	background: #e1c192 url(../../resources/images/bg.jpg);
+	background: #F2F2F2 url(../../resources/images/bg.jpg);
 }
 </style>
 
 
 
 </h:head>
-<h:body>
+<h:body style="position:relative;left:-50px">
 
 	<ui:include src="/template/Tmphead.xhtml" />
 	<h:outputScript library="js" name="bootstrap.min.js"></h:outputScript>
@@ -60,64 +58,27 @@ body {
 								actionListener="#{measure.MakeWorkingMeasure()}" />
 						</p:dialog>
 					</h:form>
-					
-					
-					
-					<p:dialog      width="1400" height="600"  resizable="false" draggable="false"
-							modal="true" widgetVar="Diaghelp" id="Diaghelp">
-							<f:facet   name="header" >
-						<p:outputLabel style="position:relative;left:600px;font-weight: bold;font-family:times;font-size:15px" >Help Center</p:outputLabel>
-							
-							
-							
-							</f:facet>
-							<ui:include src="/pages/User/HelpPage.xhtml" />
+
+
+
+					<p:dialog width="1400" height="600" resizable="false"
+						draggable="false" modal="true" widgetVar="Diaghelp" id="Diaghelp">
+						<f:facet name="header">
+							<p:outputLabel
+								style="position:relative;left:600px;font-weight: bold;font-family:times;font-size:15px">Help Center</p:outputLabel>
+
+
+
+						</f:facet>
+						<ui:include src="/pages/User/HelpPage.xhtml" />
 					</p:dialog>
-					<p:dialog showEffect="true" hideEffect="explode" resizable="false"
-						modal="true" widgetVar="POPMeasure" id="POPMeasure">
-						<f:facet name="header">Change Measure</f:facet>
-						<h:form id="ee">
-							<p:dataTable style="width:650px"
-								emptyMessage="No Measures found!" value="#{measure.measures}"
-								var="prod" rows="5" paginator="true" paginatorPosition="bottom"
-								selectionMode="single" selection="#{measure.measure}"
-								rowKey="#{prod.id}" widgetVar="prodTab2">
-								<p:ajax event="rowSelect" update=":ee"
-									listener="#{measure.OnRowSelected()}" />
-								<f:facet name="header">Measures</f:facet>
-								<p:column headerText="Name">
-									<h:outputText value="#{prod.name}" />
-								</p:column>
-								<p:column headerText="Creation Date">
-									<h:outputText value="#{prod.creationDate}" />
-								</p:column>
-								<p:column headerText="User">
-									<h:outputText value="#{measure.GetUserName(prod.userId)}" />
-								</p:column>
-								<p:column headerText="Active Measure">
-									<h:outputText value="#{measure.testactive(prod.active)}" />
-								</p:column>
-								<p:column headerText="Testing Measure">
-									<h:outputText value="#{measure.testactive(prod.activeTest)}" />
-								</p:column>
-								<f:facet name="footer">
-									<p:commandButton value="Set Measure"
-										actionListener="#{measure.SetTestMeasure()}"
-										rendered="#{measure.displayButtons}" icon="ui-icon-check"
-										update=":ee" />
-									<p:commandButton value="Reset Measure"
-										actionListener="#{measure.ResetMeasure()}"
-										icon="ui-icon-refresh" update=":ee " />
-								</f:facet>
-							</p:dataTable>
-						</h:form>
-					</p:dialog>
+					
 				</div>
 			</div>
 		</div>
 	</div>
 
- <!-- <div id="footer" >
+	<!-- <div id="footer" >
 		<div class="container " >
 			
 			<div class="container text-center">
@@ -132,7 +93,7 @@ body {
 
 		</div>
 	</div>  -->
-	
+
 	<p:socket onMessage="handleMessage" channel="/NotifyUsers"
 		transport="long-polling" />
 
@@ -141,7 +102,8 @@ body {
             facesmessage.severity='warn';
         PF('growl').show([facesmessage]);
         }
-        </script>
+     
+       </script>
 
 </h:body>
 

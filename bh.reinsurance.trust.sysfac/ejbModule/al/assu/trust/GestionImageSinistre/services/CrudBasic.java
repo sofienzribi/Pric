@@ -45,12 +45,12 @@ public class CrudBasic implements CrudBasicLocal {
 	@Override
 	public Object FindById(String type, int id) {
 		return entityManager
-				.createQuery("select p from " + "User" + " p where p.id=:b ")
+				.createQuery("select p from " + type + " p where p.id=:b ")
 				.setParameter("b", id).getSingleResult();
 	}
 
 	@Override
-	public Object FindByFilter(String type, String nameofparam, String param) {
+	public Object FindByFilter(String type, String nameofparam, int param) {
 		return entityManager
 				.createQuery(
 						"select p from " + type + " p where p." + nameofparam

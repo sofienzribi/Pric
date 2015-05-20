@@ -43,6 +43,10 @@ public class RedirectionBean implements Serializable {
 				.redirect("CalculationMod.jsf");
 
 	}
+	public void GoToChartPage() throws IOException{
+		FacesContext.getCurrentInstance().getExternalContext()
+		.redirect("Chart_Page.jsf");
+	}
 
 	public void GoToFactors() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
@@ -125,9 +129,9 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("test2.jsf");
 	}
-	public void GoToTest3() throws IOException {
+	public void GoToPlaccountantandauditorsratingtool() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("test3.jsf");
+				.redirect("PIAccountantandandAuditorsTool.jsf");
 	}
 
 	// getters setters

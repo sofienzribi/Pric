@@ -52,7 +52,7 @@ public class ChartBean implements Serializable {
 		animatedModel2.setAnimate(true);
 		animatedModel2.setLegendPosition("ne");
 		Axis dAxis = animatedModel2.getAxis(AxisType.Y);
-		
+
 		dAxis.setMin(0);
 		dAxis.setMax(200);
 
@@ -94,28 +94,14 @@ public class ChartBean implements Serializable {
 		LineChartModel model = new LineChartModel();
 
 		LineChartSeries series1 = new LineChartSeries();
+		int j = 0;
 		series1.setLabel(" L/R=48%");
-		series1.set(0, 9);
-		series1.set(1, 8);
-		series1.set(2, 7);
-		series1.set(3, 6);
-		series1.set(4, 5);
-		series1.set(5, 4);
-		series1.set(6, 3);
-		series1.set(7, 2.5);
-		series1.set(8, 2.4);
-		
-		series1.set(9, 2.3);
-		series1.set(10, 2.2);
-		series1.set(11, 2.1);
-		series1.set(12, 2);
-		series1.set(13, 1.9);
+		for (double i = 10; i > 0; i = i - 0.5) {
+			series1.set(j, i);
+			j++;
+		}
 
 		series1.setShowMarker(false);
-		
-
-		
-
 
 		model.addSeries(series1);
 		model.setShadow(true);

@@ -12,11 +12,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import sun.rmi.log.LogOutputStream;
 import bh.reinsurance.trust.sysfacWeb.beans.LoginBean;
 
-@WebFilter("/pages/User/*")
-public class FilterAuthentification implements Filter {
+@WebFilter(urlPatterns = {"/pages/User/PIAccountantandandAuditorsMeasurel.jsf","/pages/User/Measures.jsf"})
+public class MeasureFilter implements Filter {
 
 	@Override
 	public void destroy() {
@@ -33,9 +32,11 @@ public class FilterAuthentification implements Filter {
 				"login");
 		
 		boolean letgo = false;
-		if ((loginBean != null) && (loginBean.isConnected())) {
+		if ((loginBean != null) && (loginBean.isConnected())
+				&& loginBean.getUser().getDepartment().equals("actuarialandrisk")) {
 			letgo = true;
 		}
+		
 		if (letgo == true) {
 			chain.doFilter(request, response);
 		} else {

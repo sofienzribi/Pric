@@ -24,6 +24,8 @@ public interface MeasureServicesLocal {
 
 	public Measure GetWorkingMeasure(String CLS);
 
-	public Measure GetTestingMeasure();
+	public Measure GetTestingMeasure(String COB);
+	
+	public List<Measure> GetMeasuresByClass(String COB);
 
 }

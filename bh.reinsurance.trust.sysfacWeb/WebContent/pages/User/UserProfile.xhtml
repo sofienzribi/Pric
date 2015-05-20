@@ -65,7 +65,7 @@
 							<p:outputLabel value="New Password" />
 							<p:password required="true" requiredMessage="password required"
 								value="#{login.password1}"></p:password>
-							<p:outputLabel value="Verify Password" />
+							<p:outputLabel value="Confirm Password" />
 							<p:password required="true" requiredMessage="password required"
 								value="#{login.password2}"></p:password>
 							<f:facet name="footer">
@@ -87,8 +87,10 @@
 					</h:form>
 				</p:tab>
 				<p:tab title="Change Theme">
+					<p:growl id="gr3" autoUpdate="true"></p:growl>
 					<h:form>
 						<p:panelGrid style="position:relative;left:400px">
+
 							<p:row>
 								<p:column>
 									<p:outputLabel>Please select a theme :  </p:outputLabel>
@@ -98,14 +100,16 @@
 										value="#{login.theme}">
 
 										<f:selectItem itemLabel="Choose Theme" itemValue="" />
-										<f:selectItems value="#{login.themes}" var="cat"
-											itemLabel="#{cat}" itemValue="#{cat}" />
+										<f:selectItems value="#{login.themes}" var="cats"
+											itemLabel="#{cats}" itemValue="#{cats}" />
+
 									</p:themeSwitcher>
 								</p:column>
 							</p:row>
 							<p:row>
 								<p:column colspan="2">
-									<p:commandButton value="save" actionListener="#{login.test()}"></p:commandButton>
+									<p:commandButton value="save"
+										actionListener="#{login.ChangeTheme()}"></p:commandButton>
 								</p:column>
 							</p:row>
 						</p:panelGrid>

@@ -37,8 +37,7 @@ import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 @SessionScoped
 public class LoginBean extends HttpServlet implements Serializable {
 
-	@ManagedProperty("#{applicationbean.getList()}")
-	private List<LoginBean> list;
+
 	private static final long serialVersionUID = 1L;
 	// Models
 	private String Department;
@@ -78,7 +77,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 		themes.put(11, "humanity");
 
 		Remember = false;
-		list.add(this);
+	
 		Map<String, Object> cookies = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestCookieMap();
 		Cookie cookie;
@@ -93,7 +92,11 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	}
 
-	public void test() {
+	
+
+	// methods
+
+	public void ChangeTheme() {
 		user.setTheme(theme);
 		userServicesLocal.UpdateUser(user);
 		FacesContext.getCurrentInstance().addMessage(
@@ -102,9 +105,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 						""));
 
 	}
-
-	// methods
-
 	public boolean loggedin() {
 		if (user != null) {
 			return true;
@@ -124,7 +124,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	}
 
-	public void doGet() throws IOException {
+	public void LogOut() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.invalidateSession();
 		user = new User();
@@ -133,6 +133,8 @@ public class LoginBean extends HttpServlet implements Serializable {
 				.redirect("/bh.reinsurance.trust.sysfacWeb/");
 	}
 
+	
+	
 	public String login() throws IOException {
 
 		User userFound = userServicesLocal.login(user.getLogin(),
@@ -175,7 +177,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 						theme = user.getTheme();
 					}
 					FacesContext.getCurrentInstance().getExternalContext()
-							.redirect("pages/User/Fac_info.jsf");
+							.redirect("pages/User/HomePage.jsf");
 					if (Remember == true) {
 						HttpServletResponse response = (HttpServletResponse) FacesContext
 								.getCurrentInstance().getExternalContext()
@@ -206,7 +208,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 						cookie.setMaxAge(3600);
 						response.addCookie(cookie);
 					}
-					return "pages/User/Fac_info?faces-redirect=true";
+					return "pages/User/HomePage?faces-redirect=true";
 				}
 			}
 
@@ -248,7 +250,8 @@ public class LoginBean extends HttpServlet implements Serializable {
 							"Bad Password", "Wrong current password"));
 		}
 	}
-
+	
+	
 	public void SetEmailPwd() throws MessagingException, UnknownHostException {
 		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
 				.toString())) {
@@ -382,13 +385,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 		Remember = remember;
 	}
 
-	public List<LoginBean> getList() {
-		return list;
-	}
-
-	public void setList(List<LoginBean> list) {
-		this.list = list;
-	}
+	
 
 	public String getPassword1() {
 		return password1;

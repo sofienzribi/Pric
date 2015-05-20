@@ -1,0 +1,136 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title"> Accountant and auditors measure </ui:define>
+		<ui:define name="content">
+			<p:growl autoUpdate="true" showDetail="false"></p:growl>
+			<p:panel>
+				<h:form id="fromd">
+					<p:dataTable
+						value="#{accountantandauditorsmeasure.placcmeasure.bookKeepingAndAudit.entrySet()}"
+						var="testima" selectionMode="single"
+						selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+						rowKey="#{testima}" style="width:350px" paginator="true"
+						paginatorPosition="bottom">
+						<f:facet name="header">Book keeping and audit</f:facet>
+						<p:column headerText="selection">
+				#{testima.key}
+				</p:column>
+						<p:column headerText="load">
+				#{testima.value}
+				</p:column>
+						<f:facet name="footer">
+							<h:form rendered="true">
+								<p:commandButton icon="ui-icon-plusthick"
+									onclick="PF('addbook').show()" />
+								<p:commandButton icon="ui-icon-trash"
+									actionListener="#{accountantandauditorsmeasure.DeleteBKAA()}"
+									update=":fromd">
+									<p:confirm header="Confirmation" message="Are you sure  ?"
+										icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:commandButton icon=" ui-icon-pencil" update=":from4"
+									actionListener="#{accountantandauditorsmeasure.DisplaymodifyBookKeepandaudit()}" />
+							</h:form>
+						</f:facet>
+					</p:dataTable>
+				</h:form>
+
+				<f:facet name="footer">
+					<p:commandButton value="Copy from another measure"
+						icon="ui-icon-disk" style="left:65px;"
+						actionListener="#{accountantandauditorsmeasure.DisplayCopyMeasurePOP()}"
+						update=":from2" />
+				</f:facet>
+			</p:panel>
+
+			<p:dialog widgetVar="addbook" id="addbook" width="300px" modal="true"
+				showEffect="true" hideEffect="explode" resizable="false"
+				header="Choose a measure">
+				<h:form id="from3">
+					<h:panelGrid columns="2">
+						<p:outputLabel>param name</p:outputLabel>
+						<p:inputText value="#{accountantandauditorsmeasure.key}"></p:inputText>
+						<p:outputLabel>Load</p:outputLabel>
+						<p:inputText value="#{accountantandauditorsmeasure.value}"></p:inputText>
+					</h:panelGrid>
+					<p:commandButton update=":fromd"
+						actionListener="#{accountantandauditorsmeasure.AddBookKeepingAndAudit()}"
+						value="Add"></p:commandButton>
+
+				</h:form>
+
+			</p:dialog>
+			
+			<h:form id="from4">
+				<p:dialog widgetVar="popmodifbkaa" id="popmodifbkaa" width="300px"
+					modal="true" showEffect="true" hideEffect="explode"
+					resizable="false" header="Choose a measure">
+
+					<h:panelGrid columns="2">
+						<p:outputLabel>param name</p:outputLabel>
+						<p:outputLabel>#{accountantandauditorsmeasure.key}</p:outputLabel>
+						<p:outputLabel>Load</p:outputLabel>
+						<p:inputText value="#{accountantandauditorsmeasure.value}"></p:inputText>
+					</h:panelGrid>
+					<p:commandButton update=":fromd"
+						actionListener="#{accountantandauditorsmeasure.ModifyBKAA()}"
+						value="Update"></p:commandButton>
+				</p:dialog>
+			</h:form>
+			
+			<h:form id="from2">
+
+				<p:dialog widgetVar="Copy" id="Copy" width="500px" modal="true"
+					showEffect="true" hideEffect="explode" resizable="false"
+					header="Choose a measure">
+
+
+
+					<p:growl widgetVar="growl" id="growl" life="2000" />
+					<p:dataTable id="liste" widgetVar="list"
+						value="#{accountantandauditorsmeasure.measures}"
+						selectionMode="single"
+						selection="#{accountantandauditorsmeasure.measureToCopy}"
+						var="prod" rowKey="#{prod.id}">
+						<f:facet name="header">Measures</f:facet>
+						<p:column headerText="Name">
+						#{prod.name}
+						</p:column>
+						<p:column headerText="Creation date">
+						#{prod.creationDate}
+						</p:column>
+						<p:column headerText="Description">
+						#{prod.description}
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton value="Load" id="btn"
+								actionListener="#{accountantandauditorsmeasure.CopyMeasure()}"
+								update=":fromd :from2:growl">
+
+								<p:confirm header="Confirmation"
+									message="All the factors will be deleted and replaced with the new factors"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+
+						</f:facet>
+					</p:dataTable>
+				</p:dialog>
+			</h:form>
+
+			<p:confirmDialog global="true" showEffect="fade">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

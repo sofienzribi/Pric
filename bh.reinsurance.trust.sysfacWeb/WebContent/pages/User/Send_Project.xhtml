@@ -15,7 +15,7 @@
 					<f:facet name="header">Send project</f:facet>
 					<p:outputLabel value=" Name of the project :" />
 					<p:outputLabel value="#{projectBean.project3.nameOfTheProject}" />
-					<p:outputLabel id="TO2" for="To" value="To* : " />
+					<p:outputLabel id="TO2" for="To" value="Recipient(s)* : " />
 					<p:autoComplete id="To"
 						completeMethod="#{projectBean.completeName}"
 						value="#{projectBean.sendToUsers}" multiple="true" var="prod"

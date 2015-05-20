@@ -19,7 +19,9 @@ import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Factors;
 import al.assu.trust.GestionImageSinistre.domain.Measure;
+import al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure;
 import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.impl.CrudBasicLocal;
 import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.MeasureServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
@@ -31,12 +33,14 @@ public class MeasureBean implements Serializable {
 	// Models
 	@ManagedProperty("#{login.getUser()}")
 	private User user;
+	private String DisplayMeasuresByClass;
 	private Measure measure;
 	private Measure Newmeasure;
 	private Measure WorkingMeasure;
 	private boolean DisplayButtons;
 	private List<Measure> measures;
 	private List<Measure> searchmeasure;
+	private Measure PLAccountantAndAuditorsMeasure;
 	@EJB
 	MeasureServicesLocal measureServicesLocal;
 	private static final long serialVersionUID = 1L;
@@ -51,6 +55,8 @@ public class MeasureBean implements Serializable {
 	private String PasswordCheck;
 	@EJB
 	private UserServicesLocal userServicesLocal;
+	@EJB
+	private CrudBasicLocal basicLocal;
 
 	// const
 	public MeasureBean() {
@@ -60,9 +66,11 @@ public class MeasureBean implements Serializable {
 	public void init() {
 		searchmeasure = new ArrayList<Measure>();
 		Tool = new HashMap<String, String>();
-
 		Tool.put("account", "PI accountants and auditors");
 		Tool.put("property", "Property and Onshore");
+
+		PLAccountantAndAuditorsMeasure = measureServicesLocal
+				.GetWorkingMeasure("PI accountants and auditors");
 
 		// for the property
 		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure("Property");
@@ -93,10 +101,26 @@ public class MeasureBean implements Serializable {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('POPMeasure').hide();");
 		measure = new Measure();
-		FacWorkingMeasure = measureServicesLocal.GetTestingMeasure();
+		FacWorkingMeasure = measureServicesLocal.GetTestingMeasure("");
 		System.out.println(FacWorkingMeasure.getId());
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Summary2.jsf");
+	}
+
+	public void DisplayMeasureByFilter() {
+		List<Measure> list = new ArrayList<Measure>();
+		if (DisplayMeasuresByClass.equals("all")) {
+			measures = measureServicesLocal.GetAllMeasures();
+		} else {
+			measures = measureServicesLocal.GetAllMeasures();
+			for (Measure a : measures) {
+				if (a.getClassofbusiness().equals(DisplayMeasuresByClass)) {
+					list.add(a);
+				}
+			}
+			measures = list;
+		}
+
 	}
 
 	public void ResetMeasure() throws IOException {
@@ -106,7 +130,6 @@ public class MeasureBean implements Serializable {
 			Measure measuree = measures.get(i);
 			measuree.setActiveTest(false);
 			measureServicesLocal.UpdateMeasure(measuree);
-			
 
 		}
 		measure = new Measure();
@@ -120,6 +143,7 @@ public class MeasureBean implements Serializable {
 
 	}
 
+	// Create new measure
 	public void CreateMeasure() throws IOException {
 
 		if (measureServicesLocal.NameExist(Newmeasure.getName())) {
@@ -130,29 +154,37 @@ public class MeasureBean implements Serializable {
 							"Name already exists!!", "Name Exist"));
 
 		} else {
-			factors = new Factors();
+			if (Newmeasure.getClassofbusiness().equals(
+					"PI accountants and auditors")) {
 
-			Newmeasure.setUserId(user.getId());
-			measureServicesLocal.NewMeasure(Newmeasure);
-			measures = measureServicesLocal.GetAllMeasures();
+				Createplaccountantandauditorsmeasure();
 
-			factors.setIdMeasure(measureServicesLocal.GetMeasureByName(
-					Newmeasure.getName()).getId());
-			factors.setName(Newmeasure.getName());
+			} else {
 
-			factorsServicesLocal.Persist(factors);
-			RequestContext context = RequestContext.getCurrentInstance();
-			WorkingMeasure = measureServicesLocal.GetMeasureByName(Newmeasure
-					.getName());
-			DisplayMeasureMenu = "true";
-			DisableButtonMeasure = true;
-			disableButtonCloseSet = false;
+				factors = new Factors();
 
-			Newmeasure = new Measure();
-			context.execute("PF('popup').hide();");
-			FacesContext.getCurrentInstance().getExternalContext()
-					.redirect("Factors.jsf");
+				Newmeasure.setUserId(user.getId());
+				measureServicesLocal.NewMeasure(Newmeasure);
+				measures = measureServicesLocal.GetAllMeasures();
 
+				factors.setIdMeasure(measureServicesLocal.GetMeasureByName(
+						Newmeasure.getName()).getId());
+				factors.setName(Newmeasure.getName());
+
+				factorsServicesLocal.Persist(factors);
+				RequestContext context = RequestContext.getCurrentInstance();
+				WorkingMeasure = measureServicesLocal
+						.GetMeasureByName(Newmeasure.getName());
+				DisplayMeasureMenu = "true";
+				DisableButtonMeasure = true;
+				disableButtonCloseSet = false;
+
+				Newmeasure = new Measure();
+				context.execute("PF('popup').hide();");
+				FacesContext.getCurrentInstance().getExternalContext()
+						.redirect("Factors.jsf");
+
+			}
 		}
 	}
 
@@ -161,11 +193,16 @@ public class MeasureBean implements Serializable {
 	}
 
 	public String OpenMeasure() {
-		WorkingMeasure = measure;
-		DisplayMeasureMenu = "true";
-		DisableButtonMeasure = true;
-		disableButtonCloseSet = false;
-		return "Factors?faces-redirect=true";
+		if (measure.getClassofbusiness().equals("PI accountants and auditors")) {
+			return Openplaccountantandauditorsmeasure();
+
+		} else {
+			WorkingMeasure = measure;
+			DisplayMeasureMenu = "true";
+			DisableButtonMeasure = true;
+			disableButtonCloseSet = false;
+			return "Factors?faces-redirect=true";
+		}
 
 	}
 
@@ -178,8 +215,11 @@ public class MeasureBean implements Serializable {
 		} else {
 
 			WorkingMeasure.setActive(true);
+			
 			measureServicesLocal.UpdateMeasure(WorkingMeasure);
-			measures = measureServicesLocal.GetAllMeasures();
+			
+			measures = measureServicesLocal.GetMeasuresByClass(WorkingMeasure.getClassofbusiness());
+			
 			for (int i = 0; i < measures.size(); i++) {
 				if (measures.get(i).getId() != WorkingMeasure.getId()
 						&& measures.get(i).getClassofbusiness()
@@ -190,6 +230,7 @@ public class MeasureBean implements Serializable {
 				}
 
 			}
+			PLAccountantAndAuditorsMeasure = WorkingMeasure;
 			RequestContext context = RequestContext.getCurrentInstance();
 			context.execute("PF('POPSET').hide();");
 
@@ -214,10 +255,35 @@ public class MeasureBean implements Serializable {
 	}
 
 	public void DeleteMeasure() {
-		measureServicesLocal.DeleteMeasure(measure);
-		measure = new Measure();
-		measures = measureServicesLocal.GetAllMeasures();
-		DisplayButtons = false;
+		if (measure.getActive() == true) {
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"messages1",
+							new FacesMessage(
+									FacesMessage.SEVERITY_ERROR,
+									"Impossible to delete this measure because it's the active measure",
+									""));
+		} else {
+			if (measure.getClassofbusiness().equals(
+					"PI accountants and auditors")) {
+				placcmeasure = (PlaccountantandauditorsMeasure) basicLocal
+						.FindByFilter("PlaccountantandauditorsMeasure",
+								"idMeasure", measure.getId());
+
+				basicLocal.Delete(placcmeasure);
+			}
+
+			measureServicesLocal.DeleteMeasure(measure);
+			measure = new Measure();
+			measures = measureServicesLocal.GetAllMeasures();
+			DisplayButtons = false;
+			FacesContext.getCurrentInstance().addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							" Measure Deleted", ""));
+		}
+
 	}
 
 	public void CloseMeasure() throws IOException {
@@ -225,9 +291,59 @@ public class MeasureBean implements Serializable {
 		DisableButtonMeasure = false;
 		disableButtonCloseSet = true;
 		WorkingMeasure = new Measure();
+		measure = new Measure();
+		placcmeasure = new PlaccountantandauditorsMeasure();
+
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Measures.jsf");
 	}
+
+	// pl accountant and auditors measure management start
+
+	private Measure measureToCopy = new Measure();
+	private String Key;
+	private String Value;
+	private PlaccountantandauditorsMeasure placcmeasure = new PlaccountantandauditorsMeasure();
+	private String SelectionPlaccandaudit;
+	private List<Measure> AccAndAuditMeasureList = new ArrayList<Measure>();
+
+	public void Createplaccountantandauditorsmeasure() throws IOException {
+		Newmeasure.setUserId(user.getId());
+		measureServicesLocal.NewMeasure(Newmeasure);
+		placcmeasure = new PlaccountantandauditorsMeasure();
+		placcmeasure.setIdMeasure(measureServicesLocal.GetMeasureByName(
+				Newmeasure.getName()).getId());
+		basicLocal.Persist(placcmeasure);
+		measures = measureServicesLocal.GetAllMeasures();
+		DisplayMeasureMenu = "true";
+		DisableButtonMeasure = true;
+		disableButtonCloseSet = false;
+		WorkingMeasure = measureServicesLocal.GetMeasureByName(Newmeasure
+				.getName());
+		measure = WorkingMeasure;
+		Newmeasure = new Measure();
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('popup').hide();");
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("PIAccountantandandAuditorsMeasurel.jsf");
+
+	}
+
+	public String Openplaccountantandauditorsmeasure() {
+		placcmeasure = (PlaccountantandauditorsMeasure) basicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
+
+		WorkingMeasure = measure;
+		DisplayMeasureMenu = "true";
+		DisableButtonMeasure = true;
+		disableButtonCloseSet = false;
+		return "PIAccountantandandAuditorsMeasurel?faces-redirect=true";
+
+	}
+
+	// pl accountant and auditors measure management end
 
 	// getters and setters
 	public Measure getMeasure() {
@@ -340,6 +456,71 @@ public class MeasureBean implements Serializable {
 
 	public void setTool(Map<String, String> tool) {
 		Tool = tool;
+	}
+
+	public PlaccountantandauditorsMeasure getPlaccmeasure() {
+		return placcmeasure;
+	}
+
+	public void setPlaccmeasure(PlaccountantandauditorsMeasure placcmeasure) {
+		this.placcmeasure = placcmeasure;
+	}
+
+	public String getSelectionPlaccandaudit() {
+		return SelectionPlaccandaudit;
+	}
+
+	public void setSelectionPlaccandaudit(String selectionPlaccandaudit) {
+		SelectionPlaccandaudit = selectionPlaccandaudit;
+	}
+
+	public List<Measure> getAccAndAuditMeasureList() {
+		return AccAndAuditMeasureList;
+	}
+
+	public void setAccAndAuditMeasureList(List<Measure> accAndAuditMeasureList) {
+		AccAndAuditMeasureList = accAndAuditMeasureList;
+	}
+
+	public Measure getMeasureToCopy() {
+		return measureToCopy;
+	}
+
+	public void setMeasureToCopy(Measure measureToCopy) {
+		this.measureToCopy = measureToCopy;
+	}
+
+	public String getKey() {
+		return Key;
+	}
+
+	public void setKey(String key) {
+		Key = key;
+	}
+
+	public String getValue() {
+		return Value;
+	}
+
+	public void setValue(String value) {
+		Value = value;
+	}
+
+	public String getDisplayMeasuresByClass() {
+		return DisplayMeasuresByClass;
+	}
+
+	public void setDisplayMeasuresByClass(String displayMeasuresByClass) {
+		DisplayMeasuresByClass = displayMeasuresByClass;
+	}
+
+	public Measure getPLAccountantAndAuditorsMeasure() {
+		return PLAccountantAndAuditorsMeasure;
+	}
+
+	public void setPLAccountantAndAuditorsMeasure(
+			Measure pLAccountantAndAuditorsMeasure) {
+		PLAccountantAndAuditorsMeasure = pLAccountantAndAuditorsMeasure;
 	}
 
 }

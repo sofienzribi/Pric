@@ -18,7 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRException;
@@ -29,14 +29,18 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.primefaces.context.RequestContext;
 
+import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.domain.PIaccandAudit;
+import al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure;
 import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.impl.CrudBasicLocal;
+import al.assu.trust.GestionImageSinistre.impl.MeasureServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.PlaccandAuditServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PlAccountAuditorsRatingBean implements Serializable {
 
 	/**
@@ -73,9 +77,13 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private double LossOfDocumentsFactor = 0;
 	private double Incuredlossesandnumberofclaimsfactor = 0;
 	private double specialclientlistfactor = 0;
-
 	private double totalpracticespeciality = 0;
 	private double totalOtherLoadingFactors = 0;
+
+	private PlaccountantandauditorsMeasure measureFactors;
+	private Measure measure;
+	private Measure testMeasure;
+	private List<Measure> measures;
 
 	// reporting var
 	private String URLDestination;
@@ -113,21 +121,39 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private PlaccandAuditServicesLocal auditServicesLocal;
 	@EJB
 	private UserServicesLocal userServicesLocal;
+	@EJB
+	private MeasureServicesLocal measureServicesLocal;
+	@EJB
+	private CrudBasicLocal crudBasicLocal;
 
 	// constr
 	public PlAccountAuditorsRatingBean() {
+		testMeasure = new Measure();
 		URLJasperModel = "/Users/zribisofien/Desktop/ModelReport/";
 		URLDestination = "/Users/zribisofien/Desktop/PDFGEN/";
 		FillLists();
 
 	}
 
+	private String es;
+
 	@PostConstruct
 	public void init() {
+		resetTestMeasureOnOPeningBean();
+		measures = measureServicesLocal
+				.GetMeasuresByClass("PI accountants and auditors");
+
+		measure = measureServicesLocal
+				.GetWorkingMeasure("PI accountants and auditors");
+		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
 		DisplayTextArea = false;
+
 		iaccandAudittosave = auditServicesLocal
 				.GetByIdProject(project3.getId());
 		OperationWhenopeningTool();
+
 	}
 
 	// methods
@@ -192,6 +218,15 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	}
 
 	public void SaveRating() {
+		if(measure.getActiveTest()==true){
+			FacesContext.getCurrentInstance()
+			.addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"You cant save this rating because you are not using the working measure", ""));
+		}else{
+			
+		
 		iaccandAudittosave.setIdproj(project3.getId());
 		auditServicesLocal.update(iaccandAudittosave);
 		FacesContext.getCurrentInstance()
@@ -199,6 +234,66 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 						"messages1",
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"Rating Saved", ""));
+		}
+	}
+
+	public void resetTestMeasureOnOPeningBean() {
+		measures = measureServicesLocal
+				.GetMeasuresByClass("PI accountants and auditors");
+		for (int i = 0; i < measures.size(); i++) {
+			Measure measuree = measures.get(i);
+			measuree.setActiveTest(false);
+			measureServicesLocal.UpdateMeasure(measuree);
+		}
+
+	}
+
+	public void ResetMeasureOnClick() {
+		resetTestMeasureOnOPeningBean();
+		measures = measureServicesLocal
+				.GetMeasuresByClass("PI accountants and auditors");
+		measure = measureServicesLocal
+				.GetWorkingMeasure("PI accountants and auditors");
+		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('POPMeasure').hide();");
+		FacesContext.getCurrentInstance()
+		.addMessage(
+				"messages1",
+				new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Measure Reset", ""));
+	}
+
+	public void TestingOtherMeasure() throws IOException {
+		testMeasure.setActiveTest(true);
+		measureServicesLocal.UpdateMeasure(testMeasure);
+		measures = measureServicesLocal
+				.GetMeasuresByClass("PI accountants and auditors");
+		for (int i = 0; i < measures.size(); i++) {
+			if (measures.get(i).getId() != testMeasure.getId()) {
+				Measure measuree = measures.get(i);
+				measuree.setActiveTest(false);
+				measureServicesLocal.UpdateMeasure(measuree);
+			}
+		}
+
+		measure = new Measure();
+		measure = measureServicesLocal
+				.GetTestingMeasure("PI accountants and auditors");
+		System.out.println(measure.getId());
+		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
+		FacesContext.getCurrentInstance()
+		.addMessage(
+				"messages1",
+				new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Test measure Set", ""));
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('POPMeasure').hide();");
+
 	}
 
 	public void OperationWhenopeningTool() {
@@ -931,7 +1026,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			testName = false;
 		}
 		if (testName == true) {
-			RequestContext context = RequestContext.getCurrentInstance();
 
 			FacesContext
 					.getCurrentInstance()
@@ -1428,8 +1522,39 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		CheckBoxRatingDetailsValue = checkBoxRatingDetailsValue;
 	}
 
-	public void test() {
-		System.out.println("yooopi");
+	public Measure getMeasure() {
+		return measure;
 	}
 
+	public PlaccountantandauditorsMeasure getMeasureFactors() {
+		return measureFactors;
+	}
+
+	public void setMeasureFactors(PlaccountantandauditorsMeasure measureFactors) {
+		this.measureFactors = measureFactors;
+	}
+
+	public String getEs() {
+		return es;
+	}
+
+	public void setEs(String es) {
+		this.es = es;
+	}
+
+	public Measure getTestMeasure() {
+		return testMeasure;
+	}
+
+	public void setTestMeasure(Measure TestMeasure) {
+		testMeasure = TestMeasure;
+	}
+
+	public List<Measure> getMeasures() {
+		return measures;
+	}
+
+	public void setMeasures(List<Measure> measures) {
+		this.measures = measures;
+	}
 }

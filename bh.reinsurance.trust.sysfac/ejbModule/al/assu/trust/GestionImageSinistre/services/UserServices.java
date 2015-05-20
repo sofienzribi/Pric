@@ -76,7 +76,7 @@ public class UserServices implements UserServicesLocal {
 	@Override
 	public String GetFirstAndLast(int id) {
 		User user3 = entityManager.find(User.class, id);
-		return user3.getFirst_Name() + "  " + user3.getLast_Name();
+		return user3.getLast_Name() + "  " + user3.getFirst_Name();
 	}
 
 	@Override

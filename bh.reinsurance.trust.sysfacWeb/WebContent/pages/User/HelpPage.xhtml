@@ -9,6 +9,7 @@
 <h:body>
 	<p:panel>
 		<h:form>
+
 			<p:inputText placeholder="Search ...">
 				<p:graphicImage value="/resources/images/search1.png" width="24" />
 			</p:inputText>
@@ -17,7 +18,7 @@
 	<p:tabView style="height:auto" orientation="left">
 
 		<p:tab title="Information Tools">
-			<p:accordionPanel activeIndex="none">
+			<p:accordionPanel activeIndex="none" style="text-align:left">
 				<p:tab title="Fac info">
 					<pe:documentViewer height="500" library="Report"
 						name="UserGuideOpenProject.pdf" />
@@ -25,6 +26,10 @@
 				<p:tab title="Calculation Tool">
 				</p:tab>
 				<p:tab title="Risks on map">
+					<p class="HelpContent">
+						Go under <b>Information tool</b> and Click <b>Risks on map</b>(Internet
+						connection needed to display the map). <br />
+					</p>
 				</p:tab>
 			</p:accordionPanel>
 		</p:tab>
@@ -34,22 +39,103 @@
 
 			<p:accordionPanel activeIndex="none" style="text-align:left">
 				<p:tab title="Open a project">
-					<p style="font-weight: bold;font-family: times;font-size: 14px">
-						1. Go under Project and Click "Create/Open Project".<br /> 2.  Select
-						a project.<br /> 3.  Click "Open".
+					<p class="HelpContent">
+						1. Go under <b>Project</b> and Click <b>Create/Open Project</b>. <br />
+						2. Select a project. <br /> 3. Click <b>Open</b>.
 					</p>
 				</p:tab>
 				<p:tab title="Create a project">
+				1. Go under <b>Project</b> and Click <b>Create/Open Project</b>. <br />
+						2. Click <b>New Project</b>. <br /> 
+						3. .
+				
 				</p:tab>
 				<p:tab title="Send a project">
+
+					<p class="HelpContent">
+						1. Go under <b>Project</b> and Click <b>Send Project</b>(This
+						button is displayed only after opening a project) . <br /> 2.Fill
+						the informations needed. <br /> 3. In case you want to send the
+						project via email you have to select <b>Send via email</b> . <br />
+						<span style="margin-left: 40px;">• If you already entered
+							your email credentials (<b>Account Management-->Change email
+								credentials</b>)
+						</span> you will be asked to upload<br /> <span
+							style="margin-left: 40px;"> a PDF(<b>Rating
+								Tools-->Upload PDF</b>) else you will be asked to Complete your
+							account configuration.
+						</span> <br /> 4.Click <b>Send</b> button.
+					</p>
+
+				</p:tab>
+				<p:tab title="Upload PDF">
+					<p class="HelpContent">
+						1.Click <b>Choose</b> button.<br /> 2.Select a file then Click <b>choose</b>
+						(File Size must be under 25Mb).<br /> 3.Click <b>Upload</b>
+						button.
+					</p>
+
+				</p:tab>
+				<p:tab title="Export Rating to pdf">
+					<p class="HelpContent">
+						1.Go to <b>Summary</b> and Click <b> PDF</b><p:graphicImage value="/resources/images/pdf.png.xhtml-2.png" width="24" />	button.<br /> 
+						2.In case you want to add the Rating details to the Report Select <b>Add Rating Details To report</b>. <br />
+						3.In case you want to add Comments to Report Select <b>Add Text To report</b> and Enter the text.<br/>
+						4.Click <b>Create</b> button.
+					</p>
+				</p:tab>
+				<p:tab title="Save Rating">
+				<p class="HelpContent">
+				Click <b>Save rating</b> under <b>Rating</b> or press "crtl+shift+s".
+				</p>
+				</p:tab>
+				<p:tab title="Delete Project">
+			<p class="HelpContent">
+						1.Go under <b>Project</b> and Click <b> Manage Projects</b>.<br /> 
+						2.Select a project then click  <b>Delete</b>. <br />
+						3.Confirmation dialog will appear click <b>Yes</b> to delete the project or <b>No</b> to cancel .<br/>
+					</p>
+				</p:tab>
+				<p:tab title="Modify Project">
+				<p class="HelpContent">
+						1.Go under <b>Project</b> and Click <b> Manage Projects</b>.<br /> 
+						2.Select a project then click  <b>Modify</b>. <br />
+						3.Fill the information and click <b>Save</b> .<br/>
+					</p>
+				</p:tab>
+				<p:tab title="Sent Project(s)">
+				<p class="HelpContent">
+					Go under <b>Project</b> and Click <b> Sent Projects</b>.<br /> 
+					</p>
 				</p:tab>
 			</p:accordionPanel>
 		</p:tab>
 		<p:tab title="Account Management">
-			<p:accordionPanel activeIndex="none">
+			<p:accordionPanel activeIndex="none" style="text-align:left">
 				<p:tab title="Change email credentials">
+					<p class="HelpContent">
+						1. Go under <b>"your username"</b> and Click <b>Edit Account</b><br />
+						2. Go to <b>Email Credentials</b><br /> 3. If you already entered
+						it one time and you wnat to change it Click <b>Modify</b> else
+						Fill the informations needed.<br /> 4.Click <b>Save</b>, you will
+						receive an email to confirm you that your password has been
+						updated .
+					</p>
 				</p:tab>
 				<p:tab title="Change account credentials">
+					<p class="HelpContent">
+						1. Go under <b>"your username"</b> and Click <b>Edit Account</b><br />
+						2. Go to <b>Account Credentials</b><br /> 3.Fill the informations
+						needed.<br /> 4.Click <b>Save</b>
+					</p>
+				</p:tab>
+				<p:tab title="Change Theme">
+
+					<p class="HelpContent">
+						1. Go under <b>"your username"</b> and Click <b>Edit Account</b><br />
+						2. Go to <b>Change Theme</b>.<br /> 3.Select a theme .<br />
+						4.Click <b>Save</b>.
+					</p>
 				</p:tab>
 			</p:accordionPanel>
 		</p:tab>
@@ -59,10 +145,9 @@
 
 			<p:commandLink ajax="false">Download the user guide
 			  <p:fileDownload value="#{fileDownload.file}" />
-				<p:graphicImage
-					value="/resources/images/dwl.png" width="24" />
+				<p:graphicImage value="/resources/images/dwl.png" width="24" />
 			</p:commandLink>
-			
+
 
 
 		</h:form>

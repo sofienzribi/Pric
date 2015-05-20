@@ -13,6 +13,7 @@ public interface CrudBasicLocal {
 	public List<Object> FindAll(String type);
 
 	public Object FindById(String type, int id);
+	
 
-	public Object FindByFilter(String type, String nameofparam, String param);
+	public Object FindByFilter(String type, String nameofparam, int param);
 }

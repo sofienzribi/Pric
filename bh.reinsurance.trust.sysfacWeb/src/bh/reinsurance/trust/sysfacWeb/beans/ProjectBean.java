@@ -68,6 +68,7 @@ public class ProjectBean implements Serializable {
 	@ManagedProperty("#{login.getUser()}")
 	private User user2;
 
+
 	private boolean passwordmsg;
 	private String pwdcheck;
 	private String DisplayProjectSelectionByuser = "all";
@@ -243,20 +244,6 @@ public class ProjectBean implements Serializable {
 
 	}
 
-	public void DeleteProject() {
-		local.DeleteProject(proojectbyuser.getId());
-		Offer offer2 = offerServicesLocal.GetOffer(proojectbyuser.getId());
-		Summary summary2 = summaryServicesLocal.GetSummary(proojectbyuser
-				.getId());
-		summaryServicesLocal.DeleteSummary(summary2);
-		offerServicesLocal.DeleteOfferByIdProject(offer2);
-		projectsbyuser = local.GetProjectsByUser(user2);
-		DisplayProjectManagButton = false;
-		DisplayRating = "none";
-		setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2.getId()));
-		projects = local.GetAllProjects();
-	}
-
 	public void DeleteProjectTest() {
 		assets2 = assetsServicesLocal.GetAssetsByIdProject(proojectbyuser
 				.getId());
@@ -328,46 +315,36 @@ public class ProjectBean implements Serializable {
 		}
 	}
 
-	public String OpenProject()
+	public void OpenProjectFromRecentList() {
 
-	{
+		project3 = project;
+		project = new Project();
+		PopDisplayed = false;
+		DisplayRating = "true";
+		DisabledButtonProject = true;
+		DisabledButtonProjectSendClose = false;
+		if (project3.getTool().equals("PI accountants and auditors")) {
 
-		if (local.Nameexist(project2.getNameOfTheProject())) {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_FATAL,
-							"Name already exists!!", "Name Exist"));
-			return null;
-		} else {
-
-			if (priv.equals("false")) {
-				project2.setPrivacy(false);
-				if (Checkbox.equals("true")) {
-					project2.setPassword(user2.getPassword());
-				}
-			} else {
-				project2.setPrivacy(true);
-
+			try {
+				FacesContext.getCurrentInstance().getExternalContext()
+						.redirect("PIAccountantandandAuditorsTool.jsf");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			project2.setUser(user2.getId());
-			local.NewProject(project2);
-			project3 = local.GetProjectByName(project2.getNameOfTheProject());
-			summary.setIdProj(project3.getId());
-			offer.setId_project(project3.getId());
-			System.out.println("L id de ce con est" + user2.getDepartment());
-			offer.setId_underwriter(user2.getId());
-			summaryServicesLocal.CreateSummary(summary);
-			offerServicesLocal.AddOffer(offer);
-			project2 = new Project();
-			DisplayRating = "true";
-			projects = local.GetAllProjects();
-			projectsbyuser = local.GetProjectsByUser(user2);
-			DisabledButtonProject = true;
-			DisabledButtonProjectSendClose = false;
-			return "Fac_info?faces-redirect=true";
+		}
+		if (project3.getTool().equals("Property and Onshore")) {
+			try {
+				FacesContext.getCurrentInstance().getExternalContext()
+						.redirect("PIAccountantandandAuditorsTool.jsf");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
+
+	
 
 	public String openprojecttest() {
 
@@ -379,7 +356,8 @@ public class ProjectBean implements Serializable {
 			DisabledButtonProject = true;
 			DisabledButtonProjectSendClose = false;
 			if (project3.getTool().equals("PI accountants and auditors")) {
-				return "test3?faces-redirect=true";
+			
+				return "PIAccountantandandAuditorsTool?faces-redirect=true";
 			}
 			if (project3.getTool().equals("Property and Onshore")) {
 				return "test2?faces-redirect=true";
@@ -394,9 +372,9 @@ public class ProjectBean implements Serializable {
 				DisplayRating = "true";
 				DisabledButtonProject = true;
 				DisabledButtonProjectSendClose = false;
-				System.out.println(project3.getTool());
+
 				if (project3.getTool().equals("PI accountants and auditors")) {
-					return "test3?faces-redirect=true";
+					return "PIAccountantandandAuditorsTool?faces-redirect=true";
 				}
 				if (project3.getTool().equals("Property and Onshore")) {
 					return "test2?faces-redirect=true";
@@ -460,7 +438,7 @@ public class ProjectBean implements Serializable {
 				auditServicesLocal.add(audit);
 				DisabledButtonProject = true;
 				DisabledButtonProjectSendClose = false;
-				return "test3?faces-redirect=true";
+				return "PIAccountantandandAuditorsTool?faces-redirect=true";
 			}
 			return null;
 
@@ -667,19 +645,13 @@ public class ProjectBean implements Serializable {
 		context.execute("PF('UploadPDF').hide()");
 	}
 
-	
-	
-	
 	public void cancelbutton() {
 		DisplayMailSubj = false;
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('verif').hide()");
 	}
+
 	// send proj ends
-	
-	
-	
-	
 
 	public void CancelNewProj() {
 		RequestContext context = RequestContext.getCurrentInstance();
@@ -692,6 +664,7 @@ public class ProjectBean implements Serializable {
 		DisplayMailSubj = false;
 	}
 
+	// verify password for project
 	public String verifypassword() {
 
 		if (pwdcheck.equals(project.getPassword())) {
@@ -703,7 +676,7 @@ public class ProjectBean implements Serializable {
 			DisabledButtonProject = true;
 			DisabledButtonProjectSendClose = false;
 			if (project3.getTool().equals("PI accountants and auditors")) {
-				return "test3?faces-redirect=true";
+				return "PIAccountantandandAuditorsTool?faces-redirect=true";
 			} else {
 				if (project3.getTool().equals("Property and Onshore")) {
 					return "test2?faces-redirect=true";
@@ -800,6 +773,8 @@ public class ProjectBean implements Serializable {
 
 	}
 
+	// Opening a received project
+
 	public String OpeningSentProject() {
 
 		project = local.GetProjectById(mailBox.getId_project());
@@ -816,7 +791,7 @@ public class ProjectBean implements Serializable {
 		DisabledButtonProjectSendClose = false;
 		DisplayRating = "true";
 		if (project3.getTool().equals("PI accountants and auditors")) {
-			return "test3?faces-redirect=true";
+			return "PIAccountantandandAuditorsTool?faces-redirect=true";
 		} else {
 			if (project3.getTool().equals("Property and Onshore")) {
 				return "test2?faces-redirect=true";
@@ -833,6 +808,28 @@ public class ProjectBean implements Serializable {
 		DisabledButtonProjectSendClose = true;
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Project_Screen.jsf");
+	}
+
+	// redirection when pressing the rating tool button
+	public void GoToRatingTool() {
+		if (project3.getTool().equals("PI accountants and auditors")) {
+			try {
+				FacesContext.getCurrentInstance().getExternalContext()
+						.redirect("PIAccountantandandAuditorsTool.jsf");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+
+			}
+		} else {
+			try {
+				FacesContext.getCurrentInstance().getExternalContext()
+						.redirect("test2.jsf");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}
+		}
 	}
 
 	// get set
@@ -1174,5 +1171,7 @@ public class ProjectBean implements Serializable {
 	public void setUploadedFile(UploadedFile uploadedFile) {
 		this.uploadedFile = uploadedFile;
 	}
+
+	
 
 }

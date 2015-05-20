@@ -50,10 +50,7 @@
 					<p:chart type="bar" model="#{chartBean.animatedModel2}"
 						style="width:600px;left: 240px;" />
 				</p:tab>
-				<p:tab title="PDF">
-					<pe:documentViewer height="700" width="1000" library="css"
-						name="e.pdf" />
-				</p:tab>
+
 
 
 
@@ -65,11 +62,13 @@
 
 					<p:chart type="line" model="#{chartBean.lineModel1}"
 						style="height:300px;smooth:true" />
-		
+
 				</p:tab>
 			</p:tabView>
+			
 		</ui:define>
 	</ui:composition>
+	
 </h:body>
 <!-- <p:panel id="mas3">
 						<h:form>
@@ -107,4 +106,6 @@
 						</h:form>
 					</p:panel>
  -->
+ <p:dialog id="ss" widgetVar="ss"></p:dialog>
+ 
 </html>

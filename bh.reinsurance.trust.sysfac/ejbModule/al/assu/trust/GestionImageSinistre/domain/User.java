@@ -1,6 +1,7 @@
 package al.assu.trust.GestionImageSinistre.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,6 @@ public class User implements Serializable {
 	private boolean verified;
 	private String emailPwd;
 	private String Theme;
-
 	private String password;
 	private static final long serialVersionUID = 1L;
 

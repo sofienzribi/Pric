@@ -107,10 +107,11 @@ public class MeasureServices implements MeasureServicesLocal {
 	}
 
 	@Override
-	public Measure GetTestingMeasure() {
-		String jpql = "select u from Measure u where u.activeTest =:param1 ";
+	public Measure GetTestingMeasure(String COB) {
+		String jpql = "select u from Measure u where u.activeTest =:param1 and u.classofbusiness=:param2  ";
 		Query query = entityManager.createQuery(jpql).setParameter("param1",
-				true);
+				true).setParameter("param2",
+						COB);
 		try {
 			return (Measure) query.getSingleResult();
 		} catch (Exception e) {
@@ -118,5 +119,12 @@ public class MeasureServices implements MeasureServicesLocal {
 			System.out.println("No Testing Measure");
 			return null;
 		}
+	}
+
+	@Override
+	public List<Measure> GetMeasuresByClass(String COB) {
+		Query query = entityManager.createQuery("select a from Measure a where a.classofbusiness=:param1");
+		query.setParameter("param1",COB);
+		return query.getResultList();
 	}
 }
