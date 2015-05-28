@@ -11,11 +11,12 @@
 		<ui:define name="title">Notify Users</ui:define>
 		<ui:define name="content">
 			<h:form id="Notif">
+			<p:growl autoUpdate="tru"></p:growl>
 				<p:panelGrid columns="2" style="width:400px">
 					<f:facet name="header">User Notification</f:facet>
 					<f:facet name="footer">
 						<p:commandButton style="left:130px" icon="ui-icon-check"
-							value="SendMsgToUSers" actionListener="#{admin.ff}" />
+							value="SendMsgToUSers" actionListener="#{admin.SendNotif}" />
 					</f:facet>
 					<p:outputLabel value="Title" />
 					<p:inputText value="#{admin.title}" required="true"

@@ -43,7 +43,7 @@
 							</ul></li>
 
 						<li class="dropdown" style="display:#{projectBean.displayRating}"><a
-							onclick="rc();" class="dropdown-toggle needsclick"
+							onclick="Rating();" class="dropdown-toggle needsclick"
 							data-toggle="dropdown"> <p:graphicImage width="19px"
 									value="/resources/images/percentage.png" /> <span>Rating
 									tool</span>
@@ -52,22 +52,12 @@
 
 
 						<li class="dropdown" style="display:#{measure.displayMeasureMenu}"><a
-							href="#" class="dropdown-toggle needsclick"
-							data-toggle="dropdown"> <i class="fa fa-tasks"></i> <span>Measures</span>
-								<b class="caret"></b>
+							onclick="Measure();" class="dropdown-toggle needsclick"
+							data-toggle="dropdown"> <p:graphicImage width="19px"
+									value="/resources/images/percentage.png" /> <span>Measures
+							</span>
+						</a></li>
 
-						</a>
-
-							<ul class="dropdown-menu">
-								<li><p:commandLink
-										actionListener="#{redirectionBean.GoToFactors()}"
-										value="Factors" /></li>
-								<li><p:commandLink value="Occupancies" /></li>
-
-								<li><p:commandLink value="Ded Tables" /></li>
-								<li><p:commandLink value="Loss prevention" /></li>
-								<li><p:commandLink value="Fire Fighting" /></li>
-							</ul></li>
 
 
 
@@ -179,8 +169,10 @@
 
 							</p:commandLink></li>
 					</ul>
-					<p:remoteCommand name="rc"
+					<p:remoteCommand name="Rating"
 						actionListener="#{projectBean.GoToRatingTool()}"></p:remoteCommand>
+					<p:remoteCommand name="Measure"
+						actionListener="#{measure.GoToMeasure()}"></p:remoteCommand>
 				</h:form>
 
 			</div>

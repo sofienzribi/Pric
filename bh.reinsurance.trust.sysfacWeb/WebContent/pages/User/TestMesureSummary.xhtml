@@ -12,100 +12,74 @@
 		<ui:define name="content">
 			<p:tabView style="width:1200px">
 				<p:tab title="Summary">
-					<p:panel id="FacInfo">
-						
+
+
+					<p:panel style="position:relative;left:100px;width:920px" id="summ">
+
 						<h:form id="FacInfoForm">
-							<p:panelGrid columns="2" id="Detailsandcomparaisons">
-								<p:panelGrid style="width:550px" id="SelectedFac" columns="2">
-								<f:facet name="header">Working Measure</f:facet>
-									
-									<p:outputLabel value="Nbr" />
+							<p:panelGrid columns="3" id="Detailsandcomparaisons">
+								<p:panelGrid style="width:350px" id="SelectedFac" columns="2">
+									<f:facet name="header">Working Measure</f:facet>
+
+									<p:outputLabel value=" Total Premium " />
 									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.countries}" />
-									<p:outputLabel value="Country" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.countries}" />
-									<p:outputLabel value="Occupancy" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.occupencies}" />
-								
-									<p:outputLabel value="Total premium" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.suminsured}" />
-										<p:outputLabel value=" AVG Premium" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.commission}" />
-									<p:outputLabel value="Total Commission " />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.our_liability}" />
-									
-									<p:outputLabel value=" AVG Commission" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.commission}" />
-									
+										value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.GetTheTotalPremium(plAccountAuditorsRatingBean.GetWorkingMeasureId(measure.workingMeasure.classofbusiness)))
+										}" />
+
 									<f:facet name="footer">
 										<h:panelGroup style="display:block; text-align:center">
-										
+
+										</h:panelGroup>
+									</f:facet>
+								</p:panelGrid>
+
+								<h:form id="Compfacultative">
+									<p:panelGrid style="width:350px" id="CompareFac" columns="2">
+										<f:facet name="header">Test Measure</f:facet>
+										<p:outputLabel value=" Total Premium " />
+										<p:outputLabel
+											value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.GetTheTotalPremium(measure.workingMeasure.id))}" />
+										<f:facet name="footer">
+											<h:panelGroup style="display:block; text-align:center">
+											</h:panelGroup>
+										</f:facet>
+									</p:panelGrid>
+
+								</h:form>
+								<p:panelGrid id="pane3" columns="1">
+									<f:facet name="header"> Difference</f:facet>
+
+
+									<p:outputLabel value="#{plAccountAuditorsRatingBean.GetFormatresult(((plAccountAuditorsRatingBean.GetTheTotalPremium(plAccountAuditorsRatingBean.GetWorkingMeasureId(measure.workingMeasure.classofbusiness)))
+									)-(plAccountAuditorsRatingBean.GetTheTotalPremium(measure.workingMeasure.id)))}"  style="width:100px"/>
+
+									<f:facet name="footer">
+										<h:panelGroup style="display:block; text-align:center">
+
 										</h:panelGroup>
 									</f:facet>
 								</p:panelGrid>
 
 
-								<h:form id="Compfacultative">
-									<p:panelGrid style="width:550px" id="CompareFac" columns="2" >
-									<f:facet name="header" >Test Measure</f:facet>
-									<p:outputLabel value="Nbr" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.countries}" />
-								
-										<p:outputLabel value="Country" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.countries}" />
-									<p:outputLabel value="Occupancy" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.occupencies}" />
-								
-									<p:outputLabel value="Total premium" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.suminsured}" />
-										<p:outputLabel value=" AVG Premium" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.commission}" />
-									<p:outputLabel value="Total Commission " />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.our_liability}" />
-									
-									<p:outputLabel value=" AVG Commission" />
-									<p:outputLabel
-										value="#{facultativeBean.facbychoice1.commission}" />
-									
-									
-										<f:facet name="footer">
-											<h:panelGroup style="display:block; text-align:center">
-											
-											</h:panelGroup>
-										</f:facet>
-									</p:panelGrid>
-								</h:form>
 								<f:facet name="header">
 								Summary
 								</f:facet>
 								<f:facet name="footer">
-								<h:panelGroup style="display:block; text-align:center">
-												<p:commandLink >
-								<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
-									width="24" />
-							</p:commandLink>
-											</h:panelGroup>
-								
+									<h:panelGroup style="display:block; text-align:center">
+										<p:commandLink>
+											<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
+												width="24" />
+										</p:commandLink>
+									</h:panelGroup>
+
 								</f:facet>
 							</p:panelGrid>
 						</h:form>
 					</p:panel>
 
 				</p:tab>
-				<p:tab title="facultatives by bands">
-
+				<p:tab title="Details ">
+				Please Select a Quotation !
 				</p:tab>
 
 

@@ -10,7 +10,10 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +54,7 @@ import al.assu.trust.GestionImageSinistre.domain.PIaccandAudit;
 import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.domain.Summary;
 import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.domain.UserTrace;
 import al.assu.trust.GestionImageSinistre.impl.AssetsServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.MailBoxServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.OfferServicesLocal;
@@ -58,6 +62,7 @@ import al.assu.trust.GestionImageSinistre.impl.PlaccandAuditServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.SummaryServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.UserTraceServicesLocal;
 
 @ManagedBean()
 @SessionScoped
@@ -67,7 +72,6 @@ public class ProjectBean implements Serializable {
 
 	@ManagedProperty("#{login.getUser()}")
 	private User user2;
-
 
 	private boolean passwordmsg;
 	private String pwdcheck;
@@ -103,6 +107,10 @@ public class ProjectBean implements Serializable {
 	private MailBoxServicesLocal mailBoxServicesLocal;
 	@EJB
 	private PlaccandAuditServicesLocal auditServicesLocal;
+	@EJB
+	private UserTraceServicesLocal userTraceServicesLocal;
+
+	private UserTrace userTrace;
 
 	private User UserDestination;
 	private MailBox mailBox;
@@ -258,7 +266,9 @@ public class ProjectBean implements Serializable {
 					.GetByIdProject(proojectbyuser.getId());
 			auditServicesLocal.delete(audit1);
 		}
-
+		userTrace = new UserTrace("Delete Project", user2.getId(),
+				"Project Name : " + proojectbyuser.getNameOfTheProject());
+		userTraceServicesLocal.AddTrace(userTrace);
 		local.DeleteProject(proojectbyuser.getId());
 
 		projectsbyuser = local.GetProjectsByUser(user2);
@@ -269,9 +279,48 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void OnProjManSelect() {
-		System.out.println("L id est " + proojectbyuser.getNameOfTheProject());
 		DisplayProjectManagButton = true;
 
+	}
+
+	public String FormatDate(Date date) {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		return dateFormat.format(date);
+	}
+
+	public String GetCalendarMinDate() {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		return dateFormat.format(new Date());
+	}
+
+	private List<Project> ProjectExpringThisMonth = new ArrayList<Project>();
+
+	public void GoToProjectExpiringThisMonth() {
+
+		List<Project> proj = new ArrayList<Project>();
+		for (Project a : projectsbyuser) {
+			if ((a.getExpiry_date().getMonth() == new Date().getMonth())
+					&& (a.getExpiry_date().getYear() == new Date().getYear())) {
+				proj.add(a);
+			}
+		}
+
+		ProjectExpringThisMonth = proj;
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('diag1').show();");
+	}
+
+	public int GetProjectExpThisMonth() {
+		int a = 0;
+
+		for (Project b : projectsbyuser) {
+			if ((b.getExpiry_date().getMonth() == new Date().getMonth())
+					&& (b.getExpiry_date().getYear() == new Date().getYear())) {
+				a++;
+			}
+		}
+
+		return a;
 	}
 
 	public int GetMails() {
@@ -344,8 +393,6 @@ public class ProjectBean implements Serializable {
 		}
 	}
 
-	
-
 	public String openprojecttest() {
 
 		if (project.getPrivacy() == true) {
@@ -356,7 +403,10 @@ public class ProjectBean implements Serializable {
 			DisabledButtonProject = true;
 			DisabledButtonProjectSendClose = false;
 			if (project3.getTool().equals("PI accountants and auditors")) {
-			
+
+				userTrace = new UserTrace("Open project", user2.getId(),
+						"project name:" + project3.getNameOfTheProject());
+				userTraceServicesLocal.AddTrace(userTrace);
 				return "PIAccountantandandAuditorsTool?faces-redirect=true";
 			}
 			if (project3.getTool().equals("Property and Onshore")) {
@@ -392,7 +442,6 @@ public class ProjectBean implements Serializable {
 	}
 
 	public String createprojtest() {
-		System.out.println(project2.getTool());
 		if (local.Nameexist(project2.getNameOfTheProject())) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -438,6 +487,9 @@ public class ProjectBean implements Serializable {
 				auditServicesLocal.add(audit);
 				DisabledButtonProject = true;
 				DisabledButtonProjectSendClose = false;
+				userTrace = new UserTrace("Create project", user2.getId(),
+						"project name:" + project3.getNameOfTheProject());
+				userTraceServicesLocal.AddTrace(userTrace);
 				return "PIAccountantandandAuditorsTool?faces-redirect=true";
 			}
 			return null;
@@ -515,10 +567,13 @@ public class ProjectBean implements Serializable {
 				mailBoxServicesLocal.CreateMailBox(box);
 				setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2
 						.getId()));
+				userTrace = new UserTrace("Send project", user2.getId(),
+						"project name:" + project3.getNameOfTheProject());
+				userTraceServicesLocal.AddTrace(userTrace);
 				NumberProjectReceived = GetMails();
 				box = new MailBox();
 				SendToUsers = new ArrayList<User>();
-				System.out.println("am here");
+
 				context.execute("PF('statusDialog').hide();");
 				FacesContext.getCurrentInstance().addMessage(
 						"e",
@@ -602,6 +657,10 @@ public class ProjectBean implements Serializable {
 					// Send message
 
 					Transport.send(message);
+					userTrace = new UserTrace("Send project", user2.getId(),
+							"project name:" + project3.getNameOfTheProject()
+									+ " sent via email");
+					userTraceServicesLocal.AddTrace(userTrace);
 					setMailBoxs(mailBoxServicesLocal.GetMailBoxByUserId(user2
 							.getId()));
 					NumberProjectReceived = GetMails();
@@ -613,7 +672,7 @@ public class ProjectBean implements Serializable {
 									"project Sent!", ""));
 					System.out.println("message sent successfully....");
 				} catch (MessagingException e) {
-					System.out.println("ff sofien");
+					System.out.println("Problems sofien");
 
 					e.printStackTrace();
 				}
@@ -676,6 +735,9 @@ public class ProjectBean implements Serializable {
 			DisabledButtonProject = true;
 			DisabledButtonProjectSendClose = false;
 			if (project3.getTool().equals("PI accountants and auditors")) {
+				userTrace = new UserTrace("Open project", user2.getId(),
+						"project name:" + project3.getNameOfTheProject());
+				userTraceServicesLocal.AddTrace(userTrace);
 				return "PIAccountantandandAuditorsTool?faces-redirect=true";
 			} else {
 				if (project3.getTool().equals("Property and Onshore")) {
@@ -790,6 +852,9 @@ public class ProjectBean implements Serializable {
 		DisabledButtonProject = true;
 		DisabledButtonProjectSendClose = false;
 		DisplayRating = "true";
+		userTrace = new UserTrace("Open project", user2.getId(),
+				"project name :" + project3.getNameOfTheProject());
+		userTraceServicesLocal.AddTrace(userTrace);
 		if (project3.getTool().equals("PI accountants and auditors")) {
 			return "PIAccountantandandAuditorsTool?faces-redirect=true";
 		} else {
@@ -801,7 +866,9 @@ public class ProjectBean implements Serializable {
 	}
 
 	public void CloseDProject() throws IOException {
-
+		userTrace = new UserTrace("Close project", user2.getId(),
+				"project name:" + project3.getNameOfTheProject());
+		userTraceServicesLocal.AddTrace(userTrace);
 		project3 = new Project();
 		DisplayRating = "none";
 		DisabledButtonProject = false;
@@ -830,6 +897,30 @@ public class ProjectBean implements Serializable {
 				System.out.println(e.getMessage());
 			}
 		}
+	}
+
+	// making the project quoted
+	public void MakeThisProjectQuoted() {
+		if (project3.getQuoted_Date() != null) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Project Already quoted!", ""));
+		} else {
+
+			project3.setQuoted_Date(new Date());
+			local.UpdateProject(project3);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Project Quoted!", ""));
+		}
+
+	}
+
+	public String GetQuotedDate() {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		return dateFormat.format(project3.getQuoted_Date());
 	}
 
 	// get set
@@ -1172,6 +1263,20 @@ public class ProjectBean implements Serializable {
 		this.uploadedFile = uploadedFile;
 	}
 
-	
+	public UserTrace getUserTrace() {
+		return userTrace;
+	}
+
+	public void setUserTrace(UserTrace userTrace) {
+		this.userTrace = userTrace;
+	}
+
+	public List<Project> getProjectExpringThisMonth() {
+		return ProjectExpringThisMonth;
+	}
+
+	public void setProjectExpringThisMonth(List<Project> projectExpringThisMonth) {
+		ProjectExpringThisMonth = projectExpringThisMonth;
+	}
 
 }

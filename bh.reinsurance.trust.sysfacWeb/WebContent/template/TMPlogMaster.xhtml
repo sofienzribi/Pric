@@ -39,7 +39,7 @@ body {
 					<p class="float">
 						<label for="login"><i class="icon-user"></i>Username</label>
 						<p:inputText value="#{login.user.login}" required="true"
-							requiredMessage="Login required" placeholder="login"></p:inputText>
+							requiredMessage="Username required" placeholder="username"></p:inputText>
 					</p>
 					<p class="float">
 						<label for="password"><i class="icon-lock"></i>Password</label>
@@ -47,17 +47,24 @@ body {
 							requiredMessage="Password required" placeholder="password"></p:password>
 					</p>
 					<p class="clearfix">
-						<p:outputLabel value="Remember Login  " />
-						<p:selectBooleanCheckbox id="re" value="#{login.remember}" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Remember username  " style="position:relative;left:100px" />
+						<p:selectBooleanCheckbox id="re"  style="position:relative;left:110px;top:-5px" value="#{login.remember}" />
+						</h:panelGrid>
 					</p>
 
+					<!-- <p:commandButton value="Login" update="@form" icon="ui-icon-key"
+						action="#{login.login()}" >
+						
+						</p:commandButton>
+ -->
 
 
-
-					<p:commandButton value="Login" update="@form" icon="ui-icon-key"
-						action="#{login.login()}" />
-				</h:form> 
-				</section>
+					<p:commandLink update="@form"  action="#{login.login()}" >
+						<p:graphicImage value="/resources/images/dd.png"
+									width="85" />
+						</p:commandLink>
+				</h:form> </section>
 			</div>
 		</div>
 

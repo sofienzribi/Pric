@@ -11,10 +11,10 @@
 		<ui:define name="title">Facultative information </ui:define>
 		<ui:define name="content">
 
-			<div>
+			<div style="position: relative;top: -50px">
 				<h2 style="color: black; bold: true; font-weight: bold;">FACULTATIVES</h2>
 			</div>
-			<p:panel id="master">
+			<p:panel id="master" style="position: relative;top: -50px">
 				<h:form>
 					<h:panelGrid id="eu" columns="2">
 						<h:outputLabel value="Region" />
@@ -50,7 +50,7 @@
 				</h:form>
 			</p:panel>
 
-			<p:panel id="details" visible="#{facultativeBean.testaff}">
+			<p:panel style="position: relative;top: -50px" id="details" visible="#{facultativeBean.testaff}">
 				<h:form id="details_form">
 					<p:dataTable id="tbl" emptyMessage="no fac found!"
 						value="#{facultativeBean.facbychoice}" var="prod" rows="10"
@@ -91,7 +91,7 @@
 				</h:form>
 			</p:panel>
 
-			<p:panel id="FacInfo" visible="#{facultativeBean.displayDeatils}">
+			<p:panel style="position: relative;top: -50px" id="FacInfo" visible="#{facultativeBean.displayDeatils}">
 				<h2>Details</h2>
 				<h:form id="FacInfoForm">
 					<p:panelGrid columns="2" id="Detailsandcomparaisons">

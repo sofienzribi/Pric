@@ -1,11 +1,11 @@
 package al.assu.trust.GestionImageSinistre.services;
 
-import javax.ejb.EJB;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import al.assu.trust.GestionImageSinistre.domain.Offer;
 import al.assu.trust.GestionImageSinistre.domain.PIaccandAudit;
 import al.assu.trust.GestionImageSinistre.impl.PlaccandAuditServicesLocal;
 
@@ -51,10 +51,16 @@ public class PlaccandAuditServices implements PlaccandAuditServicesLocal {
 
 	@Override
 	public PIaccandAudit GetByIdProject(int id) {
-		return  (PIaccandAudit) entityManager
+		return (PIaccandAudit) entityManager
 				.createQuery("select p from PIaccandAudit p where p.idproj=:c")
 				.setParameter("c", id).getSingleResult();
-		
+
+	}
+
+	@Override
+	public List<PIaccandAudit> Getall() {
+		return entityManager.createQuery("select p from PIaccandAudit p ")
+				.getResultList();
 	}
 
 }

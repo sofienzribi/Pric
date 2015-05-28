@@ -20,6 +20,14 @@ public class PlaccountantandauditorsMeasure implements Serializable {
 	private HashMap<String, String> BookKeepingAndAudit;
 	private HashMap<String, String> managementAdvisory;
 	private HashMap<String, String> ForcastProjection;
+	private HashMap<String, String> PayrollServices;
+	private HashMap<String, String> Fiduciary;
+	private HashMap<String, String> TaxPreparation;
+	private HashMap<String, String> SecuritiesRelated;
+	private HashMap<String, String> FinancialPlanning;
+	private HashMap<String, String> SpecialClientProfileList;
+	private HashMap<String, String> ExtendedReport;
+	private HashMap<String, String> RetrospectiveCovers;
 	private static final long serialVersionUID = 1L;
 
 	public PlaccountantandauditorsMeasure() {
@@ -67,6 +75,73 @@ public class PlaccountantandauditorsMeasure implements Serializable {
 
 	public void setIdMeasure(int idMeasure) {
 		this.idMeasure = idMeasure;
+	}
+
+	public HashMap<String, String> getPayrollServices() {
+		return PayrollServices;
+	}
+
+	public void setPayrollServices(HashMap<String, String> payrollServices) {
+		PayrollServices = payrollServices;
+	}
+
+	public HashMap<String, String> getFiduciary() {
+		return Fiduciary;
+	}
+
+	public void setFiduciary(HashMap<String, String> fiduciary) {
+		Fiduciary = fiduciary;
+	}
+
+	public HashMap<String, String> getSecuritiesRelated() {
+		return SecuritiesRelated;
+	}
+
+	public void setSecuritiesRelated(HashMap<String, String> securitiesRelated) {
+		SecuritiesRelated = securitiesRelated;
+	}
+
+	public HashMap<String, String> getFinancialPlanning() {
+		return FinancialPlanning;
+	}
+
+	public void setFinancialPlanning(HashMap<String, String> financialPlanning) {
+		FinancialPlanning = financialPlanning;
+	}
+
+	public HashMap<String, String> getTaxPreparation() {
+		return TaxPreparation;
+	}
+
+	public void setTaxPreparation(HashMap<String, String> taxPreparation) {
+		TaxPreparation = taxPreparation;
+	}
+
+
+	public HashMap<String, String> getSpecialClientProfileList() {
+		return SpecialClientProfileList;
+	}
+
+	public void setSpecialClientProfileList(
+			HashMap<String, String> specialClientProfileList) {
+		SpecialClientProfileList = specialClientProfileList;
+	}
+
+	public HashMap<String, String> getExtendedReport() {
+		return ExtendedReport;
+	}
+
+	public void setExtendedReport(HashMap<String, String> extendedReport) {
+		ExtendedReport = extendedReport;
+	}
+
+	public HashMap<String, String> getRetrospectiveCovers() {
+		return RetrospectiveCovers;
+	}
+
+	public void setRetrospectiveCovers(
+			HashMap<String, String> retrospectiveCovers) {
+		RetrospectiveCovers = retrospectiveCovers;
 	}
 
 }

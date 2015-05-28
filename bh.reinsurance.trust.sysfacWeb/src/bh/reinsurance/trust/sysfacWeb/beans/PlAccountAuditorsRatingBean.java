@@ -34,10 +34,13 @@ import al.assu.trust.GestionImageSinistre.domain.PIaccandAudit;
 import al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure;
 import al.assu.trust.GestionImageSinistre.domain.Project;
 import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.domain.UserTrace;
 import al.assu.trust.GestionImageSinistre.impl.CrudBasicLocal;
 import al.assu.trust.GestionImageSinistre.impl.MeasureServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.PlaccandAuditServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.UserTraceServicesLocal;
 
 @ManagedBean
 @ViewScoped
@@ -47,12 +50,9 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<Double, String> practice1;
 	final Locale us = Locale.US;
-	private Map<Double, String> practice2;
 	private Map<Integer, String> Incuredlosseslist;
 	private Map<Integer, String> NumberOfClaimsList;
-	private Map<Integer, String> SpecialClientProfileList;
 	private Map<Integer, String> CoverExtensionsList;
 	private Map<Integer, String> CoverExtensionsList2;
 	private Map<Integer, String> AggregateLimitList;
@@ -125,6 +125,12 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private MeasureServicesLocal measureServicesLocal;
 	@EJB
 	private CrudBasicLocal crudBasicLocal;
+	// Measure var
+	private String Selection;
+	// Tracking users
+	private UserTrace userTrace;
+	@EJB
+	private UserTraceServicesLocal userTraceServicesLocal;
 
 	// constr
 	public PlAccountAuditorsRatingBean() {
@@ -135,24 +141,25 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	}
 
-	private String es;
-
 	@PostConstruct
 	public void init() {
-		resetTestMeasureOnOPeningBean();
-		measures = measureServicesLocal
-				.GetMeasuresByClass("PI accountants and auditors");
 
-		measure = measureServicesLocal
-				.GetWorkingMeasure("PI accountants and auditors");
-		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
-				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
-						measure.getId());
-		DisplayTextArea = false;
+		if (project3.getId() != 0) {
 
-		iaccandAudittosave = auditServicesLocal
-				.GetByIdProject(project3.getId());
-		OperationWhenopeningTool();
+			resetTestMeasureOnOPeningBean();
+			measures = measureServicesLocal
+					.GetMeasuresByClass("PI accountants and auditors");
+			measure = measureServicesLocal
+					.GetWorkingMeasure("PI accountants and auditors");
+			measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+					.FindByFilter("PlaccountantandauditorsMeasure",
+							"idMeasure", measure.getId());
+			DisplayTextArea = false;
+			iaccandAudittosave = auditServicesLocal.GetByIdProject(project3
+					.getId());
+
+			OperationWhenopeningTool();
+		}
 
 	}
 
@@ -165,49 +172,10 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		Incuredlosseslist.put(4, "500,00-1,000,000");
 		Incuredlosseslist.put(5, "1,000,000 or more");
 
-		practice1 = new HashMap<Double, String>();
-		practice1.put(0.0, "0-59%");
-		practice1.put(0.1, "60-79%");
-		practice1.put(0.15, "80% or more");
-
-		practice2 = new HashMap<Double, String>();
-		practice2.put(0.0, "0-24%");
-		practice2.put(0.1, "25-49%");
-		practice2.put(0.15, "50% or more");
-
-		SpecialClientProfileList = new HashMap<Integer, String>();
-		SpecialClientProfileList.put(1, "yes");
-		SpecialClientProfileList.put(2, "false");
-
 		NumberOfClaimsList = new HashMap<Integer, String>();
 		NumberOfClaimsList.put(1, "0");
 		NumberOfClaimsList.put(2, "0-2");
 		NumberOfClaimsList.put(3, "2 or more");
-
-		CoverExtensionsList = new HashMap<Integer, String>();
-		CoverExtensionsList.put(0, "0");
-		CoverExtensionsList.put(1, "1");
-		CoverExtensionsList.put(2, "2");
-		CoverExtensionsList.put(3, "3");
-		CoverExtensionsList.put(4, "4");
-		CoverExtensionsList.put(5, "5");
-		CoverExtensionsList.put(6, "6");
-		CoverExtensionsList.put(7, "7");
-		CoverExtensionsList.put(8, "8");
-		CoverExtensionsList.put(9, "9");
-		CoverExtensionsList.put(10, "10");
-		CoverExtensionsList2 = new HashMap<Integer, String>();
-		CoverExtensionsList2.put(0, "0");
-		CoverExtensionsList2.put(1, "1");
-		CoverExtensionsList2.put(2, "2");
-		CoverExtensionsList2.put(3, "3");
-		CoverExtensionsList2.put(4, "4");
-		CoverExtensionsList2.put(5, "5");
-		CoverExtensionsList2.put(6, "6");
-		CoverExtensionsList2.put(7, "7");
-		CoverExtensionsList2.put(8, "8");
-		CoverExtensionsList2.put(9, "9");
-		CoverExtensionsList2.put(10, "10");
 
 		AggregateLimitList = new HashMap<Integer, String>();
 		AggregateLimitList.put(1, "1");
@@ -218,82 +186,37 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	}
 
 	public void SaveRating() {
-		if(measure.getActiveTest()==true){
-			FacesContext.getCurrentInstance()
-			.addMessage(
-					"messages1",
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"You cant save this rating because you are not using the working measure", ""));
-		}else{
-			
-		
-		iaccandAudittosave.setIdproj(project3.getId());
-		auditServicesLocal.update(iaccandAudittosave);
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						"messages1",
-						new FacesMessage(FacesMessage.SEVERITY_INFO,
-								"Rating Saved", ""));
-		}
-	}
-
-	public void resetTestMeasureOnOPeningBean() {
-		measures = measureServicesLocal
-				.GetMeasuresByClass("PI accountants and auditors");
-		for (int i = 0; i < measures.size(); i++) {
-			Measure measuree = measures.get(i);
-			measuree.setActiveTest(false);
-			measureServicesLocal.UpdateMeasure(measuree);
-		}
-
-	}
-
-	public void ResetMeasureOnClick() {
-		resetTestMeasureOnOPeningBean();
-		measures = measureServicesLocal
-				.GetMeasuresByClass("PI accountants and auditors");
-		measure = measureServicesLocal
-				.GetWorkingMeasure("PI accountants and auditors");
-		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
-				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
-						measure.getId());
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("PF('POPMeasure').hide();");
-		FacesContext.getCurrentInstance()
-		.addMessage(
-				"messages1",
-				new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Measure Reset", ""));
-	}
-
-	public void TestingOtherMeasure() throws IOException {
-		testMeasure.setActiveTest(true);
-		measureServicesLocal.UpdateMeasure(testMeasure);
-		measures = measureServicesLocal
-				.GetMeasuresByClass("PI accountants and auditors");
-		for (int i = 0; i < measures.size(); i++) {
-			if (measures.get(i).getId() != testMeasure.getId()) {
-				Measure measuree = measures.get(i);
-				measuree.setActiveTest(false);
-				measureServicesLocal.UpdateMeasure(measuree);
+		if ((measure.getActiveTest() == true)
+				|| (project3.getQuoted_Date() != null)) {
+			if ((measure.getActiveTest() == true)) {
+				FacesContext
+						.getCurrentInstance()
+						.addMessage(
+								"messages1",
+								new FacesMessage(
+										FacesMessage.SEVERITY_ERROR,
+										"You cant save this rating because you are not using the working measure",
+										""));
 			}
+			FacesContext.getCurrentInstance().addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"You cant save a quoted rating", ""));
+		} else {
+
+			iaccandAudittosave.setIdproj(project3.getId());
+			auditServicesLocal.update(iaccandAudittosave);
+			User user = new User();
+			user = userServicesLocal.GetUserByid(project3.getUser());
+			userTrace = new UserTrace("Send project", user.getId(),
+					"project name:" + project3.getNameOfTheProject()
+							+ " sent via email");
+			userTraceServicesLocal.AddTrace(userTrace);
+			FacesContext.getCurrentInstance().addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Rating Saved", ""));
 		}
-
-		measure = new Measure();
-		measure = measureServicesLocal
-				.GetTestingMeasure("PI accountants and auditors");
-		System.out.println(measure.getId());
-		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
-				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
-						measure.getId());
-		FacesContext.getCurrentInstance()
-		.addMessage(
-				"messages1",
-				new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Test measure Set", ""));
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("PF('POPMeasure').hide();");
-
 	}
 
 	public void OperationWhenopeningTool() {
@@ -325,6 +248,83 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		extendedReportChange();
 
 	}
+
+	// Testing measure management begin
+	public void resetTestMeasureOnOPeningBean() {
+		measures = measureServicesLocal
+				.GetMeasuresByClass("PI accountants and auditors");
+		for (int i = 0; i < measures.size(); i++) {
+			Measure measuree = measures.get(i);
+			measuree.setActiveTest(false);
+			measureServicesLocal.UpdateMeasure(measuree);
+		}
+
+	}
+
+	public void ResetMeasureOnClick() {
+		resetTestMeasureOnOPeningBean();
+		measures = measureServicesLocal
+				.GetMeasuresByClass("PI accountants and auditors");
+		measure = measureServicesLocal
+				.GetWorkingMeasure("PI accountants and auditors");
+		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
+		iaccandAudittosave = auditServicesLocal
+				.GetByIdProject(project3.getId());
+		OperationWhenopeningTool();
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('POPMeasure').hide();");
+		FacesContext.getCurrentInstance().addMessage(
+				"messages1",
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Measure Reset",
+						""));
+	}
+
+	public void TestingOtherMeasure() throws IOException {
+		testMeasure.setActiveTest(true);
+		measureServicesLocal.UpdateMeasure(testMeasure);
+		measures = measureServicesLocal
+				.GetMeasuresByClass("PI accountants and auditors");
+		for (int i = 0; i < measures.size(); i++) {
+			if (measures.get(i).getId() != testMeasure.getId()) {
+				Measure measuree = measures.get(i);
+				measuree.setActiveTest(false);
+				measureServicesLocal.UpdateMeasure(measuree);
+			}
+		}
+
+		measure = new Measure();
+		measure = measureServicesLocal
+				.GetTestingMeasure("PI accountants and auditors");
+		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
+		try {
+			GetAllFactorsOnOpeing();
+			FacesContext.getCurrentInstance().addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Test measure Set", ""));
+		} catch (Exception e) {
+			iaccandAudittosave = new PIaccandAudit();
+			GetAllFactorsOnOpeing();
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"messages1",
+							new FacesMessage(
+									FacesMessage.SEVERITY_INFO,
+									"Parameters for the test mesure doesnt fit with the working measure",
+									"All the factors will be reinitialized"));
+		}
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('POPMeasure').hide();");
+
+	}
+
+	// Testing Measure management end
 
 	// calculation of the expenses loading begin
 
@@ -449,6 +449,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	}
 
 	public void incuredLossAndNoOfClaimsChange() {
+
 		if (iaccandAudittosave.getIncuredlosses().equals("0")
 				&& iaccandAudittosave.getNoofclaims().equals("0")) {
 			Incuredlossesandnumberofclaimsfactor = -0.05;
@@ -488,10 +489,13 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	}
 
 	public void SpecialClientChange() {
-		if (iaccandAudittosave.getSpecialClientProfileList().equals("yes")) {
-			specialclientlistfactor = 0.25;
+
+		if (iaccandAudittosave.getSpecialClientProfileList().equals("null")) {
+
 		} else {
-			specialclientlistfactor = 0;
+			specialclientlistfactor = Double.parseDouble(measureFactors
+					.getSpecialClientProfileList().get(
+							iaccandAudittosave.getSpecialClientProfileList())) / 100;
 		}
 		CalculateTotalOtherLoadings();
 
@@ -503,172 +507,110 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	public void bookingandauditChange() {
 
-		if (iaccandAudittosave.getBookkeepingandaudit().equals("0-59%")
-				|| iaccandAudittosave.getBookkeepingandaudit().equals("null")) {
+		if (iaccandAudittosave.getBookkeepingandaudit().equals("null")) {
 
 			Bookingandauditfactor = 0;
 
-		}
-		if (iaccandAudittosave.getBookkeepingandaudit().equals("60-79%")) {
-
-			Bookingandauditfactor = 0.10;
-
-		}
-
-		if (iaccandAudittosave.getBookkeepingandaudit().equals("80% or more")) {
-
-			Bookingandauditfactor = 0.15;
-
+		} else {
+			Bookingandauditfactor = Double.parseDouble(measureFactors
+					.getBookKeepingAndAudit().get(
+							iaccandAudittosave.getBookkeepingandaudit())) / 100;
 		}
 		calcultotalpracticespeciality();
 
 	}
 
 	public void Manageadvisorychange() {
-		if (iaccandAudittosave.getManagementAdvisory().equals("0-59%")
-				|| iaccandAudittosave.getManagementAdvisory().equals("null")) {
+		if (iaccandAudittosave.getManagementAdvisory().equals("null")) {
 
 			managementadvisoryfactor = 0;
 
+		} else {
+			managementadvisoryfactor = Double.parseDouble(measureFactors
+					.getManagementAdvisory().get(
+							iaccandAudittosave.getManagementAdvisory())) / 100;
 		}
-		if (iaccandAudittosave.getManagementAdvisory().equals("60-79%")) {
 
-			managementadvisoryfactor = 0.10;
-
-		}
-
-		if (iaccandAudittosave.getManagementAdvisory().equals("80% or more")) {
-
-			managementadvisoryfactor = 0.15;
-
-		}
 		calcultotalpracticespeciality();
 	}
 
 	public void forecastChange() {
-		if (iaccandAudittosave.getForecast().equals("0-59%")
-				|| iaccandAudittosave.getManagementAdvisory().equals("null")) {
+		if (iaccandAudittosave.getForecast().equals("null")
+				|| iaccandAudittosave.getForecast().equals("")) {
 
 			forecastsfactor = 0;
 
+		} else {
+			forecastsfactor = Double.parseDouble(measureFactors
+					.getForcastProjection().get(
+							iaccandAudittosave.getForecast())) / 100;
 		}
-		if (iaccandAudittosave.getForecast().equals("60-79%")) {
 
-			forecastsfactor = 0.10;
-
-		}
-
-		if (iaccandAudittosave.getForecast().equals("80% or more")) {
-
-			forecastsfactor = 0.15;
-
-		}
 		calcultotalpracticespeciality();
 	}
 
 	public void payrollChange() {
-		if (iaccandAudittosave.getPayrollservices().equals("0-59%")
-				|| iaccandAudittosave.getManagementAdvisory().equals("null")) {
+		if (iaccandAudittosave.getManagementAdvisory().equals("null")) {
 
 			payrollfactor = 0;
 
+		} else {
+			payrollfactor = Double.parseDouble(measureFactors
+					.getPayrollServices().get(
+							iaccandAudittosave.getPayrollservices())) / 100;
 		}
-		if (iaccandAudittosave.getPayrollservices().equals("60-79%")) {
 
-			payrollfactor = 0.10;
-
-		}
-
-		if (iaccandAudittosave.getPayrollservices().equals("80% or more")) {
-
-			payrollfactor = 0.15;
-
-		}
 		calcultotalpracticespeciality();
 	}
 
 	public void fiduciaryChange() {
-		if (iaccandAudittosave.getFiduciary().equals("0-24%")
-				|| iaccandAudittosave.getManagementAdvisory().equals("null")) {
+		if (iaccandAudittosave.getManagementAdvisory().equals("null")) {
 
 			fiduciaryfactor = 0;
 
-		}
-		if (iaccandAudittosave.getFiduciary().equals("25-49%")) {
-
-			fiduciaryfactor = 0.10;
-
+		} else {
+			fiduciaryfactor = Double.parseDouble(measureFactors.getFiduciary()
+					.get(iaccandAudittosave.getFiduciary())) / 100;
 		}
 
-		if (iaccandAudittosave.getFiduciary().equals("50% or more")) {
-
-			fiduciaryfactor = 0.15;
-
-		}
 		calcultotalpracticespeciality();
 	}
 
 	public void TaxChange() {
-		if (iaccandAudittosave.getTaxpreparation().equals("0-24%")
-				|| iaccandAudittosave.getTaxpreparation().equals("null")) {
+		if (iaccandAudittosave.getTaxpreparation().equals("null")) {
 
 			taxpreparationfactor = 0;
 
-		}
-		if (iaccandAudittosave.getTaxpreparation().equals("25-49%")) {
-
-			taxpreparationfactor = 0.10;
-
-		}
-
-		if (iaccandAudittosave.getTaxpreparation().equals("50% or more")) {
-
-			taxpreparationfactor = 0.15;
-
+		} else {
+			taxpreparationfactor = Double.parseDouble(measureFactors
+					.getTaxPreparation().get(
+							iaccandAudittosave.getTaxpreparation())) / 100;
 		}
 		calcultotalpracticespeciality();
 	}
 
 	public void securitieschanges() {
-		if (iaccandAudittosave.getSecuritiesrelated().equals("0-24%")
-				|| iaccandAudittosave.getSecuritiesrelated().equals("null")) {
-
+		if (iaccandAudittosave.getSecuritiesrelated().equals("null")) {
 			securitiesrelatedfactor = 0;
-
-		}
-		if (iaccandAudittosave.getSecuritiesrelated().equals("25-49%")) {
-
-			securitiesrelatedfactor = 0.10;
-
+		} else {
+			securitiesrelatedfactor = Double.parseDouble(measureFactors
+					.getSecuritiesRelated().get(
+							iaccandAudittosave.getSecuritiesrelated())) / 100;
 		}
 
-		if (iaccandAudittosave.getSecuritiesrelated().equals("50% or more")) {
-
-			securitiesrelatedfactor = 0.15;
-
-		}
 		calcultotalpracticespeciality();
 	}
 
 	public void planningchange() {
 
-		if (iaccandAudittosave.getFinancialPlanning().equals("0-24%")
-				|| iaccandAudittosave.getFinancialPlanning().equals("null")) {
-
+		if (iaccandAudittosave.getFinancialPlanning().equals("null")) {
 			Financialplanningfactor = 0;
-
-		}
-		if (iaccandAudittosave.getFinancialPlanning().equals("25-49%")) {
-
-			Financialplanningfactor = 0.10;
-
+		} else {
+			Financialplanningfactor = Double.parseDouble(measureFactors
+					.getFinancialPlanning().get(
+							iaccandAudittosave.getFinancialPlanning())) / 100;
 		}
 
-		if (iaccandAudittosave.getFinancialPlanning().equals("50% or more")) {
-
-			Financialplanningfactor = 0.15;
-
-		}
 		calcultotalpracticespeciality();
 	}
 
@@ -688,77 +630,29 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	// loadings calculation end
 
 	// coverage extensions event begin
+
 	public void retrocoverChange() {
-		if (iaccandAudittosave.getRetrocover().equals("0")) {
+		if (iaccandAudittosave.getRetrocover().equals("null")) {
+
 			RetrospectiveCovers = 0;
+		} else {
+			RetrospectiveCovers = Double.parseDouble(measureFactors
+					.getRetrospectiveCovers().get(
+							iaccandAudittosave.getRetrocover())) / 100;
 		}
-		if (iaccandAudittosave.getRetrocover().equals("1")) {
-			RetrospectiveCovers = 0.075;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("2")) {
-			RetrospectiveCovers = 0.09;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("3")) {
-			RetrospectiveCovers = 0.105;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("4")) {
-			RetrospectiveCovers = 0.12;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("5")) {
-			RetrospectiveCovers = 0.135;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("6")) {
-			RetrospectiveCovers = 0.15;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("7")) {
-			RetrospectiveCovers = 0.165;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("8")) {
-			RetrospectiveCovers = 0.18;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("9")) {
-			RetrospectiveCovers = 0.195;
-		}
-		if (iaccandAudittosave.getRetrocover().equals("10")) {
-			RetrospectiveCovers = 0.21;
-		}
+
 		calculateCoverageExtensions();
 	}
 
 	public void extendedReportChange() {
-		if (iaccandAudittosave.getExtendedreporting().equals("0")) {
+		if (iaccandAudittosave.getExtendedreporting().equals("null")) {
 			ExtendedReporting = 0;
+		} else {
+			ExtendedReporting = Double.parseDouble(measureFactors
+					.getExtendedReport().get(
+							iaccandAudittosave.getExtendedreporting())) / 100;
 		}
-		if (iaccandAudittosave.getExtendedreporting().equals("1")) {
-			ExtendedReporting = 0.1;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("2")) {
-			ExtendedReporting = 0.15;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("3")) {
-			ExtendedReporting = 0.225;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("4")) {
-			ExtendedReporting = 0.325;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("5")) {
-			ExtendedReporting = 0.425;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("6")) {
-			ExtendedReporting = 0.5;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("7")) {
-			ExtendedReporting = 0.625;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("8")) {
-			ExtendedReporting = 0.65;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("9")) {
-			ExtendedReporting = 0.70;
-		}
-		if (iaccandAudittosave.getExtendedreporting().equals("10")) {
-			ExtendedReporting = 0.75;
-		}
+
 		calculateCoverageExtensions();
 	}
 
@@ -771,6 +665,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	// coverage extensions event end
 
 	// calculate the deductible factor begin
+
 	public void GetDeductibleFactor() {
 		if (Float.parseFloat(iaccandAudittosave.getDeductible()) <= 2500) {
 			DeductibleFactor = 0.1;
@@ -997,6 +892,11 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		return formatter.format(totalOtherLoadingFactors);
 	}
 
+	public String FormatTotalCoverageExtensions() {
+		NumberFormat formatter = new DecimalFormat("#0.00 %");
+		return formatter.format((ExtendedReporting + RetrospectiveCovers));
+	}
+
 	// format result end
 
 	// Report Generation begin
@@ -1063,7 +963,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			param.put("exploadings", FormatExpensesLoading());
 			param.put("avgrate", FormatAverageRate());
 			param.put("totalpremium", FormatTotalPremium());
-			System.out.println(TextToAddToreport);
 			if (Checkboxvalue.equals("true")) {
 				param.put("Comment", TextToAddToreport);
 			} else {
@@ -1099,22 +998,50 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	// Report Generation ends
 
+	// Calculate total premium by rating begin
+	public int GetWorkingMeasureId(String LOB) {
+		Measure measure1 = new Measure();
+		measure1 = measureServicesLocal.GetWorkingMeasure(LOB);
+		return measure1.getId();
+	}
+
+	// $$$$$$$$$$$$$$$$$$$$$$$ WORK HERE
+	// *********************************************************************************************
+	@EJB
+	private ProjectServicesLocal projectServicesLocal;
+
+	public double GetTheTotalPremium(String id) {
+		List<Project> list = projectServicesLocal.GetAllProjects();
+		List<Project> list2 = new ArrayList<Project>();
+
+		for (Project a : list) {
+			if ((a.getTool().equals("PI accountants and auditors"))
+					&& (a.getQuoted_Date() != null)) {
+				list2.add(a);
+			}
+		}
+
+		double total = 0.0;
+		measure = measureServicesLocal.GetMeasure(Integer.parseInt(id));
+		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
+		for (Project b : list2) {
+			iaccandAudittosave = auditServicesLocal.GetByIdProject(b.getId());
+			OperationWhenopeningTool();
+			total = total + TotalPremium;
+		}
+
+		return total;
+	}
+
+	public String GetFormatresult(double total) {
+		return NumberFormat.getCurrencyInstance(us).format(total);
+	}
+
+	// Calculate total premium by rating end
+
 	// getters setters
-	public Map<Double, String> getPractise1() {
-		return practice1;
-	}
-
-	public void setPractise1(Map<Double, String> practise1) {
-		this.practice1 = practise1;
-	}
-
-	public Map<Double, String> getPractise2() {
-		return practice2;
-	}
-
-	public void setPractise2(Map<Double, String> practise2) {
-		this.practice2 = practise2;
-	}
 
 	public PIaccandAudit getIaccandAudittosave() {
 		return iaccandAudittosave;
@@ -1238,15 +1165,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	public void setNumberOfClaimsList(Map<Integer, String> numberOfClaimsList) {
 		NumberOfClaimsList = numberOfClaimsList;
-	}
-
-	public Map<Integer, String> getSpecialClientProfileList() {
-		return SpecialClientProfileList;
-	}
-
-	public void setSpecialClientProfileList(
-			Map<Integer, String> specialClientProfileList) {
-		SpecialClientProfileList = specialClientProfileList;
 	}
 
 	public double getIncuredlossesandnumberofclaimsfactor() {
@@ -1534,14 +1452,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		this.measureFactors = measureFactors;
 	}
 
-	public String getEs() {
-		return es;
-	}
-
-	public void setEs(String es) {
-		this.es = es;
-	}
-
 	public Measure getTestMeasure() {
 		return testMeasure;
 	}
@@ -1557,4 +1467,21 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	public void setMeasures(List<Measure> measures) {
 		this.measures = measures;
 	}
+
+	public String getSelection() {
+		return Selection;
+	}
+
+	public void setSelection(String selection) {
+		Selection = selection;
+	}
+
+	public UserTrace getUserTrace() {
+		return userTrace;
+	}
+
+	public void setUserTrace(UserTrace userTrace) {
+		this.userTrace = userTrace;
+	}
+
 }

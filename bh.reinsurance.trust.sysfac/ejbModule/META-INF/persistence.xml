@@ -20,6 +20,7 @@
 		<class>al.assu.trust.GestionImageSinistre.domain.User</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Plratingtools.From0TO80Plratingtool</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.UserTrace</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

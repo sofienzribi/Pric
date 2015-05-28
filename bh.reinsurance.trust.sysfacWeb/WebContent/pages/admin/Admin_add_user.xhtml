@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:head>
 </h:head>
 <h:body>
@@ -35,30 +36,45 @@
 									<p:inputText label="Job_Title" value="#{admin.user.job_title}"
 										required="true" requiredMessage="job title required" />
 									<h:outputText value="Department" />
-									<p:inputText label="Department"
-										value="#{admin.user.department}" required="true"
-										requiredMessage="department required" />
+									<p:selectOneMenu style="width:145px" value="#{admin.user.department}"
+										required="true" requiredMessage="department required">
+										<f:selectItem itemLabel="Actuarial and risk Department"
+											itemValue="actuarialandrisk" />
+										<f:selectItem itemLabel="Underwriting Department"
+											itemValue="facultative" />
+									</p:selectOneMenu>
+
 									<h:outputText value="Floor" />
-									<p:inputText label="Floor" value="#{admin.user.floor}"
-										required="true" requiredMessage="floor required" />
+									<p:inputMask label="Floor" value="#{admin.user.floor}"
+										required="true" requiredMessage="floor required" maxlength="2">
+										<pe:keyFilter regEx="/[0-9]/" />
+
+									</p:inputMask>
+									
 								</p:panelGrid>
 							</p:panel>
 						</p:tab>
 						<p:tab id="Crendentials" title="Credentials">
+
 							<p:panel header="Credentials Details">
-								<p:messages />
 								<p:panelGrid columns="2">
 									<h:outputText value="Login" />
 									<p:inputText label="Login" value="#{admin.user.login}"
 										required="true" requiredMessage="login required" />
 									<h:outputText value="Password" />
-									<p:inputText label="Pawwsord" value="#{admin.user.password}"
-										required="true" requiredMessage="Password required" />
+									<p:password label="Pawwsord" value="#{admin.user.password}"
+										required="true" requiredMessage="Password required"></p:password>
+
 									<h:outputText value="Email" />
-									<p:inputText label="Email" value="#{admin.user.email}"
-										required="true" requiredMessage="Email required" />
+
+									<p:inputText label="Email" id="df" required="true"
+										value="#{admin.user.email}" requiredMessage="Email required">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"></f:validateRegex>
+									</p:inputText>
 								</p:panelGrid>
 							</p:panel>
+
 						</p:tab>
 						<p:tab id="Confirmation" title="Confirmation">
 							<h:panelGrid columns="2">
@@ -76,6 +92,8 @@
 								<h:outputText value="Department :  " />
 								<h:outputText value="#{admin.user.department}"
 									styleClass="outputLabel" />
+
+
 								<h:outputText value="Floor :  " />
 								<h:outputText value="#{admin.user.floor}"
 									styleClass="outputLabel" />

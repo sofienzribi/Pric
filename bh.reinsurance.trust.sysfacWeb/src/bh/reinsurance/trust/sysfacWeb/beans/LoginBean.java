@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -14,7 +13,6 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.mail.Message;
@@ -31,12 +29,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.User;
+import al.assu.trust.GestionImageSinistre.domain.UserTrace;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.UserTraceServicesLocal;
 
 @ManagedBean(name = "login")
 @SessionScoped
 public class LoginBean extends HttpServlet implements Serializable {
-
 
 	private static final long serialVersionUID = 1L;
 	// Models
@@ -47,8 +46,11 @@ public class LoginBean extends HttpServlet implements Serializable {
 	private String password1;
 	private String password2;
 	private String CurrentPassword;
+	private UserTrace userTrace;
 	private Map<Integer, String> themes;
 	// EJB
+	@EJB
+	private UserTraceServicesLocal userTraceServicesLocal;
 	@EJB
 	private UserServicesLocal userServicesLocal;
 
@@ -63,6 +65,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// init methode
 	@PostConstruct
 	public void init() {
+		userTrace = new UserTrace();
 		themes = new HashMap<Integer, String>();
 		themes.put(1, "afterwork");
 		themes.put(2, "redmond");
@@ -77,7 +80,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 		themes.put(11, "humanity");
 
 		Remember = false;
-	
+
 		Map<String, Object> cookies = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestCookieMap();
 		Cookie cookie;
@@ -92,11 +95,12 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	}
 
-	
-
 	// methods
 
 	public void ChangeTheme() {
+		userTrace = new UserTrace("changing theme ", user.getId(), " from "
+				+ user.getTheme() + " to " + theme);
+		userTraceServicesLocal.AddTrace(userTrace);
 		user.setTheme(theme);
 		userServicesLocal.UpdateUser(user);
 		FacesContext.getCurrentInstance().addMessage(
@@ -105,6 +109,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 						""));
 
 	}
+
 	public boolean loggedin() {
 		if (user != null) {
 			return true;
@@ -125,6 +130,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 	}
 
 	public void LogOut() throws IOException {
+
 		FacesContext.getCurrentInstance().getExternalContext()
 				.invalidateSession();
 		user = new User();
@@ -133,10 +139,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 				.redirect("/bh.reinsurance.trust.sysfacWeb/");
 	}
 
-	
-	
 	public String login() throws IOException {
-
 		User userFound = userServicesLocal.login(user.getLogin(),
 				user.getPassword());
 		if (userFound != null) {
@@ -147,11 +150,9 @@ public class LoginBean extends HttpServlet implements Serializable {
 						.redirect("pages/admin/AdminHome.jsf");
 				connected = true;
 
-			
-					if (user.getTheme().equals("null")) {
-						theme = "ui-lightness";
-					}
-					else {
+				if (user.getTheme().equals("null")) {
+					theme = "ui-lightness";
+				} else {
 					theme = user.getTheme();
 				}
 
@@ -168,14 +169,17 @@ public class LoginBean extends HttpServlet implements Serializable {
 				if (userFound.getDepartment().equals("actuarialandrisk")) {
 					Department = "Actuarial & Risk";
 					connected = true;
-				
-						if (user.getTheme().equals("null")) {
-							theme ="redmond";
 
-						}
-						else {
+					if (user.getTheme().equals("null")) {
+						theme = "redmond";
+
+					} else {
 						theme = user.getTheme();
 					}
+
+					userTrace = new UserTrace("Login", user.getId(), "");
+					userTraceServicesLocal.AddTrace(userTrace);
+
 					FacesContext.getCurrentInstance().getExternalContext()
 							.redirect("pages/User/HomePage.jsf");
 					if (Remember == true) {
@@ -190,12 +194,11 @@ public class LoginBean extends HttpServlet implements Serializable {
 				} else {
 					Department = "Facultative Department";
 					connected = true;
-					
-						if (user.getTheme().equals("null")) {
-							theme = "blitzer";
 
-						}
-						else {
+					if (user.getTheme().equals("null")) {
+						theme = "blitzer";
+
+					} else {
 						theme = user.getTheme();
 					}
 
@@ -208,6 +211,8 @@ public class LoginBean extends HttpServlet implements Serializable {
 						cookie.setMaxAge(3600);
 						response.addCookie(cookie);
 					}
+					userTrace = new UserTrace("Login", user.getId(), "");
+					userTraceServicesLocal.AddTrace(userTrace);
 					return "pages/User/HomePage?faces-redirect=true";
 				}
 			}
@@ -228,6 +233,8 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 			if (password1.equals(password2)) {
 				user.setPassword(password1);
+				userTrace = new UserTrace("changing password", user.getId(), "");
+				userTraceServicesLocal.AddTrace(userTrace);
 				userServicesLocal.UpdateUser(user);
 				FacesContext.getCurrentInstance().addMessage(
 						null,
@@ -250,8 +257,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 							"Bad Password", "Wrong current password"));
 		}
 	}
-	
-	
+
 	public void SetEmailPwd() throws MessagingException, UnknownHostException {
 		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
 				.toString())) {
@@ -291,7 +297,9 @@ public class LoginBean extends HttpServlet implements Serializable {
 				Transport.send(message);
 				user.setVerified(true);
 				userServicesLocal.UpdateUser(user);
-
+				userTrace = new UserTrace("changing email password",
+						user.getId(), "");
+				userTraceServicesLocal.AddTrace(userTrace);
 				RequestContext context2 = RequestContext.getCurrentInstance();
 				context2.execute("PF('statusDialog').hide();");
 				FacesContext.getCurrentInstance().addMessage(
@@ -299,6 +307,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"Profile Updated!",
 								"An email was sent to your address"));
+
 			} catch (Exception e) {
 				RequestContext context2 = RequestContext.getCurrentInstance();
 				context2.execute("PF('statusDialog').hide();");
@@ -385,8 +394,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 		Remember = remember;
 	}
 
-	
-
 	public String getPassword1() {
 		return password1;
 	}
@@ -416,6 +423,22 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	public void setThemes(Map<Integer, String> themes) {
 		this.themes = themes;
+	}
+
+	public UserTrace getUserTrace() {
+		return userTrace;
+	}
+
+	public void setUserTrace(UserTrace userTrace) {
+		this.userTrace = userTrace;
+	}
+
+	@PreDestroy
+	public void BeforeDestroy() {
+		if (user.getDepartment() != "admin") {
+			userTrace = new UserTrace("Logout", user.getId(), "");
+			userTraceServicesLocal.AddTrace(userTrace);
+		}
 	}
 
 }

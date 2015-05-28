@@ -48,7 +48,7 @@ public class UserServices implements UserServicesLocal {
 
 		} catch (Exception e) {
 			userFound = null;
-			System.out.println("Acces granted" + datee);
+
 		}
 
 		return userFound;

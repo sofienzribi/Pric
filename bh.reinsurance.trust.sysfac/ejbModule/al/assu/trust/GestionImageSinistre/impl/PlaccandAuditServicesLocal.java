@@ -1,5 +1,7 @@
 package al.assu.trust.GestionImageSinistre.impl;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import al.assu.trust.GestionImageSinistre.domain.*;
@@ -12,5 +14,6 @@ public interface PlaccandAuditServicesLocal {
 		public PIaccandAudit searchById(int id);
 		public void delete(PIaccandAudit audit);
 		public PIaccandAudit GetByIdProject(int id);
+		public List<PIaccandAudit> Getall();
 	
 }

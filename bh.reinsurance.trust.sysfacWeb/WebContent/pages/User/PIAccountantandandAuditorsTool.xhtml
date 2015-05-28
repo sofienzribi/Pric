@@ -11,18 +11,7 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Rating Tool</ui:define>
 		<ui:define name="content">
-			<h:form id="testform">
-		Test
-		<p:selectOneMenu id="tool" value="#{plAccountAuditorsRatingBean.es}"
-					style="width:135px">
-					<p:ajax event="valueChange" update="@form" />
-					<f:selectItem itemLabel="Book keeping and audit .." itemValue="all" />
-					<f:selectItems
-						value="#{plAccountAuditorsRatingBean.measureFactors.bookKeepingAndAudit.entrySet()}"
-						var="cat" itemValue="#{cat.value}" itemLabel="#{cat.key}" />
-				</p:selectOneMenu>
-				<p:outputLabel value="#{plAccountAuditorsRatingBean.es}"></p:outputLabel>
-			</h:form>
+
 			<p:panel>
 
 				<f:facet name="header">
@@ -50,7 +39,7 @@
 									value="#{projectBean.project3.expiry_date}" />
 								<p:outputLabel value="Quoted date : " for="quote1" />
 								<h:outputLabel id="quote1"
-									value="#{projectBean.project3.quoted_Date}" />
+									value="#{projectBean.GetQuotedDate()}" />
 								<p:outputLabel value="Currency : " for="curr1" />
 								<h:outputLabel id="curr1"
 									value="#{projectBean.project3.currency}" />
@@ -209,6 +198,15 @@
 												<p:graphicImage
 													value="/resources/images/pdf.png.xhtml-2.png" width="24" />
 											</p:commandLink>
+											<p:commandButton
+												actionListener="#{projectBean.MakeThisProjectQuoted()}"
+												update=":tab:summary" style="position:relative;left:160px"
+												value="Mark as quoted">
+												<p:confirm header="Confirmation"
+													message="By putting this project as quoted it will not be possible to change it .
+													Are you sure you want to continue ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
 										</p:column>
 									</p:row>
 								</f:facet>
@@ -267,17 +265,20 @@
 												<p:outputLabel value="Book Keeping and Audit" />
 											</p:column>
 											<p:column>
-												<p:selectOneMenu
-													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.bookkeepingandaudit}"
-													style="width:160px">
-													<p:ajax event="valueChange"
-														listener="#{plAccountAuditorsRatingBean.bookingandauditChange()}"
-														update="@form :tab:summary" />
+												<p:selectOneMenu id="tool" style="width:160px"
+													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.bookkeepingandaudit}">
+													<p:ajax event="valueChange" update="@form :tab:summary"
+														listener="#{plAccountAuditorsRatingBean.bookingandauditChange()}" />
 													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.bookKeepingAndAudit.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
+
+
+
+
+
 											</p:column>
 											<p:column>
 												#{plAccountAuditorsRatingBean.bookingandauditfactor *100} %
@@ -296,8 +297,8 @@
 														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.managementAdvisory.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -315,10 +316,10 @@
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.forecastChange()}"
 														update="@form :tab:summary" />
-													<f:selectItem itemLabel="Select one .." />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.forcastProjection.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 
 												</p:selectOneMenu>
 											</p:column>
@@ -337,10 +338,10 @@
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.payrollChange()}"
 														update="@form :tab:summary" />
-													<f:selectItem itemLabel="Select one .." />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise1}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.payrollServices.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -358,10 +359,10 @@
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.fiduciaryChange()}"
 														update="@form :tab:summary" />
-													<f:selectItem itemLabel="Select one .." />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.fiduciary.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -379,10 +380,10 @@
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.TaxChange()}"
 														update="@form :tab:summary" />
-													<f:selectItem itemLabel="Select one .." />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.taxPreparation.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -400,10 +401,10 @@
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.securitieschanges()}"
 														update="@form :tab:summary" />
-													<f:selectItem itemLabel="Select one .." />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.securitiesRelated.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -421,10 +422,10 @@
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.planningchange()}"
 														update="@form :tab:summary" />
-													<f:selectItem itemLabel="Select one .." />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.practise2}" var="cat"
-														itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.financialPlanning.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -516,10 +517,10 @@
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.SpecialClientChange()}"
 														update="@form :tab:summary" />
-													<f:selectItem itemLabel="Select one .." />
+													<f:selectItem itemLabel="Select one .." itemValue="null" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.specialClientProfileList}"
-														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.specialClientProfileList.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -812,8 +813,8 @@
 														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." itemValue="0" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.coverExtensionsList}"
-														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.retrospectiveCovers.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -834,8 +835,8 @@
 														update="@form :tab:summary" />
 													<f:selectItem itemLabel="Select one .." itemValue="0" />
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.coverExtensionsList2}"
-														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.extendedReport.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 											<p:column>
@@ -852,7 +853,7 @@
 												</p:column>
 												<p:column>
 
-												#{(plAccountAuditorsRatingBean.extendedReporting + plAccountAuditorsRatingBean.retrospectiveCovers)*100} %
+												#{plAccountAuditorsRatingBean.FormatTotalCoverageExtensions()}
 												</p:column>
 											</p:row>
 										</f:facet>
@@ -1518,14 +1519,14 @@
 			<p:dialog showEffect="true" hideEffect="explode" resizable="false"
 				modal="true" widgetVar="POPMeasure" id="POPMeasure">
 				<f:facet name="header">Change Measure</f:facet>
-				<h:form id="ee">
+				<h:form id="ee1">
 					<p:dataTable style="width:650px" emptyMessage="No Measures found!"
 						value="#{plAccountAuditorsRatingBean.measures}" var="prod"
 						rows="5" paginator="true" paginatorPosition="bottom"
 						selectionMode="single"
 						selection="#{plAccountAuditorsRatingBean.testMeasure}"
 						rowKey="#{prod.id}" widgetVar="prodTab2">
-						<p:ajax event="rowSelect" update=":ee"
+						<p:ajax event="rowSelect" update=":ee1"
 							listener="#{measure.OnRowSelected()}" />
 						<f:facet name="header">Measures</f:facet>
 						<p:column headerText="Name">
@@ -1544,18 +1545,24 @@
 							<h:outputText value="#{measure.testactive(prod.activeTest)}" />
 						</p:column>
 						<f:facet name="footer">
-							<p:commandButton value="Set Measure" update="@form :testform"
+							<p:commandButton value="Set Measure"
+								update="@form :tab:ratingform"
 								actionListener="#{plAccountAuditorsRatingBean.TestingOtherMeasure()}"
 								icon="ui-icon-check" />
 							<p:commandButton value="Reset Measure"
 								actionListener="#{plAccountAuditorsRatingBean.ResetMeasureOnClick()}"
-								icon="ui-icon-refresh" update="@form :testform" />
+								icon="ui-icon-refresh" update="@form :tab:ratingform" />
 						</f:facet>
 					</p:dataTable>
 				</h:form>
 			</p:dialog>
 
-
+			<p:confirmDialog global="true" showEffect="fade">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 
 
 			<script type="text/javascript">

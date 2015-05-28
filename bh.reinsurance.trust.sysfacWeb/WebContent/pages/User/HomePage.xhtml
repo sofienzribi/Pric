@@ -26,7 +26,9 @@
 								style="font-family: times;font-size: 16px">	You received #{projectBean.GetMails()} new project(s)</p:commandLink>
 
 							<p:graphicImage width="50px" value="/resources/images/Clock.png"></p:graphicImage>
-							<p:commandLink style="font-family: times;font-size: 16px">	You have #{projectBean.GetMails()} project(s) expiring this month</p:commandLink>
+							<p:commandLink update=":diag1"
+								actionListener="#{projectBean.GoToProjectExpiringThisMonth()}"
+								style="font-family: times;font-size: 16px">	You have #{projectBean.GetProjectExpThisMonth()} project(s) expiring this month</p:commandLink>
 						</h:panelGrid>
 					</p:panel>
 
@@ -45,10 +47,53 @@
 				</p:feedReader>
 			</p:panel> -->
 
+			<p:dialog widgetVar="diag1" id="diag1"
+				header="Project expiring this month"  resizable="false"  draggable="false" modal="true">
+				<h:form id="form1">
+					<p:dataTable style="width:750px" emptyMessage="no Projects found!"
+						value="#{projectBean.projectExpringThisMonth}" var="prod"
+						rows="13" paginator="true" paginatorPosition="bottom"
+						selectionMode="single" selection="#{projectBean.project}"
+						rowKey="#{prod.id}" widgetVar="prodTabW2">
 
-			
+						<f:facet name="header">Please select a project</f:facet>
+						<p:ajax event="rowSelect" listener="#{projectBean.DisplayPop()}"
+							update=":form1" />
+						<p:column headerText="Name ">
+							<h:outputText value="#{prod.nameOfTheProject}" />
+						</p:column>
+						<p:column headerText="Creation Date">
+							<h:outputText
+								value="#{projectBean.FormatDate(prod.dateCreation)}" />
+						</p:column>
+						<p:column headerText="Expiry Date">
+							<h:outputText value="#{projectBean.FormatDate(prod.expiry_date)}" />
+						</p:column>
+						<p:column headerText="User">
+							<h:outputText value="#{projectBean.getLogin(prod.user)}" />
+						</p:column>
+						<p:column headerText="Tool">
+							<h:outputText value="#{prod.tool}" />
+						</p:column>
+						<p:column headerText="Privacy">
+							<h:outputText value="#{projectBean.getPrivacy(prod.privacy)}" />
+						</p:column>
+						<f:facet name="footer">
 
-			
+							<p:commandButton id="e" value="Open"
+								action="#{projectBean.openprojecttest()}"
+								rendered="#{projectBean.popDisplayed}"
+								icon="ui-icon-folder-open" />
+
+						</f:facet>
+					</p:dataTable>
+
+				</h:form>
+
+			</p:dialog>
+
+
+
 
 
 

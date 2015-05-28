@@ -10,105 +10,60 @@
 	<ui:composition template="/template/masteradm.xhtml">
 		<ui:define name="title">Admin Home</ui:define>
 		<ui:define name="content">
-			<p:tabView style="width:1200px">
-				<p:tab title="CHART">
-					<p:chart type="bar" model="#{chartBean.animatedModel2}"
-						style="width:600px;left: 240px;" />
-				</p:tab>
-				<p:tab title="PDF">
-					<object type="application/pdf"  data="file://localhost/Users/zribisofien/Desktop/PDFGEN/book.pdf" height="300px" width="100%">
-            Your browser can't display pdf to download pdf instead.
-        </object>
-				</p:tab>
-				<p:tab title="add user">
-					<h:form id="Form1">
-						<p:growl id="gorwl1" sticky="true" showDetail="true"></p:growl>
-						<p:wizard flowListener="#{admin.OnFlowProcess}">
-							<p:tab id="Personal" title="Personal">
-								<p:panel header="Personal Details">
-									<p:messages />
-									<p:panelGrid columns="2">
-										<h:outputText value="First Name" />
-										<p:inputText label="First Name"
-											value="#{admin.user.first_Name}" required="true"
-											requiredMessage="First name required" />
-										<h:outputText value="Last Name" />
-										<p:inputText label="Last Name" value="#{admin.user.last_Name}"
-											required="true" requiredMessage="Last name required" />
-									</p:panelGrid>
-								</p:panel>
-							</p:tab>
+			<p:tabView style="width:1250px;posistion:relative;left:-100px">
 
-							<p:tab id="Statut" title="Statut">
-								<p:panel header="Statut Details">
-									<p:messages />
-									<p:panelGrid columns="2">
-										<h:outputText value="Job_Title" />
-										<p:inputText label="Job_Title" value="#{admin.user.job_title}"
-											required="true" requiredMessage="job title required" />
-										<h:outputText value="Department" />
-										<p:inputText label="Department"
-											value="#{admin.user.department}" required="true"
-											requiredMessage="department required" />
-										<h:outputText value="Floor" />
-										<p:inputText label="Floor" value="#{admin.user.floor}"
-											required="true" requiredMessage="floor required" />
-									</p:panelGrid>
-								</p:panel>
-							</p:tab>
-							<p:tab id="Crendentials" title="Credentials">
-								<p:panel header="Credentials Details">
-									<p:messages />
-									<p:panelGrid columns="2">
-										<h:outputText value="Login" />
-										<p:inputText label="Login" value="#{admin.user.login}"
-											required="true" requiredMessage="login required" />
-										<h:outputText value="Password" />
-										<p:inputText label="Pawwsord" value="#{admin.user.password}"
-											required="true" requiredMessage="Password required" />
-										<h:outputText value="Email" />
-										<p:inputText label="Email" value="#{admin.user.email}"
-											required="true" requiredMessage="Email required" />
-									</p:panelGrid>
-								</p:panel>
-							</p:tab>
-							<p:tab id="Confirmation" title="Confirmation">
-								<h:panelGrid columns="2">
-									<h:outputText value="Firstname : " />
-									<h:outputText value="#{admin.user.first_Name}"
-										styleClass="outputLabel" />
-									<h:outputText value="Lastname : " />
-									<h:outputText value="#{admin.user.last_Name}"
-										styleClass="outputLabel" />
-								</h:panelGrid>
-								<h:panelGrid columns="2">
-									<h:outputText value="Job_Title :  " />
-									<h:outputText value="#{admin.user.job_title}"
-										styleClass="outputLabel" />
-									<h:outputText value="Department :  " />
-									<h:outputText value="#{admin.user.department}"
-										styleClass="outputLabel" />
-									<h:outputText value="Floor :  " />
-									<h:outputText value="#{admin.user.floor}"
-										styleClass="outputLabel" />
-								</h:panelGrid>
-								<h:panelGrid columns="2">
-									<h:outputText value="Login :  " />
-									<h:outputText value="#{admin.user.login}"
-										styleClass="outputLabel" />
-									<h:outputText value="Password :  " />
-									<h:outputText value="#{admin.user.password}"
-										styleClass="outputLabel" />
-									<h:outputText value="Email :  " />
-									<h:outputText value="#{admin.user.email}" />
-									<h:outputText />
-									<h:outputText />
-								</h:panelGrid>
-								<p:commandButton process="@this" value="Add user"
-									actionListener="#{admin.addUser()}" update="@this">
-								</p:commandButton>
-							</p:tab>
-						</p:wizard>
+
+
+				<p:tab title="Users Trace">
+					<h:form>
+						<p:panel>
+
+							<h:panelGrid columns="2">
+								<p:outputLabel value="User :"></p:outputLabel>
+								<p:selectOneMenu id="user" value="#{admin.selectedValue}">
+
+									<f:selectItem itemLabel="All" itemValue="all" />
+									<f:selectItems value="#{admin.users}" var="user"
+										itemValue="#{user.id}" itemLabel="#{user.first_Name}" />
+									<p:ajax update="@form" listener="#{admin.OnUserChange()}" />
+								</p:selectOneMenu>
+							</h:panelGrid>
+
+						</p:panel>
+						<p:dataTable value="#{admin.userTraces}" id="da" var="data"
+							rows="20">
+							<p:column headerText="Activy" filterBy="#{data.activity}">
+								<h:outputText value="#{data.activity}" />
+							</p:column>
+							<p:column headerText="Description">
+								<h:outputText value="#{data.description}" />
+
+							</p:column>
+							<p:column headerText="User" filterBy="#{admin.getUsername(data.userId)}">
+
+								<h:outputText value=" #{admin.getUsername(data.userId)}" />
+							</p:column>
+							<p:column headerText="Date">
+
+								<h:outputText value="#{data.date}" />
+							</p:column>
+							<p:column headerText="Time">
+								<h:outputText value="#{data.time}" />
+							</p:column>
+							<f:facet name="footer">
+								<h:commandLink>
+									<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
+										width="24" />
+									<p:dataExporter type="pdf" target="da" fileName="UserTrace" />
+								</h:commandLink>
+								<p:commandLink update="@form"
+									actionListener="#{admin.refreshList()}"
+									style="position:relative;right:-550px">
+									<p:graphicImage value="/resources/images/refresh.ico"
+										width="24" />
+								</p:commandLink>
+							</f:facet>
+						</p:dataTable>
 					</h:form>
 				</p:tab>
 			</p:tabView>

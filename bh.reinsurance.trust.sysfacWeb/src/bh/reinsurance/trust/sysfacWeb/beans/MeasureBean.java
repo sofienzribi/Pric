@@ -41,6 +41,7 @@ public class MeasureBean implements Serializable {
 	private List<Measure> measures;
 	private List<Measure> searchmeasure;
 	private Measure PLAccountantAndAuditorsMeasure;
+	private boolean HideActiveMeasureButton;
 	@EJB
 	MeasureServicesLocal measureServicesLocal;
 	private static final long serialVersionUID = 1L;
@@ -76,6 +77,7 @@ public class MeasureBean implements Serializable {
 		FacWorkingMeasure = measureServicesLocal.GetWorkingMeasure("Property");
 		PasswordCheck = null;
 		DisplayMeasureMenu = "none";
+		HideActiveMeasureButton = true;
 		DisableButtonMeasure = false;
 		disableButtonCloseSet = true;
 		DisplayButtons = false;
@@ -102,7 +104,6 @@ public class MeasureBean implements Serializable {
 		context.execute("PF('POPMeasure').hide();");
 		measure = new Measure();
 		FacWorkingMeasure = measureServicesLocal.GetTestingMeasure("");
-		System.out.println(FacWorkingMeasure.getId());
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("Summary2.jsf");
 	}
@@ -194,6 +195,12 @@ public class MeasureBean implements Serializable {
 
 	public String OpenMeasure() {
 		if (measure.getClassofbusiness().equals("PI accountants and auditors")) {
+			if (measure.getActive() == true) {
+				//*****************************************************change to false or true if dev mode
+				HideActiveMeasureButton = false;
+			}else{
+				HideActiveMeasureButton = true;
+			}
 			return Openplaccountantandauditorsmeasure();
 
 		} else {
@@ -215,11 +222,12 @@ public class MeasureBean implements Serializable {
 		} else {
 
 			WorkingMeasure.setActive(true);
-			
+
 			measureServicesLocal.UpdateMeasure(WorkingMeasure);
-			
-			measures = measureServicesLocal.GetMeasuresByClass(WorkingMeasure.getClassofbusiness());
-			
+
+			measures = measureServicesLocal.GetMeasuresByClass(WorkingMeasure
+					.getClassofbusiness());
+
 			for (int i = 0; i < measures.size(); i++) {
 				if (measures.get(i).getId() != WorkingMeasure.getId()
 						&& measures.get(i).getClassofbusiness()
@@ -290,6 +298,7 @@ public class MeasureBean implements Serializable {
 		DisplayMeasureMenu = "none";
 		DisableButtonMeasure = false;
 		disableButtonCloseSet = true;
+		HideActiveMeasureButton=true;
 		WorkingMeasure = new Measure();
 		measure = new Measure();
 		placcmeasure = new PlaccountantandauditorsMeasure();
@@ -344,6 +353,16 @@ public class MeasureBean implements Serializable {
 	}
 
 	// pl accountant and auditors measure management end
+	public void GoToMeasure() {
+		try {
+			FacesContext.getCurrentInstance().getExternalContext()
+					.redirect("PIAccountantandandAuditorsMeasurel.jsf");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+
+		}
+	}
 
 	// getters and setters
 	public Measure getMeasure() {
@@ -521,6 +540,14 @@ public class MeasureBean implements Serializable {
 	public void setPLAccountantAndAuditorsMeasure(
 			Measure pLAccountantAndAuditorsMeasure) {
 		PLAccountantAndAuditorsMeasure = pLAccountantAndAuditorsMeasure;
+	}
+
+	public boolean isHideActiveMeasureButton() {
+		return HideActiveMeasureButton;
+	}
+
+	public void setHideActiveMeasureButton(boolean hideActiveMeasureButton) {
+		HideActiveMeasureButton = hideActiveMeasureButton;
 	}
 
 }

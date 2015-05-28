@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:head>
 </h:head>
 <h:body>
@@ -10,68 +11,454 @@
 		<ui:define name="title"> Accountant and auditors measure </ui:define>
 		<ui:define name="content">
 			<p:growl autoUpdate="true" showDetail="false"></p:growl>
-			<p:panel>
-				<h:form id="fromd">
-					<p:dataTable
-						value="#{accountantandauditorsmeasure.placcmeasure.bookKeepingAndAudit.entrySet()}"
-						var="testima" selectionMode="single"
-						selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
-						rowKey="#{testima}" style="width:350px" paginator="true"
-						paginatorPosition="bottom">
-						<f:facet name="header">Book keeping and audit</f:facet>
-						<p:column headerText="selection">
-				#{testima.key}
-				</p:column>
-						<p:column headerText="load">
-				#{testima.value}
-				</p:column>
-						<f:facet name="footer">
-							<h:form rendered="true">
-								<p:commandButton icon="ui-icon-plusthick"
-									onclick="PF('addbook').show()" />
-								<p:commandButton icon="ui-icon-trash"
-									actionListener="#{accountantandauditorsmeasure.DeleteBKAA()}"
-									update=":fromd">
-									<p:confirm header="Confirmation" message="Are you sure  ?"
-										icon="ui-icon-alert" />
-								</p:commandButton>
-								<p:commandButton icon=" ui-icon-pencil" update=":from4"
-									actionListener="#{accountantandauditorsmeasure.DisplaymodifyBookKeepandaudit()}" />
+			<p:tabView id="tab">
+				<p:tab title="Loadings" id="first">
+					<p:panel id="global">
+						<h:panelGrid columns="4">
+
+							<h:form id="bookkeeping">
+								<p:dataTable id="bookkeeping"
+									value="#{accountantandauditorsmeasure.placcmeasure.bookKeepingAndAudit.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Book keeping and audit</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('bookkeeping')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('bookkeeping')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":from4"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('bookkeeping')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
 							</h:form>
+
+							<h:form id="forecast">
+								<p:dataTable id="FORECAST"
+									value="#{accountantandauditorsmeasure.placcmeasure.forcastProjection.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Forecast/projection</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('forecast')}" />
+											<p:commandButton icon="ui-icon-trash"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('forecast')}"
+												update=":tab:global">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('forecast')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="Managementadvisory">
+								<p:dataTable id="Managementadvisory"
+									value="#{accountantandauditorsmeasure.placcmeasure.managementAdvisory.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Management advisory</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('management')}"
+												rendered="#{measure.hideActiveMeasureButton}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('management')}"
+												rendered="#{measure.hideActiveMeasureButton}"
+												update=":tab:global">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('management')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+
+							<h:form id="payrollServices">
+								<p:dataTable id="payrollServices"
+									value="#{accountantandauditorsmeasure.placcmeasure.payrollServices.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Payroll Services</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('payrollServices')}" />
+											<p:commandButton icon="ui-icon-trash"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('payrollServices')}"
+												update=":tab:global">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('payrollServices')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+
+							<h:form id="Fiduciary">
+								<p:dataTable id="Fiduciary"
+									value="#{accountantandauditorsmeasure.placcmeasure.fiduciary.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Fiduciary</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('fiduciary')}"
+												rendered="#{measure.hideActiveMeasureButton}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('fiduciary')}"
+												rendered="#{measure.hideActiveMeasureButton}"
+												update=":tab:global">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('fiduciary')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="taxpreparation">
+								<p:dataTable id="taxpreparation"
+									value="#{accountantandauditorsmeasure.placcmeasure.taxPreparation.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Tax Preparation</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('taxpreparation')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('taxpreparation')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('taxpreparation')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="securitiesrelated">
+								<p:dataTable id="securitiesrelated"
+									value="#{accountantandauditorsmeasure.placcmeasure.securitiesRelated.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Securities Related</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('securitiesrelated')}" />
+											<p:commandButton icon="ui-icon-trash"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('securitiesrelated')}"
+												update=":tab:global">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('securitiesrelated')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="financialplanning">
+								<p:dataTable id="financialplanning"
+									value="#{accountantandauditorsmeasure.placcmeasure.financialPlanning.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Financial Planning</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('financialplanning')}" />
+											<p:commandButton icon="ui-icon-trash"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('financialplanning')}"
+												update=":tab:global">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('financialplanning')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="specialclient">
+								<p:dataTable id="specialclient"
+									value="#{accountantandauditorsmeasure.placcmeasure.specialClientProfileList.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Special client profile list</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('specialclient')}" />
+											<p:commandButton icon="ui-icon-trash"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('specialclient')}"
+												update=":tab:global">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('specialclient')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+
+
+
+
+
+
+						</h:panelGrid>
+
+
+
+						<f:facet name="footer">
+							<p:commandButton value="Copy from another measure"
+								rendered="#{measure.hideActiveMeasureButton}"
+								icon="ui-icon-disk" style="left:365px;"
+								actionListener="#{accountantandauditorsmeasure.DisplayCopyMeasurePOP()}"
+								update=":from2" />
 						</f:facet>
-					</p:dataTable>
-				</h:form>
+					</p:panel>
 
-				<f:facet name="footer">
-					<p:commandButton value="Copy from another measure"
-						icon="ui-icon-disk" style="left:65px;"
-						actionListener="#{accountantandauditorsmeasure.DisplayCopyMeasurePOP()}"
-						update=":from2" />
-				</f:facet>
-			</p:panel>
 
-			<p:dialog widgetVar="addbook" id="addbook" width="300px" modal="true"
-				showEffect="true" hideEffect="explode" resizable="false"
-				header="Choose a measure">
+				</p:tab>
+
+				<p:tab title="Extensions">
+					<p:panel id="tab2">
+						<h:panelGrid columns="2">
+							<h:form id="extendedreport">
+								<p:dataTable id="extendedreport"
+									value="#{accountantandauditorsmeasure.placcmeasure.extendedReport.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Extended Report</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('extendedreport')}" />
+											<p:commandButton icon="ui-icon-trash"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('extendedreport')}"
+												update=":tab:tab2">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('extendedreport')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="retrocover">
+								<p:dataTable id="retrocover"
+									value="#{accountantandauditorsmeasure.placcmeasure.retrospectiveCovers.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Restrospective Cover</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}% 
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('retrocover')}" />
+											<p:commandButton icon="ui-icon-trash"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.DeleteFactor('retrocover')}"
+												update=":tab:tab2">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton icon=" ui-icon-pencil" update=":from4"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('retrocover')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+						</h:panelGrid>
+					</p:panel>
+
+				</p:tab>
+
+			</p:tabView>
+
+
+
+
+			<p:dialog widgetVar="Addfactor" id="Addfactor" width="300px"
+				modal="true" showEffect="true" hideEffect="explode"
+				resizable="false" header="Add Factor">
+
 				<h:form id="from3">
 					<h:panelGrid columns="2">
 						<p:outputLabel>param name</p:outputLabel>
-						<p:inputText value="#{accountantandauditorsmeasure.key}"></p:inputText>
+						<p:inputText value="#{accountantandauditorsmeasure.key}"
+							required="true" requiredMessage="Please enter the param name"></p:inputText>
 						<p:outputLabel>Load</p:outputLabel>
-						<p:inputText value="#{accountantandauditorsmeasure.value}"></p:inputText>
-					</h:panelGrid>
-					<p:commandButton update=":fromd"
-						actionListener="#{accountantandauditorsmeasure.AddBookKeepingAndAudit()}"
-						value="Add"></p:commandButton>
+						<p:inputMask value="#{accountantandauditorsmeasure.value}"
+							label="text" mask="99?.99" maxlength="4" required="true"
+							requiredMessage="Please enter the load">
+						</p:inputMask>
 
+					</h:panelGrid>
+					<p:commandButton update=":tab:global :tab:tab2"
+						actionListener="#{accountantandauditorsmeasure.FillFactorToAdd()}"
+						value="Add"></p:commandButton>
 				</h:form>
 
 			</p:dialog>
-			
+
+
+
+
 			<h:form id="from4">
-				<p:dialog widgetVar="popmodifbkaa" id="popmodifbkaa" width="300px"
+				<p:dialog widgetVar="modiffactor" id="modiffactor" width="300px"
 					modal="true" showEffect="true" hideEffect="explode"
-					resizable="false" header="Choose a measure">
+					resizable="false" header="Modify">
 
 					<h:panelGrid columns="2">
 						<p:outputLabel>param name</p:outputLabel>
@@ -79,21 +466,19 @@
 						<p:outputLabel>Load</p:outputLabel>
 						<p:inputText value="#{accountantandauditorsmeasure.value}"></p:inputText>
 					</h:panelGrid>
-					<p:commandButton update=":fromd"
-						actionListener="#{accountantandauditorsmeasure.ModifyBKAA()}"
+					<p:commandButton update=":tab:global :tab:tab2"
+						actionListener="#{accountantandauditorsmeasure.ModifyFactor()}"
 						value="Update"></p:commandButton>
 				</p:dialog>
 			</h:form>
-			
+
+
 			<h:form id="from2">
 
 				<p:dialog widgetVar="Copy" id="Copy" width="500px" modal="true"
 					showEffect="true" hideEffect="explode" resizable="false"
 					header="Choose a measure">
 
-
-
-					<p:growl widgetVar="growl" id="growl" life="2000" />
 					<p:dataTable id="liste" widgetVar="list"
 						value="#{accountantandauditorsmeasure.measures}"
 						selectionMode="single"
@@ -109,27 +494,34 @@
 						<p:column headerText="Description">
 						#{prod.description}
 						</p:column>
+
+
 						<f:facet name="footer">
 							<p:commandButton value="Load" id="btn"
 								actionListener="#{accountantandauditorsmeasure.CopyMeasure()}"
-								update=":fromd :from2:growl">
-
+								update=":tab:global :tab:tab2">
 								<p:confirm header="Confirmation"
 									message="All the factors will be deleted and replaced with the new factors"
 									icon="ui-icon-alert" />
 							</p:commandButton>
-
 						</f:facet>
+
 					</p:dataTable>
+
 				</p:dialog>
+
 			</h:form>
 
-			<p:confirmDialog global="true" showEffect="fade">
+
+			<p:confirmDialog global="true" hideEffect="explode" visible="false"
+				showEffect="fade">
 				<p:commandButton value="Yes" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 				<p:commandButton value="No" type="button"
 					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
 			</p:confirmDialog>
+
 		</ui:define>
 	</ui:composition>
 </h:body>

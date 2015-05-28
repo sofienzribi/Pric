@@ -9,58 +9,45 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Risks On map </ui:define>
 		<ui:define name="content">
-			<div>
+			<div style="position: relative; left: -100px; top: -50px">
 				<h2 style="color: black; bold: true; font-weight: bold;">Risks
 					On Map</h2>
 			</div>
-			<p:panel id="master">
+			<p:panel style="position:relative;left:-100px;top:-50px" id="master">
 				<h:form>
-					<h:panelGrid id="eu" columns="2">
-						<h:outputLabel value="Region" />
-						<p:selectOneMenu value="#{facultativeBean.reg1}"
-							style="width:375px">
-							<p:ajax event="valueChange"
-								listener="#{facultativeBean.OnRegionChange()}" update=":master" />
-							<f:selectItem itemLabel="All regions" itemValue="all" />
-							<f:selectItems value="#{facultativeBean.reg}" var="cat"
-								itemValue="#{cat}" itemLabel="#{cat}" />
-						</p:selectOneMenu>
-						<h:outputLabel value="Country" />
-						<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
-							style="width:375px">
-							<p:ajax event="valueChange"
-								listener="#{facultativeBean.affichselec()}" update=":master" />
-							<f:selectItem itemLabel="select country" />
-							<f:selectItems value="#{facultativeBean.countr}" var="cat"
-								itemValue="#{cat}" itemLabel="#{cat}" />
-						</p:selectOneMenu>
-						<h:outputLabel value="Occupancy" style="width:375px" />
-						<p:selectOneMenu value="#{facultativeBean.occup1}"
-							style="width:375px">
-							<p:ajax event="valueChange"
-								listener="#{facultativeBean.affichselec()}" />
-							<f:selectItem itemLabel="select occupancy" />
-							<f:selectItems value="#{facultativeBean.occup}" var="cat"
-								itemValue="#{cat}" itemLabel="#{cat}" />
-						</p:selectOneMenu>
-					</h:panelGrid>
-				</h:form>
-			</p:panel>
 
-			<div id="map">
-				<p:gmap center="26.0275, 50.5500" zoom="2" type="HYBRID"
-					style="width:1000px;height:400px" model="#{MapBean.simpleModel}">
-					<p:ajax event="overlaySelect" listener="#{MapBean.onMarkerSelect}" />
-					<p:gmapInfoWindow id="infoWindow">
-						<p:outputPanel
-							style="text-align: center; display: block; margin: auto">
+					<h:panelGrid id="eu" columns="2">
+						<h:outputLabel style="margin-left:600px" value="Region : " />
+						<p:selectOneMenu value="#{MapBean.selectedRegion}"
+							style="width:375px">
+							<p:ajax event="valueChange" listener="#{MapBean.RegionChange()}"
+								update=":master" />
+							<f:selectItem itemLabel="All regions" itemValue="all" />
+							<f:selectItems value="#{MapBean.regions}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+
+					<div id="map">
+						<p:gmap center="#{MapBean.mapRegion}" zoom="#{MapBean.mapZoom}"
+							type="TERRAIN" style="width:1400px;height:600px"
+							model="#{MapBean.simpleModel}">
+							<p:ajax event="overlaySelect"
+								listener="#{MapBean.onMarkerSelect}" />
+							<p:gmapInfoWindow id="infoWindow">
+								<p:outputPanel
+									style="text-align: center; display: block; margin: auto">
 							TrustRe 
 							<h:outputText value="#{MapBean.marker.title}" />
-							<br />
-						</p:outputPanel>
-					</p:gmapInfoWindow>
-				</p:gmap>
-			</div>
+									<br />
+								</p:outputPanel>
+							</p:gmapInfoWindow>
+						</p:gmap>
+					</div>
+
+				</h:form>
+			</p:panel>
 		</ui:define>
 	</ui:composition>
 </h:body>
