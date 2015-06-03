@@ -17,12 +17,10 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 
-import al.assu.trust.GestionImageSinistre.domain.Factors;
 import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.CrudBasicLocal;
-import al.assu.trust.GestionImageSinistre.impl.FactorsServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.MeasureServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
@@ -45,10 +43,7 @@ public class MeasureBean implements Serializable {
 	@EJB
 	MeasureServicesLocal measureServicesLocal;
 	private static final long serialVersionUID = 1L;
-	private Factors factors;
 	private Map<String, String> Tool;
-	@EJB
-	private FactorsServicesLocal factorsServicesLocal;
 	private boolean DisableButtonMeasure;
 	private boolean disableButtonCloseSet;
 	private String DisplayMeasureMenu;
@@ -162,17 +157,10 @@ public class MeasureBean implements Serializable {
 
 			} else {
 
-				factors = new Factors();
-
 				Newmeasure.setUserId(user.getId());
 				measureServicesLocal.NewMeasure(Newmeasure);
 				measures = measureServicesLocal.GetAllMeasures();
 
-				factors.setIdMeasure(measureServicesLocal.GetMeasureByName(
-						Newmeasure.getName()).getId());
-				factors.setName(Newmeasure.getName());
-
-				factorsServicesLocal.Persist(factors);
 				RequestContext context = RequestContext.getCurrentInstance();
 				WorkingMeasure = measureServicesLocal
 						.GetMeasureByName(Newmeasure.getName());
@@ -196,9 +184,10 @@ public class MeasureBean implements Serializable {
 	public String OpenMeasure() {
 		if (measure.getClassofbusiness().equals("PI accountants and auditors")) {
 			if (measure.getActive() == true) {
-				//*****************************************************change to false or true if dev mode
+				// *****************************************************change
+				// to false or true if dev mode
 				HideActiveMeasureButton = false;
-			}else{
+			} else {
 				HideActiveMeasureButton = true;
 			}
 			return Openplaccountantandauditorsmeasure();
@@ -298,7 +287,7 @@ public class MeasureBean implements Serializable {
 		DisplayMeasureMenu = "none";
 		DisableButtonMeasure = false;
 		disableButtonCloseSet = true;
-		HideActiveMeasureButton=true;
+		HideActiveMeasureButton = true;
 		WorkingMeasure = new Measure();
 		measure = new Measure();
 		placcmeasure = new PlaccountantandauditorsMeasure();
@@ -411,14 +400,6 @@ public class MeasureBean implements Serializable {
 
 	public void setDisplayButtons(boolean displayButtons) {
 		DisplayButtons = displayButtons;
-	}
-
-	public Factors getFactors() {
-		return factors;
-	}
-
-	public void setFactors(Factors factors) {
-		this.factors = factors;
 	}
 
 	public String getDisplayMeasureMenu() {

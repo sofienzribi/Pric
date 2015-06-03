@@ -2,6 +2,7 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +39,8 @@ public class AdminBean implements Serializable {
 	private String b = "info";
 	private List<User> users;
 	private String SelectedValue = "all";
+	private String SelectedMonth = "all";
+	private HashMap<Integer, String> Months;
 	@EJB
 	private UserTraceServicesLocal userTraceServicesLocal;
 
@@ -49,12 +52,30 @@ public class AdminBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		Months = new HashMap<Integer, String>();
+		fillMonths();
 
 		users = local.GetAllUsers();
 		getlistUsers();
 		userTraces = userTraceServicesLocal.GetAllTraces();
 
 		user = new User();
+	}
+
+	public void fillMonths() {
+		Months.put(1, "January");
+		Months.put(2, "February");
+		Months.put(3, "March");
+		Months.put(4, "April");
+		Months.put(5, "Mai");
+		Months.put(6, "June");
+		Months.put(7, "July");
+		Months.put(8, "August");
+		Months.put(9, "September");
+		Months.put(10, "October");
+		Months.put(11, "November");
+		Months.put(12, "December");
+
 	}
 
 	// mthods
@@ -111,6 +132,23 @@ public class AdminBean implements Serializable {
 			userTraces = userTraceServicesLocal.FindTracesByuser(local
 					.GetUserByid(Integer.parseInt(SelectedValue)));
 
+		}
+	}
+
+	// User trace change filter month
+	public void OnMonthChange() {
+		if (SelectedMonth.equals("all")) {
+			userTraces = userTraceServicesLocal.GetAllTraces();
+		} else {
+			userTraces = userTraceServicesLocal.GetAllTraces();
+			int mnt = Integer.parseInt(SelectedMonth);
+			List<UserTrace> list = new ArrayList<UserTrace>();
+			for (UserTrace a : userTraces) {
+				if (a.getDate().getMonth() + 1 == mnt) {
+					list.add(a);
+				}
+			}
+			userTraces = list;
 		}
 	}
 
@@ -174,6 +212,22 @@ public class AdminBean implements Serializable {
 
 	public void setSelectedValue(String selectedValue) {
 		SelectedValue = selectedValue;
+	}
+
+	public HashMap<Integer, String> getMonths() {
+		return Months;
+	}
+
+	public void setMonths(HashMap<Integer, String> months) {
+		Months = months;
+	}
+
+	public String getSelectedMonth() {
+		return SelectedMonth;
+	}
+
+	public void setSelectedMonth(String selectedMonth) {
+		SelectedMonth = selectedMonth;
 	}
 
 }

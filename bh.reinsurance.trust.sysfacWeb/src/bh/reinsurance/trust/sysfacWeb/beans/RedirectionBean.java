@@ -22,11 +22,6 @@ public class RedirectionBean implements Serializable {
 	}
 
 	// methods
-	public void GoToSummary() throws IOException {
-		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("Summary2.jsf");
-		testaff = "Summary";
-	}
 
 	public void GoToSentProject() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
@@ -43,9 +38,10 @@ public class RedirectionBean implements Serializable {
 				.redirect("CalculationMod.jsf");
 
 	}
-	public void GoToChartPage() throws IOException{
+
+	public void GoToChartPage() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
-		.redirect("Chart_Page.jsf");
+				.redirect("Chart_Page.jsf");
 	}
 
 	public void GoToFactors() throws IOException {
@@ -76,6 +72,7 @@ public class RedirectionBean implements Serializable {
 	}
 
 	public void GoToReceived() throws IOException {
+			
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("ProjectBox.jsf");
 	}
@@ -90,20 +87,9 @@ public class RedirectionBean implements Serializable {
 				.redirect("ShowRisksOnMap.jsf");
 	}
 
-	public void GoToAssets() throws IOException {
-		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("Assets.jsf");
-	}
-
 	public void GoToRiskAssesment() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("RiskAssesment.jsf");
-	}
-
-	public void GoToRating() throws IOException {
-		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("Rating.jsf");
-		testaff = "Rating";
 	}
 
 	public void GoToProject() throws IOException {
@@ -121,14 +107,12 @@ public class RedirectionBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("TestMesureSummary.jsf");
 	}
-	public void GoToTest1() throws IOException {
-		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("test.jsf");
-	}
+
 	public void GoToTest2() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("test2.jsf");
 	}
+
 	public void GoToPlaccountantandauditorsratingtool() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("PIAccountantandandAuditorsTool.jsf");

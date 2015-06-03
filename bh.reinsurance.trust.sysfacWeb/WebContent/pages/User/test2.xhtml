@@ -567,19 +567,15 @@
 										<p:column style="width:250px">Loss Ration </p:column>
 										<p:column>
 
-											<p:selectOneMenu value="#{assesmentBean.lossCharge}"
-												style="width:125px">
+											<p:selectOneMenu style="width:125px">
 
-												<p:ajax event="valueChange" update="Form1" />
 												<f:selectItem itemLabel="select one" />
 
-												<f:selectItems value="#{assesmentBean.loss_Frequencies}"
-													var="cat" itemValue="#{cat.charge}"
-													itemLabel="#{cat.category}" />
+
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-							#{assesmentBean.lossCharge} %
+						0%
 							</p:column>
 									</p:row>
 
@@ -587,16 +583,11 @@
 										<p:column id="Const" style="width:250px">Construction Class </p:column>
 										<p:column>
 
-											<p:selectOneMenu value="#{assesmentBean.a}"
-												style="width:125px">
+											<p:selectOneMenu style="width:125px">
 
-												<p:ajax event="valueChange" update="Form1" />
 												<f:selectItem itemLabel="select one" />
 
-												<f:selectItems value="#{assesmentBean.construction_Types}"
-													var="cat" itemValue="#{cat.loading}"
-													itemLabel="#{cat.category}"
-													itemDescription="#{cat.information}" />
+
 											</p:selectOneMenu>
 
 
@@ -611,7 +602,7 @@
 
 										</p:column>
 										<p:column>
-			                 #{assesmentBean.a} %
+			                 20 %
 							</p:column>
 									</p:row>
 								</p:panelGrid>

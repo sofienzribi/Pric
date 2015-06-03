@@ -13,12 +13,13 @@ import javax.persistence.Query;
 
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.UserServicesRemote;
 
 /**
  * Session Bean implementation class UserServices
  */
 @Stateless
-public class UserServices implements UserServicesLocal {
+public class UserServices implements UserServicesLocal, UserServicesRemote {
 	static Locale locale = Locale.getDefault();
 	static Date date = new Date();
 	static DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -77,13 +78,6 @@ public class UserServices implements UserServicesLocal {
 	public String GetFirstAndLast(int id) {
 		User user3 = entityManager.find(User.class, id);
 		return user3.getLast_Name() + "  " + user3.getFirst_Name();
-	}
-
-	@Override
-	public void tryz() {
-		entityManager.createNativeQuery(
-				"ALTER TABLE ee ADD column_namef varchar(225)").executeUpdate();
-
 	}
 
 	@Override

@@ -154,7 +154,6 @@
 								</p:dataTable>
 							</h:form>
 
-
 							<h:form id="Fiduciary">
 								<p:dataTable id="Fiduciary"
 									value="#{accountantandauditorsmeasure.placcmeasure.fiduciary.entrySet()}"
@@ -326,15 +325,7 @@
 								</p:dataTable>
 							</h:form>
 
-
-
-
-
-
-
 						</h:panelGrid>
-
-
 
 						<f:facet name="footer">
 							<p:commandButton value="Copy from another measure"
@@ -343,8 +334,8 @@
 								actionListener="#{accountantandauditorsmeasure.DisplayCopyMeasurePOP()}"
 								update=":from2" />
 						</f:facet>
-					</p:panel>
 
+					</p:panel>
 
 				</p:tab>
 
@@ -423,17 +414,17 @@
 					</p:panel>
 
 				</p:tab>
+				<p:tab title="TestTab">
+				</p:tab>
 
 			</p:tabView>
-
-
-
 
 			<p:dialog widgetVar="Addfactor" id="Addfactor" width="300px"
 				modal="true" showEffect="true" hideEffect="explode"
 				resizable="false" header="Add Factor">
 
 				<h:form id="from3">
+
 					<h:panelGrid columns="2">
 						<p:outputLabel>param name</p:outputLabel>
 						<p:inputText value="#{accountantandauditorsmeasure.key}"
@@ -445,15 +436,14 @@
 						</p:inputMask>
 
 					</h:panelGrid>
+
 					<p:commandButton update=":tab:global :tab:tab2"
 						actionListener="#{accountantandauditorsmeasure.FillFactorToAdd()}"
-						value="Add"></p:commandButton>
+						value="Add">
+					</p:commandButton>
 				</h:form>
 
 			</p:dialog>
-
-
-
 
 			<h:form id="from4">
 				<p:dialog widgetVar="modiffactor" id="modiffactor" width="300px"
@@ -495,7 +485,6 @@
 						#{prod.description}
 						</p:column>
 
-
 						<f:facet name="footer">
 							<p:commandButton value="Load" id="btn"
 								actionListener="#{accountantandauditorsmeasure.CopyMeasure()}"
@@ -511,7 +500,6 @@
 				</p:dialog>
 
 			</h:form>
-
 
 			<p:confirmDialog global="true" hideEffect="explode" visible="false"
 				showEffect="fade">

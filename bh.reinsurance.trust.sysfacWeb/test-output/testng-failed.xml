@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Default suite]">
+  <test name="Default test(failed)">
+    <classes>
+      <class name="bh.reinsurance.trust.sysfacWeb.beans.AdminBeanTest">
+        <methods>
+          <include name="SendNotif"/>
+          <include name="setMessa"/>
+          <include name="init"/>
+          <include name="getSelectedValue"/>
+          <include name="getTitle"/>
+          <include name="setUserTraces"/>
+          <include name="OnFlowProcess"/>
+          <include name="getUser"/>
+          <include name="getUserTraces"/>
+          <include name="setTitle"/>
+          <include name="setSelectedValue"/>
+          <include name="getB"/>
+          <include name="setB"/>
+          <include name="refreshList"/>
+          <include name="getUsername"/>
+          <include name="getMessa"/>
+          <include name="addUser"/>
+          <include name="addthis"/>
+          <include name="getUsers"/>
+          <include name="AdminBean"/>
+          <include name="OnUserChange"/>
+          <include name="setUsers"/>
+          <include name="getlistUsers"/>
+          <include name="setUser"/>
+        </methods>
+      </class> <!-- bh.reinsurance.trust.sysfacWeb.beans.AdminBeanTest -->
+    </classes>
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->

@@ -28,6 +28,7 @@ public class PlaccountantandauditorsMeasure implements Serializable {
 	private HashMap<String, String> SpecialClientProfileList;
 	private HashMap<String, String> ExtendedReport;
 	private HashMap<String, String> RetrospectiveCovers;
+
 	private static final long serialVersionUID = 1L;
 
 	public PlaccountantandauditorsMeasure() {
@@ -116,7 +117,6 @@ public class PlaccountantandauditorsMeasure implements Serializable {
 	public void setTaxPreparation(HashMap<String, String> taxPreparation) {
 		TaxPreparation = taxPreparation;
 	}
-
 
 	public HashMap<String, String> getSpecialClientProfileList() {
 		return SpecialClientProfileList;

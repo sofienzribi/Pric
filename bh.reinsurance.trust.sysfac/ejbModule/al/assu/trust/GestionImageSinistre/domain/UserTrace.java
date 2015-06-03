@@ -18,7 +18,7 @@ public class UserTrace implements Serializable {
 	private String activity;
 	private int userId;
 	private String Description;
-	private String Date;
+	private java.util.Date Date;
 	private String time;
 	private static final long serialVersionUID = 1L;
 
@@ -67,20 +67,21 @@ public class UserTrace implements Serializable {
 		this.Description = Description;
 	}
 
-	public String getDate() {
-		return Date;
-	}
-
-	public void setDate(String date) {
-		Date = date;
-	}
-
+	
 	public String getTime() {
 		return time;
 	}
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public java.util.Date getDate() {
+		return Date;
+	}
+
+	public void setDate(java.util.Date date) {
+		Date = date;
 	}
 
 }

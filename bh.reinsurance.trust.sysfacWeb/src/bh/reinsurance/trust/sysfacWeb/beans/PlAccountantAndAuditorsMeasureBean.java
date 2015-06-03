@@ -234,7 +234,7 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 			AddFactorToBase();
 			return null;
 		}
-		
+
 		if (TypeToAdd.equals("retrocover")) {
 
 			if (placcmeasure.getRetrospectiveCovers() == null) {
@@ -419,10 +419,11 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	}
 
 	// Delete Factor end *********************************
-	
-	
-	
-	
+
+	// Loss measure begin
+
+	// Loss measure end
+
 	// Getters and Setters
 	public Measure getMeasureToCopy() {
 		return measureToCopy;

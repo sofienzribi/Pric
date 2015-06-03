@@ -11,22 +11,21 @@
 		<ui:define name="content">
 			<p:growl autoUpdate="true"></p:growl>
 			<p:panel>
-			<h:form>
-			<h:panelGrid style="margin-left:300px" columns="2">
-			<p:outputLabel value="Class :"></p:outputLabel>
-							<p:selectOneMenu id="tool"
-								value="#{measure.displayMeasuresByClass}" style="width:135px">
-								<p:ajax event="valueChange"
-									listener="#{measure.DisplayMeasureByFilter()}" update=":Measure"
-									 />
-								<f:selectItem itemLabel="All Classes .." itemValue="all" />
-								<f:selectItems value="#{measure.tool}" var="cat"
-									itemValue="#{cat}" itemLabel="#{cat}" />
-							</p:selectOneMenu>
-							</h:panelGrid>
-							</h:form>
+				<h:form>
+					<h:panelGrid style="margin-left:300px" columns="2">
+						<p:outputLabel value="Class :"></p:outputLabel>
+						<p:selectOneMenu id="tool"
+							value="#{measure.displayMeasuresByClass}" style="width:135px">
+							<p:ajax event="valueChange"
+								listener="#{measure.DisplayMeasureByFilter()}" update=":Measure" />
+							<f:selectItem itemLabel="All Classes .." itemValue="all" />
+							<f:selectItems value="#{measure.tool}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+				</h:form>
 			</p:panel>
-			
+
 			<h:form id="Measure">
 				<p:dataTable style="width:650px" emptyMessage="No Measures found!"
 					value="#{measure.measures}" var="prod" rows="5" paginator="true"
@@ -64,7 +63,6 @@
 						<p:commandButton value="open" action="#{measure.OpenMeasure()}"
 							rendered="#{measure.displayButtons}" icon="ui-icon-folder-open" />
 					</f:facet>
-
 				</p:dataTable>
 			</h:form>
 
@@ -80,7 +78,6 @@
 						<p:outputLabel value="Class : " />
 						<p:selectOneMenu value="#{measure.newmeasure.classofbusiness}"
 							id="tool" style="width:135px">
-
 							<f:selectItem itemLabel="All tools .." itemValue="all" />
 							<f:selectItems value="#{measure.tool}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
@@ -93,7 +90,6 @@
 						update=":Measure" actionListener="#{measure.CreateMeasure()}" />
 				</h:form>
 			</p:dialog>
-
 			<p:confirmDialog global="true" showEffect="fade">
 				<p:commandButton value="Yes" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

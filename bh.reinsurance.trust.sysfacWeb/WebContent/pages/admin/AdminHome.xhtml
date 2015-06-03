@@ -18,28 +18,35 @@
 					<h:form>
 						<p:panel>
 
-							<h:panelGrid columns="2">
+							<h:panelGrid columns="4">
 								<p:outputLabel value="User :"></p:outputLabel>
 								<p:selectOneMenu id="user" value="#{admin.selectedValue}">
 
-									<f:selectItem itemLabel="All" itemValue="all" />
+									<f:selectItem itemLabel="All users" itemValue="all" />
 									<f:selectItems value="#{admin.users}" var="user"
 										itemValue="#{user.id}" itemLabel="#{user.first_Name}" />
 									<p:ajax update="@form" listener="#{admin.OnUserChange()}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel value="Month :"></p:outputLabel>
+								<p:selectOneMenu id="month" value="#{admin.selectedMonth}">
+
+									<f:selectItem itemLabel="All months" itemValue="all" />
+									<f:selectItems value="#{admin.months.entrySet()}" var="hash"
+										itemValue="#{hash.key}" itemLabel="#{hash.value}" />
+									<p:ajax update="@form" listener="#{admin.OnMonthChange()}" />
 								</p:selectOneMenu>
 							</h:panelGrid>
 
 						</p:panel>
 						<p:dataTable value="#{admin.userTraces}" id="da" var="data"
-							rows="20">
+							rows="20" paginator="true" paginatorPosition="bottom">
 							<p:column headerText="Activy" filterBy="#{data.activity}">
 								<h:outputText value="#{data.activity}" />
 							</p:column>
-							<p:column headerText="Description">
-								<h:outputText value="#{data.description}" />
 
-							</p:column>
-							<p:column headerText="User" filterBy="#{admin.getUsername(data.userId)}">
+							<p:column headerText="User"
+								filterBy="#{admin.getUsername(data.userId)}">
 
 								<h:outputText value=" #{admin.getUsername(data.userId)}" />
 							</p:column>
@@ -47,9 +54,11 @@
 
 								<h:outputText value="#{data.date}" />
 							</p:column>
-							<p:column headerText="Time">
-								<h:outputText value="#{data.time}" />
+							<p:column headerText="Description">
+								<h:outputText value="#{data.description}" />
+
 							</p:column>
+
 							<f:facet name="footer">
 								<h:commandLink>
 									<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"

@@ -41,7 +41,7 @@ public class UserTraceServices implements UserTraceServicesLocal {
 
 	@Override
 	public void AddTrace(UserTrace trace) {
-		trace.setDate(dateFormat.format(date));
+		trace.setDate(new Date());
 		trace.setTime(dateFormat2.format(date));
 		// TODO Auto-generated method stub
 		entityManager.merge(trace);
