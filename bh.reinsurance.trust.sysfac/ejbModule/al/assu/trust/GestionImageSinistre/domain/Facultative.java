@@ -46,7 +46,7 @@ public class Facultative implements Serializable {
 	private String our_premium;
 
 	private String commission_Rate;
-	
+
 	private String Gross_Rate;
 
 	public Facultative() {

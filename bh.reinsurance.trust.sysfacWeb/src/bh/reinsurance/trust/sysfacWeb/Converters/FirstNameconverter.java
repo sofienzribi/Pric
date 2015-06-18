@@ -24,13 +24,11 @@ public class FirstNameconverter implements Converter {
 				return helper.Finduserbyname(Integer.parseInt(arg2));
 
 			} catch (NumberFormatException e) {
-				System.out.println("moi1 error");
 				throw new ConverterException(new FacesMessage(
 						FacesMessage.SEVERITY_ERROR, "Conversion Error",
 						"Not a valid theme."));
 			}
 		} else {
-			System.out.println("moi2");
 			return null;
 		}
 
@@ -43,7 +41,6 @@ public class FirstNameconverter implements Converter {
 			return String.valueOf(((User) arg2).getId());
 
 		} else {
-			System.out.println("moi4");
 			return null;
 		}
 	}

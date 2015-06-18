@@ -32,10 +32,9 @@ body {
 				<section> <h:form class="form-2">
 					<p:graphicImage value="/resources/images/logo_small.png"></p:graphicImage>
 					<h1>
-						<span class="log-in" style="font-family: 'Times New Roman';">Log
-							in</span>
+						<span class="log-in" style="font-family: 'Times New Roman';">User login</span>
 					</h1>
-					<p:messages id="messages" autoUpdate="true" closable="true" />
+					<p:messages id="messages" autoUpdate="true" showDetail="true" closable="true" />
 					<p class="float">
 						<label for="login"><i class="icon-user"></i>Username</label>
 						<p:inputText value="#{login.user.login}" required="true"
@@ -47,23 +46,22 @@ body {
 							requiredMessage="Password required" placeholder="password"></p:password>
 					</p>
 					<p class="clearfix">
-					<h:panelGrid columns="2">
-						<p:outputLabel value="Remember username  " style="position:relative;left:100px" />
-						<p:selectBooleanCheckbox id="re"  style="position:relative;left:110px;top:-5px" value="#{login.remember}" />
+						<h:panelGrid columns="2">
+							<p:outputLabel value="Remember username  "
+								style="position:relative;left:100px" />
+							<p:selectBooleanCheckbox id="re"
+								style="position:relative;left:110px;top:-5px"
+								value="#{login.remember}" />
 						</h:panelGrid>
 					</p>
 
-					<!-- <p:commandButton value="Login" update="@form" icon="ui-icon-key"
-						action="#{login.login()}" >
-						
-						</p:commandButton>
- -->
 
 
-					<p:commandLink update="@form"  action="#{login.login()}" >
-						<p:graphicImage value="/resources/images/dd.png"
-									width="85" />
-						</p:commandLink>
+
+					<p:commandLink update="@form" immediate="false"
+						actionListener="#{login.login()}">
+						<p:graphicImage value="/resources/images/dd.png" width="85" />
+					</p:commandLink>
 				</h:form> </section>
 			</div>
 		</div>

@@ -100,7 +100,6 @@ public class MeasureServices implements MeasureServicesLocal {
 			return (Measure) query.getSingleResult();
 		} catch (Exception e) {
 
-			System.out.println("No working Measure");
 			return null;
 		}
 

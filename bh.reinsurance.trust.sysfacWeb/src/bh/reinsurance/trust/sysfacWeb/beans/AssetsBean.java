@@ -56,7 +56,6 @@ public class AssetsBean {
 	}
 
 	public List<Assets> GetAssetsByidproj() {
-		System.out.println(project3.getId());
 		// return assetsServicesLocal.GetAssetsByIdProject(project3.getId());
 		return null;
 	}

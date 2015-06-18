@@ -29,6 +29,7 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	private Measure measureToCopy = new Measure();
 
 	private String Key;
+
 	private String Value;
 
 	private List<Measure> measures;
@@ -36,11 +37,13 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	private PlaccountantandauditorsMeasure placcmeasure = new PlaccountantandauditorsMeasure();
 
 	private String SelectionPlaccandaudit;
+
 	@ManagedProperty("#{measure.workingMeasure}")
 	private Measure workingMeasure;
 
 	@EJB
 	private CrudBasicLocal basicLocal;
+
 	@EJB
 	private MeasureServicesLocal measureServicesLocal;
 
@@ -50,6 +53,7 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	}
 
 	// init meth
+
 	@PostConstruct
 	public void init() {
 		placcmeasure = (PlaccountantandauditorsMeasure) basicLocal
@@ -62,6 +66,7 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	// methods
 
 	// Copy factors from another measure begin *******************************
+
 	public void DisplayCopyMeasurePOP() {
 
 		RequestContext context = RequestContext.getCurrentInstance();
@@ -70,24 +75,31 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	}
 
 	public void CopyMeasure() {
-		PlaccountantandauditorsMeasure factorstocopy = (PlaccountantandauditorsMeasure) basicLocal
-				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
-						measureToCopy.getId());
+		if (measureToCopy == null) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Please select a measure", ""));
+		} else {
+			PlaccountantandauditorsMeasure factorstocopy = (PlaccountantandauditorsMeasure) basicLocal
+					.FindByFilter("PlaccountantandauditorsMeasure",
+							"idMeasure", measureToCopy.getId());
 
-		factorstocopy.setId(placcmeasure.getId());
-		factorstocopy.setIdMeasure(workingMeasure.getId());
-		basicLocal.Persist(factorstocopy);
+			factorstocopy.setId(placcmeasure.getId());
+			factorstocopy.setIdMeasure(workingMeasure.getId());
+			basicLocal.Persist(factorstocopy);
 
-		placcmeasure = factorstocopy;
+			placcmeasure = factorstocopy;
 
-		measureToCopy = new Measure();
+			measureToCopy = new Measure();
 
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("PF('Copy').hide();");
-		FacesContext.getCurrentInstance().addMessage(
-				"messages1",
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Measure Copied",
-						""));
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('Copy').hide();");
+			FacesContext.getCurrentInstance().addMessage(
+					"messages1",
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Measure Copied", ""));
+		}
 
 	}
 
@@ -104,6 +116,7 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	}
 
 	// Sorting PROB HERE
+
 	public void AddFactorToBase() {
 		basicLocal.Persist(placcmeasure);
 		Key = null;
@@ -247,7 +260,33 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 			AddFactorToBase();
 			return null;
 		}
-		System.out.println("Error in add no type found");
+		if (TypeToAdd.equals("Agglimit")) {
+
+			if (placcmeasure.getAggregateLimit() == null) {
+				placcmeasure
+						.setAggregateLimit(new LinkedHashMap<String, String>());
+
+			}
+			ee.put(Key, Value);
+			placcmeasure.getAggregateLimit().put(Key, Value);
+			AddFactorToBase();
+			return null;
+		}
+		if (TypeToAdd.equals("incured")) {
+
+			if (placcmeasure.getLossHistoryIncured() == null) {
+				placcmeasure
+						.setLossHistoryIncured(new LinkedHashMap<Integer, String>());
+
+			}
+
+			placcmeasure.getLossHistoryIncured().put(
+					placcmeasure.getLossHistoryIncured().size() + 1, Value);
+
+			AddFactorToBase();
+			return null;
+		}
+
 		return null;
 
 	}
@@ -271,7 +310,6 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 
 	public String ModifyFactor() {
 		if (TypeToModify.equals("bookkeeping")) {
-			placcmeasure.getBookKeepingAndAudit().clear();
 			placcmeasure.getBookKeepingAndAudit().put(Key, Value);
 			UpdateAfterModify();
 			return null;
@@ -286,6 +324,7 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 			UpdateAfterModify();
 			return null;
 		}
+
 		if (TypeToModify.equals("payrollServices")) {
 			placcmeasure.getPayrollServices().put(Key, Value);
 			UpdateAfterModify();
@@ -326,7 +365,17 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 			UpdateAfterModify();
 			return null;
 		}
-		System.out.println("Error in modify no type found");
+		if (TypeToModify.equals("Agglimit")) {
+			placcmeasure.getAggregateLimit().put(Key, Value);
+			UpdateAfterModify();
+			return null;
+		}
+		if (TypeToModify.equals("incured")) {
+			placcmeasure.getLossHistoryIncured().put(Integer.parseInt(Key),
+					Value);
+			UpdateAfterModify();
+			return null;
+		}
 		return null;
 
 	}
@@ -406,6 +455,17 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 			UpdateAfterDelete();
 			return null;
 		}
+		if (type.equals("Agglimit")) {
+			placcmeasure.getAggregateLimit().remove(Key);
+			UpdateAfterDelete();
+			return null;
+		}
+		if (type.equals("incured")) {
+			placcmeasure.getLossHistoryIncured().remove(Integer.parseInt(Key));
+			UpdateAfterDelete();
+			return null;
+		}
+
 		System.out.println("Error in delete no type found");
 		return null;
 	}
@@ -419,6 +479,13 @@ public class PlAccountantAndAuditorsMeasureBean implements Serializable {
 	}
 
 	// Delete Factor end *********************************
+
+	// Expenses Change begin
+	public void SaveExpensesChanges() {
+		basicLocal.Persist(placcmeasure);
+	}
+
+	// Expenses Change end
 
 	// Loss measure begin
 

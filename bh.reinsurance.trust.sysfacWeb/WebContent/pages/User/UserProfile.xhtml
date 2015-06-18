@@ -12,7 +12,7 @@
 			<p:tabView style="width:1200px" id="Mes">
 				<p:tab title="Email credentials">
 					<h:form>
-						<p:growl id="gr1" sticky="true" showDetail="true"></p:growl>
+						<p:growl id="gr1" sticky="true" autoUpdate="true" showDetail="true"></p:growl>
 
 
 						<p:panelGrid columns="2" rendered="#{!login.user.verified}"
@@ -54,20 +54,19 @@
 				</p:tab>
 				<p:tab title="Account Credentials">
 					<h:form>
-						<p:growl id="gr3" life="2000" showDetail="true"></p:growl>
 						<p:panelGrid columns="2" style="position:relative;left:400px">
 							<f:facet name="header">Account Cred</f:facet>
 							<p:outputLabel value="Current  Password" />
 							<p:password required="true" requiredMessage="password required"
 								value="#{login.currentPassword}"></p:password>
 							<p:outputLabel value="New Password" />
-							<p:password required="true" requiredMessage="password required"
+							<p:password  required="true" requiredMessage="password required"
 								value="#{login.password1}"></p:password>
 							<p:outputLabel value="Confirm Password" />
-							<p:password required="true" requiredMessage="password required"
+							<p:password  required="true" requiredMessage="password required"
 								value="#{login.password2}"></p:password>
 							<f:facet name="footer">
-								<p:commandButton style="left:130px" update="gr3" value="Save"
+								<p:commandButton style="left:130px"  value="Save"
 									actionListener="#{login.ChangePassword()}">
 									<p:confirm header="Confirmation"
 										message="Are you sure that you want to change your password  ?"
@@ -85,7 +84,7 @@
 					</h:form>
 				</p:tab>
 				<p:tab title="Change Theme">
-					<p:growl id="gr3" autoUpdate="true"></p:growl>
+				
 					<h:form>
 						<p:panelGrid style="position:relative;left:400px">
 

@@ -1,7 +1,6 @@
 package al.assu.trust.GestionImageSinistre.domain;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,11 +27,15 @@ public class User implements Serializable {
 	private String emailPwd;
 	private String Theme;
 	private String password;
+	private boolean Blocked;
+	private int loginAttempts;
 	private static final long serialVersionUID = 1L;
 
 	public User() {
 		super();
 		this.Theme = "null";
+		this.Blocked = false;
+		this.loginAttempts=5;
 	}
 
 	@Id
@@ -139,6 +142,22 @@ public class User implements Serializable {
 
 	public void setTheme(String theme) {
 		Theme = theme;
+	}
+
+	public boolean isBlocked() {
+		return Blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		Blocked = blocked;
+	}
+
+	public int getLoginAttempts() {
+		return loginAttempts;
+	}
+
+	public void setLoginAttempts(int loginAttempts) {
+		this.loginAttempts = loginAttempts;
 	}
 
 }

@@ -20,10 +20,11 @@
 		<p:tab title="Information Tools">
 			<p:accordionPanel activeIndex="none" style="text-align:left">
 				<p:tab title="Fac info">
-					<pe:documentViewer height="500" library="Report"
-						name="UserGuideOpenProject.pdf" />
+						Go under <b>Information tool</b> , Click <b>Facultative
+						information</b> then select  a <b>Region</b>. <br />
 				</p:tab>
 				<p:tab title="Calculation Tool">
+					Go under <b>Information tool</b> , Click <b>Calculation tool</b> then select a <b>Region</b>. <br />
 				</p:tab>
 				<p:tab title="Risks on map">
 					<p class="HelpContent">
@@ -33,7 +34,7 @@
 				</p:tab>
 			</p:accordionPanel>
 		</p:tab>
-		<p:tab title="Rating Tools">
+		<p:tab title="Rating Tools(Quotations)">
 			<h:outputText
 				value="To use the rating tool the first step is to create or open a project" />
 
@@ -78,37 +79,77 @@
 				</p:tab>
 				<p:tab title="Export Rating to pdf">
 					<p class="HelpContent">
-						1.Go to <b>Summary</b> and Click <b> PDF</b><p:graphicImage value="/resources/images/pdf.png.xhtml-2.png" width="24" />	button.<br /> 
-						2.In case you want to add the Rating details to the Report Select <b>Add Rating Details To report</b>. <br />
-						3.In case you want to add Comments to Report Select <b>Add Text To report</b> and Enter the text.<br/>
-						4.Click <b>Create</b> button.
+						1.Go to <b>Summary</b> and Click <b> PDF</b>
+						<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
+							width="24" />
+						button.<br /> 2.In case you want to add the Rating details to the
+						Report Select <b>Add Rating Details To report</b>. <br /> 3.In
+						case you want to add Comments to Report Select <b>Add Text To
+							report</b> and Enter the text.<br /> 4.Click <b>Create</b> button.
 					</p>
 				</p:tab>
 				<p:tab title="Save Rating">
-				<p class="HelpContent">
-				Click <b>Save rating</b> under <b>Rating</b> or press "crtl+shift+s".
-				</p>
+					<p class="HelpContent">
+						Click <b>Save rating</b> under <b>Rating</b> or press
+						"crtl+shift+s".
+					</p>
 				</p:tab>
 				<p:tab title="Delete Project">
-			<p class="HelpContent">
-						1.Go under <b>Project</b> and Click <b> Manage Projects</b>.<br /> 
-						2.Select a project then click  <b>Delete</b>. <br />
-						3.Confirmation dialog will appear click <b>Yes</b> to delete the project or <b>No</b> to cancel .<br/>
+					<p class="HelpContent">
+						1.Go under <b>Project</b> and Click <b> Manage Projects</b>.<br />
+						2.Select a project then click <b>Delete</b>. <br />
+						3.Confirmation dialog will appear click <b>Yes</b> to delete the
+						project or <b>No</b> to cancel .<br />
 					</p>
 				</p:tab>
 				<p:tab title="Modify Project">
-				<p class="HelpContent">
-						1.Go under <b>Project</b> and Click <b> Manage Projects</b>.<br /> 
-						2.Select a project then click  <b>Modify</b>. <br />
-						3.Fill the information and click <b>Save</b> .<br/>
+					<p class="HelpContent">
+						1.Go under <b>Project</b> and Click <b> Manage Projects</b>.<br />
+						2.Select a project then click <b>Modify</b>. <br /> 3.Fill the
+						information and click <b>Save</b> .<br />
 					</p>
 				</p:tab>
 				<p:tab title="Sent Project(s)">
-				<p class="HelpContent">
-					Go under <b>Project</b> and Click <b> Sent Projects</b>.<br /> 
+					<p class="HelpContent">
+						Go under <b>Project</b> and Click <b> Sent Projects</b>.<br />
 					</p>
 				</p:tab>
 			</p:accordionPanel>
+		</p:tab>
+		<p:tab title="Rating Tools(Models)"
+			rendered="#{projectBean.displayActuarial}">
+			<p:accordionPanel activeIndex="none" style="text-align:left">
+				<p:tab title="Open Measure">
+		1. Go under <b>Measure</b> and Click <b>Create/Open Measure</b>. <br />
+						2. Select a measure. <br /> 3. Click <b>Open</b>.
+		</p:tab>
+				<p:tab title="Create Measure">
+		1. Go under <b>Measure</b> and Click <b>Create/Open Measure</b>. <br />
+						2. Click <b>New Measure</b> . <br /> 3. Fill the information needed.<br />4.
+		</p:tab>
+				<p:tab title="Delete Measure">
+		1. Go under <b>Measure</b> and Click <b>Create/Open Measure</b>. <br />
+						2. Select the measure. <br /> 3. Click <b>Delete</b>.
+		</p:tab>
+				<p:tab title="Test Measure">
+		 Go under <b>Measure</b> and Click <b>Test Measure</b>. <br />
+						
+		</p:tab>
+				<p:tab title="Test Measure on a project">
+		
+		1.Open a project<br /> 2.Go under <b>Project</b> and Click <b>Test/Reset
+						Measure</b>. <br />
+						2. Select the measure. <br /> 3. Click <b>Set Meausre</b>.
+						.
+		</p:tab>
+				<p:tab title="Reset Measure After test">
+		
+		1.Go under <b>Project</b> and Click <b>Test/Reset Measure</b>. <br />
+						2. Click <b>Reset Meausre</b>.
+						.
+		</p:tab>
+			</p:accordionPanel>
+
 		</p:tab>
 		<p:tab title="Account Management">
 			<p:accordionPanel activeIndex="none" style="text-align:left">

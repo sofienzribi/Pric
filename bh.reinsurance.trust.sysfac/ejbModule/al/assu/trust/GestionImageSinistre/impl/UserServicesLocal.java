@@ -20,4 +20,6 @@ public interface UserServicesLocal {
 
 	public void UpdateUser(User user);
 
+	public User GetUserByLogin(String Login);
+
 }

@@ -291,41 +291,54 @@
 								</p:dataTable>
 							</h:form>
 
-							<h:form id="specialclient">
-								<p:dataTable id="specialclient"
-									value="#{accountantandauditorsmeasure.placcmeasure.specialClientProfileList.entrySet()}"
-									var="testima" selectionMode="single"
-									selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
-									rowKey="#{testima}" style="width:250px" paginator="true"
-									paginatorPosition="bottom">
-									<f:facet name="header">Special client profile list</f:facet>
-									<p:column headerText="selection">
+						</h:panelGrid>
+						<p:separator></p:separator>
+
+						<h:form id="specialclient">
+							<p:dataTable id="specialclient"
+								value="#{accountantandauditorsmeasure.placcmeasure.specialClientProfileList.entrySet()}"
+								var="testima" selectionMode="single"
+								selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+								rowKey="#{testima}" style="width:250px" paginator="true"
+								paginatorPosition="bottom">
+								<f:facet name="header">Special client profile list</f:facet>
+								<p:column headerText="selection">
 						#{testima.key}
 						</p:column>
-									<p:column headerText="load">
+								<p:column headerText="load">
 						#{testima.value}% 
 						</p:column>
-									<f:facet name="footer">
-										<h:form rendered="true">
-											<p:commandButton icon="ui-icon-plusthick"
-												rendered="#{measure.hideActiveMeasureButton}"
-												actionListener="#{accountantandauditorsmeasure.AddButtonClicked('specialclient')}" />
-											<p:commandButton icon="ui-icon-trash"
-												rendered="#{measure.hideActiveMeasureButton}"
-												actionListener="#{accountantandauditorsmeasure.DeleteFactor('specialclient')}"
-												update=":tab:global">
-												<p:confirm header="Confirmation" message="Are you sure  ?"
-													icon="ui-icon-alert" />
-											</p:commandButton>
-											<p:commandButton icon=" ui-icon-pencil" update=":from4"
-												rendered="#{measure.hideActiveMeasureButton}"
-												actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('specialclient')}" />
-										</h:form>
-									</f:facet>
-								</p:dataTable>
-							</h:form>
+								<f:facet name="footer">
+									<h:form rendered="true">
+										<p:commandButton icon="ui-icon-plusthick"
+											rendered="#{measure.hideActiveMeasureButton}"
+											actionListener="#{accountantandauditorsmeasure.AddButtonClicked('specialclient')}" />
+										<p:commandButton icon="ui-icon-trash"
+											rendered="#{measure.hideActiveMeasureButton}"
+											actionListener="#{accountantandauditorsmeasure.DeleteFactor('specialclient')}"
+											update=":tab:global">
+											<p:confirm header="Confirmation" message="Are you sure  ?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:commandButton icon=" ui-icon-pencil" update=":from4"
+											rendered="#{measure.hideActiveMeasureButton}"
+											actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('specialclient')}" />
+									</h:form>
+								</f:facet>
+							</p:dataTable>
+						</h:form>
 
-						</h:panelGrid>
+
+
+
+
+
+
+
+
+
+
+
 
 						<f:facet name="footer">
 							<p:commandButton value="Copy from another measure"
@@ -339,7 +352,7 @@
 
 				</p:tab>
 
-				<p:tab title="Extensions">
+				<p:tab title="Coverage Extensions">
 					<p:panel id="tab2">
 						<h:panelGrid columns="2">
 							<h:form id="extendedreport">
@@ -414,7 +427,104 @@
 					</p:panel>
 
 				</p:tab>
-				<p:tab title="TestTab">
+				<p:tab title="Enhancements">
+					<p:panel header="Please click on the field to change the value">
+						<h:form id="form5">
+							<h:panelGrid columns="2">
+								<p:outputLabel value="Loss of document factor : " />
+								<p:inplace disabled="#{!measure.hideActiveMeasureButton}"
+									editor="true">
+									<p:inputMask
+										value="#{accountantandauditorsmeasure.placcmeasure.lossofDocumentFactor}"
+										label="text" maxlength="7">
+										<pe:keyFilter regEx="/[0-9.]/" />
+										<p:ajax event="valueChange"
+											listener="#{accountantandauditorsmeasure.SaveExpensesChanges()}"
+											update=":tab:form5" />
+									</p:inputMask>
+
+								</p:inplace>
+								<p:outputLabel value="Dishonest Of employees factor : " />
+								<p:inplace disabled="#{!measure.hideActiveMeasureButton}"
+									editor="true">
+									<p:inputMask
+										value="#{accountantandauditorsmeasure.placcmeasure.dishonestFactor}"
+										label="text" maxlength="7">
+										<pe:keyFilter regEx="/[0-9.]/" />
+										<p:ajax event="valueChange"
+											listener="#{accountantandauditorsmeasure.SaveExpensesChanges()}"
+											update=":tab:form5" />
+									</p:inputMask>
+
+								</p:inplace>
+								<p:outputLabel value="Lible,Slander factor : " />
+								<p:inplace disabled="#{!measure.hideActiveMeasureButton}"
+									editor="true">
+									<p:inputMask
+										value="#{accountantandauditorsmeasure.placcmeasure.libelSlanderFactor}"
+										label="text" maxlength="7">
+										<pe:keyFilter regEx="/[0-9.]/" />
+										<p:ajax event="valueChange"
+											listener="#{accountantandauditorsmeasure.SaveExpensesChanges()}"
+											update=":tab:form5" />
+									</p:inputMask>
+
+								</p:inplace>
+								<p:outputLabel value="Defence Expenses outside limits factor : " />
+								<p:inplace disabled="#{!measure.hideActiveMeasureButton}"
+									editor="true">
+									<p:inputMask
+										value="#{accountantandauditorsmeasure.placcmeasure.defenceExpenses}"
+										label="text" maxlength="7">
+										<pe:keyFilter regEx="/[0-9.]/" />
+										<p:ajax event="valueChange"
+											listener="#{accountantandauditorsmeasure.SaveExpensesChanges()}"
+											update=":tab:form5" />
+									</p:inputMask>
+
+								</p:inplace>
+
+							</h:panelGrid>
+						</h:form>
+					</p:panel>
+				</p:tab>
+				<p:tab title="Occurence" id="fourth">
+					<p:panel id="tab4" style="width:auto">
+						<h:form id="agglimit">
+							<p:dataTable id="agglimit"
+								value="#{accountantandauditorsmeasure.placcmeasure.aggregateLimit.entrySet()}"
+								var="testima" selectionMode="single"
+								selection="#{accountantandauditorsmeasure.selectionPlaccandaudit}"
+								rowKey="#{testima}" style="width:250px" paginator="true"
+								paginatorPosition="bottom">
+								<f:facet name="header">Aggregate limit</f:facet>
+								<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+								<p:column headerText="factor">
+						#{testima.value}
+						</p:column>
+								<f:facet name="footer">
+									<h:form rendered="true">
+										<p:commandButton icon="ui-icon-plusthick"
+											rendered="#{measure.hideActiveMeasureButton}"
+											actionListener="#{accountantandauditorsmeasure.AddButtonClicked('Agglimit')}" />
+										<p:commandButton icon="ui-icon-trash"
+											rendered="#{measure.hideActiveMeasureButton}"
+											actionListener="#{accountantandauditorsmeasure.DeleteFactor('Agglimit')}"
+											update=":tab:tab4">
+											<p:confirm header="Confirmation" message="Are you sure  ?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:commandButton icon=" ui-icon-pencil" update=":from4"
+											rendered="#{measure.hideActiveMeasureButton}"
+											actionListener="#{accountantandauditorsmeasure.Displaymodifyfactor('Agglimit')}" />
+									</h:form>
+								</f:facet>
+							</p:dataTable>
+						</h:form>
+
+					</p:panel>
 				</p:tab>
 
 			</p:tabView>
@@ -425,19 +535,21 @@
 
 				<h:form id="from3">
 
+
 					<h:panelGrid columns="2">
 						<p:outputLabel>param name</p:outputLabel>
 						<p:inputText value="#{accountantandauditorsmeasure.key}"
 							required="true" requiredMessage="Please enter the param name"></p:inputText>
 						<p:outputLabel>Load</p:outputLabel>
 						<p:inputMask value="#{accountantandauditorsmeasure.value}"
-							label="text" mask="99?.99" maxlength="4" required="true"
+							label="text" maxlength="7" required="true"
 							requiredMessage="Please enter the load">
+							<pe:keyFilter regEx="/[0-9.]/" />
 						</p:inputMask>
 
 					</h:panelGrid>
 
-					<p:commandButton update=":tab:global :tab:tab2"
+					<p:commandButton update=":tab:global :tab:tab2 :tab:tab4"
 						actionListener="#{accountantandauditorsmeasure.FillFactorToAdd()}"
 						value="Add">
 					</p:commandButton>
@@ -454,9 +566,13 @@
 						<p:outputLabel>param name</p:outputLabel>
 						<p:outputLabel>#{accountantandauditorsmeasure.key}</p:outputLabel>
 						<p:outputLabel>Load</p:outputLabel>
-						<p:inputText value="#{accountantandauditorsmeasure.value}"></p:inputText>
+						<p:inputMask value="#{accountantandauditorsmeasure.value}"
+							label="text" maxlength="7" required="true"
+							requiredMessage="Please enter the load">
+							<pe:keyFilter regEx="/[0-9.]/" />
+						</p:inputMask>
 					</h:panelGrid>
-					<p:commandButton update=":tab:global :tab:tab2"
+					<p:commandButton update=":tab:global :tab:tab2 :tab:tab4"
 						actionListener="#{accountantandauditorsmeasure.ModifyFactor()}"
 						value="Update"></p:commandButton>
 				</p:dialog>
@@ -488,7 +604,7 @@
 						<f:facet name="footer">
 							<p:commandButton value="Load" id="btn"
 								actionListener="#{accountantandauditorsmeasure.CopyMeasure()}"
-								update=":tab:global :tab:tab2">
+								update=":tab:global :tab:tab2 :tab:form5 :tab:tab4">
 								<p:confirm header="Confirmation"
 									message="All the factors will be deleted and replaced with the new factors"
 									icon="ui-icon-alert" />

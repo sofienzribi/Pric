@@ -10,80 +10,107 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Test Measure</ui:define>
 		<ui:define name="content">
-			<p:tabView style="width:1200px">
-				<p:tab title="Summary">
+			<p:growl autoUpdate="true"></p:growl>
+			<p:panel header="Summary" id="summ">
+				<p:panel>
+					<h:form id="chart">
+						<h:panelGrid columns="2" width="700px">
+							<p:chart type="bar"
+								model="#{plAccountAuditorsRatingBean.barChartModel}"
+								style="width:300px;left: 240px;" />
+							<p:chart type="bar"
+								model="#{plAccountAuditorsRatingBean.barChartModelrate}"
+								style="width:300px;left: 240px;" />
+						</h:panelGrid>
+					</h:form>
+				</p:panel>
+				<h:form id="FacInfoForm">
+					<p:panelGrid columns="3" id="Detailsandcomparaisons">
+						<p:panelGrid style="width:350px" id="SelectedFac" columns="2">
+							<f:facet name="header">Working Measure</f:facet>
 
+							<p:outputLabel value=" Total Premium " />
+							<p:outputLabel
+								value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.test1.premium)}" />
 
-					<p:panel style="position:relative;left:100px;width:920px" id="summ">
+							<p:outputLabel value=" Avg Rate " />
+							<p:outputLabel
+								value="#{plAccountAuditorsRatingBean.formatter.format(plAccountAuditorsRatingBean.test1.rate)}" />
 
-						<h:form id="FacInfoForm">
-							<p:panelGrid columns="3" id="Detailsandcomparaisons">
-								<p:panelGrid style="width:350px" id="SelectedFac" columns="2">
-									<f:facet name="header">Working Measure</f:facet>
+							<f:facet name="footer">
+								<h:panelGroup style="display:block; text-align:center">
 
-									<p:outputLabel value=" Total Premium " />
-									<p:outputLabel
-										value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.GetTheTotalPremium(plAccountAuditorsRatingBean.GetWorkingMeasureId(measure.workingMeasure.classofbusiness)))
-										}" />
+								</h:panelGroup>
+							</f:facet>
+						</p:panelGrid>
 
-									<f:facet name="footer">
-										<h:panelGroup style="display:block; text-align:center">
+						<h:form id="Compfacultative">
+							<p:panelGrid style="width:350px" id="CompareFac" columns="2">
+								<f:facet name="header">Test Measure</f:facet>
+								<p:outputLabel value=" Total Premium " />
+								<p:outputLabel
+									value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.test2.premium)}" />
+								<p:outputLabel value=" Avg Rate " />
+								<p:outputLabel
+									value="#{plAccountAuditorsRatingBean.formatter.format(plAccountAuditorsRatingBean.test2.rate)}" />
 
-										</h:panelGroup>
-									</f:facet>
-								</p:panelGrid>
-
-								<h:form id="Compfacultative">
-									<p:panelGrid style="width:350px" id="CompareFac" columns="2">
-										<f:facet name="header">Test Measure</f:facet>
-										<p:outputLabel value=" Total Premium " />
-										<p:outputLabel
-											value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.GetTheTotalPremium(measure.workingMeasure.id))}" />
-										<f:facet name="footer">
-											<h:panelGroup style="display:block; text-align:center">
-											</h:panelGroup>
-										</f:facet>
-									</p:panelGrid>
-
-								</h:form>
-								<p:panelGrid id="pane3" columns="1">
-									<f:facet name="header"> Difference</f:facet>
-
-
-									<p:outputLabel value="#{plAccountAuditorsRatingBean.GetFormatresult(((plAccountAuditorsRatingBean.GetTheTotalPremium(plAccountAuditorsRatingBean.GetWorkingMeasureId(measure.workingMeasure.classofbusiness)))
-									)-(plAccountAuditorsRatingBean.GetTheTotalPremium(measure.workingMeasure.id)))}"  style="width:100px"/>
-
-									<f:facet name="footer">
-										<h:panelGroup style="display:block; text-align:center">
-
-										</h:panelGroup>
-									</f:facet>
-								</p:panelGrid>
-
-
-								<f:facet name="header">
-								Summary
-								</f:facet>
 								<f:facet name="footer">
 									<h:panelGroup style="display:block; text-align:center">
-										<p:commandLink>
-											<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
-												width="24" />
-										</p:commandLink>
 									</h:panelGroup>
-
 								</f:facet>
 							</p:panelGrid>
+
 						</h:form>
-					</p:panel>
+						<p:panelGrid id="pane3" columns="1">
+							<f:facet name="header"> Difference(Test-working)</f:facet>
+							<p:outputLabel
+								value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.test2.premium-plAccountAuditorsRatingBean.test1.premium)}"
+								style="width:250px" />
+							<p:outputLabel
+								value="#{plAccountAuditorsRatingBean.formatter.format(plAccountAuditorsRatingBean.test2.rate-plAccountAuditorsRatingBean.test1.rate)}" />
+							<f:facet name="footer">
+								<h:panelGroup style="display:block; text-align:center">
+								</h:panelGroup>
+							</f:facet>
+						</p:panelGrid>
+						<f:facet name="footer">
+							<h:panelGroup style="display:block; text-align:center">
+								<p:commandLink onclick="PF('PopupPdf').show()">
+									<p:graphicImage value="/resources/images/pdf.png.xhtml-2.png"
+										width="24" />
+								</p:commandLink>
+							</h:panelGroup>
 
-				</p:tab>
-				<p:tab title="Details ">
-				Please Select a Quotation !
-				</p:tab>
+						</f:facet>
+					</p:panelGrid>
+				</h:form>
 
+			</p:panel>
 
-			</p:tabView>
+			<p:dialog id="PopupPdf" widgetVar="PopupPdf" modal="true">
+				<h:form>
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Please enter pdf name"></p:outputLabel>
+						<p:inputText value="#{plAccountAuditorsRatingBean.projectName}"
+							required="true" requiredMessage="please enter the name"></p:inputText>
+					</h:panelGrid>
+					<p:commandButton value="Generate" actionListener="#{plAccountAuditorsRatingBean.ExportTestMeasureSummary(measure.workingMeasure)}"></p:commandButton>
+
+				</h:form>
+			</p:dialog>
+
+			<h:form>
+				<p:remoteCommand name="rc" update=":FacInfoForm :chart"
+					actionListener="#{plAccountAuditorsRatingBean.GetTheTotalPremium(plAccountAuditorsRatingBean.GetWorkingMeasureId(measure.workingMeasure.classofbusiness),measure.workingMeasure.id)}" />
+
+			</h:form>
+			<script type="text/javascript">
+        
+			window.onload=   function() {
+	        	rc();
+	       	}
+     
+      </script>
 		</ui:define>
 	</ui:composition>
 </h:body>

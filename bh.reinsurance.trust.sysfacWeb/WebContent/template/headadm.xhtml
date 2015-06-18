@@ -5,8 +5,6 @@
 	xmlns:p="http://primefaces.org/ui">
 	<h:outputStylesheet library="css" name="style.css" />
 
-
-
 	<nav class="navbar navbar-default navbar-fixed-top ">
 		<div class="container">
 			<div class="navbar-header">
@@ -20,63 +18,50 @@
 
 
 					<li><a style="display:#{projectBean.displayFacultativeDept}"
-						href="/bh.reinsurance.trust.sysfacWeb/pages/admin/AdminHome.jsf"><i
-							class="fa fa-home"></i> Main</a></li>
+						href="/bh.reinsurance.trust.sysfacWeb/pages/admin/AdminHome.jsf"><p:graphicImage
+								width="19px" value="/resources/images/home.png"></p:graphicImage>
+							Home Page</a></li>
 
 
 
 
 					<li class="dropdown"><a href="#"
-						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-wrench"></i> <span>Manage User</span> <b
-							class="caret"></b>
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <p:graphicImage
+								width="19px" value="/resources/images/wrench.png"></p:graphicImage>
+							<span>Manage User</span> <b class="caret"></b>
 					</a>
 						<ul class="dropdown-menu">
-							<li><h:form id="firstb">
-									<i class="fa fa-play"></i>
-									<p:commandLink value="Add_User"
-										actionListener="#{redirectionBean.GoToAddAdminUser()}"></p:commandLink>
-								</h:form></li>
-
-
+							<li><p:commandLink value="Add_User"
+									actionListener="#{redirectionBean.GoToAddAdminUser()}"></p:commandLink>
+							</li>
+							<li><p:commandLink value="List Users"
+									actionListener="#{redirectionBean.GoToListUsers()}"></p:commandLink>
+							</li>
+							
 
 						</ul></li>
 
-					<li><a style="display:#{projectBean.displayFacultativeDept}"
-						href="/bh.reinsurance.trust.sysfacWeb/pages/admin/NotifUsers.jsf"><i
-							class="fa fa-envelope-o"></i> Notification </a></li>
-
-
-
-
-
-
 				</ul>
-
 
 				<!-- left menu
  -->
-
-
+<h:form>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown"><a href="#"
-						class="dropdown-toggle needsclick" data-toggle="dropdown"> <i
-							class="fa fa-user"></i> <span>#{login.Connected()}</span> <b
-							class="caret"></b>
+						class="dropdown-toggle needsclick" data-toggle="dropdown"> <p:graphicImage
+								width="19px" value="/resources/images/adm.png"></p:graphicImage>
+
+							<span>#{login.Connected()}</span> <b class="caret"></b>
+
 					</a>
 						<ul class="dropdown-menu">
-							<li><h:form id="mmmi">
-									<i class="fa fa-wrench"></i>
-									<p:commandLink value="Edit Account"></p:commandLink>
-								</h:form></li>
-							<li><h:form id="juij">
-									<i class="fa fa-sign-out"></i>
-									<p:commandLink value="Signout"
-										actionListener="#{login.LogOut()}"></p:commandLink>
-								</h:form></li>
+							<li><p:commandLink value="Signout"
+									actionListener="#{login.LogOut()}"></p:commandLink></li>
 
 						</ul></li>
+
 				</ul>
+				</h:form>
 			</div>
 		</div>
 		<!--/.navbar-collapse -->

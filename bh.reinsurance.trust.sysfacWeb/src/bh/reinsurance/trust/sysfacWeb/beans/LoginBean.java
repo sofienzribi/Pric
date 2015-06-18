@@ -3,6 +3,7 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.security.Base64Encoder;
 import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.User;
@@ -58,7 +60,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 
 	// constructor
 	public LoginBean() {
-
 		user = new User();
 	}
 
@@ -124,13 +125,17 @@ public class LoginBean extends HttpServlet implements Serializable {
 		if (user.getLogin() == null) {
 			return "Nobody !!!";
 		} else {
-			return user.getLogin();
+			return user.getFirst_Name();
 		}
 
 	}
 
 	public void LogOut() throws IOException {
 
+		if (user.getDepartment() != "admin") {
+			userTrace = new UserTrace("Logout", user.getId(), "");
+			userTraceServicesLocal.AddTrace(userTrace);
+		}
 		FacesContext.getCurrentInstance().getExternalContext()
 				.invalidateSession();
 		user = new User();
@@ -140,11 +145,14 @@ public class LoginBean extends HttpServlet implements Serializable {
 	}
 
 	public String login() throws IOException {
-		User userFound = userServicesLocal.login(user.getLogin(),
-				user.getPassword());
+
+		String loginEncoded = new Base64Encoder().encode(user.getPassword()
+				.getBytes());
+		User userFound = userServicesLocal.login(user.getLogin(), loginEncoded);
 		if (userFound != null) {
 
 			user = userFound;
+
 			if (userFound.getDepartment().equals("admin")) {
 				FacesContext.getCurrentInstance().getExternalContext()
 						.redirect("pages/admin/AdminHome.jsf");
@@ -166,74 +174,139 @@ public class LoginBean extends HttpServlet implements Serializable {
 				}
 				return null;
 			} else {
-				if (userFound.getDepartment().equals("actuarialandrisk")) {
-					Department = "Actuarial & Risk";
-					connected = true;
-
-					if (user.getTheme().equals("null")) {
-						theme = "redmond";
-
-					} else {
-						theme = user.getTheme();
-					}
-
-					userTrace = new UserTrace("Login", user.getId(), "");
-					userTraceServicesLocal.AddTrace(userTrace);
-
-					FacesContext.getCurrentInstance().getExternalContext()
-							.redirect("pages/User/HomePage.jsf");
-					if (Remember == true) {
-						HttpServletResponse response = (HttpServletResponse) FacesContext
-								.getCurrentInstance().getExternalContext()
-								.getResponse();
-						Cookie cookie = new Cookie("Remember", user.login);
-						cookie.setMaxAge(3600);
-						response.addCookie(cookie);
-					}
+				if (user.isBlocked()) {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_FATAL,
+									"Account Blocked!",
+									"Please contact a system administrator"));
 					return null;
+
 				} else {
-					Department = "Facultative Department";
-					connected = true;
+					user.setLoginAttempts(5);
+					userServicesLocal.UpdateUser(user);
 
-					if (user.getTheme().equals("null")) {
-						theme = "blitzer";
+					if (userFound.getDepartment().equals("actuarialandrisk")) {
+						Department = "Actuarial & Risk";
+						connected = true;
 
+						if (user.getTheme().equals("null")) {
+							theme = "redmond";
+
+						} else {
+							theme = user.getTheme();
+						}
+
+						userTrace = new UserTrace("Login", user.getId(), "");
+						userTraceServicesLocal.AddTrace(userTrace);
+						FacesContext.getCurrentInstance().getExternalContext()
+								.redirect("pages/User/HomePage.jsf");
+						if (Remember == true) {
+							HttpServletResponse response = (HttpServletResponse) FacesContext
+									.getCurrentInstance().getExternalContext()
+									.getResponse();
+							Cookie cookie = new Cookie("Remember", user.login);
+							cookie.setMaxAge(3600);
+							response.addCookie(cookie);
+						}
+						return null;
 					} else {
-						theme = user.getTheme();
+						Department = "Facultative Department";
+						connected = true;
+						if (user.getTheme().equals("null")) {
+							theme = "blitzer";
+						} else {
+							theme = user.getTheme();
+						}
+						if (Remember == true) {
+							HttpServletResponse response = (HttpServletResponse) FacesContext
+									.getCurrentInstance().getExternalContext()
+									.getResponse();
+							Cookie cookie = new Cookie("Remember", user.login);
+							cookie.setMaxAge(3600);
+							response.addCookie(cookie);
+						}
+						userTrace = new UserTrace("Login", user.getId(), "");
+						userTraceServicesLocal.AddTrace(userTrace);
+						FacesContext.getCurrentInstance().getExternalContext()
+								.redirect("pages/User/HomePage.jsf");
+						return null;
 					}
-
-					if (Remember == true) {
-
-						HttpServletResponse response = (HttpServletResponse) FacesContext
-								.getCurrentInstance().getExternalContext()
-								.getResponse();
-						Cookie cookie = new Cookie("Remember", user.login);
-						cookie.setMaxAge(3600);
-						response.addCookie(cookie);
-					}
-					userTrace = new UserTrace("Login", user.getId(), "");
-					userTraceServicesLocal.AddTrace(userTrace);
-					return "pages/User/HomePage?faces-redirect=true";
 				}
 			}
 
 		} else {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_FATAL,
-							"Bad Credentials!", "Bad Credentials"));
+
+			if (userServicesLocal.GetUserByLogin(user.getLogin()) == null) {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_FATAL,
+								"Bad Credentials!", ""));
+			} else {
+				userFound = userServicesLocal.GetUserByLogin(user.getLogin());
+				if (userFound.getDepartment().equals("admin")) {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_FATAL,
+									"Bad Credentials!", ""));
+				} else {
+					if (userFound.isBlocked() == true) {
+						FacesContext
+								.getCurrentInstance()
+								.addMessage(
+										null,
+										new FacesMessage(
+												FacesMessage.SEVERITY_FATAL,
+												"Account Blocked!",
+												"Please contact a system administrator"));
+					} else {
+						userFound
+								.setLoginAttempts(userFound.getLoginAttempts() - 1);
+						userServicesLocal.UpdateUser(userFound);
+						if (userFound.getLoginAttempts() == 0) {
+
+							userTrace = new UserTrace("Account Blocked",
+									userFound.getId(), "Bad password");
+							userTraceServicesLocal.AddTrace(userTrace);
+							userFound.setBlocked(true);
+							userServicesLocal.UpdateUser(userFound);
+							FacesContext
+									.getCurrentInstance()
+									.addMessage(
+											null,
+											new FacesMessage(
+													FacesMessage.SEVERITY_FATAL,
+													"Account Blocked!",
+													"Please contact a system administrator"));
+						} else {
+							FacesContext.getCurrentInstance().addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_FATAL,
+											"Bad Credentials!", userFound
+													.getLoginAttempts()
+													+ "attempt(s) remaining"));
+						}
+					}
+
+				}
+
+			}
+
 			// setUser(new user());
+			userFound = new User();
 			return "";
 		}
 	}
 
-	public void ChangePassword() {
-
-		if (CurrentPassword.equals(user.getPassword())) {
+	public void ChangePassword() throws IOException {
+		String currentpasswordEncrypted = new Base64Encoder()
+				.encode(CurrentPassword.getBytes());
+		if (currentpasswordEncrypted.equals(user.getPassword())) {
 
 			if (password1.equals(password2)) {
-				user.setPassword(password1);
-				userTrace = new UserTrace("changing password", user.getId(), "");
+				user.setPassword(new Base64Encoder().encode(password1));
+				userTrace = new UserTrace("Password Change", user.getId(), "");
 				userTraceServicesLocal.AddTrace(userTrace);
 				userServicesLocal.UpdateUser(user);
 				FacesContext.getCurrentInstance().addMessage(
@@ -248,7 +321,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 								null,
 								new FacesMessage(FacesMessage.SEVERITY_ERROR,
 										"Bad Password",
-										"Please make sure that both password are the same"));
+										"Please make sure that both passwords are the same"));
 			}
 		} else {
 			FacesContext.getCurrentInstance().addMessage(
@@ -257,10 +330,10 @@ public class LoginBean extends HttpServlet implements Serializable {
 							"Bad Password", "Wrong current password"));
 		}
 	}
+	
 
-	public void SetEmailPwd() throws MessagingException, UnknownHostException {
-		if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
-				.toString())) {
+	public void SetEmailPwd() throws MessagingException, IOException {
+		if (ping()==false) {
 			FacesContext
 					.getCurrentInstance()
 					.addMessage(
@@ -291,7 +364,7 @@ public class LoginBean extends HttpServlet implements Serializable {
 			message.setFrom(new InternetAddress(from));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					user.getEmail()));
-			message.setSubject("SYSFAC CONFIRAMTION");
+			message.setSubject("SYSFAC CONFIRMATION");
 			message.setText("Your email password was set properly");
 			try {
 				Transport.send(message);
@@ -341,6 +414,20 @@ public class LoginBean extends HttpServlet implements Serializable {
 	// test
 	@PreDestroy
 	public void destroy() {
+
+	}
+	
+	public boolean ping() throws IOException {
+		Socket socket = null;
+		boolean reachable = false;
+		try {
+			socket = new Socket("google.com", 80);
+			reachable = true;
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return reachable;
 
 	}
 
@@ -394,13 +481,6 @@ public class LoginBean extends HttpServlet implements Serializable {
 		Remember = remember;
 	}
 
-	public String getPassword1() {
-		return password1;
-	}
-
-	public void setPassword1(String password1) {
-	}
-
 	public String getPassword2() {
 		return password2;
 	}
@@ -433,12 +513,12 @@ public class LoginBean extends HttpServlet implements Serializable {
 		this.userTrace = userTrace;
 	}
 
-	@PreDestroy
-	public void BeforeDestroy() {
-		if (user.getDepartment() != "admin") {
-			userTrace = new UserTrace("Logout", user.getId(), "");
-			userTraceServicesLocal.AddTrace(userTrace);
-		}
+	public String getPassword1() {
+		return password1;
+	}
+
+	public void setPassword1(String password1) {
+		this.password1 = password1;
 	}
 
 }

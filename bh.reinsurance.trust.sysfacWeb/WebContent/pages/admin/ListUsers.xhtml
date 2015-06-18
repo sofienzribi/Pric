@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/masteradm.xhtml">
+		<ui:define name="title">Users</ui:define>
+		<ui:define name="content">
+			<p:growl autoUpdate="true" id="gorwl1" sticky="true"
+				showDetail="true"></p:growl>
+
+			<p:panel header="Users" id="S" style="width:auto">
+
+				<h:form id="listusers">
+					<p:dataTable rows="15" id="tableuser" rowKey="#{user.id}"
+						widgetVar="tableuser" var="user" value="#{admin.users}"
+						selection="#{admin.user}" selectionMode="single">
+						<p:ajax event="rowSelect" update=":listusers"
+							listener="#{admin.UsersRowSelected()}"></p:ajax>
+						<p:column headerText="First name" filterBy="#{user.first_Name}">#{user.first_Name}</p:column>
+						<p:column headerText="Last name" filterBy="#{user.last_Name}">#{user.last_Name}</p:column>
+						<p:column headerText="Username" filterBy="#{user.login}">#{user.login}</p:column>
+						<p:column headerText="email">#{user.email}</p:column>
+						<p:column headerText="Department" filterBy="#{user.department}">#{user.department}</p:column>
+						<p:column headerText="Job title">#{user.job_title}</p:column>
+						<p:column headerText="Phone Number">#{user.phone_Number}</p:column>
+						<p:column headerText="Floor">#{user.floor}</p:column>
+						<p:column headerText="Blocked">#{admin.GetBlockedornot(user.blocked)}</p:column>
+
+					</p:dataTable>
+
+					<p:separator></p:separator>
+
+					<p:panelGrid style="position:relative;left:400px" columns="2"
+						rendered="#{admin.displayDetailsUser}">
+						<f:facet name="header"> User Information</f:facet>
+						<h:outputText value="First Name" />
+						<p:inputText label="First Name" value="#{admin.user.first_Name}"
+							required="true" requiredMessage="First name required" />
+						<h:outputText value="Last Name" />
+						<p:inputText label="Last Name" value="#{admin.user.last_Name}"
+							required="true" requiredMessage="Last name required" />
+						<h:outputText value="Job_Title" />
+						<p:inputText label="Job_Title" value="#{admin.user.job_title}"
+							required="true" requiredMessage="job title required" />
+						<h:outputText value="Department" />
+						<p:selectOneMenu style="width:145px"
+							value="#{admin.user.department}" required="true"
+							requiredMessage="department required">
+							<f:selectItem itemLabel="Actuarial and risk Department"
+								itemValue="actuarialandrisk" />
+							<f:selectItem itemLabel="Underwriting Department"
+								itemValue="facultative" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Floor" />
+						<p:inputMask label="Floor" value="#{admin.user.floor}"
+							required="true" requiredMessage="floor required" maxlength="2">
+							<pe:keyFilter regEx="/[0-9]/" />
+						</p:inputMask>
+						<h:outputText value="Email" />
+						<p:inputText label="Email" id="df" required="true"
+							value="#{admin.user.email}" requiredMessage="Email required">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"></f:validateRegex>
+						</p:inputText>
+						<h:outputText value="Blocked" />
+						<h:outputText id="tes" value="#{admin.user.blocked}" />
+						<p:commandButton value="Modify"
+							actionListener="#{admin.ModifyUser()}" update=":listusers "></p:commandButton>
+						<p:commandButton value="Block"
+							actionListener="#{admin.BlockUser()}"
+							rendered="#{!admin.user.blocked}" update=":listusers"></p:commandButton>
+						<p:commandButton value="UnBlock"
+							actionListener="#{admin.UnBlockUser()}"
+							rendered="#{admin.user.blocked}" update=":listusers"></p:commandButton>
+
+					</p:panelGrid>
+
+				</h:form>
+
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

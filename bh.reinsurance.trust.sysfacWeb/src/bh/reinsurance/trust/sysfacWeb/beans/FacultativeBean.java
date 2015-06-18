@@ -3,15 +3,12 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.context.RequestContext;
@@ -23,13 +20,14 @@ import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 @ManagedBean
 @ViewScoped
 public class FacultativeBean implements Serializable {
-	// models
 
+	// models
 	@EJB
 	FacultativeServicesLocal facultativeServicesLocal;
 	final Locale us = Locale.US;
 	private List<Facultative> facbychoice;
-
+	private List<String> years;
+	private String SelectedYear;
 	private boolean testaff;
 	private static final long serialVersionUID = 1L;
 	private List<String> countr;
@@ -56,8 +54,6 @@ public class FacultativeBean implements Serializable {
 	private String TotalLiability = null;
 	private String TotalSumInsured = null;
 	private String AVgLiability;
-	private Map<String, String> Years = new HashMap<String, String>();
-	private List<Integer> years1;
 	private int LiabilityBand = 0;
 	private int PasLiability = 1000000;
 	private String RadioValue;
@@ -69,19 +65,10 @@ public class FacultativeBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		countr1 = null;
+		occup1 = null;
 		RadioValue = "Liability";
-		years1 = new ArrayList<Integer>();
-		years1.add(2010);
-		years1.add(2011);
-		years1.add(2012);
-		years1.add(2014);
-		Years = new HashMap<String, String>();
-		Years.put("2010", "2010");
-		Years.put("2011", "2011");
-		Years.put("2012", "2012");
-		Years.put("2013", "2013");
-		Years.put("2014", "2014");
-		Years.put("2015", "2015");
+
 		sysfacus2 = new ArrayList<Sysfacus>();
 		DisplayFacCompare = false;
 		DisplayComparaisonButton = true;
@@ -89,6 +76,7 @@ public class FacultativeBean implements Serializable {
 		testaff = false;
 		setFacultative(new Facultative());
 		occup = facultativeServicesLocal.GetOcuupencies();
+		years = facultativeServicesLocal.GetYears();
 		reg = facultativeServicesLocal.getRegions();
 		setFacultatives(facultativeServicesLocal.facultatives());
 	}
@@ -99,19 +87,68 @@ public class FacultativeBean implements Serializable {
 		occup1 = null;
 		setCountr(facultativeServicesLocal.GetCountries(reg1));
 		setOccup(facultativeServicesLocal.GetOcuupenciesbyChoice(reg1, countr1));
-		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
-				occup1));
+		DisplayCalculation();
 
 		Filllist();
 
 		testaff = true;
 	}
 
+	public String DisplayCalculation() {
+		List<Facultative> Temp = new ArrayList<Facultative>();
+		facbychoice = facultativeServicesLocal.GetAll();
+		if (reg1.equals("all")) {
+			return null;
+		}
+		if (reg1 != null || reg1.equals("all") == false) {
+			for (Facultative a : facbychoice) {
+				if (a.getRegions().toUpperCase().equals(reg1.toUpperCase())) {
+					Temp.add(a);
+				}
+			}
+			facbychoice = Temp;
+			Temp = new ArrayList<Facultative>();
+		}
+
+		if (countr1 != null) {
+			for (Facultative a : facbychoice) {
+				if (a.getCountries().toUpperCase()
+						.equals(countr1.toUpperCase())) {
+					Temp.add(a);
+				}
+			}
+			facbychoice = Temp;
+			Temp = new ArrayList<Facultative>();
+		}
+		if (occup1 != null) {
+			for (Facultative a : facbychoice) {
+				if (a.getOccupencies().toUpperCase()
+						.equals(occup1.toUpperCase())) {
+					Temp.add(a);
+				}
+			}
+			facbychoice = Temp;
+			Temp = new ArrayList<Facultative>();
+		}
+		if (SelectedYear != null) {
+			for (Facultative a : facbychoice) {
+				if (a.getYear().toUpperCase()
+						.equals(SelectedYear.toUpperCase())) {
+					Temp.add(a);
+				}
+			}
+			facbychoice = Temp;
+			Temp = new ArrayList<Facultative>();
+		}
+		return null;
+
+	}
+
 	public void affichselec() {
+
 		setCountr(facultativeServicesLocal.GetCountries(reg1));
 		setOccup(facultativeServicesLocal.GetOcuupenciesbyChoice(reg1, countr1));
-		setFacbychoice(facultativeServicesLocal.GetFacBychoice(reg1, countr1,
-				occup1));
+		DisplayCalculation();
 		Filllist();
 		testaff = true;
 	}
@@ -127,13 +164,8 @@ public class FacultativeBean implements Serializable {
 		DisplayDeatils = true;
 
 	}
-	
-	
-	
 
 	public void plusLiabilityBand() {
-		
-		
 		if (RadioValue.equals("Liability")) {
 			PasLiability = PasLiability * 2;
 			Filllist();
@@ -141,7 +173,6 @@ public class FacultativeBean implements Serializable {
 			SumInsuredPas = SumInsuredPas * 2;
 			Filllist2();
 		}
-
 	}
 
 	public void minusLiabilityBand() {
@@ -169,11 +200,10 @@ public class FacultativeBean implements Serializable {
 		sysfacus2 = new ArrayList<Sysfacus>();
 		TotalNumbreFac = 0;
 		int i = 1;
-
 		int f = 0;
 		float c = 0;
 		float totalSI = 0;
-		int totalLia = 0;
+		float totalLia = 0;
 		List<Facultative> facultatives2 = new ArrayList<Facultative>();
 		for (int j = 0; j <= 9 * PasLiability; j = j + PasLiability) {
 			Sysfacus sysfacus = new Sysfacus();
@@ -241,7 +271,7 @@ public class FacultativeBean implements Serializable {
 		int f = 0;
 		float c = 0;
 		float totalSI = 0;
-		int totalLia = 0;
+		float totalLia = 0;
 		List<Facultative> facultatives2 = new ArrayList<Facultative>();
 		for (int j = 0; j <= 9 * SumInsuredPas; j = j + SumInsuredPas) {
 			Sysfacus sysfacus = new Sysfacus();
@@ -302,7 +332,8 @@ public class FacultativeBean implements Serializable {
 		}
 
 	}
-	//getters setters
+
+	// getters setters
 	public boolean isTestaff() {
 		return testaff;
 	}
@@ -520,22 +551,6 @@ public class FacultativeBean implements Serializable {
 		AVgLiability = aVgLiability;
 	}
 
-	public Map<String, String> getYears() {
-		return Years;
-	}
-
-	public void setYears(Map<String, String> years) {
-		Years = years;
-	}
-
-	public List<Integer> getYears1() {
-		return years1;
-	}
-
-	public void setYears1(List<Integer> years1) {
-		this.years1 = years1;
-	}
-
 	public int getLiabilityBand() {
 		return LiabilityBand;
 	}
@@ -550,7 +565,7 @@ public class FacultativeBean implements Serializable {
 
 	public void setPasLiability(int pasLiability) {
 		PasLiability = pasLiability;
-		
+
 	}
 
 	public String getRadioValue() {
@@ -561,13 +576,28 @@ public class FacultativeBean implements Serializable {
 		RadioValue = radioValue;
 	}
 
-
 	public int getSumInsuredPas() {
 		return SumInsuredPas;
 	}
 
 	public void setSumInsuredPas(int sumInsuredPas) {
 		SumInsuredPas = sumInsuredPas;
+	}
+
+	public List<String> getYears() {
+		return years;
+	}
+
+	public void setYears(List<String> years) {
+		this.years = years;
+	}
+
+	public String getSelectedYear() {
+		return SelectedYear;
+	}
+
+	public void setSelectedYear(String selectedYear) {
+		SelectedYear = selectedYear;
 	}
 
 }

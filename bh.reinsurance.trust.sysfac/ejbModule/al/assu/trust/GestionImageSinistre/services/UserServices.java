@@ -86,4 +86,21 @@ public class UserServices implements UserServicesLocal, UserServicesRemote {
 
 	}
 
+	@Override
+	public User GetUserByLogin(String Login) {
+		String jpql = "select u from User u where u.login =:param1";
+		Query query = entityManager.createQuery(jpql);
+		User userFound = new User();
+		query.setParameter("param1", Login);
+
+		try {
+			userFound = (User) query.getSingleResult();
+
+		} catch (Exception e) {
+			userFound = null;
+
+		}
+		return userFound;
+	}
+
 }

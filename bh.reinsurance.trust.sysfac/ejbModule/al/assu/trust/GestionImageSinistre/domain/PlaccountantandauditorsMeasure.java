@@ -28,6 +28,12 @@ public class PlaccountantandauditorsMeasure implements Serializable {
 	private HashMap<String, String> SpecialClientProfileList;
 	private HashMap<String, String> ExtendedReport;
 	private HashMap<String, String> RetrospectiveCovers;
+	private HashMap<String, String> AggregateLimit;
+	private HashMap<Integer, String> LossHistoryIncured;
+	private double LossofDocumentFactor;
+	private double DishonestFactor;
+	private double LibelSlanderFactor;
+	private double DefenceExpenses;
 
 	private static final long serialVersionUID = 1L;
 
@@ -142,6 +148,55 @@ public class PlaccountantandauditorsMeasure implements Serializable {
 	public void setRetrospectiveCovers(
 			HashMap<String, String> retrospectiveCovers) {
 		RetrospectiveCovers = retrospectiveCovers;
+	}
+
+	public double getLossofDocumentFactor() {
+		return LossofDocumentFactor;
+	}
+
+	public void setLossofDocumentFactor(double lossofDocumentFactor) {
+		LossofDocumentFactor = lossofDocumentFactor;
+	}
+
+	public double getDishonestFactor() {
+		return DishonestFactor;
+	}
+
+	public void setDishonestFactor(double dishonestFactor) {
+		DishonestFactor = dishonestFactor;
+	}
+
+	public double getLibelSlanderFactor() {
+		return LibelSlanderFactor;
+	}
+
+	public void setLibelSlanderFactor(double libelSlanderFactor) {
+		LibelSlanderFactor = libelSlanderFactor;
+	}
+
+	public double getDefenceExpenses() {
+		return DefenceExpenses;
+	}
+
+	public void setDefenceExpenses(double defenceExpenses) {
+		DefenceExpenses = defenceExpenses;
+	}
+
+	public HashMap<String, String> getAggregateLimit() {
+		return AggregateLimit;
+	}
+
+	public void setAggregateLimit(HashMap<String, String> aggregateLimit) {
+		AggregateLimit = aggregateLimit;
+	}
+
+	public HashMap<Integer, String> getLossHistoryIncured() {
+		return LossHistoryIncured;
+	}
+
+	public void setLossHistoryIncured(
+			HashMap<Integer, String> lossHistoryIncured) {
+		LossHistoryIncured = lossHistoryIncured;
 	}
 
 }

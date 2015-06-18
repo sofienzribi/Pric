@@ -21,6 +21,9 @@ public interface FacultativeServicesLocal {
 
 	public List<String> GetOcuupencies();
 
+	public List<String> GetYears();
+	public List<Facultative> GetAll();
+
 	public List<String> GetOcuupenciesbyChoice(String Region, String Country);
 
 	public List<Facultative> GetFacBychoice(String region, String country,

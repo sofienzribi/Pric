@@ -13,13 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bh.reinsurance.trust.sysfacWeb.beans.LoginBean;
-
 @WebFilter("/login.jsf")
 public class LoginPageFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -34,14 +32,16 @@ public class LoginPageFilter implements Filter {
 		if ((loginBean != null) && (loginBean.isConnected())) {
 			letgo = false;
 		}
+	
 		if (letgo == true) {
 			chain.doFilter(request, response);
 		} else {
-			if(loginBean.getUser().getDepartment().equals("admin"))
-			{
-				response2.sendRedirect(request2.getContextPath() + "/pages/admin/AdminHome.jsf");
-			}else{
-				response2.sendRedirect(request2.getContextPath() + "/pages/User/HomePage.jsf");
+			if (loginBean.getUser().getDepartment().equals("admin")) {
+				response2.sendRedirect(request2.getContextPath()
+						+ "/pages/admin/AdminHome.jsf");
+			} else {
+				response2.sendRedirect(request2.getContextPath()
+						+ "/pages/User/HomePage.jsf");
 			}
 		}
 	}

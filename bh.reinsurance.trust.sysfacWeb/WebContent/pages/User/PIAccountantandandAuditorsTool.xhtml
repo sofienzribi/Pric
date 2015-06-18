@@ -180,6 +180,7 @@
 										#{plAccountAuditorsRatingBean.FormatAverageRate()}
 										</p:column>
 									</p:row>
+
 									<p:row>
 										<p:column>
 											<p:outputLabel styleClass="old" value="Total Premium($)" />
@@ -200,8 +201,8 @@
 											</p:commandLink>
 											<p:commandButton
 												actionListener="#{projectBean.MakeThisProjectQuoted()}"
-												update=":tab:summary" style="position:relative;left:160px"
-												value="Mark as quoted">
+												update=":tab:summarytab"
+												style="position:relative;left:160px" value="Mark as quoted">
 												<p:confirm header="Confirmation"
 													message="By putting this project as quoted it will not be possible to change it .
 													Are you sure you want to continue ?"
@@ -592,8 +593,8 @@
 														update="@form :tab:summary" />
 
 													<f:selectItems
-														value="#{plAccountAuditorsRatingBean.aggregateLimitList}"
-														var="cat" itemValue="#{cat}" itemLabel="#{cat}" />
+														value="#{plAccountAuditorsRatingBean.measureFactors.aggregateLimit.entrySet()}"
+														var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 												</p:selectOneMenu>
 											</p:column>
 										</p:row>

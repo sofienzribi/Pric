@@ -671,7 +671,7 @@ public class ProjectBean implements Serializable {
 									"project Sent!", ""));
 					System.out.println("message sent successfully....");
 				} catch (MessagingException e) {
-					System.out.println("Problems sofien");
+					System.out.println("Problem while sending email");
 
 					e.printStackTrace();
 				}

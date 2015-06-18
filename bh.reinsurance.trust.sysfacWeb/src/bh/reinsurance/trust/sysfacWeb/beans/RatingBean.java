@@ -53,7 +53,6 @@ public class RatingBean implements Serializable {
 
 	// meth
 	public void add() {
-		System.out.println(iaccandAudit.getAggregatelimit());
 
 	}
 	public void DisplayByBasis(){

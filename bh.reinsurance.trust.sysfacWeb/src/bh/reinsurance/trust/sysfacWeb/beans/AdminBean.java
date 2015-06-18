@@ -1,5 +1,6 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.jboss.security.Base64Encoder;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
@@ -34,6 +36,7 @@ public class AdminBean implements Serializable {
 	private User user;
 	@EJB
 	private UserServicesLocal local;
+	private boolean DisplayDetailsUser;
 	private String title;
 	private String messa;
 	private String b = "info";
@@ -41,9 +44,9 @@ public class AdminBean implements Serializable {
 	private String SelectedValue = "all";
 	private String SelectedMonth = "all";
 	private HashMap<Integer, String> Months;
+
 	@EJB
 	private UserTraceServicesLocal userTraceServicesLocal;
-
 	private List<UserTrace> userTraces;
 
 	// const
@@ -52,6 +55,7 @@ public class AdminBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		DisplayDetailsUser = false;
 		Months = new HashMap<Integer, String>();
 		fillMonths();
 
@@ -103,14 +107,16 @@ public class AdminBean implements Serializable {
 		OnUserChange();
 	}
 
-	public void addUser() {
-		System.out.println(user.getEmail());
+	public void addUser() throws IOException {
+
+		user.setPassword(new Base64Encoder().encode(user.getPassword()
+				.getBytes()));
 		local.AddUser(user);
+		users = local.GetAllUsers();
+		getlistUsers();
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Successful", " "));
-		FacesContext.getCurrentInstance().getExternalContext()
-				.invalidateSession();
+		context.addMessage(null, new FacesMessage("User Added", " "));
 
 	}
 
@@ -119,7 +125,8 @@ public class AdminBean implements Serializable {
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
 		eventBus.publish("/NotifyUsers", new FacesMessage(title, messa));
 		FacesContext context = FacesContext.getCurrentInstance();
-
+		title = null;
+		messa = null;
 		context.addMessage(null, new FacesMessage("Notification Sent", " "));
 	}
 
@@ -128,7 +135,6 @@ public class AdminBean implements Serializable {
 		if (SelectedValue.equals("all")) {
 			userTraces = userTraceServicesLocal.GetAllTraces();
 		} else {
-			System.out.println(SelectedValue);
 			userTraces = userTraceServicesLocal.FindTracesByuser(local
 					.GetUserByid(Integer.parseInt(SelectedValue)));
 
@@ -150,6 +156,47 @@ public class AdminBean implements Serializable {
 			}
 			userTraces = list;
 		}
+	}
+
+	public void ModifyUser() {
+		local.UpdateUser(user);
+		DisplayDetailsUser = false;
+		users = local.GetAllUsers();
+		getlistUsers();
+
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		context.addMessage(null, new FacesMessage("User modified", " "));
+
+	}
+
+	public String GetBlockedornot(boolean a) {
+		if (a == true) {
+			return "yes";
+		} else {
+			return "No";
+		}
+	}
+
+	public void BlockUser() {
+		user.setBlocked(true);
+		local.UpdateUser(user);
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage("User Blocked", " "));
+
+	}
+
+	public void UnBlockUser() {
+		user.setBlocked(false);
+		user.setLoginAttempts(5);
+		local.UpdateUser(user);
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage("User Unblocked", " "));
+
+	}
+
+	public void UsersRowSelected() {
+		DisplayDetailsUser = true;
 	}
 
 	// const
@@ -228,6 +275,14 @@ public class AdminBean implements Serializable {
 
 	public void setSelectedMonth(String selectedMonth) {
 		SelectedMonth = selectedMonth;
+	}
+
+	public boolean isDisplayDetailsUser() {
+		return DisplayDetailsUser;
+	}
+
+	public void setDisplayDetailsUser(boolean displayDetailsUser) {
+		DisplayDetailsUser = displayDetailsUser;
 	}
 
 }

@@ -208,7 +208,6 @@ public class ReportBean {
 						"messages1",
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"File Created", ""));
-		System.out.println("OP");
 	}
 
 	public String getURLDestination() {

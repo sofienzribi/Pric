@@ -46,10 +46,14 @@
 						</h:panelGrid>
 						<h:panelGrid columns="2">
 							<h:outputLabel value="Year" style="width:250px" />
-							<p:selectOneMenu style="width:250px">
-								<f:selectItem itemLabel="select one..." />
+							<p:selectOneMenu style="width:250px"
+								value="#{facultativeBean.selectedYear}">
+								<p:ajax event="valueChange"
+									listener="#{facultativeBean.affichselec()}"
+									update=":master :details :Details2" />
+								<f:selectItem itemLabel="select one..."  itemValue="all"/>
 								<f:selectItems value="#{facultativeBean.years}" var="cat"
-									itemLabel="#{cat}" />
+									itemLabel="#{cat}" itemValue="#{cat}" />
 							</p:selectOneMenu>
 							<h:outputLabel value="Cedant" style="width:250px" />
 							<p:selectOneMenu style="width:250px" />
@@ -151,17 +155,17 @@
 						<p:columnGroup type="header">
 							<p:row>
 								<p:column rowspan="3" headerText="Bands of Trust Re Liability" />
-								<p:column colspan="#{facultativeBean.years1.size()*2}"
+								<p:column colspan="#{facultativeBean.years.size()*2}"
 									headerText="Average Premium Rate Evolution" />
 							</p:row>
 							<p:row>
-								<ui:repeat value="#{facultativeBean.years1}" var="year">
+								<ui:repeat value="#{facultativeBean.years}" var="year">
 									<p:column colspan="2" headerText="#{year}">
 									</p:column>
 								</ui:repeat>
 							</p:row>
 							<p:row>
-								<ui:repeat value="#{facultativeBean.years1}" var="year">
+								<ui:repeat value="#{facultativeBean.years}" var="year">
 									<p:column headerText="Nb">
 									</p:column>
 									<p:column headerText="Av.Rate">

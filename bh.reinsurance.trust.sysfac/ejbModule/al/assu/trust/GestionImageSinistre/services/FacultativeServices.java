@@ -58,7 +58,7 @@ public class FacultativeServices implements FacultativeServicesLocal {
 
 	@Override
 	public List<String> GetCountries(String region) {
-		if (region == null || region == "") {
+		if (region == null || region == "all") {
 			return entityManager.createQuery(
 					"select DISTINCT p.countries from Facultative p ")
 					.getResultList();
@@ -188,6 +188,19 @@ public class FacultativeServices implements FacultativeServicesLocal {
 			query.setParameter("b", Region);
 			return query.getResultList();
 		}
+	}
+
+	@Override
+	public List<String> GetYears() {
+		Query query = entityManager
+				.createQuery("select DISTINCT a.year from Facultative a");
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Facultative> GetAll() {
+		Query query = entityManager.createQuery("select  a from Facultative a");
+		return query.getResultList();
 	}
 
 }

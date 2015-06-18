@@ -23,6 +23,7 @@ public class UserTrace implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public UserTrace() {
+		
 		super();
 	}
 

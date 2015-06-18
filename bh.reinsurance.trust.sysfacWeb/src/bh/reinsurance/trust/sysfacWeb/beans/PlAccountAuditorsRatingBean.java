@@ -28,11 +28,15 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LegendPlacement;
 
 import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.domain.PIaccandAudit;
 import al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure;
 import al.assu.trust.GestionImageSinistre.domain.Project;
+import al.assu.trust.GestionImageSinistre.domain.TestMeasureResult;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.domain.UserTrace;
 import al.assu.trust.GestionImageSinistre.impl.CrudBasicLocal;
@@ -57,8 +61,11 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private Map<Integer, String> CoverExtensionsList2;
 	private Map<Integer, String> AggregateLimitList;
 
-	private PIaccandAudit iaccandAudittosave;
+	private NumberFormat formatter = new DecimalFormat("#0.00 %");
 
+	private PIaccandAudit iaccandAudittosave;
+	private TestMeasureResult test1 = new TestMeasureResult();
+	private TestMeasureResult test2 = new TestMeasureResult();
 	private double Bookingandauditfactor = 0;
 	private double managementadvisoryfactor = 0;
 	private double forecastsfactor = 0;
@@ -90,6 +97,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private String URLJasperModel;
 	private String ProjectName;
 	private JasperPrint jasperPrint;
+	private JasperPrint jasperPrint2;
 	private String TextToAddToreport = "";
 	private boolean DisplayTextArea;
 	private String Checkboxvalue;
@@ -110,6 +118,8 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private float PremiumAfterLoadingAndDeductible = 0;
 	private float IndemnityLimitPremium = 0;
 	private double Loadings = 0;
+	private BarChartModel barChartModel;
+	private BarChartModel barChartModelrate;
 
 	// managed prop
 
@@ -143,7 +153,9 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-
+		barChartModel = new BarChartModel();
+		barChartModelrate = new BarChartModel();
+		initModel();
 		if (project3.getId() != 0) {
 
 			resetTestMeasureOnOPeningBean();
@@ -201,16 +213,15 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(
 					"messages1",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"You cant save a quoted rating", ""));
+							"You cant modify a quoted rating", ""));
 		} else {
 
 			iaccandAudittosave.setIdproj(project3.getId());
 			auditServicesLocal.update(iaccandAudittosave);
 			User user = new User();
 			user = userServicesLocal.GetUserByid(project3.getUser());
-			userTrace = new UserTrace("Send project", user.getId(),
-					"project name:" + project3.getNameOfTheProject()
-							+ " sent via email");
+			userTrace = new UserTrace("Save project", user.getId(),
+					"project name:" + project3.getNameOfTheProject());
 			userTraceServicesLocal.AddTrace(userTrace);
 			FacesContext.getCurrentInstance().addMessage(
 					"messages1",
@@ -694,19 +705,13 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	// calculation of the indemnity limit premium begin
 	public void AggregateChange() {
-		if (iaccandAudittosave.getAggregatelimit().equals("1")) {
+		if (iaccandAudittosave.getAggregatelimit() == null) {
 			AggregateLimitFactor = 1;
 		} else {
-			if (iaccandAudittosave.getAggregatelimit().equals("2")) {
-				AggregateLimitFactor = 1.15;
-			} else {
-				if (iaccandAudittosave.getAggregatelimit().equals("3")) {
-					AggregateLimitFactor = 1.25;
-				} else {
-					AggregateLimitFactor = 1.4;
+			AggregateLimitFactor = Double.parseDouble(measureFactors
+					.getAggregateLimit().get(
+							iaccandAudittosave.getAggregatelimit()));
 
-				}
-			}
 		}
 		GetIndemnityLimitPremium();
 	}
@@ -800,21 +805,26 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 		DishonestFactor = (Float.parseFloat(iaccandAudittosave
 				.getDishonestofempl()) - (Float.parseFloat(iaccandAudittosave
-				.getOccurlimit()) * 0.1)) * 0.0025;
+				.getOccurlimit()) * 0.1))
+				* measureFactors.getDishonestFactor();
 
 		LossOfDocumentsFactor = (Float.parseFloat(iaccandAudittosave
 				.getLossofdocument()) - (Float.parseFloat(iaccandAudittosave
-				.getOccurlimit()) * 0.1)) * 0.005;
+				.getOccurlimit()) * 0.1))
+				* measureFactors.getLossofDocumentFactor();
 
 		LibelFactor = (Float.parseFloat(iaccandAudittosave.getLibel()) - (Float
-				.parseFloat(iaccandAudittosave.getOccurlimit()) * 0.1)) * 0.005;
+				.parseFloat(iaccandAudittosave.getOccurlimit()) * 0.1))
+				* measureFactors.getLibelSlanderFactor();
 
 		DefenceExpFactor = (Float.parseFloat(iaccandAudittosave
 				.getDefenseexpenses()) - (Float.parseFloat(iaccandAudittosave
-				.getOccurlimit()) * 0.1)) * 0.05;
+				.getOccurlimit()) * 0.1))
+				* measureFactors.getDefenceExpenses();
 
 		CoverageEnhancement = (float) (DishonestFactor + LossOfDocumentsFactor
 				+ LibelFactor + DefenceExpFactor);
+		todoall();
 
 	}
 
@@ -919,14 +929,13 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		try {
 			sourceFile = new File(URLDestination + ProjectName + ".pdf");
 			FileInputStream fis = new FileInputStream(sourceFile);
-			BufferedInputStream bis = new BufferedInputStream(fis);
+			new BufferedInputStream(fis);
 			testName = true;
 
 		} catch (Exception e) {
 			testName = false;
 		}
 		if (testName == true) {
-
 			FacesContext
 					.getCurrentInstance()
 					.addMessage(
@@ -993,6 +1002,49 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			Checkboxvalue = "false";
 			DisplayTextArea = false;
 		}
+	}
+
+	public void ExportTestMeasureSummary(Measure measure3) throws JRException {
+		NumberFormat formatte2 = new DecimalFormat("#0.00 %");
+
+		DecimalFormat formatter = (DecimalFormat) NumberFormat
+				.getCurrencyInstance(us);
+		formatter.setNegativePrefix("$-");
+		formatter.setNegativeSuffix("");
+
+		List<Project> projects = new ArrayList<Project>();
+		Project project = new Project();
+		projects.add(project);
+		File sourceFile;
+		boolean testName;
+
+		Map<String, Object> param = new HashMap<String, Object>();
+		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
+				projects);
+		param.put("OldPremium", formatter.format(test1.getPremium()));
+		param.put("NewPremium", formatter.format(test2.getPremium()));
+		param.put("OldRate", formatte2.format(test1.getRate()));
+		param.put("NewRate", formatte2.format(test1.getRate()));
+		param.put("WorkingName", measure3.getName());
+		param.put(
+				"TestingName",
+				measureServicesLocal.GetWorkingMeasure(
+						measure3.getClassofbusiness()).getName());
+
+		jasperPrint2 = JasperFillManager.fillReport(URLJasperModel
+				+ "/TestMeasureSummmary.jasper", param,
+				beanCollectionDataSource);
+		JasperExportManager.exportReportToPdfFile(jasperPrint2, URLDestination
+				+ ProjectName + ".pdf");
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('PopupPdf').hide();");
+		FacesContext.getCurrentInstance()
+				.addMessage(
+						"messages1",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"File Created", ""));
+		ProjectName = null;
 
 	}
 
@@ -1002,18 +1054,24 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	public int GetWorkingMeasureId(String LOB) {
 		Measure measure1 = new Measure();
 		measure1 = measureServicesLocal.GetWorkingMeasure(LOB);
+		System.out.println();
 		return measure1.getId();
+
 	}
 
 	// $$$$$$$$$$$$$$$$$$$$$$$ WORK HERE
 	// *********************************************************************************************
+
 	@EJB
 	private ProjectServicesLocal projectServicesLocal;
 
-	public double GetTheTotalPremium(String id) {
+	public void GetTheTotalPremium(int WorkingID, int TestingID)
+			throws IOException {
 		List<Project> list = projectServicesLocal.GetAllProjects();
 		List<Project> list2 = new ArrayList<Project>();
 
+		double avg = 0;
+		double total = 0.0;
 		for (Project a : list) {
 			if ((a.getTool().equals("PI accountants and auditors"))
 					&& (a.getQuoted_Date() != null)) {
@@ -1021,22 +1079,83 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			}
 		}
 
-		double total = 0.0;
-		measure = measureServicesLocal.GetMeasure(Integer.parseInt(id));
+		measure = measureServicesLocal.GetMeasure((WorkingID));
 		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
 				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
 						measure.getId());
+
 		for (Project b : list2) {
 			iaccandAudittosave = auditServicesLocal.GetByIdProject(b.getId());
 			OperationWhenopeningTool();
 			total = total + TotalPremium;
-		}
+			avg = avg + AverageRate;
 
-		return total;
+		}
+		test1.setPremium(total);
+		test1.setRate(avg / list2.size());
+		total = 0;
+		avg = 0;
+		measure = measureServicesLocal.GetMeasure((TestingID));
+		measureFactors = (PlaccountantandauditorsMeasure) crudBasicLocal
+				.FindByFilter("PlaccountantandauditorsMeasure", "idMeasure",
+						measure.getId());
+
+		for (Project b : list2) {
+			iaccandAudittosave = auditServicesLocal.GetByIdProject(b.getId());
+			OperationWhenopeningTool();
+			total = total + TotalPremium;
+			avg = avg + AverageRate;
+
+		}
+		test2.setPremium(total);
+		test2.setRate(avg / list2.size());
+		initModel();
+	}
+
+	public void initModel() {
+		BarChartModel model = new BarChartModel();
+
+		ChartSeries Test = new ChartSeries();
+		Test.setLabel("Test Measure");
+
+		Test.set("", test2.getPremium());
+
+		ChartSeries working = new ChartSeries();
+		working.setLabel("Working measure");
+		working.set("", test1.getPremium());
+
+		model.addSeries(Test);
+		model.addSeries(working);
+		barChartModel = model;
+		barChartModel.setTitle("Premium");
+		barChartModel.setAnimate(true);
+		barChartModel.setLegendPosition("ne");
+		barChartModel.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
+		model = new BarChartModel();
+		ChartSeries TestRate = new ChartSeries();
+		TestRate.setLabel("Test Measure");
+
+		TestRate.set("", test2.getRate());
+		ChartSeries WorkingRate = new ChartSeries();
+		WorkingRate.setLabel("Working Measure");
+
+		WorkingRate.set("", test1.getRate());
+
+		model.addSeries(TestRate);
+		model.addSeries(WorkingRate);
+		barChartModelrate = model;
+		barChartModelrate.setTitle("Average Rate");
+		barChartModelrate.setLegendPosition("ne");
+		barChartModelrate.setAnimate(true);
+		barChartModelrate.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
 	}
 
 	public String GetFormatresult(double total) {
-		return NumberFormat.getCurrencyInstance(us).format(total);
+		DecimalFormat formatter = (DecimalFormat) NumberFormat
+				.getCurrencyInstance(us);
+		formatter.setNegativePrefix("$-");
+		formatter.setNegativeSuffix("");
+		return formatter.format(total);
 	}
 
 	// Calculate total premium by rating end
@@ -1482,6 +1601,54 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 
 	public void setUserTrace(UserTrace userTrace) {
 		this.userTrace = userTrace;
+	}
+
+	public TestMeasureResult getTest1() {
+		return test1;
+	}
+
+	public void setTest1(TestMeasureResult test1) {
+		this.test1 = test1;
+	}
+
+	public TestMeasureResult getTest2() {
+		return test2;
+	}
+
+	public void setTest2(TestMeasureResult test2) {
+		this.test2 = test2;
+	}
+
+	public NumberFormat getFormatter() {
+		return formatter;
+	}
+
+	public void setFormatter(NumberFormat formatter) {
+		this.formatter = formatter;
+	}
+
+	public BarChartModel getBarChartModel() {
+		return barChartModel;
+	}
+
+	public void setBarChartModel(BarChartModel barChartModel) {
+		this.barChartModel = barChartModel;
+	}
+
+	public BarChartModel getBarChartModelrate() {
+		return barChartModelrate;
+	}
+
+	public void setBarChartModelrate(BarChartModel barChartModelrate) {
+		this.barChartModelrate = barChartModelrate;
+	}
+
+	public JasperPrint getJasperPrint2() {
+		return jasperPrint2;
+	}
+
+	public void setJasperPrint2(JasperPrint jasperPrint2) {
+		this.jasperPrint2 = jasperPrint2;
 	}
 
 }
