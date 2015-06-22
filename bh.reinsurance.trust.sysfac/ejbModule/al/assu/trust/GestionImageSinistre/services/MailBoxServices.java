@@ -46,7 +46,7 @@ public class MailBoxServices implements MailBoxServicesLocal {
 	public List<MailBox> GetMailBoxByUserId(int User_Id) {
 
 		return entityManager
-				.createQuery("select u from MailBox u where u.user_id =:param1")
+				.createQuery("select u from MailBox u where u.user_id =:param1 ORDER BY u.sentDate DESC")
 				.setParameter("param1", User_Id).getResultList();
 
 	}

@@ -278,7 +278,7 @@ public class ProjectBean implements Serializable {
 	}
 
 	public String GetCalendarMinDate() {
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
 		return dateFormat.format(new Date());
 
 	}
@@ -295,6 +295,9 @@ public class ProjectBean implements Serializable {
 			}
 		}
 
+		
+		
+		
 		ProjectExpringThisMonth = proj;
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('diag1').show();");

@@ -59,7 +59,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private Map<Integer, String> NumberOfClaimsList;
 	private Map<Integer, String> CoverExtensionsList;
 	private Map<Integer, String> CoverExtensionsList2;
-	private Map<Integer, String> AggregateLimitList;
 
 	private NumberFormat formatter = new DecimalFormat("#0.00 %");
 
@@ -159,6 +158,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		if (project3.getId() != 0) {
 
 			resetTestMeasureOnOPeningBean();
+
 			measures = measureServicesLocal
 					.GetMeasuresByClass("PI accountants and auditors");
 			measure = measureServicesLocal
@@ -188,12 +188,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		NumberOfClaimsList.put(1, "0");
 		NumberOfClaimsList.put(2, "0-2");
 		NumberOfClaimsList.put(3, "2 or more");
-
-		AggregateLimitList = new HashMap<Integer, String>();
-		AggregateLimitList.put(1, "1");
-		AggregateLimitList.put(2, "2");
-		AggregateLimitList.put(3, "3");
-		AggregateLimitList.put(4, "4");
 
 	}
 
@@ -1024,7 +1018,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		param.put("OldPremium", formatter.format(test1.getPremium()));
 		param.put("NewPremium", formatter.format(test2.getPremium()));
 		param.put("OldRate", formatte2.format(test1.getRate()));
-		param.put("NewRate", formatte2.format(test1.getRate()));
+		param.put("NewRate", formatte2.format(test2.getRate()));
 		param.put("WorkingName", measure3.getName());
 		param.put(
 				"TestingName",
@@ -1441,14 +1435,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	public void setCoverExtensionsList2(
 			Map<Integer, String> coverExtensionsList2) {
 		CoverExtensionsList2 = coverExtensionsList2;
-	}
-
-	public Map<Integer, String> getAggregateLimitList() {
-		return AggregateLimitList;
-	}
-
-	public void setAggregateLimitList(Map<Integer, String> aggregateLimitList) {
-		AggregateLimitList = aggregateLimitList;
 	}
 
 	public double getAggregateLimitFactor() {

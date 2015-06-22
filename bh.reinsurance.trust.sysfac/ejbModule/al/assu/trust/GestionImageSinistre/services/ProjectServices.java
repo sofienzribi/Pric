@@ -47,14 +47,14 @@ public class ProjectServices implements ProjectServicesLocal {
 	@Override
 	public List<Project> GetProjectsByUser(User user) {
 		return entityManager
-				.createQuery("select p from Project p where p.user=:c")
+				.createQuery("select p from Project p where p.user=:c ORDER BY p.dateCreation DESC")
 				.setParameter("c", user.getId()).getResultList();
 	}
 
 	@Override
 	public List<Project> GetAllProjects() {
 
-		Query query = entityManager.createQuery("select a from Project a");
+		Query query = entityManager.createQuery("select a from Project a ORDER BY a.dateCreation DESC");
 		return query.getResultList();
 	}
 

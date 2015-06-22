@@ -14,7 +14,6 @@
 					<h:form>
 						<p:growl id="gr1" sticky="true" autoUpdate="true" showDetail="true"></p:growl>
 
-
 						<p:panelGrid columns="2" rendered="#{!login.user.verified}"
 							style="position:relative;left:400px">
 							<f:facet name="header">Email Cred</f:facet>
@@ -45,7 +44,6 @@
 									update=":Mes"></p:commandButton>
 							</f:facet>
 						</p:panelGrid>
-
 
 						<p:ajaxStatus onstart="PF('statusDialog').show()"
 							onsuccess="PF('statusDialog').hide()" />

@@ -46,7 +46,7 @@ public class MeasureServices implements MeasureServicesLocal {
 
 	@Override
 	public List<Measure> GetAllMeasures() {
-		Query query = entityManager.createQuery("select a from Measure a");
+		Query query = entityManager.createQuery("select a from Measure a ORDER BY a.creationDate DESC");
 		return query.getResultList();
 	}
 

@@ -21,7 +21,12 @@ public interface FacultativeServicesLocal {
 
 	public List<String> GetOcuupencies();
 
+	public List<String> GetCedents();
+
+	public List<String> GetBrokers();
+
 	public List<String> GetYears();
+
 	public List<Facultative> GetAll();
 
 	public List<String> GetOcuupenciesbyChoice(String Region, String Country);

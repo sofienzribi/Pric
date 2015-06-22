@@ -19,7 +19,7 @@
 								<p:ajax event="valueChange"
 									listener="#{facultativeBean.OnRegionChange()}"
 									update=":master :details :Details2" />
-								<f:selectItem itemLabel="All regions" itemValue="all" />
+								<f:selectItem itemLabel="Select One" itemValue="all" />
 								<f:selectItems value="#{facultativeBean.reg}" var="cat"
 									itemValue="#{cat}" itemLabel="#{cat}" />
 							</p:selectOneMenu>
@@ -29,7 +29,7 @@
 								<p:ajax event="valueChange"
 									listener="#{facultativeBean.affichselec()}"
 									update=":master :details :Details2" />
-								<f:selectItem itemLabel="All countries." itemValue="all" />
+								<f:selectItem itemLabel="Select	one" itemValue="all" />
 								<f:selectItems value="#{facultativeBean.countr}" var="cat"
 									itemValue="#{cat}" itemLabel="#{cat}" />
 							</p:selectOneMenu>
@@ -56,9 +56,25 @@
 									itemLabel="#{cat}" itemValue="#{cat}" />
 							</p:selectOneMenu>
 							<h:outputLabel value="Cedant" style="width:250px" />
-							<p:selectOneMenu style="width:250px" />
+							<p:selectOneMenu style="width:250px"
+								value="#{facultativeBean.cedent}">
+								<p:ajax event="valueChange"
+									listener="#{facultativeBean.affichselec()}"
+									update=":master :details :Details2" />
+								<f:selectItem itemLabel="select one..."  itemValue="all"/>
+								<f:selectItems value="#{facultativeBean.cedents}" var="cat"
+									itemLabel="#{cat}" itemValue="#{cat}" />
+							</p:selectOneMenu>
 							<h:outputLabel value="Broker" style="width:250px" />
-							<p:selectOneMenu style="width:250px" />
+							<p:selectOneMenu style="width:250px"
+								value="#{facultativeBean.broker}">
+								<p:ajax event="valueChange"
+									listener="#{facultativeBean.affichselec()}"
+									update=":master :details :Details2" />
+								<f:selectItem itemLabel="select one..."  itemValue="all"/>
+								<f:selectItems value="#{facultativeBean.brokers}" var="cat"
+									itemLabel="#{cat}" itemValue="#{cat}" />
+							</p:selectOneMenu>
 						</h:panelGrid>
 					</p:panelGrid>
 				</h:form>

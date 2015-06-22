@@ -27,6 +27,11 @@ public class FacultativeBean implements Serializable {
 	final Locale us = Locale.US;
 	private List<Facultative> facbychoice;
 	private List<String> years;
+	private List<String> cedents;
+	private List<String> brokers;
+	private String broker;
+	private String cedent;
+
 	private String SelectedYear;
 	private boolean testaff;
 	private static final long serialVersionUID = 1L;
@@ -67,6 +72,8 @@ public class FacultativeBean implements Serializable {
 	public void init() {
 		countr1 = null;
 		occup1 = null;
+		broker = null;
+		cedent = null;
 		RadioValue = "Liability";
 
 		sysfacus2 = new ArrayList<Sysfacus>();
@@ -75,6 +82,8 @@ public class FacultativeBean implements Serializable {
 		DisplayDeatils = false;
 		testaff = false;
 		setFacultative(new Facultative());
+		brokers = facultativeServicesLocal.GetBrokers();
+		cedents = facultativeServicesLocal.GetCedents();
 		occup = facultativeServicesLocal.GetOcuupencies();
 		years = facultativeServicesLocal.GetYears();
 		reg = facultativeServicesLocal.getRegions();
@@ -97,10 +106,8 @@ public class FacultativeBean implements Serializable {
 	public String DisplayCalculation() {
 		List<Facultative> Temp = new ArrayList<Facultative>();
 		facbychoice = facultativeServicesLocal.GetAll();
-		if (reg1.equals("all")) {
-			return null;
-		}
-		if (reg1 != null || reg1.equals("all") == false) {
+
+		if (reg1 != null) {
 			for (Facultative a : facbychoice) {
 				if (a.getRegions().toUpperCase().equals(reg1.toUpperCase())) {
 					Temp.add(a);
@@ -134,6 +141,24 @@ public class FacultativeBean implements Serializable {
 			for (Facultative a : facbychoice) {
 				if (a.getYear().toUpperCase()
 						.equals(SelectedYear.toUpperCase())) {
+					Temp.add(a);
+				}
+			}
+			facbychoice = Temp;
+			Temp = new ArrayList<Facultative>();
+		}
+		if (broker != null) {
+			for (Facultative a : facbychoice) {
+				if (a.getBroker().toUpperCase().equals(broker.toUpperCase())) {
+					Temp.add(a);
+				}
+			}
+			facbychoice = Temp;
+			Temp = new ArrayList<Facultative>();
+		}
+		if (cedent != null) {
+			for (Facultative a : facbychoice) {
+				if (a.getCedant().toUpperCase().equals(cedent.toUpperCase())) {
 					Temp.add(a);
 				}
 			}
@@ -600,4 +625,47 @@ public class FacultativeBean implements Serializable {
 		SelectedYear = selectedYear;
 	}
 
+	public List<String> getCedents() {
+		return cedents;
+	}
+
+	public void setCedents(List<String> cedents) {
+		this.cedents = cedents;
+	}
+
+	public String getCedent() {
+		return cedent;
+	}
+
+	public void setCedent(String cedent) {
+		this.cedent = cedent;
+	}
+
+	public List<String> getBrokers() {
+		return brokers;
+	}
+
+	public void setBrokers(List<String> brokers) {
+		this.brokers = brokers;
+	}
+
+	public String getBroker() {
+		return broker;
+	}
+
+	public void setBroker(String broker) {
+		this.broker = broker;
+	}
+
+	// Test Part
+	private List<String> RegionsList;
+
+	public List<String> getRegionsList() {
+		return RegionsList;
+	}
+
+	public void setRegionsList(List<String> regionsList) {
+		RegionsList = regionsList;
+	}
 }
+	

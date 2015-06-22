@@ -47,65 +47,17 @@
 							</h:panelGrid>
 						</h:form>
 					</p:panel>
-					<p:chart type="bar" model="#{chartBean.animatedModel2}"
-						style="width:300px;" />
+
 				</p:tab>
 
-
-
-
-
-				<!-- 		Abacus tool -->
-
 				<p:tab title="Test">
-
-
 					<p:chart type="line" model="#{chartBean.lineModel1}"
 						style="height:300px;smooth:true" />
 
 				</p:tab>
 			</p:tabView>
-			
+
 		</ui:define>
 	</ui:composition>
-	
 </h:body>
-<!-- <p:panel id="mas3">
-						<h:form>
-							<h:panelGrid id="eu" columns="2">
-								<h:outputLabel value="Region" />
-								<p:selectOneMenu value="#{facultativeBean.reg1}"
-									style="width:375px">
-									<p:ajax event="valueChange"
-										listener="#{facultativeBean.OnRegionChange()}"
-										update=":master:mas3" />
-									<f:selectItem itemLabel="All regions" itemValue="all" />
-									<f:selectItems value="#{facultativeBean.reg}" var="cat"
-										itemValue="#{cat}" itemLabel="#{cat}" />
-								</p:selectOneMenu>
-								<h:outputLabel value="Country" />
-								<p:selectOneMenu id="country" value="#{facultativeBean.countr1}"
-									style="width:375px">
-									<p:ajax event="valueChange"
-										listener="#{facultativeBean.affichselec()}"
-										update=":master:mas3" />
-									<f:selectItem itemLabel="select country" />
-									<f:selectItems value="#{facultativeBean.countr}" var="cat"
-										itemValue="#{cat}" itemLabel="#{cat}" />
-								</p:selectOneMenu>
-								<h:outputLabel value="Occupancy" style="width:375px" />
-								<p:selectOneMenu value="#{facultativeBean.occup1}"
-									style="width:375px">
-									<p:ajax event="valueChange"
-										listener="#{facultativeBean.affichselec()}" />
-									<f:selectItem itemLabel="select occupancy" />
-									<f:selectItems value="#{facultativeBean.occup}" var="cat"
-										itemValue="#{cat}" itemLabel="#{cat}" />
-								</p:selectOneMenu>
-							</h:panelGrid>
-						</h:form>
-					</p:panel>
- -->
- <p:dialog id="ss" widgetVar="ss"></p:dialog>
- 
 </html>

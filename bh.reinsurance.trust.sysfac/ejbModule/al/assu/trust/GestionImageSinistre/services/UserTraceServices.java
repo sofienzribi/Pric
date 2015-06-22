@@ -35,7 +35,7 @@ public class UserTraceServices implements UserTraceServicesLocal {
 
 	@Override
 	public List<UserTrace> GetAllTraces() {
-		return entityManager.createQuery("select u from UserTrace u")
+		return entityManager.createQuery("select u from UserTrace u ORDER BY u.date DESC ")
 				.getResultList();
 	}
 

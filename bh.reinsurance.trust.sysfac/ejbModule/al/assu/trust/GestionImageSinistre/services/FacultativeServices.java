@@ -13,6 +13,7 @@ import al.assu.trust.GestionImageSinistre.impl.FacultativeServicesLocal;
 /**
  * Session Bean implementation class FacultativeServices
  */
+@SuppressWarnings(value = { "unused", "unchecked" })
 @Stateless
 public class FacultativeServices implements FacultativeServicesLocal {
 
@@ -23,7 +24,6 @@ public class FacultativeServices implements FacultativeServicesLocal {
 	EntityManager entityManager;
 
 	public FacultativeServices() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public List<Facultative> facultatives() {
@@ -34,13 +34,11 @@ public class FacultativeServices implements FacultativeServicesLocal {
 
 	@Override
 	public Facultative getfacbyid(int id) {
-		// TODO Auto-generated method stub
 		return entityManager.find(Facultative.class, id);
 	}
 
 	@Override
 	public List<Facultative> findfacbyregion(String region) {
-		// TODO Auto-generated method stub
 
 		return entityManager
 				.createQuery("select p from Facultative p where p.regions=:c")
@@ -49,11 +47,9 @@ public class FacultativeServices implements FacultativeServicesLocal {
 
 	@Override
 	public List<String> getRegions() {
-
 		Query query = entityManager
 				.createQuery("select DISTINCT a.regions from Facultative a");
 		return query.getResultList();
-
 	}
 
 	@Override
@@ -69,7 +65,6 @@ public class FacultativeServices implements FacultativeServicesLocal {
 							"select DISTINCT p.countries from Facultative p where p.regions=:c")
 					.setParameter("c", region).getResultList();
 		}
-
 	}
 
 	@Override
@@ -139,6 +134,7 @@ public class FacultativeServices implements FacultativeServicesLocal {
 					.createQuery("select  p from Facultative p where p.occupencies=:d ");
 			query.setParameter("d", occupancy);
 			return query.getResultList();
+
 		}
 		if (region == null && country != null && occupancy != null) {
 			Query query = entityManager
@@ -193,13 +189,27 @@ public class FacultativeServices implements FacultativeServicesLocal {
 	@Override
 	public List<String> GetYears() {
 		Query query = entityManager
-				.createQuery("select DISTINCT a.year from Facultative a");
+				.createQuery("select DISTINCT a.year from Facultative a ORDER BY a.year ASC");
 		return query.getResultList();
 	}
 
 	@Override
 	public List<Facultative> GetAll() {
 		Query query = entityManager.createQuery("select  a from Facultative a");
+		return query.getResultList();
+	}
+
+	@Override
+	public List<String> GetCedents() {
+		Query query = entityManager
+				.createQuery("select DISTINCT a.cedant from Facultative a");
+		return query.getResultList();
+	}
+
+	@Override
+	public List<String> GetBrokers() {
+		Query query = entityManager
+				.createQuery("select DISTINCT a.Broker from Facultative a");
 		return query.getResultList();
 	}
 
