@@ -19,9 +19,11 @@ import org.primefaces.context.RequestContext;
 
 import al.assu.trust.GestionImageSinistre.domain.Measure;
 import al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure;
+import al.assu.trust.GestionImageSinistre.domain.PropertyOnshoreMeasure;
 import al.assu.trust.GestionImageSinistre.domain.User;
 import al.assu.trust.GestionImageSinistre.impl.CrudBasicLocal;
 import al.assu.trust.GestionImageSinistre.impl.MeasureServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.PropertyOnshoreMeasureServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.UserServicesLocal;
 
 @ManagedBean(name = "measure")
@@ -53,6 +55,8 @@ public class MeasureBean implements Serializable {
 	private UserServicesLocal userServicesLocal;
 	@EJB
 	private CrudBasicLocal basicLocal;
+	@EJB
+	private PropertyOnshoreMeasureServicesLocal propertyOnshoreMeasureServicesLocal;
 
 	// const
 	public MeasureBean() {
@@ -63,7 +67,7 @@ public class MeasureBean implements Serializable {
 		searchmeasure = new ArrayList<Measure>();
 		Tool = new HashMap<String, String>();
 		Tool.put("account", "PI accountants and auditors");
-		Tool.put("property", "Property and Onshore");
+		Tool.put("Property", "Property");
 
 		PLAccountantAndAuditorsMeasure = measureServicesLocal
 				.GetWorkingMeasure("PI accountants and auditors");
@@ -156,22 +160,7 @@ public class MeasureBean implements Serializable {
 				Createplaccountantandauditorsmeasure();
 
 			} else {
-
-				Newmeasure.setUserId(user.getId());
-				measureServicesLocal.NewMeasure(Newmeasure);
-				measures = measureServicesLocal.GetAllMeasures();
-
-				RequestContext context = RequestContext.getCurrentInstance();
-				WorkingMeasure = measureServicesLocal
-						.GetMeasureByName(Newmeasure.getName());
-				DisplayMeasureMenu = "true";
-				DisableButtonMeasure = true;
-				disableButtonCloseSet = false;
-
-				Newmeasure = new Measure();
-				context.execute("PF('popup').hide();");
-				FacesContext.getCurrentInstance().getExternalContext()
-						.redirect("Factors.jsf");
+				CreatePropertyOnshoreMeasure();
 
 			}
 		}
@@ -193,11 +182,14 @@ public class MeasureBean implements Serializable {
 			return Openplaccountantandauditorsmeasure();
 
 		} else {
-			WorkingMeasure = measure;
-			DisplayMeasureMenu = "true";
-			DisableButtonMeasure = true;
-			disableButtonCloseSet = false;
-			return "Factors?faces-redirect=true";
+			if (measure.getActive() == true) {
+				// *****************************************************change
+				// to false or true if dev mode
+				HideActiveMeasureButton = false;
+			} else {
+				HideActiveMeasureButton = true;
+			}
+			return OpenPropertyOnshoreMeasure();
 		}
 
 	}
@@ -269,6 +261,12 @@ public class MeasureBean implements Serializable {
 								"idMeasure", measure.getId());
 
 				basicLocal.Delete(placcmeasure);
+			} else {
+				PropertyOnshoreMeasure propertyOnshoreMeasure = propertyOnshoreMeasureServicesLocal
+						.FindByIdMeasure(measure.getId());
+				propertyOnshoreMeasureServicesLocal
+						.DeletePropMeasure(propertyOnshoreMeasure);
+
 			}
 
 			measureServicesLocal.DeleteMeasure(measure);
@@ -299,10 +297,7 @@ public class MeasureBean implements Serializable {
 	// pl accountant and auditors measure management start
 
 	private Measure measureToCopy = new Measure();
-	private String Key;
-	private String Value;
 	private PlaccountantandauditorsMeasure placcmeasure = new PlaccountantandauditorsMeasure();
-	private String SelectionPlaccandaudit;
 	private List<Measure> AccAndAuditMeasureList = new ArrayList<Measure>();
 
 	public void Createplaccountantandauditorsmeasure() throws IOException {
@@ -312,6 +307,7 @@ public class MeasureBean implements Serializable {
 		placcmeasure.setIdMeasure(measureServicesLocal.GetMeasureByName(
 				Newmeasure.getName()).getId());
 		basicLocal.Persist(placcmeasure);
+
 		measures = measureServicesLocal.GetAllMeasures();
 		DisplayMeasureMenu = "true";
 		DisableButtonMeasure = true;
@@ -342,15 +338,52 @@ public class MeasureBean implements Serializable {
 	}
 
 	// pl accountant and auditors measure management end
-	public void GoToMeasure() {
-		try {
-			FacesContext.getCurrentInstance().getExternalContext()
-					.redirect("PIAccountantandandAuditorsMeasurel.jsf");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
 
+	// Onshore measure management start
+	public void CreatePropertyOnshoreMeasure() throws IOException {
+		Newmeasure.setUserId(user.getId());
+		measureServicesLocal.NewMeasure(Newmeasure);
+		PropertyOnshoreMeasure propertyOnshoreMeasure = new PropertyOnshoreMeasure();
+		propertyOnshoreMeasure.setIdMeasure(measureServicesLocal
+				.GetMeasureByName(Newmeasure.getName()).getId());
+		propertyOnshoreMeasureServicesLocal.AddMeasure(propertyOnshoreMeasure);
+		measures = measureServicesLocal.GetAllMeasures();
+		DisplayMeasureMenu = "true";
+		DisableButtonMeasure = true;
+		disableButtonCloseSet = false;
+		WorkingMeasure = measureServicesLocal.GetMeasureByName(Newmeasure
+				.getName());
+		measure = WorkingMeasure;
+		Newmeasure = new Measure();
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("PF('popup').hide();");
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("PropertyOnshoreMeasure.jsf");
+	}
+
+	public String OpenPropertyOnshoreMeasure() {
+
+		WorkingMeasure = measure;
+		DisplayMeasureMenu = "true";
+		DisableButtonMeasure = true;
+		disableButtonCloseSet = false;
+		return "PropertyOnshoreMeasure?faces-redirect=true";
+
+	}
+
+	// Onshore measure management end
+
+	public void GoToMeasure() throws IOException {
+		System.out.println(measure.getClassofbusiness());
+		if(measure.getClassofbusiness().equals("PI accountants and auditors")){
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("PIAccountantandandAuditorsMeasurel.jsf");
+		}else{
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("PropertyOnshoreMeasure.jsf");
 		}
+		
+		
 	}
 
 	// getters and setters
@@ -466,14 +499,6 @@ public class MeasureBean implements Serializable {
 		this.placcmeasure = placcmeasure;
 	}
 
-	public String getSelectionPlaccandaudit() {
-		return SelectionPlaccandaudit;
-	}
-
-	public void setSelectionPlaccandaudit(String selectionPlaccandaudit) {
-		SelectionPlaccandaudit = selectionPlaccandaudit;
-	}
-
 	public List<Measure> getAccAndAuditMeasureList() {
 		return AccAndAuditMeasureList;
 	}
@@ -488,22 +513,6 @@ public class MeasureBean implements Serializable {
 
 	public void setMeasureToCopy(Measure measureToCopy) {
 		this.measureToCopy = measureToCopy;
-	}
-
-	public String getKey() {
-		return Key;
-	}
-
-	public void setKey(String key) {
-		Key = key;
-	}
-
-	public String getValue() {
-		return Value;
-	}
-
-	public void setValue(String value) {
-		Value = value;
 	}
 
 	public String getDisplayMeasuresByClass() {

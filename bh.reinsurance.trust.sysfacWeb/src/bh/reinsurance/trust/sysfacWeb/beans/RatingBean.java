@@ -20,11 +20,8 @@ public class RatingBean implements Serializable {
 	 * 
 	 */
 	// models
-	private String Basis="qs";
 	private Map<String, String> Currency;
 	private Map<Double, String> practise1;
-	private boolean DispalyExcess=false;
-	private boolean DisplayQs=true;
 	private static final long serialVersionUID = 1L;
 	private PIaccandAudit iaccandAudit;
 	
@@ -55,18 +52,7 @@ public class RatingBean implements Serializable {
 	public void add() {
 
 	}
-	public void DisplayByBasis(){
-		if(Basis.equals("qs")){
-			DisplayQs=true;
-			DispalyExcess=false;
-		}else
-		{
-			DispalyExcess=true;
-			DisplayQs=false;
-		}
-		
-		
-	}
+	
 
 	// getters setters
 	public Map<String, String> getCurrency() {
@@ -93,27 +79,5 @@ public class RatingBean implements Serializable {
 		this.practise1 = practise1;
 	}
 
-	public String getBasis() {
-		return Basis;
-	}
-
-	public void setBasis(String basis) {
-		Basis = basis;
-	}
-
-	public boolean isDispalyExcess() {
-		return DispalyExcess;
-	}
-
-	public void setDispalyExcess(boolean dispalyExcess) {
-		DispalyExcess = dispalyExcess;
-	}
-
-	public boolean isDisplayQs() {
-		return DisplayQs;
-	}
-
-	public void setDisplayQs(boolean displayQs) {
-		DisplayQs = displayQs;
-	}
+	
 }

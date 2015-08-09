@@ -1,14 +1,15 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -16,11 +17,14 @@ import org.primefaces.event.RowEditEvent;
 
 import al.assu.trust.GestionImageSinistre.domain.Assets;
 import al.assu.trust.GestionImageSinistre.domain.Project;
+import al.assu.trust.GestionImageSinistre.domain.PropertyOnshoreRating;
 import al.assu.trust.GestionImageSinistre.impl.AssetsServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.OccupanciesServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.PropertyOnshoreRatingServicesLocal;
 
 @ManagedBean
-@RequestScoped
-public class AssetsBean {
+@ViewScoped
+public class AssetsBean implements Serializable {
 	// models
 
 	@ManagedProperty("#{projectBean.getProject3()}")
@@ -31,9 +35,14 @@ public class AssetsBean {
 	private Assets assets;
 	private List<Assets> assetsList;
 	private boolean forrmDisplayed;
-
+	private PropertyOnshoreRating propertyOnshoreRating;
+	private List<String> Occupancies;
+	@EJB
+	OccupanciesServicesLocal occupanciesServicesLocal;
 	@EJB
 	private AssetsServicesLocal assetsServicesLocal;
+	@EJB
+	PropertyOnshoreRatingServicesLocal propertyOnshoreRatingServicesLocal;
 
 	ExternalContext context = FacesContext.getCurrentInstance()
 			.getExternalContext();
@@ -49,10 +58,17 @@ public class AssetsBean {
 	@PostConstruct
 	public void init() {
 		assetsList = assetsServicesLocal.GetAssetsByIdProject(project3.getId());
+		propertyOnshoreRating = propertyOnshoreRatingServicesLocal
+				.GetByIdProject(project3.getId());
+		Occupancies = occupanciesServicesLocal.GetOccupanciesByCob(assets
+				.getCOB());
 	}
 
+	
+
 	public List<Assets> GetAssets() {
-		return 	assetsList = assetsServicesLocal.GetAssetsByIdProject(project3.getId());
+		return assetsList = assetsServicesLocal.GetAssetsByIdProject(project3
+				.getId());
 	}
 
 	public List<Assets> GetAssetsByidproj() {
@@ -63,6 +79,11 @@ public class AssetsBean {
 	// methods
 	public void AddAsset() {
 		assets.setIdproject(project3.getId());
+		if (!propertyOnshoreRating.getClassof().equals(null)) {
+			assets.setCOB(propertyOnshoreRating.getClassof());
+			assets.setOccupancy(propertyOnshoreRating.getOccupancy());
+		}
+
 		assetsServicesLocal.AddAsset(assets);
 		forrmDisplayed = false;
 		assetsList = assetsServicesLocal.GetAllAssets();
@@ -70,7 +91,8 @@ public class AssetsBean {
 	}
 
 	public void onRowEdit(RowEditEvent event) {
-		
+
+		assets.setPD_PML(assets.getPD_PML_RATE()/100 * assets.getPD_SI());
 		assetsServicesLocal.AddAsset(assets);
 		assetsList = assetsServicesLocal.GetAllAssets();
 		FacesMessage msg = new FacesMessage("Asset Modified", "Asset id :"
@@ -127,6 +149,23 @@ public class AssetsBean {
 
 	public void setProject3(Project project3) {
 		this.project3 = project3;
+	}
+
+	public PropertyOnshoreRating getPropertyOnshoreRating() {
+		return propertyOnshoreRating;
+	}
+
+	public void setPropertyOnshoreRating(
+			PropertyOnshoreRating propertyOnshoreRating) {
+		this.propertyOnshoreRating = propertyOnshoreRating;
+	}
+
+	public List<String> getOccupancies() {
+		return Occupancies;
+	}
+
+	public void setOccupancies(List<String> occupancies) {
+		Occupancies = occupancies;
 	}
 
 }

@@ -47,14 +47,28 @@ public class ProjectServices implements ProjectServicesLocal {
 	@Override
 	public List<Project> GetProjectsByUser(User user) {
 		return entityManager
-				.createQuery("select p from Project p where p.user=:c ORDER BY p.dateCreation DESC")
+				.createQuery("select DISTINCT p from Project p where p.user=:c ORDER BY p.dateCreation DESC")
 				.setParameter("c", user.getId()).getResultList();
 	}
 
 	@Override
 	public List<Project> GetAllProjects() {
 
-		Query query = entityManager.createQuery("select a from Project a ORDER BY a.dateCreation DESC");
+		Query query = entityManager.createQuery("select a from Project a GROUP BY a.nameOfTheProject  ORDER BY a.dateCreation DESC ");
+		return query.getResultList();
+	}
+	@Override
+	public List<Project> GetAllDistinctProjects() {
+
+		Query query = entityManager.createQuery("select DISTINCT a from Project a GROUP BY a.nameOfTheProject ORDER BY a.dateCreation DESC");
+		return query.getResultList();
+	}
+	
+	@Override
+	public List<Project> GetProjectsByName(String Name) {
+		String jpql = "select u from Project u where u.nameOfTheProject =:param1 ORDER BY u.dateCreation DESC ";
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("param1", Name);
 		return query.getResultList();
 	}
 

@@ -1,0 +1,1081 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/TmpMaster.xhtml">
+		<ui:define name="title"> Property Onshore measure </ui:define>
+		<ui:define name="content">
+			<p:growl autoUpdate="true" showDetail="false"></p:growl>
+			<p:tabView id="tab">
+
+				<p:tab title="Risk Assesment Parameters">
+
+					<p:panel id="global">
+
+
+						<p:panelGrid columns="2">
+							<f:facet name="header"> General Factors</f:facet>
+							<h:form id="LossRatioo">
+								<p:dataTable id="LossRatio"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.lossRatio.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Loss Ratio</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('LossRatio')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('LossRatio')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('LossRatio')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+
+							<h:form id="ConstClass">
+								<p:dataTable id="ConstClass"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.constructionClass.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Construction Class</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('ConstructionClass')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('ConstructionClass')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('ConstructionClass')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+						</p:panelGrid>
+
+						<p:separator></p:separator>
+
+						<p:panelGrid columns="1">
+
+							<f:facet name="header">Assesment</f:facet>
+							<h:form id="Assesment">
+								<p:dataTable id="Assesment1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.assesment.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<p:column headerText="Assesment">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="Points">
+						#{testima.value}
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('Assesment')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('Assesment')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('Assesment')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+						</p:panelGrid>
+
+						<p:separator></p:separator>
+						<h:form>
+							<h:panelGrid columns="4">
+								<p:panelGrid>
+
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="2"> Safety and Security</p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Security Guard 24/7 :</p:outputLabel>
+										</p:column>
+
+
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.securityGuard}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Management Risk Awareness :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.managementRiskAwareness}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Physical Barriers :</p:outputLabel>
+										</p:column>
+										<p:column>
+
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.physicalBarriers}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Access Control and Alarm System :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.accessControlAndAlarmSystem}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+
+								</p:panelGrid>
+
+
+
+								<p:panelGrid>
+
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="2">House Keeping</p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Smoke Control :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.smokeControl}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Welding Control  :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.weldingControl}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Fire Prevention officer :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.firePrevention}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Stock Storage Practise :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.stockStoragePractise}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+
+								</p:panelGrid>
+
+
+								<p:panelGrid>
+
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="2">Maintenance</p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Mechanical Maintenance :</p:outputLabel>
+										</p:column>
+
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.mechanicalMaintenance}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>% </p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Electrical Maintenance :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.electricalMaintenance}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>% 
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Fullfillment of recommendations :</p:outputLabel>
+										</p:column>
+
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.fullFilment}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>% </p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Regular maintenance and self inspection process :</p:outputLabel>
+										</p:column>
+
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.regularMaintenance}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>% </p:column>
+									</p:row>
+
+								</p:panelGrid>
+
+								<p:panelGrid>
+
+
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="2">BI Loss Prevention</p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Backup facilities :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.backupFacilities}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Business Continuity Plan :</p:outputLabel>
+										</p:column>
+										<p:column>
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.businessContinuityPlan}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel>Bottleneck Loss minimised :</p:outputLabel>
+										</p:column>
+										<p:column>
+
+											<p:inplace editor="true">
+												<p:inputMask style="width:50px"
+													value="#{PropertyMeasure.propertyOnshoreMeasure.bottleneckLossMinimised}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+												</p:inputMask>
+											</p:inplace>%
+									</p:column>
+									</p:row>
+
+
+
+
+
+
+								</p:panelGrid>
+
+							</h:panelGrid>
+						</h:form>
+
+
+						<p:separator />
+
+						<p:panelGrid columns="4">
+							<f:facet name="header">Fire Detection</f:facet>
+
+							<h:form id="InstallationFire">
+								<p:dataTable id="InstallationFire1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.installationFire.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Installation</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('InstallationFire')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('InstallationFire')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('InstallationFire')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="Link">
+								<p:dataTable id="Link1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.link.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Link</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('Link')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('Link')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('Link')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+
+						</p:panelGrid>
+
+						<p:separator />
+
+						<p:panelGrid columns="4">
+							<f:facet name="header">Estinguishment System</f:facet>
+							<h:form id="InstallationEstinguishment">
+								<p:dataTable id="InstallationEstinguishment1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.installationEstinguishment.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:450px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Installation</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('InstallationEstinguishment')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('InstallationEstinguishment')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('InstallationEstinguishment')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+							<h:form id="Coverage">
+								<p:dataTable id="Coverage1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.coverage.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Coverage</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('Coverage')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('Coverage')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('Coverage')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+						</p:panelGrid>
+
+						<p:separator />
+
+						<p:panelGrid columns="4">
+							<f:facet name="header">Plant Fire Brigade</f:facet>
+							<h:form id="Type">
+								<p:dataTable id="Type1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.plantFireBrigadeType.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Type </f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('PlantFireBrigadeType')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('PlantFireBrigadeType')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('PlantFireBrigadeType')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+						</p:panelGrid>
+
+						<p:separator />
+
+						<p:panelGrid columns="4">
+							<f:facet name="header">Public Fire Brigade</f:facet>
+							<h:form id="FamiliarityWithPremises">
+								<p:dataTable id="FamiliarityWithPremises1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.familiarityWithPremises.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header"> Familiarity with premises</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('FamiliarityWithPremises')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('FamiliarityWithPremises')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('FamiliarityWithPremises')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="ResponseTime">
+								<p:dataTable id="ResponseTime1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.responseTime.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Response Time</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('ResponseTime')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('ResponseTime')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('ResponseTime')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+						</p:panelGrid>
+
+						<p:separator />
+
+						<p:panelGrid columns="4">
+							<f:facet name="header">MB and MLoP</f:facet>
+
+							<h:form id="MachnineMake">
+								<p:dataTable id="MachnineMake1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.machineMake.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Machine Make</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('MachnineMake')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('MachnineMake')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('MachnineMake')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="Capacity">
+								<p:dataTable id="Capacity1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.capacity.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Capacity(MW)</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('Capacity')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('Capacity')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('Capacity')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="PlantAge">
+								<p:dataTable id="PlantAge1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.plantAge.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Plant Age </f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('PlantAge')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('PlantAge')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('PlantAge')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="MaintenanceQuality">
+								<p:dataTable id="MaintenanceQuality1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.maintenanceQuality.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Maintenance Quality</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('MaintenanceQuality')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('MaintenanceQuality')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('MaintenanceQuality')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="AvaibilityOfParts">
+								<p:dataTable id="AvaibilityOfParts1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.avaibilityOfParts.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">Avaibility Of Parts</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('AvaibilityOfParts')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('AvaibilityOfParts')}"
+												update=":tab:global"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('AvaibilityOfParts')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+
+						</p:panelGrid>
+					</p:panel>
+
+
+				</p:tab>
+
+
+
+				<p:tab title="BI and MLoP">
+					<p:panel id="global2">
+						<p:panelGrid columns="3">
+							<h:form id="BIIndemnityPeriod">
+
+								<p:dataTable id="BIIndemnityPeriod1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.biIndemnityPeriod.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">BI Indemnity Period</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('BIIndemnityPeriod')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('BIIndemnityPeriod')}"
+												update=":tab:global2"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('BIIndemnityPeriod')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="MLoPIndemnityPeriod">
+								<p:dataTable id="MLoPIndemnityPeriod"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.MLoPIndemnityPeriod.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">MLoP Indemnity Period</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('MLoPIndemnityPeriod')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('MLoPIndemnityPeriod')}"
+												update=":tab:global2"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('MLoPIndemnityPeriod')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+
+							<h:form id="CBI">
+								<p:dataTable id="CBI"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.CBI.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">CBI </f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('CBI')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('CBI')}"
+												update=":tab:global2"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('CBI')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+
+							</h:form>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab title="General">
+					<p:panel id="global3">
+					<h:form id="PMLerror">
+
+								<p:dataTable id="PMLerror1"
+									value="#{PropertyMeasure.propertyOnshoreMeasure.PMLerror.entrySet()}"
+									var="testima" selectionMode="single"
+									selection="#{PropertyMeasure.selectionPropertyOnshore}"
+									rowKey="#{testima}" style="width:250px" paginator="true"
+									paginatorPosition="bottom">
+									<f:facet name="header">BI Indemnity Period</f:facet>
+									<p:column headerText="selection">
+						#{testima.key}
+						</p:column>
+									<p:column headerText="load">
+						#{testima.value}%
+						</p:column>
+									<f:facet name="footer">
+										<h:form rendered="true">
+											<p:commandButton icon="ui-icon-plusthick"
+												rendered="#{measure.hideActiveMeasureButton}"
+												actionListener="#{PropertyMeasure.AddButtonClicked('PMLerror')}" />
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{PropertyMeasure.DeleteFactor('PMLerror')}"
+												update=":tab:global3"
+												rendered="#{measure.hideActiveMeasureButton}">
+												<p:confirm header="Confirmation" message="Are you sure  ?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:commandButton
+												rendered="#{measure.hideActiveMeasureButton}"
+												icon=" ui-icon-pencil" update=":form4"
+												actionListener="#{PropertyMeasure.Displaymodifyfactor('PMLerror')}" />
+										</h:form>
+									</f:facet>
+								</p:dataTable>
+							</h:form>
+					</p:panel>
+				</p:tab>
+
+			</p:tabView>
+
+
+
+
+			<p:dialog widgetVar="Addfactor" id="Addfactor" width="300px"
+				modal="true" showEffect="true" hideEffect="explode"
+				resizable="false" header="Add Factor">
+
+				<h:form id="form3">
+
+
+					<h:panelGrid columns="2">
+						<p:outputLabel>param name</p:outputLabel>
+						<p:inputText value="#{PropertyMeasure.key}" required="true"
+							requiredMessage="Please enter the param name"></p:inputText>
+						<p:outputLabel>Load</p:outputLabel>
+						<p:inputMask value="#{PropertyMeasure.value}" label="text"
+							maxlength="7" required="true"
+							requiredMessage="Please enter the load">
+							<pe:keyFilter regEx="/[0-9.-]/" />
+						</p:inputMask>
+
+					</h:panelGrid>
+
+					<p:commandButton update=":tab:global :tab:global2 :tab:global3"
+						actionListener="#{PropertyMeasure.FillFactorToAdd()}" value="Add">
+					</p:commandButton>
+				</h:form>
+
+			</p:dialog>
+
+			<h:form id="form4">
+				<p:dialog widgetVar="modiffactor" id="modiffactor" width="300px"
+					modal="true" showEffect="true" hideEffect="explode"
+					resizable="false" header="Modify">
+
+					<h:panelGrid columns="2">
+						<p:outputLabel>param name</p:outputLabel>
+						<p:outputLabel>#{PropertyMeasure.key}</p:outputLabel>
+						<p:outputLabel>Load</p:outputLabel>
+						<p:inputMask value="#{PropertyMeasure.value}" label="text"
+							maxlength="7" required="true"
+							requiredMessage="Please enter the load">
+							<pe:keyFilter regEx="/[0-9.-]/" />
+						</p:inputMask>
+					</h:panelGrid>
+					<p:commandButton update=":tab:global :tab:global2 :tab:global3"
+						actionListener="#{PropertyMeasure.ModifyFactor()}" value="Update"></p:commandButton>
+				</p:dialog>
+			</h:form>
+
+
+			<p:confirmDialog global="true" hideEffect="explode" visible="false"
+				showEffect="fade">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+			</p:confirmDialog>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -78,11 +78,7 @@ public class ReportBean {
 				new HashMap(), beanCollectionDataSource));
 		JasperExportManager.exportReportToPdfFile(jasperPrint,
 				"/Users/zribisofien/Desktop/PDFGEN/" + ProjectName + ".pdf");
-		/*
-		 * JasperExportManager .exportReportToPdfFile( jasperPrint,
-		 * "/Users/zribisofien/git/TrustRe2/bh.reinsurance.trust.sysfacWeb/WebContent/resources/Report/"
-		 * + ProjectName + ".pdf");
-		 */
+
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popuppdf').hide();");
 		FacesContext.getCurrentInstance()
@@ -175,40 +171,12 @@ public class ReportBean {
 		context.execute("PF('popuppdf').hide();");
 		FacesContext.getCurrentInstance()
 				.addMessage(
-						"messages1",
+						null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"File Created", ""));
 	}
 
-	public void ExportAccountantAndAuditorsSummary(Project project)
-			throws JRException {
-		List<Object> projects = new ArrayList<Object>();
-		projects.add(project);
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("name", "Sofien");
-		param.put("insured", "");
-		param.put("broker", "");
-		param.put("basepremium", "2000 $");
-		param.put("territoryload", "1");
-		param.put("totalbasepremium", "");
-
-		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
-				projects);
-
-		setJasperPrint(JasperFillManager.fillReport(URLJasperModel
-				+ "AccountantsAndAuditorsModel.jasper", param,
-				beanCollectionDataSource));
-
-		JasperExportManager.exportReportToPdfFile(jasperPrint, URLDestination
-				+ ProjectName + ".pdf");
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("PF('popuppdf').hide();");
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						"messages1",
-						new FacesMessage(FacesMessage.SEVERITY_INFO,
-								"File Created", ""));
-	}
+	
 
 	public String getURLDestination() {
 		return URLDestination;

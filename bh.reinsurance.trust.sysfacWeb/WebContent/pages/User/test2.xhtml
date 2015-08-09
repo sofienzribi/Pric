@@ -10,116 +10,168 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title"> Rating Tool</ui:define>
 		<ui:define name="content">
-			<p:panel header="Property and Onshore Rating Tool">
-				<p:tabView style="width:auto">
-					<p:tab title="Summary">
-						<p:panel style="margin-left:200px;margin-right:200px;">
-							<p:panelGrid columns="2" style="width:600px">
-								<f:facet name="header">offer information</f:facet>
-								<p:outputLabel value="Underwriter : " for="Labe1" />
-								<p:outputLabel
-									value="#{projectBean.GetUserName(projectBean.project3.user)}"
-									id="Labe1"></p:outputLabel>
-								<p:outputLabel value="Inception Date : " for="inc1" />
-								<h:outputLabel id="inc1"
-									value="#{projectBean.project3.dateCreation}" />
-								<p:outputLabel value="Expiry date : " for="exp1" />
-								<h:outputLabel id="exp1"
-									value="#{projectBean.project3.expiry_date}" />
-								<p:outputLabel value="Quoted date : " for="quote1" />
-								<h:outputLabel id="quote1"
-									value="#{projectBean.project3.quoted_Date}" />
-								<p:outputLabel value="Currency : " for="curr1" />
-								<h:outputLabel id="curr1"
-									value="#{projectBean.project3.currency}" />
-								<p:outputLabel value="Insured : " for="ins1" />
-								<h:outputLabel id="ins1" value="#{projectBean.project3.insured}" />
-								<p:outputLabel value="Broker : " for="brok1" />
-								<h:outputLabel id="brok1" value="#{projectBean.project3.broker}" />
-								<p:outputLabel value="Policy : " for="pol1" />
-								<h:outputLabel id="pol1" value="#{projectBean.project3.policy}" />
 
-							</p:panelGrid>
-							<p:panelGrid>
-								<f:facet name="header">
+			<p:growl autoUpdate="true" showDetail="false"></p:growl>
+			<p:panel header="Property Rating Tool">
+				<p:tabView id="tab" style="width:auto">
+					<p:tab title="Summary" id="summary">
+						<h:form id="frsum">
+							<p:panel id="glo" style="margin-left:200px;margin-right:200px;">
+								<p:panelGrid columns="2" style="width:600px">
+									<f:facet name="header">offer information</f:facet>
+									<p:outputLabel value="Underwriter : " for="Labe1" />
+									<p:outputLabel
+										value="#{projectBean.GetUserName(projectBean.project3.user)}"
+										id="Labe1"></p:outputLabel>
+									<p:outputLabel value="Inception Date : " for="inc1" />
+									<h:outputLabel id="inc1"
+										value="#{projectBean.project3.inception_Date}" />
+									<p:outputLabel value="Expiry date : " for="exp1" />
+									<h:outputLabel id="exp1"
+										value="#{projectBean.project3.expiry_date}" />
+									<p:outputLabel value="Quoted date : " for="quote1" />
+									<h:outputLabel id="quote1"
+										value="#{projectBean.project3.quoted_Date}" />
+									<p:outputLabel value="Currency : " for="curr1" />
+									<h:outputLabel id="curr1"
+										value="#{projectBean.project3.currency}" />
+									<p:outputLabel value="Insured : " for="ins1" />
+									<h:outputLabel id="ins1"
+										value="#{projectBean.project3.insured}" />
+									<p:outputLabel value="Broker : " for="brok1" />
+									<h:outputLabel id="brok1"
+										value="#{projectBean.project3.broker}" />
+									<p:outputLabel value="Policy : " for="pol1" />
+									<h:outputLabel id="pol1" value="#{projectBean.project3.policy}" />
+
+								</p:panelGrid>
+								<p:panelGrid id="pansum">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="2" style="width:600px">Summary</p:column>
+										</p:row>
+									</f:facet>
 									<p:row>
-										<p:column colspan="2" style="width:600px">Summary</p:column>
+										<p:column style="width:253px">Proposed Share</p:column>
+										<p:column style="width:347px">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.proposedShare}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.GetCommPrice()}" update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%
+									</p:column>
 									</p:row>
+									<p:row>
+										<p:column>Max Liability</p:column>
+
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.maxLiability)}</p:column>
+									</p:row>
+									<p:row>
+
+										<p:column colspan="2" style="font-weight: bold;">Risk Price</p:column>
+
+									</p:row>
+									<p:row>
+										<p:column>Rating factors</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.ratingFactor)}</p:column>
+									</p:row>
+									<p:row>
+										<p:column>Nat.Catastrophe</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.nat_Catastrophe)}</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2"
+											style=" background-color: #29A3CC;font-weight: bold;">Total Risk Price : #{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.nat_Catastrophe+PropertyRating.propertyOnshoreRating.ratingFactor)}</p:column>
+
+									</p:row>
+									<p:row>
+										<p:column colspan="2" style="font-weight: bold;">Internal Costs</p:column>
+									</p:row>
+
+									<p:row>
+										<p:column>Expenses</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.expenses)}</p:column>
+									</p:row>
+									<p:row>
+										<p:column>Cost of capital </p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.costOfCapital)}</p:column>
+									</p:row>
+
+									<p:row>
+										<p:column>Reinsurance Costs</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.reinsuranceCosts)}</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2"
+											style=" background-color: #29A3CC;font-weight: bold;">Total Costs : #{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.totalCosts)}</p:column>
+
+									</p:row>
+									<p:row>
+										<p:column>Profit margin</p:column>
+										<p:column>
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.profitMargin}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.GetCommPrice()}" update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column> Brokerage</p:column>
+										<p:column>
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.brokerage}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.GetCommPrice()}" update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%
+										</p:column>
+									</p:row>
+									<f:facet name="footer">
+										<p:row>
+											<p:column style="font-weight: bold;">Commercial Price </p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetCommPrice())} </p:column>
+										</p:row>
+									</f:facet>
+								</p:panelGrid>
+								<f:facet name="footer">
+									<p:commandButton style="position:relative;left:260px"
+										actionListener="#{projectBean.MakeThisProjectQuoted()}"
+										rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+										value="Mark as quoted" update="glo :popupQuotation">
+										<p:confirm header="Confirmation"
+											message="By putting this project as quoted it will not be possible to change it .
+													Are you sure you want to continue ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
 								</f:facet>
-								<p:row>
-									<p:column style="width:253px">Proposed Share</p:column>
-									<p:column style="width:347px">
-										<p:inputText></p:inputText>
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column>Max Liability</p:column>
-									<p:column>0</p:column>
-								</p:row>
-								<p:row>
-									<p:column colspan="2" style=" background-color: grey;">Risk Price</p:column>
 
-								</p:row>
-								<p:row>
-									<p:column>Rating factors</p:column>
-									<p:column>Summary</p:column>
-								</p:row>
-								<p:row>
-									<p:column>Nat.Catastrophe</p:column>
-									<p:column>Summary</p:column>
-								</p:row>
-								<p:row>
-									<p:column colspan="2" style=" background-color: green;">Total Risk Price : 0</p:column>
+							</p:panel>
 
-								</p:row>
-								<p:row>
-									<p:column colspan="2" style=" background-color: grey;">Internal Costs</p:column>
-								</p:row>
-
-								<p:row>
-									<p:column>Expenses</p:column>
-									<p:column>0</p:column>
-								</p:row>
-								<p:row>
-									<p:column>Cost of capital </p:column>
-									<p:column>0</p:column>
-								</p:row>
-
-								<p:row>
-									<p:column>Reinsurance Costs</p:column>
-									<p:column>0</p:column>
-								</p:row>
-								<p:row>
-									<p:column colspan="2" style=" background-color: green;">Total Costs : 0</p:column>
-
-								</p:row>
-								<p:row>
-									<p:column>Profit margin</p:column>
-									<p:column>
-										<p:inputText></p:inputText>
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column> Brokerage</p:column>
-									<p:column>
-										<p:inputText></p:inputText>
-									</p:column>
-								</p:row>
-
-								<p:row>
-									<p:column style=" background-color: green;" colspan="2">Comercial price : 0</p:column>
-								</p:row>
-
-							</p:panelGrid>
-
-						</p:panel>
+						</h:form>
 					</p:tab>
 
 					<p:tab title="Rating">
 						<p:panel>
 							<h:form id="form">
-								<p:messages id="messages" autoUpdate="true" closable="true" />
-								<h:panelGrid columns="2">
+								<h:panelGrid id="pan" columns="2">
 
 									<h:panelGrid id="leftpanel" border="0" columns="1">
 
@@ -134,41 +186,66 @@
 											<p:row>
 												<p:column style="width:275px">Main Class</p:column>
 												<p:column style="width:155px">
-													<p:selectOneMenu id="Indeemni" style="width:155px">
-														<f:selectItem itemLabel="25" />
-														<f:selectItem itemLabel="45" />
+													<p:selectOneMenu required="true"
+														value="#{PropertyRating.propertyOnshoreRating.classof}"
+														id="Indeemni" style="width:155px">
+														<p:ajax event="valueChange" update="pan"></p:ajax>
+														<f:selectItem itemLabel="Select one ..." />
+														<f:selectItems value="#{PropertyRating.COB}" var="cob"
+															itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
 													</p:selectOneMenu>
 												</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Main Occupancy</p:column>
 												<p:column>
-													<p:selectOneMenu id="Inrdemnri" style="width:155px">
-														<f:selectItem itemLabel="25" />
-														<f:selectItem itemLabel="45" />
+													<p:selectOneMenu id="Inrdemnri" required="true"
+														value="#{PropertyRating.propertyOnshoreRating.occupancy}"
+														style="width:155px">
+
+														<p:ajax event="valueChange" update="pan"
+															listener="#{PropertyRating.GetRiskGrade()}"></p:ajax>
+														<f:selectItem itemLabel="Select one ..." />
+														<f:selectItems
+															value="#{PropertyRating.COBChangeByParam2(PropertyRating.propertyOnshoreRating.classof)}"
+															var="cob" itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
 													</p:selectOneMenu>
 												</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Risk Grade</p:column>
-												<p:column>df</p:column>
+												<p:column id="ris">#{PropertyRating.propertyOnshoreRating.riskGrade}</p:column>
 											</p:row>
+
 											<p:row>
-												<p:column style="background-color:grey">Basis of Acc.</p:column>
+												<p:column style="background-color:grey">Basis of Acceptance</p:column>
 												<p:column style="background-color:grey">
-													<p:selectOneMenu value="#{ratingBean.basis}" id="Ibasis"
-														style="width:155px">
+													<p:selectOneMenu
+														value="#{PropertyRating.propertyOnshoreRating.basisOfAcceptance}"
+														id="Ibasis" style="width:155px">
 														<p:ajax event="valueChange"
-															listener="#{ratingBean.DisplayByBasis()}"
-															update="leftpanel rightpanel" />
+															listener="#{PropertyRating.DisplayByBasis()}"
+															update="leftpanel rightpanel sectionbreakdown" />
 														<f:selectItem itemLabel="QS" itemValue="qs" />
 														<f:selectItem itemLabel="Excess" itemValue="excess" />
 													</p:selectOneMenu>
 												</p:column>
 											</p:row>
 											<p:row>
-												<p:column>Loss Limit Structure</p:column>
-												<p:column></p:column>
+												<p:column>PML Error</p:column>
+												<p:column>
+													<p:selectOneMenu
+														value="#{PropertyRating.propertyOnshoreRating.PMLerror}"
+														id="pmlerr" style="width:155px">
+														<p:ajax event="valueChange"
+															listener="#{PropertyRating.PmlerrorChange()}"
+															update="@form :tab:f :tab:frsum" />
+														<f:selectItems
+															value="#{PropertyRating.propertyOnshoreMeasure.PMLerror.entrySet()}"
+															var="cob" itemLabel="#{cob.key}" itemValue="#{cob.key}"></f:selectItems>
+													</p:selectOneMenu>
+
+												</p:column>
 											</p:row>
 
 										</p:panelGrid>
@@ -183,32 +260,39 @@
 											<p:row>
 												<p:column>Indemnity Period (BI)</p:column>
 												<p:column>
-													<p:selectOneMenu id="Indemni" style="width:155px">
-														<f:selectItem itemLabel="25" />
-														<f:selectItem itemLabel="45" />
+													<p:selectOneMenu
+														value="#{PropertyRating.propertyOnshoreRating.biIndemnityPeriod}"
+														id="Indemni" style="width:155px">
+														<p:ajax event="valueChange"
+															update="@form :tab:f :tab:frsum"
+															listener="#{PropertyRating.BIIndemnityPeriodChange()}"></p:ajax>
+														<f:selectItems
+															value="#{PropertyRating.propertyOnshoreMeasure.biIndemnityPeriod.entrySet()}"
+															var="data" itemValue="#{data.key}"
+															itemLabel="#{data.key}" />
 													</p:selectOneMenu>
 												</p:column>
-												<p:column>%</p:column>
+												<p:column>#{PropertyRating.biindemnityLoad}%</p:column>
 											</p:row>
 
 											<p:row>
 												<p:column> Indemnity period(MLoP)</p:column>
 												<p:column>
-													<p:selectOneMenu id="ers" style="width:155px">
-														<f:selectItem itemLabel="" />
+													<p:selectOneMenu
+														value="#{PropertyRating.propertyOnshoreRating.mlopIndemnityPeriod}"
+														style="width:155px">
+														<p:ajax event="valueChange"
+															update="@form :tab:f :tab:frsum"
+															listener="#{PropertyRating.MLOPIndemnityPeriodChange()}"></p:ajax>
+														<f:selectItems
+															value="#{PropertyRating.propertyOnshoreMeasure.MLoPIndemnityPeriod.entrySet()}"
+															var="data" itemValue="#{data.key}"
+															itemLabel="#{data.key}" />
 													</p:selectOneMenu>
 												</p:column>
-												<p:column>%</p:column>
+												<p:column>#{PropertyRating.mlopindemnityLoad}%</p:column>
 											</p:row>
-											<p:row>
-												<p:column> CBI</p:column>
-												<p:column>
-													<p:selectOneMenu id="cf" style="width:155px">
-														<f:selectItem itemLabel="" />
-													</p:selectOneMenu>
-												</p:column>
-												<p:column>%</p:column>
-											</p:row>
+
 										</p:panelGrid>
 
 
@@ -218,62 +302,130 @@
 										columns="1" border="0">
 
 										<p:panelGrid id="Deductibles"
-											rendered="#{ratingBean.displayQs}">
+											rendered="#{PropertyRating.displayQs}">
 											<f:facet name="header">
 												<p:row>
 													<p:column style="width:260px">Deductibles</p:column>
 													<p:column style="width:160px">Selection</p:column>
 
-													<p:column style="width:110px">Load</p:column>
+													<p:column style="width:110px">Minimum</p:column>
 												</p:row>
 											</f:facet>
 											<p:row>
 												<p:column> PD_MB Deductibles</p:column>
 												<p:column>
-													<p:inputText></p:inputText>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															<p:outputLabel
+																value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.PD_Deductible_amount)}"></p:outputLabel>
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.PD_Deductible_amount}"
+																label="text" maxlength="15">
+
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.PD_dedChange()}"
+																	update="@form :tab:f" />
+															</p:inputMask>
+														</f:facet>
+
+													</p:inplace>
 												</p:column>
-												<p:column>50%</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(200000)}</p:column>
 											</p:row>
 											<p:row>
 												<p:column>PD % of Claim</p:column>
 												<p:column>
-													<p:inputText></p:inputText>
+													<p:inplace editor="true">
+
+														<p:inputMask
+															value="#{PropertyRating.propertyOnshoreRating.PD_deductible_perc}"
+															label="text" maxlength="7">
+															<p:ajax event="valueChange"
+																listener="#{PropertyRating.PD_dedChange()}"
+																update="@form :tab:f :tab:frsum" />
+														</p:inputMask>
+
+													</p:inplace>%
 												</p:column>
-												<p:column>40%</p:column>
+												<p:column></p:column>
 											</p:row>
 											<p:row>
 												<p:column> BI</p:column>
 												<p:column>
-													<p:inputText></p:inputText>
+													<p:inplace editor="true">
+
+														<p:inputMask
+															value="#{PropertyRating.propertyOnshoreRating.BI_Deductible_amount}"
+															label="text" maxlength="7">
+														</p:inputMask>
+
+													</p:inplace>
 												</p:column>
-												<p:column>50%</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(10000)}</p:column>
 											</p:row>
 											<p:row>
 												<p:column> BI % of Claim</p:column>
 												<p:column>
-													<p:inputText></p:inputText>
+													<p:inplace editor="true">
+
+														<p:inputMask
+															value="#{PropertyRating.propertyOnshoreRating.BI_Deductible_amount}"
+															label="text" maxlength="7">
+														</p:inputMask>
+
+													</p:inplace>%
 												</p:column>
-												<p:column>50%</p:column>
+												<p:column></p:column>
 											</p:row>
 											<p:row>
 												<p:column> Stocks</p:column>
 												<p:column>
-													<p:inputText></p:inputText>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															<p:outputLabel
+																value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.stock_amount)}"></p:outputLabel>
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.stock_amount}"
+																label="text" maxlength="15">
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.Stock_Deductible_Change()}"
+																	update="@form :tab:f :tab:frsum" />
+															</p:inputMask>
+														</f:facet>
+													</p:inplace>
 												</p:column>
-												<p:column>50%</p:column>
+												<p:column></p:column>
 											</p:row>
 											<p:row>
 												<p:column> Other</p:column>
 												<p:column>
-													<p:inputText></p:inputText>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															<p:outputLabel
+																value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.other_amount)}"></p:outputLabel>
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.other_amount}"
+																label="text" maxlength="15">
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.Other_Deductible_Change()}"
+																	update="@form :tab:f :tab:frsum" />
+															</p:inputMask>
+														</f:facet>
+													</p:inplace>
 												</p:column>
-												<p:column>50%</p:column>
+												<p:column></p:column>
 											</p:row>
 
 										</p:panelGrid>
 
 										<p:panelGrid id="layers"
-											rendered="#{ratingBean.dispalyExcess}">
+											rendered="#{PropertyRating.dispalyExcess}">
 											<f:facet name="header">
 												<p:row>
 													<p:column style="width:200px"> XL Layers</p:column>
@@ -285,68 +437,188 @@
 											</f:facet>
 											<p:row>
 												<p:column> Originial Policy deductible</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
+												<p:column>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.OPD_lim)}
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.OPD_lim}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange" update="@form :tab:frsum"
+																	listener="#{PropertyRating.CalculateOBDfac()}" />
+															</p:inputMask>
+														</f:facet>
+													</p:inplace>
+
+												</p:column>
+												<p:column>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.OPD_ded)}
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.OPD_ded}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.CalculateOBDfac()}"
+																	update="@form :tab:frsum" />
+															</p:inputMask>
+														</f:facet>
+
+													</p:inplace>
+												</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateOBDPremium())}</p:column>
 												<p:column>0%</p:column>
 											</p:row>
+
 											<p:row>
 												<p:column> Layer1</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
+												<p:column>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_lim)}
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.LY1_lim}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.CalculateLY1fac()}"
+																	update="@form :tab:frsum" />
+															</p:inputMask>
+														</f:facet>
+
+													</p:inplace>
+												</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer1ded())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY1Premium())}</p:column>
 												<p:column>0%</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Layer2</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
+												<p:column>
+													<p:inplace editor="true">
+
+														<f:facet name="output">
+															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY2_lim)}
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.LY2_lim}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.CalculateLY2fac()}"
+																	update="@form :tab:frsum" />
+															</p:inputMask>
+														</f:facet>
+
+													</p:inplace>
+												</p:column>
+
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer2ded())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY2Premium())}</p:column>
 												<p:column>0%</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Layer3</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
+												<p:column>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_lim)}
+														</f:facet>
+														<f:facet name="input">
+
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.LY3_lim}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.CalculateLY3fac()}"
+																	update="@form :tab:frsum" />
+
+															</p:inputMask>
+														</f:facet>
+													</p:inplace>
+												</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer3ded())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY3Premium())}</p:column>
 												<p:column>0%</p:column>
 											</p:row>
 											<p:row>
 												<p:column> Layer4</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
+												<p:column>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_lim)}
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.LY4_lim}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.CalculateLY4fac()}"
+																	update="@form :tab:frsum" />
+															</p:inputMask>
+														</f:facet>
+													</p:inplace>
+												</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer4ded())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY4Premium())}</p:column>
 												<p:column>0%</p:column>
 											</p:row>
 											<p:row>
 												<p:column> Layer5</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
-												<p:column>0</p:column>
+												<p:column>
+													<p:inplace editor="true">
+														<f:facet name="output">
+															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_lim)}
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{PropertyRating.propertyOnshoreRating.LY5_lim}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange"
+																	listener="#{PropertyRating.CalculateLY5fac()}"
+																	update="@form :tab:frsum" />
+															</p:inputMask>
+														</f:facet>
+													</p:inplace>
+												</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer5ded())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY5Premium())}</p:column>
 												<p:column>0%</p:column>
 											</p:row>
 											<f:facet name="footer">
 												<p:row>
 													<p:column> Total Xl</p:column>
-													<p:column>0</p:column>
-													<p:column>0</p:column>
-													<p:column>0</p:column>
+													<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalLimit())}</p:column>
+													<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalded())}</p:column>
+													<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateXLTotalPremium())}</p:column>
 													<p:column>0%</p:column>
 												</p:row>
 
 											</f:facet>
 
 										</p:panelGrid>
-
 										<p:panelGrid id="sectionbreakdown">
+
 											<f:facet name="header">
 												<p:row>
 													<p:column style="width:180px">SI section Breakdown</p:column>
-													<p:column style="width:50px">Base</p:column>
-													<p:column style="width:50px">Adj.</p:column>
+													<p:column style="width:50px">Base Rates</p:column>
+													<p:column style="width:50px">Adj.Rates</p:column>
 													<p:column style="width:50px">Disc.</p:column>
 													<p:column style="width:50px"
-														rendered="#{ratingBean.displayQs}">Ded</p:column>
+														rendered="#{PropertyRating.displayQs}">Ded</p:column>
 													<p:column style="width:50px">Prem</p:column>
 													<p:column style="width:50px">PML</p:column>
 													<p:column style="width:50px">TSI</p:column>
@@ -354,104 +626,233 @@
 											</f:facet>
 											<p:row>
 												<p:column>property Damage</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column rendered="#{ratingBean.displayQs}">0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
+
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBasePropertyDamage())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculatePDPMLAdjustedRate())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalPDDiscount())}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalPDPremium()/PropertyRating.calculatePropertyTotalSumInsured()*100)}%</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalPDPremium())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculatePropertyTotalPML())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculatePropertyTotalSumInsured())}</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Business  Interuption</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column rendered="#{ratingBean.displayQs}">0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseBI())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateBIPMLAdjustedRate())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalBIDiscount())}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalBIPremium()/PropertyRating.calculateBITotalSumInsured()*100)}%</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalBIPremium())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateBITotalPML())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateBITotalSumInsured())}</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Machinery Breakdown</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column rendered="#{ratingBean.displayQs}">0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseMB())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateMBPMLAdjustedRate())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMBDiscount())}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMBPremium()/PropertyRating.calculateMBTotalSumInsured()*100)}%</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalMBPremium())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMBTotalPML())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMBTotalSumInsured())}</p:column>
 											</p:row>
 											<p:row>
 												<p:column>MLoP</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column rendered="#{ratingBean.displayQs}">0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseMLop())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateMlopPMLAdjustedRate())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMlopDiscount())}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMlopPremium()/PropertyRating.calculateMlopTotalSI()*100)}%</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalMlopPremium())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMlopTotalPML())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMlopTotalSI())}</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Stocks</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column rendered="#{ratingBean.displayQs}">0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
+
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseStock())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateStockPMLAdjustedRate())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalStockDiscount())}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalStockPremium()/PropertyRating.calculateStockTotalSI()*100)}%</p:column>
+												Stock_Deductible_Change<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalStockPremium())}</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateStockTotalPML())}</p:column>
+												<p:column>	#{PropertyRating.FormatToDollar(PropertyRating.calculateStockTotalSI())}</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Other</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column rendered="#{ratingBean.displayQs}">0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseOther())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateOtherPMLAdjustedRate())}%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalOtherDiscount())}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalOtherPremium()/PropertyRating.calculateOtherTotalSI()*100)}%</p:column>
+												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalOtherPremium())}</p:column>
+												<p:column>	#{PropertyRating.FormatToDollar(PropertyRating.calculateOtherTotalPML())}</p:column>
+												<p:column>	#{PropertyRating.FormatToDollar(PropertyRating.calculateOtherTotalSI())}</p:column>
 											</p:row>
+											<f:facet name="footer">
+												<p:row>
+													<p:column style="width:180px">Total</p:column>
+													<p:column style="width:50px">
+														<!-- #{PropertyRating.FormatToDollar(PropertyRating.GetTotalBaseRAtes())} -->
+													</p:column>
+													<p:column style="width:50px">
+														<!-- #{PropertyRating.FormatToDollar(PropertyRating.GetTotalAdjustedRAtes())} -->
+													</p:column>
+													<p:column style="width:50px"></p:column>
+													<p:column style="width:50px"
+														rendered="#{PropertyRating.displayQs}"></p:column>
+													<p:column style="width:50px">#{PropertyRating.FormatToDollar(PropertyRating.GetTotalPremium())}</p:column>
+													<p:column style="width:50px">#{PropertyRating.FormatToDollar(PropertyRating.GetTotalPml())}</p:column>
+													<p:column style="width:50px">#{PropertyRating.FormatToDollar(PropertyRating.GetTotalSI())}</p:column>
+												</p:row>
+											</f:facet>
 										</p:panelGrid>
 
 									</h:panelGrid>
 
 								</h:panelGrid>
+								<p:commandButton value="Save rating"
+									rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+									actionListener="#{PropertyRating.SaveRating()}"></p:commandButton>
 							</h:form>
 
 						</p:panel>
 					</p:tab>
-					<p:tab title="Assets">
+					<p:tab title="Assets" id="assets">
 
-						<p:panel id="master" style="width:3000px;margin-left:0px">
+						<p:panel id="master" style="width:3200px">
 							<h:form id="f">
 								<p:growl id="gorwl1" showDetail="true"></p:growl>
 
 								<p:dataTable editable="true" emptyMessage="no Assets "
-									value="#{assetsBean.assetsList}" var="prod" rows="5"
+									value="#{PropertyRating.assetsList}" var="prod" rows="5"
 									paginator="true" paginatorPosition="bottom"
-									selectionMode="single" selection="#{assetsBean.assets}"
+									selectionMode="single" selection="#{PropertyRating.assets}"
 									rowKey="#{prod.id}" widgetVar="prodTabW">
 
-									<p:ajax event="rowEdit" listener="#{assetsBean.onRowEdit}" />
-									<f:facet name="header">
-										<h:outputText value="Assets" />
-									</f:facet>
+									<p:ajax
+										update=":tab:form:sectionbreakdown :tab:form:layers :tab:frsum"
+										event="rowEdit" listener="#{PropertyRating.onRowEdit}" />
+									<p:columnGroup type="header">
+										<p:row>
+											<p:column
+												rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+												rowspan="2" colspan="1" headerText="Edit" />
+											<p:column rowspan="2" colspan="1" headerText="Country" />
+											<p:column rowspan="2" colspan="1" headerText="Cresta" />
+											<p:column rowspan="2" colspan="1" headerText="Class" />
+											<p:column rowspan="2" colspan="1" headerText="Occupancy" />
+											<p:column rowspan="2" colspan="1" headerText="User Rate Adj" />
+
+											<p:column colspan="5" headerText="PD" />
+											<p:column colspan="5" headerText="BI" />
+											<p:column colspan="5" headerText="MB" />
+											<p:column colspan="4" headerText="Mlop" />
+											<p:column colspan="4" headerText="Stock" />
+											<p:column colspan="4" headerText="Other" />
+											<p:column
+												rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+												rowspan="2" colspan="1" headerText="Edit" />
+
+										</p:row>
+										<p:row>
+											<p:column headerText="PD curve" />
+											<p:column headerText="SI" />
+											<p:column headerText="PML %" />
+											<p:column headerText="PML" />
+											<p:column headerText="Rate" />
+
+											<p:column headerText="BI curve" />
+											<p:column headerText="SI" />
+											<p:column headerText="PML %" />
+											<p:column headerText="PML" />
+											<p:column headerText="Rate" />
+
+											<p:column headerText="MB curve" />
+											<p:column headerText="SI" />
+											<p:column headerText="PML %" />
+											<p:column headerText="PML" />
+											<p:column headerText="Rate" />
+
+											<p:column headerText="SI" />
+											<p:column headerText="PML %" />
+											<p:column headerText="PML" />
+											<p:column headerText="Rate" />
+
+											<p:column headerText="SI" />
+											<p:column headerText="PML %" />
+											<p:column headerText="PML" />
+											<p:column headerText="Rate" />
+
+											<p:column headerText="SI" />
+											<p:column headerText="PML %" />
+											<p:column headerText="PML" />
+											<p:column headerText="Rate" />
+										</p:row>
+
+									</p:columnGroup>
+
+
+
+									<p:column rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+										style="width:50px">
+										<p:rowEditor />
+									</p:column>
 
 									<p:column headerText="Country">
-										<h:outputText value="#{prod.loc}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.country}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="ssdf" required="true"
+													value="#{prod.country}" style="width:155px">
+
+													<f:selectItems value="#{PropertyRating.countries}"
+														var="cob" itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 
 									<p:column headerText="Cresta">
 
 									</p:column>
-									<p:column headerText="Class">
 
+									<p:column headerText="Class">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.COB}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="s" required="true" value="#{prod.COB}"
+													style="width:155px">
+													<p:ajax event="valueChange" update="sd"></p:ajax>
+													<f:selectItem itemLabel="Select one ..." />
+													<f:selectItems value="#{PropertyRating.COB2}" var="cob"
+														itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="Occupancy">
 
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.occupancy}" />
+											</f:facet>
+											<f:facet name="input">
+
+												<p:selectOneMenu id="sd" required="true"
+													value="#{prod.occupancy}" style="width:155px">
+
+													<f:selectItem itemLabel="Select one ..." />
+													<f:selectItems
+														value="#{PropertyRating.COBChangeByParam(prod.COB)}"
+														var="cob" itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
-									<p:column headerText="Rate Adj.">
+
+									<p:column headerText="Rate Adj." style="width:70px">
 										<p:cellEditor>
 											<f:facet name="output">
 												<h:outputText value="#{prod.rate_Adj}%" />
@@ -462,83 +863,250 @@
 										</p:cellEditor>
 									</p:column>
 									<p:column headerText="PDCurve">
-										<h:outputText value="#{prod.curve}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.PD_Curve}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="PDcurve" required="true"
+													value="#{prod.PD_Curve}" style="width:155px">
+													<f:selectItems value="#{PropertyRating.severity}" var="cob"
+														itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="PD_SI">
-										<h:outputText value="#{prod.PD_SI}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText
+													value="#{PropertyRating.FormatToDollar(prod.PD_SI)}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.PD_SI}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="PD_PML%">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.PD_PML_RATE}%" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.PD_PML_RATE}" />
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="PD_PML">
-										<h:outputText value="#{prod.PD_PML}%" />
+										<h:outputText
+											value="#{PropertyRating.FormatToDollar(prod.PD_PML)}" />
 									</p:column>
-									<p:column headerText="PD_Rate">
-										<h:outputText value="#{prod.PD_Rate/100}%" />
-									</p:column>
-									<p:column headerText="MB_Curve">
-										<h:outputText value="#{prod.MB_SI}" />
-									</p:column>
-									<p:column headerText="MB_SI">
-										<h:outputText value="#{prod.MB_SI}" />
-									</p:column>
-									<p:column headerText="MB_PML">
-										<h:outputText value="#{prod.MB_PML}%" />
-									</p:column>
-									<p:column headerText="MB_Rate">
-										<h:outputText value="#{prod.MB_Rate/100}%" />
+									<p:column headerText="PD_Rate" style="width:70px">
+										<h:outputText value="#{prod.PD_Rate}%" />
 									</p:column>
 									<p:column headerText="BI_Curve">
-										<h:outputText value="#{prod.BI_SI}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.BI_Curve}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="BICurve" required="true"
+													value="#{prod.BI_Curve}" style="width:155px">
+													<f:selectItems value="#{PropertyRating.severity}" var="cob"
+														itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="BI_SI">
-										<h:outputText value="#{prod.BI_SI}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText
+													value="#{PropertyRating.FormatToDollar(prod.BI_SI)}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.BI_SI}" />
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
-									<p:column headerText="BI_PML">
-										<h:outputText value="#{prod.BI_PML}%" />
+									<p:column headerText="BI_PML %">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.BI_PML_RATE}%" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.BI_PML_RATE}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="BI_PML ">
+										<h:outputText
+											value="#{PropertyRating.FormatToDollar(prod.BI_PML)}" />
 									</p:column>
 									<p:column headerText="BI_Rate">
-										<h:outputText value="#{prod.BI_Rate/100}%" />
+										<h:outputText value="#{prod.BI_Rate}%" />
 									</p:column>
-									<p:column headerText="Mlop_SI">
-										<h:outputText value="#{prod.BI_SI}" />
+
+									<p:column headerText="MB_Curve">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.MB_Curve}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="MBcurve" required="true"
+													value="#{prod.MB_Curve}" style="width:155px">
+													<f:selectItems value="#{PropertyRating.severity}" var="cob"
+														itemLabel="#{cob}" itemValue="#{cob}"></f:selectItems>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
+
+									<p:column headerText="MB_SI">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText
+													value="#{PropertyRating.FormatToDollar(prod.MB_SI)}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.MB_SI}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="MB_PML%">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.MB_PML_RATE}%" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.MB_PML_RATE}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="MB_PML">
+										<h:outputText
+											value="#{PropertyRating.FormatToDollar(prod.MB_PML)}" />
+									</p:column>
+
+									<p:column headerText="MB_Rate">
+										<h:outputText value="#{prod.MB_Rate}%" />
+									</p:column>
+
 									<p:column headerText="Mlop_SI">
-										<h:outputText value="#{prod.BI_SI}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText
+													value="#{PropertyRating.FormatToDollar(prod.mlop_SI)}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.mlop_SI}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="Mlop_PML %">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.mlop_PML_RATE}%" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.mlop_PML_RATE}" />
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="Mlop_PML">
-										<h:outputText value="#{prod.BI_PML}%" />
+										<h:outputText
+											value="#{PropertyRating.FormatToDollar(prod.mlop_PML)}" />
 									</p:column>
 									<p:column headerText="Mlop_Rate">
-										<h:outputText value="#{prod.BI_Rate/100}%" />
+										<h:outputText value="#{prod.mlop_Rate}%" />
 									</p:column>
+
+
 									<p:column headerText="Stock_SI">
-										<h:outputText value="#{prod.OTHER_SI}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText
+													value="#{PropertyRating.FormatToDollar(prod.stock_SI)}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.stock_SI}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="Stock_PML %">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.stock_PML_RATE}%" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.stock_PML_RATE}" />
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="Stock_PML">
-										<h:outputText value="#{prod.OTHER_PML}%" />
+										<h:outputText
+											value="#{PropertyRating.FormatToDollar(prod.stock_PML)}" />
 									</p:column>
 									<p:column headerText="Stock_Rate">
-										<h:outputText value="#{prod.OTHER_Rate/100}%" />
+										<h:outputText value="#{prod.stock_RATE}%" />
 									</p:column>
+
+
 									<p:column headerText="OTHER_SI">
-										<h:outputText value="#{prod.OTHER_SI}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText
+													value="#{PropertyRating.FormatToDollar(prod.OTHER_SI)}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.OTHER_SI}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="OTHER_PML%">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{prod.OTHER_PML_RATE}%" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{prod.OTHER_PML_RATE}" />
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="OTHER_PML">
-										<h:outputText value="#{prod.OTHER_PML}%" />
+										<h:outputText
+											value="#{PropertyRating.FormatToDollar(prod.OTHER_PML)}" />
 									</p:column>
 									<p:column headerText="OTHER_Rate">
-										<h:outputText value="#{prod.OTHER_Rate/100}%" />
+										<h:outputText value="#{prod.OTHER_Rate}%" />
 									</p:column>
-									<p:column>
+									<p:column rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+										style="width:50px">
 										<p:rowEditor />
 									</p:column>
+
+
 								</p:dataTable>
-								<p:commandButton actionListener="#{assetsBean.DoDelete()}"
-									value="Delete" update="@form"></p:commandButton>
+								<p:commandButton
+									rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+									actionListener="#{PropertyRating.DoDelete()}" value="Delete"
+									update="@form">
+									<p:confirm header="Confirmation"
+										message="Are you sure that you want to delete the asset with the ID:#{PropertyRating.assets.id}"
+										icon="ui-icon-alert" />
+								</p:commandButton>
 							</h:form>
-							<p:commandButton actionListener="#{assetsBean.AddAsset()}"
-								value="Add" update="master"></p:commandButton>
+							<p:commandButton
+								rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+								actionListener="#{PropertyRating.AddAsset()}" value="Add"
+								update="master"></p:commandButton>
 						</p:panel>
 
 					</p:tab>
+
+
 					<p:tab title="Risk Assesment">
 						<h:form id="Form1">
 							<p:panel style="margin-right:250px;margin-left:280px">
@@ -550,17 +1118,23 @@
 										</p:row>
 									</f:facet>
 									<p:row>
-										<p:column style="width:250px">Loss Ration </p:column>
+										<p:column style="width:250px">Loss Ratio </p:column>
 										<p:column>
 
-											<p:selectOneMenu style="width:125px">
-
-												<f:selectItem itemLabel="select one" />
-
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.lossRatio}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.LossRatioChange()}"
+													update="@form :tab:f :tab:form:sectionbreakdown"></p:ajax>
+												<f:selectItem itemLabel="Select one .." itemValue="null" />
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.lossRatio.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-						0%
+					 #{PropertyRating.lossRatioLoad/100}%
 							</p:column>
 									</p:row>
 
@@ -568,11 +1142,16 @@
 										<p:column id="Const" style="width:250px">Construction Class </p:column>
 										<p:column>
 
-											<p:selectOneMenu style="width:125px">
-
-												<f:selectItem itemLabel="select one" />
-
-
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.constructionClass}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.ConstructionClassChange()}"
+													update="@form :tab:f :tab:form:sectionbreakdown"></p:ajax>
+												<f:selectItem itemLabel="Select one .." itemValue="null" />
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.constructionClass.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 
 											<p:tooltip for="Const" id="tooltipClass"
@@ -580,7 +1159,7 @@
 
 										</p:column>
 										<p:column>
-			                 20 %
+			                 #{PropertyRating.constructionClassLoad/100}%
 							</p:column>
 									</p:row>
 								</p:panelGrid>
@@ -594,24 +1173,36 @@
 									<p:row>
 										<p:column style="width:250px">Security Guard 24/365 </p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.securityGuard}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"
+													update="@form :tab:f :tab:form:sectionbreakdown"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Management Risk awareness</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.managementRisk}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:accordionPanel activeIndex="this" dynamic="true"
@@ -619,24 +1210,36 @@
 											widgetVar="AccoPanRiskAss"></p:accordionPanel>
 										<p:column style="width:250px">Physical barriers</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.physicalBarriers}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Access Control and Alarm system</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.accessControl}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 								</p:panelGrid>
 
@@ -649,46 +1252,73 @@
 									<p:row>
 										<p:column style="width:250px">Smoke Control</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.smokeControl}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Welding Control</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.weldingControl}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Fire Prevention Officer</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.firePrevention}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItem itemLabel="Select one .." itemValue="null" />
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Stock storage practise</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.stockStorage}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 								</p:panelGrid>
 
@@ -702,46 +1332,74 @@
 									<p:row>
 										<p:column style="width:250px">Mechanical Maintenance</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.mechanicalMaintenance}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Electrical Maintenance</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.electricalMaintenance}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Fullfilment of recommendations</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.fullFilment}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Regular maintenance and self inspection process</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.regularMaintenance}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountPDPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 								</p:panelGrid>
 
@@ -754,45 +1412,387 @@
 									<p:row>
 										<p:column style="width:250px">Backup facilities</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.backupFacilities}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountBIPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">Business continuity plan</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.bussinessPlanContinuity}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountBIPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
 									</p:row>
 									<p:row>
 										<p:column style="width:250px">bottleneck loss minimised</p:column>
 										<p:column>
-											<p:selectOneMenu style="width:125px">
-												<f:selectItems value="#{assesmentBean.quality}" />
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.bottleneckLossMinimised}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountBIPreventionDiscount()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.assesment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
 											</p:selectOneMenu>
 										</p:column>
 										<p:column>
-									#{login.Connected()}
-							</p:column>
+										</p:column>
+									</p:row>
+
+
+								</p:panelGrid>
+
+								<p:panelGrid style="width:500px">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="7"> Fire Detection </p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column style="width:250px">Installation</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.fireDetectionInstallaion}"
+												style="width:125px">
+
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountFireDetectionLoad()}"></p:ajax>
+												<f:selectItem
+													itemLabel="Automatic Fire Detectors with advanced reliablity"
+													itemValue="autowith" />
+												<f:selectItem itemLabel="Automatic Fire Detectors"
+													itemValue="autowithout" />
+												<f:selectItem
+													itemLabel="Part of Automated Fire Extinguishing system"
+													itemValue="partautomated" />
+												<f:selectItem itemLabel="None" itemValue="none" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column style="width:250px">Link</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.link}"
+												style="width:125px">
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountFireDetectionLoad()}"></p:ajax>
+												<f:selectItem itemValue="linkedtoplant"
+													itemLabel=" Linked to Plant FB" />
+												<f:selectItem itemValue="linkedtopublic"
+													itemLabel="Linked to Public FB" />
+												<f:selectItem itemValue="public" itemLabel="Public Alarm" />
+												<f:selectItem itemValue="none" itemLabel="None" />
+
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+								<p:panelGrid style="width:500px">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="7"> Estinguishment System </p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column style="width:250px">Installation</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.estinguishmentInstallation}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountEstingSystemLoad()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.installationEstinguishment.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column style="width:250px">Coverage</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.coverage}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountEstingSystemLoad()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.coverage.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+
+								<p:panelGrid style="width:500px">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="7">Plant Fire Brigade</p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column style="width:250px">Type</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.plantFireBrigadeType}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountPlantFireBrigadeLoad()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.plantFireBrigadeType.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+
+
+								</p:panelGrid>
+
+								<p:panelGrid style="width:500px">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="7">Public Fire Brigade</p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column style="width:250px">Familiarity with premises</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.familiarityWithPremises}"
+												style="width:160px">
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountPublicFirebrigadeLoad()}"></p:ajax>
+												<f:selectItem itemLabel="Yes" itemValue="yes" />
+												<f:selectItem itemLabel="No" itemValue="no" />
+
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>Response Time</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.responseTime}"
+												style="width:160px">
+												<p:ajax event="valueChange"
+													listener="#{PropertyRating.CountPublicFirebrigadeLoad()}"></p:ajax>
+												<f:selectItem itemLabel="RT less or equal 5min"
+													itemValue="5" />
+												<f:selectItem itemLabel="RT less or equal 10min"
+													itemValue="10" />
+												<f:selectItem itemLabel="RT less orequal 15min"
+													itemValue="15" />
+												<f:selectItem itemLabel="RT more than 15min"
+													itemValue="more15" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+								<p:panelGrid style="width:500px">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="7">MB and MLoP</p:column>
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column style="width:250px">Machine Make</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.machineMake}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountMbandMloploead()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.machineMake.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column style="width:250px">Capacity</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.capacity}"
+												style="width:160px" required="true">
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountMbandMloploead()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.capacity.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column style="width:250px">Plant Age</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.plantAge}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountMbandMloploead()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.plantAge.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column style="width:250px">Maintenance Quality</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.maintenanceQuality}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountMbandMloploead()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.maintenanceQuality.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column style="width:250px">Avaibility Of Parts</p:column>
+										<p:column>
+											<p:selectOneMenu
+												value="#{PropertyRating.propertyOnshoreRating.availabilityOfParts}"
+												style="width:160px" required="true">
+
+												<p:ajax event="valueChange"
+													update="@form :tab:f :tab:form:sectionbreakdown"
+													listener="#{PropertyRating.CountMbandMloploead()}"></p:ajax>
+												<f:selectItems
+													value="#{PropertyRating.propertyOnshoreMeasure.avaibilityOfParts.entrySet()}"
+													var="cat" itemValue="#{cat.key}" itemLabel="#{cat.key}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+										</p:column>
 									</p:row>
 
 								</p:panelGrid>
 
 							</p:panel>
+							<p:commandButton value="Save rating"
+								rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+								actionListener="#{PropertyRating.SaveRating()}"></p:commandButton>
 						</h:form>
 					</p:tab>
 
 				</p:tabView>
+				<p:confirmDialog global="true" hideEffect="explode" visible="false"
+					showEffect="fade">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+				</p:confirmDialog>
 			</p:panel>
+			<p:dialog draggable="false" closable="false"
+				header="Click Save or Click on the dates to change them"
+				modal="true" id="popupQuotation" widgetVar="popupQuotation"
+				resizable="false">
+				<h:form id="FormQuotation">
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Quoted Date :"></p:outputLabel>
+						<p:outputLabel value="#{projectBean.project3.quoted_Date}"></p:outputLabel>
+
+						<p:outputLabel value="Inception Date :"></p:outputLabel>
+						<p:inplace editor="true">
+							<f:facet name="output">
+								<p:outputLabel value="#{projectBean.project3.inception_Date}"></p:outputLabel>
+							</f:facet>
+							<f:facet name="input">
+								<p:calendar id="expd"
+									mindate="#{projectBean.GetCalendarMinDate()}"
+									value="#{projectBean.project3.inception_Date}" />
+							</f:facet>
+						</p:inplace>
+						<p:outputLabel value="Expiry Date :"></p:outputLabel>
+						<p:inplace editor="true">
+							<f:facet name="output">
+								<p:outputLabel value="#{projectBean.project3.expiry_date}"></p:outputLabel>
+							</f:facet>
+							<f:facet name="input">
+								<p:calendar id="exps"
+									mindate="#{projectBean.GetMinimumExpiryDate()}"
+									value="#{projectBean.project3.expiry_date}" />
+							</f:facet>
+
+						</p:inplace>
+
+
+					</h:panelGrid>
+
+					<p:commandButton value="Save" update=":tab:frsum"
+						actionListener="#{projectBean.UpdateProjectAfterQuotation()}"></p:commandButton>
+					<p:commandButton value="Cancel" update=":tab:frsum"
+						actionListener="#{projectBean.CancelQuoteProject()}"></p:commandButton>
+
+				</h:form>
+			</p:dialog>
+
+
 		</ui:define>
 	</ui:composition>
 </h:body>

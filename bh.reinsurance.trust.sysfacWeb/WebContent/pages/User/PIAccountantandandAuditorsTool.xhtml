@@ -225,7 +225,10 @@
 												<p:column>Gross Revenue Of the firm</p:column>
 												<p:column>
 													<p:inplace editor="true">
-
+		<f:facet name="output">
+		<p:outputLabel value="#{plAccountAuditorsRatingBean.FormatToDollar(plAccountAuditorsRatingBean.iaccandAudittosave.grossRevenue)}"></p:outputLabel>
+		</f:facet>
+			<f:facet name="input">
 														<p:inputMask
 															value="#{plAccountAuditorsRatingBean.iaccandAudittosave.grossRevenue}"
 															label="text" maxlength="7">
@@ -234,8 +237,8 @@
 																listener="#{plAccountAuditorsRatingBean.GetBasePremium()}"
 																update="@form :tab:summary" />
 														</p:inputMask>
-
-													</p:inplace>$
+</f:facet>
+													</p:inplace>
 												</p:column>
 											</p:row>
 										</f:facet>

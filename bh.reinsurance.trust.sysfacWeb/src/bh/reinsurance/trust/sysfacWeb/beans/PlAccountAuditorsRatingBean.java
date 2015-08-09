@@ -60,7 +60,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private Map<Integer, String> CoverExtensionsList;
 	private Map<Integer, String> CoverExtensionsList2;
 
-	private NumberFormat formatter = new DecimalFormat("#0.00 %");
 
 	private PIaccandAudit iaccandAudittosave;
 	private TestMeasureResult test1 = new TestMeasureResult();
@@ -378,7 +377,9 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			BasePremium = 6400;
 			GetTotalBasePremium();
 			return null;
+
 		}
+
 		if (Float.parseFloat(iaccandAudittosave.getGrossRevenue()) < 6500000) {
 			BasePremium = 10300;
 			GetTotalBasePremium();
@@ -388,6 +389,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			BasePremium = 13450;
 			GetTotalBasePremium();
 			return null;
+
 		}
 		if (Float.parseFloat(iaccandAudittosave.getGrossRevenue()) >= 1006500000) {
 			BasePremium = 763425;
@@ -420,7 +422,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		PremiumAfterenhancements = PremiumAfterLoadingAndDeductible
 				+ CoverageEnhancement;
 		PremiumAftercoverageextensions = (float) (PremiumAfterenhancements + CoverageExtensionsFactor);
-
 		PremiumAftercoverageextensions = (float) (PremiumAfterenhancements
 				* (1 + RetrospectiveCovers) * (1 + ExtendedReporting));
 
@@ -693,6 +694,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 			DeductibleFactor = -0.175;
 		}
 		todoall();
+
 	}
 
 	// calculation of the deductible factor end
@@ -714,7 +716,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		IndemnityLimitPremium = 0;
 		if (Float.parseFloat(iaccandAudittosave.getOccurlimit()) - 250000 > 0) {
 			float a = Float.parseFloat(iaccandAudittosave.getOccurlimit()) - 250000;
-
 			if (a > 250000) {
 				IndemnityLimitPremium = (float) (250000 * 0.00562 * AggregateLimitFactor);
 				a = a - 250000;
@@ -912,10 +913,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		}
 	}
 
-	/**
-	 * @throws JRException
-	 * @throws IOException
-	 */
 	public void ExportAccountantAndAuditorsSummary() throws JRException,
 			IOException {
 		File sourceFile;
@@ -1153,7 +1150,12 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	}
 
 	// Calculate total premium by rating end
+	//Format method
+		public String FormatToDollar(double toformat) {
+			return NumberFormat.getCurrencyInstance(us).format(toformat);
+		}
 
+		
 	// getters setters
 
 	public PIaccandAudit getIaccandAudittosave() {
@@ -1605,13 +1607,7 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 		this.test2 = test2;
 	}
 
-	public NumberFormat getFormatter() {
-		return formatter;
-	}
-
-	public void setFormatter(NumberFormat formatter) {
-		this.formatter = formatter;
-	}
+	
 
 	public BarChartModel getBarChartModel() {
 		return barChartModel;

@@ -23,9 +23,11 @@ public interface ProjectServicesLocal {
 	public boolean Nameexist(String Name);
 
 	public Project GetProjectById(int id);
-	
+
 	public void UpdateProject(Project project);
-	
-	
+
+	public List<Project> GetAllDistinctProjects();
+
+	public List<Project> GetProjectsByName(String Name);
 
 }

@@ -35,7 +35,7 @@
 
 							<p:outputLabel value=" Avg Rate " />
 							<p:outputLabel
-								value="#{plAccountAuditorsRatingBean.formatter.format(plAccountAuditorsRatingBean.test1.rate)}" />
+								value="#{projectBean.FormatPerc(plAccountAuditorsRatingBean.test1.rate)}" />
 
 							<f:facet name="footer">
 								<h:panelGroup style="display:block; text-align:center">
@@ -52,7 +52,7 @@
 									value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.test2.premium)}" />
 								<p:outputLabel value=" Avg Rate " />
 								<p:outputLabel
-									value="#{plAccountAuditorsRatingBean.formatter.format(plAccountAuditorsRatingBean.test2.rate)}" />
+									value="#{projectBean.FormatPerc(plAccountAuditorsRatingBean.test2.rate)}" />
 
 								<f:facet name="footer">
 									<h:panelGroup style="display:block; text-align:center">
@@ -67,7 +67,7 @@
 								value="#{plAccountAuditorsRatingBean.GetFormatresult(plAccountAuditorsRatingBean.test2.premium-plAccountAuditorsRatingBean.test1.premium)}"
 								style="width:250px" />
 							<p:outputLabel
-								value="#{plAccountAuditorsRatingBean.formatter.format(plAccountAuditorsRatingBean.test2.rate-plAccountAuditorsRatingBean.test1.rate)}" />
+								value="#{projectBean.FormatPerc(plAccountAuditorsRatingBean.test2.rate-plAccountAuditorsRatingBean.test1.rate)}" />
 							<f:facet name="footer">
 								<h:panelGroup style="display:block; text-align:center">
 								</h:panelGroup>

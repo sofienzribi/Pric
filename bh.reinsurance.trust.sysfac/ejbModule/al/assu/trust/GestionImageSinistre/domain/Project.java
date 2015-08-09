@@ -23,10 +23,10 @@ public class Project implements Serializable {
 	private String NameOfTheProject;
 	private String status;
 	private static final long serialVersionUID = 1L;
-	private List<Assets> assets;
 	private int user;
 	private String password;
 	private Date quoted_Date;
+	private Date Inception_Date;
 	private String Currency;
 	private String Insured;
 	private String Broker;
@@ -136,14 +136,7 @@ public class Project implements Serializable {
 		this.user = user;
 	}
 
-	@OneToMany(mappedBy = "project")
-	public List<Assets> getAssets() {
-		return assets;
-	}
-
-	public void setAssets(List<Assets> assets) {
-		this.assets = assets;
-	}
+	
 
 	public String getNameOfTheProject() {
 		return NameOfTheProject;
@@ -175,6 +168,14 @@ public class Project implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Date getInception_Date() {
+		return Inception_Date;
+	}
+
+	public void setInception_Date(Date inception_Date) {
+		Inception_Date = inception_Date;
 	}
 
 }

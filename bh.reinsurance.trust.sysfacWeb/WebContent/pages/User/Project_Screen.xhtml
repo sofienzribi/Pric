@@ -9,6 +9,7 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Projects</ui:define>
 		<ui:define name="content">
+			<p:growl autoUpdate="true"></p:growl>
 			<h:form id="dialog1">
 				<p:panel id="pan1">
 
@@ -42,15 +43,17 @@
 					</h:panelGrid>
 				</p:panel>
 
-				<p:dataTable style="width:750px" emptyMessage="no Projects found!"
+				<p:dataTable emptyMessage="no Projects found!"
 					value="#{projectBean.projects}" var="prod" rows="13"
-					paginator="true" paginatorPosition="bottom" selectionMode="single"
-					selection="#{projectBean.project}" rowKey="#{prod.id}"
+					selectionMode="single" selection="#{projectBean.project}"
+					paginator="true" paginatorPosition="bottom" rowKey="#{prod.id}"
 					widgetVar="prodTabW2">
 
 					<f:facet name="header">Please select a project</f:facet>
 					<p:ajax event="rowSelect" listener="#{projectBean.DisplayPop()}"
 						update=":dialog1" />
+
+
 					<p:column headerText="Name " filterBy="#{prod.nameOfTheProject}"
 						filterMatchMode="contains">
 						<h:outputText value="#{prod.nameOfTheProject}" />
@@ -60,11 +63,7 @@
 						filterMatchMode="contains">
 						<h:outputText value="#{projectBean.FormatDate(prod.dateCreation)}" />
 					</p:column>
-					<p:column headerText="Expiry Date"
-						filterBy="#{projectBean.FormatDate(prod.expiry_date)}"
-						filterMatchMode="contains">
-						<h:outputText value="#{projectBean.FormatDate(prod.expiry_date)}" />
-					</p:column>
+
 					<p:column headerText="User">
 						<h:outputText value="#{projectBean.getLogin(prod.user)}" />
 					</p:column>
@@ -78,11 +77,20 @@
 						<p:commandButton icon="ui-icon-refresh" value="refresh"
 							update=":dialog1" actionListener="#{projectBean.refreshtable2()}"></p:commandButton>
 						<p:commandButton value="Open"
-							action="#{projectBean.openprojecttest()}"
-							rendered="#{projectBean.popDisplayed}" icon="ui-icon-folder-open" />
+							action="#{projectBean.TestBeforeOpen()}"
+							rendered="#{projectBean.popDisplayed}" update=":popupProj"
+							icon="ui-icon-folder-open" />
+
+						<p:commandButton value="Renew" action="#{projectBean.RenewProj()}"
+							rendered="#{projectBean.DisplayRenewButton()}"
+							icon="ui-icon-folder-open" />
+
+
 						<p:commandButton icon="ui-icon-plusthick" value="New Project"
 							onclick="PF('popup').show()" />
 					</f:facet>
+
+
 				</p:dataTable>
 			</h:form>
 
@@ -104,7 +112,18 @@
 				showEffect="true" hideEffect="explode" resizable="false">
 				<h:form id="form2">
 					<p:messages id="messagesd" autoUpdate="true" closable="true" />
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="2" id="panelNew">
+
+						<p:outputLabel value="Tool : " for="class" />
+						<p:selectOneMenu id="class" value="#{projectBean.project2.tool}"
+							style="width:135px" required="true"
+							requiredMessage="please select a tool">
+							<p:ajax event="valueChange" partialSubmit="true"
+								listener="#{projectBean.OnToolChange()}" update="countr ter" />
+							<f:selectItem itemLabel="Select one .." />
+							<f:selectItems value="#{projectBean.tool}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
 
 						<p:outputLabel for="Name" value="Name of the project : " />
 						<p:inputText id="Name"
@@ -115,14 +134,7 @@
 						<p:calendar id="exp" mindate="#{projectBean.GetCalendarMinDate()}"
 							value="#{projectBean.project2.expiry_date}" />
 
-						<p:outputLabel value="Tool : " for="class" />
-						<p:selectOneMenu id="class" value="#{projectBean.project2.tool}"
-							style="width:135px" required="true"
-							requiredMessage="please select a tool">
-							<f:selectItem itemLabel="Select one .." />
-							<f:selectItems value="#{projectBean.tool}" var="cat"
-								itemValue="#{cat}" itemLabel="#{cat}" />
-						</p:selectOneMenu>
+
 
 						<p:outputLabel value="Currency : " for="curr" />
 						<p:selectOneMenu id="curr"
@@ -146,13 +158,24 @@
 							mask="a*-999-a999" required="true"
 							requiredMessage="please enter the policy" />
 
-						<p:outputLabel value="Territory : " for="e" />
-						<p:selectOneMenu id="e" value="#{projectBean.territoryChoice}"
-							style="width:135px">
-
+						<p:outputLabel value="Territory : " />
+						<p:selectOneMenu disabled="#{projectBean.displayGCC}" id="ter"
+							value="#{projectBean.territoryChoice}" style="width:135px">
+							<f:selectItem itemLabel="Select one .." />
 							<f:selectItems value="#{projectBean.territory}" var="cat"
 								itemValue="#{cat}" itemLabel="#{cat}" />
 						</p:selectOneMenu>
+
+						<p:outputLabel value="Country : " />
+
+						<p:selectOneMenu
+							disabled="#{projectBean.displayCountrieSelection}" id="countr"
+							value="#{projectBean.territoryChoice}" style="width:135px">
+							<f:selectItem itemLabel="Select one .." />
+							<f:selectItems value="#{projectBean.territory}" var="cat"
+								itemValue="#{cat}" itemLabel="#{cat}" />
+						</p:selectOneMenu>
+
 						<p:outputLabel for="privacy" value="Privacy : " />
 						<p:selectOneRadio id="privacy" value="#{projectBean.priv}"
 							required="true" rendered="true"
@@ -181,6 +204,39 @@
 					<p:commandButton value="Cancel"
 						actionListener="#{projectBean.CancelNewProj()}" immediate="true" />
 				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Select a project" modal="true"
+				widgetVar="popupProj" id="popupProj" showEffect="true"
+				hideEffect="explode" resizable="false">
+				<h:form id="form4">
+					<p:dataTable style="width:750px" emptyMessage="no Projects found!"
+						value="#{projectBean.projectsByName}" var="pod" rows="13"
+						paginator="true" paginatorPosition="bottom" selectionMode="single"
+						selection="#{projectBean.projectToOpen}" rowKey="#{pod.id}"
+						widgetVar="datatable1">
+						<p:ajax event="rowSelect" listener="#{projectBean.DisplayPopManyProj()}"
+						update="@form" />
+
+						<p:column headerText="ID">
+							<h:outputText value="#{pod.id}" />
+						</p:column>
+						<p:column headerText="Creation Date">
+							<h:outputText value="#{projectBean.FormatDate(pod.dateCreation)}" />
+						</p:column>
+						<p:column headerText="Quoted Date">
+							<h:outputText value="#{projectBean.FormatDate(pod.quoted_Date)}" />
+						</p:column>
+					</p:dataTable>
+				
+	
+				<p:commandButton value="Renew" action="#{projectBean.RenewProj()}"
+					rendered="#{projectBean.DisplayRenewButton2()}"
+					icon="ui-icon-folder-open" />
+				<p:commandButton value="Open"
+					action="#{projectBean.FillProjAndOpen()}"
+					rendered="#{projectBean.openButtonManyproj}" icon="ui-icon-folder-open" />
+					</h:form>
 			</p:dialog>
 
 		</ui:define>

@@ -6,12 +6,16 @@
 		<jta-data-source>java:/sysfacDS</jta-data-source>
 		
 		<class>al.assu.trust.GestionImageSinistre.domain.Assets</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.ExposureScale</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Facultative</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.MailBox</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Measure</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.Occupancies</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.PIaccandAudit</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.PlaccountantandauditorsMeasure</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.Project</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.PropertyOnshoreMeasure</class>
+		<class>al.assu.trust.GestionImageSinistre.domain.PropertyOnshoreRating</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.User</class>
 		<class>al.assu.trust.GestionImageSinistre.domain.UserTrace</class>
 		<properties>
