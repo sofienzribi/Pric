@@ -1,6 +1,7 @@
 package bh.reinsurance.trust.sysfacWeb.beans;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -356,6 +357,13 @@ public class FacultativeBean implements Serializable {
 			sysfacus2.add(sysfacus);
 		}
 
+	}
+	public String FormatToDollar(int toformat) {
+		DecimalFormat formatter = (DecimalFormat) NumberFormat
+				.getCurrencyInstance(us);
+		formatter.setNegativePrefix("$-");
+		formatter.setNegativeSuffix("");
+		return formatter.format(toformat);
 	}
 
 	// getters setters

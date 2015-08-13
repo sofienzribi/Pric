@@ -3,6 +3,7 @@ package bh.reinsurance.trust.sysfacWeb.beans;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -15,6 +16,10 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 import al.assu.trust.GestionImageSinistre.domain.Assets;
 import al.assu.trust.GestionImageSinistre.domain.Project;
@@ -24,6 +29,7 @@ import al.assu.trust.GestionImageSinistre.impl.AssetsServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.ExposureScaleServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.MeasureServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.OccupanciesServicesLocal;
+import al.assu.trust.GestionImageSinistre.impl.ProjectServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.PropertyOnshoreMeasureServicesLocal;
 import al.assu.trust.GestionImageSinistre.impl.PropertyOnshoreRatingServicesLocal;
 
@@ -39,6 +45,7 @@ public class PropertyRatingBean implements Serializable {
 	private PropertyOnshoreRating propertyOnshoreRating;
 	private PropertyOnshoreMeasure propertyOnshoreMeasure;
 	private List<String> COB;
+	private List<Integer> BI_Year_List = new ArrayList<Integer>();
 	private List<String> Occupancies;
 	private List<String> Countries;
 	private List<String> Severity;
@@ -66,7 +73,10 @@ public class PropertyRatingBean implements Serializable {
 	private double BILossPrevenstionAssesment = 0;
 	private double MBandMlOPLoad = 0;
 	private double BIload = 0;
-
+	// Comparaison var
+	private Project ProjectToCompareWith;
+	private int IDProjectToCompareWith;
+	private PropertyOnshoreRating RatingToCompareWith;
 	// MLOP AND BI var
 	private double BiindemnityLoad = 0;
 	private double MlopindemnityLoad = 0;
@@ -90,6 +100,8 @@ public class PropertyRatingBean implements Serializable {
 
 	@EJB
 	private MeasureServicesLocal measureServicesLocal;
+	@EJB
+	ProjectServicesLocal projectServicesLocal;
 
 	@ManagedProperty("#{projectBean.getProject3()}")
 	private Project project3;
@@ -101,6 +113,7 @@ public class PropertyRatingBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public PropertyRatingBean() {
+		ProjectToCompareWith = new Project();
 		forrmDisplayed = false;
 		setAssets(new Assets());
 		assets.setId(0);
@@ -109,6 +122,10 @@ public class PropertyRatingBean implements Serializable {
 	// init method
 	@PostConstruct
 	public void init() {
+		// CHart init
+		FillBIYearsList();
+		createBarModel();
+
 		Countries = exposureScaleServicesLocal.GetAllCountries();
 		Severity = exposureScaleServicesLocal.GetSeverity();
 		COB2 = occupanciesServicesLocal.GetCOB();
@@ -131,6 +148,12 @@ public class PropertyRatingBean implements Serializable {
 		ConstructionClassChange();
 		loadOnOpenForAssesment();
 
+	}
+
+	public void FillBIYearsList() {
+		for (int i = 0; i <= 20; i++) {
+			BI_Year_List.add(i);
+		}
 	}
 
 	// change display with basis of acceptance
@@ -217,7 +240,45 @@ public class PropertyRatingBean implements Serializable {
 					* as.getBI_Base_Premium());
 			as.setBI_Discount_premium((1 + BIload)
 					* as.getBI_PML_Adjusted_Premium());
-			as.setBI_Dedpremium(as.getBI_Discount_premium());
+
+			List<Assets> assetsforBI = assetsServicesLocal
+					.GetAssetsByIdProject(project3.getId());
+			double MaxAssetsSi = 0;
+			for (Assets ase : assetsforBI) {
+				MaxAssetsSi = Math.max(MaxAssetsSi, ase.getBI_SI());
+			}
+			double DedAPrem = 0;
+			double f;
+			if (propertyOnshoreRating.getBiIndemnityPeriod().equals("0-5")) {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (2.5 * 30));
+			} else {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (Double
+								.parseDouble(propertyOnshoreRating
+										.getBiIndemnityPeriod()) * 30));
+			}
+			if (propertyOnshoreRating.getBI_deductible_perc() == 0) {
+
+				double gg = (f) / as.getBI_PML();
+				double BI_discount = MBBEFD(gg, Exposure);
+
+				DedAPrem = ((1 - BI_discount) * as.getBI_Discount_premium());
+
+			} else {
+
+				double DedLY1 = (MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / as.getBI_PML()),
+						Exposure) - MBBEFD(f / as.getBI_PML(), Exposure))
+						* as.getBI_Discount_premium();
+				double DedLY2 = (1 - MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / as.getBI_PML()),
+						Exposure))
+						* as.getBI_Discount_premium()
+						* (1 - (propertyOnshoreRating.getBI_deductible_perc() / 100));
+				DedAPrem = DedLY1 + DedLY2;
+			}
+			as.setBI_Dedpremium(DedAPrem);
 		}
 
 	}
@@ -623,7 +684,44 @@ public class PropertyRatingBean implements Serializable {
 
 			as.setBI_Discount_premium((1 + BIload)
 					* as.getBI_PML_Adjusted_Premium());
-			as.setBI_Dedpremium(as.getBI_Discount_premium());
+			List<Assets> assetsforBI = assetsServicesLocal
+					.GetAssetsByIdProject(project3.getId());
+			double MaxAssetsSi = 0;
+			for (Assets ase : assetsforBI) {
+				MaxAssetsSi = Math.max(MaxAssetsSi, ase.getBI_SI());
+			}
+			double DedAPrem = 0;
+			double f;
+			if (propertyOnshoreRating.getBiIndemnityPeriod().equals("0-5")) {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (2.5 * 30));
+			} else {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (Double
+								.parseDouble(propertyOnshoreRating
+										.getBiIndemnityPeriod()) * 30));
+			}
+			if (propertyOnshoreRating.getBI_deductible_perc() == 0) {
+
+				double gg = (f) / as.getBI_PML();
+				double BI_discount = MBBEFD(gg, Exposure);
+
+				DedAPrem = ((1 - BI_discount) * as.getBI_Discount_premium());
+
+			} else {
+
+				double DedLY1 = (MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / as.getBI_PML()),
+						Exposure) - MBBEFD(f / as.getBI_PML(), Exposure))
+						* as.getBI_Discount_premium();
+				double DedLY2 = (1 - MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / as.getBI_PML()),
+						Exposure))
+						* as.getBI_Discount_premium()
+						* (1 - (propertyOnshoreRating.getBI_deductible_perc() / 100));
+				DedAPrem = DedLY1 + DedLY2;
+			}
+			as.setBI_Dedpremium(DedAPrem);
 		}
 
 	}
@@ -684,6 +782,11 @@ public class PropertyRatingBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
+	public void SaveRatingBeforeMakingitQuoted() {
+		propertyOnshoreRatingServicesLocal.Add(propertyOnshoreRating);
+		System.out.println("Rating Saved");
+	}
+
 	// Save Rating end
 
 	// SI section breakdown calculation begin
@@ -698,6 +801,9 @@ public class PropertyRatingBean implements Serializable {
 			result = (result + a.getPD_Base_Premium());
 
 		}
+
+		double a = result / (calculatePropertyTotalSumInsured()) * 100;
+		propertyOnshoreRating.setPD_BaseRate(a);
 		return result / (calculatePropertyTotalSumInsured()) * 100;
 
 	}
@@ -708,6 +814,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getPD_SI();
 		}
+		propertyOnshoreRating.setPD_TotalSumInsured(result);
 		return result;
 	}
 
@@ -720,6 +827,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getPD_PML();
 		}
+		propertyOnshoreRating.setPD_PML(result);
 		return result;
 	}
 
@@ -738,6 +846,7 @@ public class PropertyRatingBean implements Serializable {
 			resultMBD = resultMBD + t;
 			totSI = totSI + a.getPD_SI();
 		}
+		propertyOnshoreRating.setPD_AdRate(resultMBD / totSI);
 		return resultMBD / totSI;
 	}
 
@@ -754,6 +863,7 @@ public class PropertyRatingBean implements Serializable {
 
 		}
 		double toti = (result / totSI) * 100;
+		propertyOnshoreRating.setPD_Disc(toti);
 		return toti;
 	}
 
@@ -772,9 +882,17 @@ public class PropertyRatingBean implements Serializable {
 			}
 
 		}
-
+		propertyOnshoreRating.setPD_Premium(result);
 		return result;
 
+	}
+
+	public double calculatePDDed() {
+		double a = CalculateTotalPDPremium()
+				/ calculatePropertyTotalSumInsured() * 100;
+		propertyOnshoreRating.setPD_Ded(a);
+
+		return a;
 	}
 
 	// BI
@@ -789,6 +907,8 @@ public class PropertyRatingBean implements Serializable {
 			result = result + a.getBI_Base_Premium();
 
 		}
+		double a = (result / calculateBITotalSumInsured()) * 100;
+		propertyOnshoreRating.setBI_BaseRate(a);
 		return (result / calculateBITotalSumInsured()) * 100;
 
 	}
@@ -802,6 +922,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getBI_PML();
 		}
+		propertyOnshoreRating.setBI_AdjRate(result);
 		return result;
 	}
 
@@ -811,6 +932,8 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getBI_SI();
 		}
+		propertyOnshoreRating.setBI_TotalSumInsured(result);
+		;
 		return result;
 	}
 
@@ -829,6 +952,7 @@ public class PropertyRatingBean implements Serializable {
 			resultMBD = resultMBD + t;
 			totSI = totSI + a.getBI_SI();
 		}
+		propertyOnshoreRating.setBI_PML(resultMBD / totSI);
 		return resultMBD / totSI;
 	}
 
@@ -845,6 +969,8 @@ public class PropertyRatingBean implements Serializable {
 
 		}
 		double toti = (result / totSI) * 100;
+		propertyOnshoreRating.setBI_Disc(toti);
+		;
 		return toti;
 	}
 
@@ -862,8 +988,16 @@ public class PropertyRatingBean implements Serializable {
 			}
 
 		}
+		propertyOnshoreRating.setBI_Premium(result);
 
 		return result;
+	}
+
+	public double calculateBIDed() {
+		double a = CalculateTotalBIPremium() / calculateBITotalSumInsured()
+				* 100;
+		propertyOnshoreRating.setBI_Ded(a);
+		return a;
 	}
 
 	// MB
@@ -873,6 +1007,8 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getMB_SI();
 		}
+
+		propertyOnshoreRating.setMB_TotalSumInsure(result);
 		return result;
 	}
 
@@ -885,6 +1021,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getMB_PML();
 		}
+		propertyOnshoreRating.setMB_PML(result);
 		return result;
 	}
 
@@ -897,7 +1034,9 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getMB_Base_Premium();
 		}
-		return (result / calculateMBTotalSumInsured()) * 100;
+		double f = (result / calculateMBTotalSumInsured()) * 100;
+		propertyOnshoreRating.setMB_BaseRate(f);
+		return f;
 	}
 
 	public double CalculateMBPMLAdjustedRate() {
@@ -915,7 +1054,9 @@ public class PropertyRatingBean implements Serializable {
 			resultMBD = resultMBD + t;
 			totSI = totSI + a.getMB_SI();
 		}
-		return resultMBD / totSI;
+		double f = resultMBD / totSI;
+		propertyOnshoreRating.setMB_AdjRate(f);
+		return f;
 	}
 
 	public double CalculateTotalMBDiscount() {
@@ -931,6 +1072,7 @@ public class PropertyRatingBean implements Serializable {
 
 		}
 		double toti = (result / totSI) * 100;
+		propertyOnshoreRating.setMB_Discount(toti);
 		return toti;
 	}
 
@@ -948,7 +1090,14 @@ public class PropertyRatingBean implements Serializable {
 			}
 
 		}
+		propertyOnshoreRating.setMB_Premium(result);
+		return result;
+	}
 
+	public double CalculateMBDeductible() {
+		double result = CalculateTotalMBPremium()
+				/ calculateMBTotalSumInsured() * 100;
+		propertyOnshoreRating.setMB_Deductible(result);
 		return result;
 	}
 
@@ -963,7 +1112,10 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getMlop_Base_Premium();
 		}
-		return (result / calculateMlopTotalSI()) * 100;
+		double f = (result / calculateMlopTotalSI()) * 100;
+		propertyOnshoreRating.setMlop_BaseRate(f);
+
+		return f;
 	}
 
 	public double calculateMlopTotalPML() {
@@ -975,6 +1127,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getMlop_PML();
 		}
+		propertyOnshoreRating.setMlop_PML(result);
 		return result;
 	}
 
@@ -984,6 +1137,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getMlop_SI();
 		}
+		propertyOnshoreRating.setMlop_TotalSumInsured(result);
 		return result;
 	}
 
@@ -1003,7 +1157,10 @@ public class PropertyRatingBean implements Serializable {
 			resultMBD = resultMBD + t;
 			totSI = totSI + a.getMlop_SI();
 		}
-		return resultMBD / totSI;
+		double result = resultMBD / totSI;
+		propertyOnshoreRating.setMlop_AdjRate(result);
+
+		return result;
 	}
 
 	public double CalculateTotalMlopDiscount() {
@@ -1020,6 +1177,7 @@ public class PropertyRatingBean implements Serializable {
 
 		}
 		double toti = (result / totSI) * 100;
+		propertyOnshoreRating.setMlop_Discount(toti);
 		return toti;
 	}
 
@@ -1033,7 +1191,15 @@ public class PropertyRatingBean implements Serializable {
 			result = result + a.getMlop_Dedpremium();
 
 		}
+		propertyOnshoreRating.setMlop_Premium(result);
 
+		return result;
+	}
+
+	public double calculateMLopDed() {
+		double result = CalculateTotalMlopPremium() / calculateMlopTotalSI()
+				* 100;
+		propertyOnshoreRating.setMlop_Deductible(result);
 		return result;
 	}
 
@@ -1044,6 +1210,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getStock_SI();
 		}
+		// propertyOnshoreRating.setStock_TotalSumInsured(result);
 		return result;
 	}
 
@@ -1056,7 +1223,10 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getStock_Base_Premium();
 		}
-		return (result / calculateStockTotalSI()) * 100;
+		double result2 = (result / calculateStockTotalSI()) * 100;
+		// propertyOnshoreRating.setStock_TotalSumInsured(result2);
+
+		return result2;
 	}
 
 	public double calculateStockTotalPML() {
@@ -1068,6 +1238,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getStock_PML();
 		}
+		// propertyOnshoreRating.setStock_PML(result);
 		return result;
 	}
 
@@ -1086,7 +1257,9 @@ public class PropertyRatingBean implements Serializable {
 			resultMBD = resultMBD + t;
 			totSI = totSI + a.getStock_SI();
 		}
-		return resultMBD / totSI;
+		double result = resultMBD / totSI;
+		// propertyOnshoreRating.setStock_TotalSumInsured(result);
+		return result;
 	}
 
 	public double CalculateTotalStockDiscount() {
@@ -1102,6 +1275,7 @@ public class PropertyRatingBean implements Serializable {
 
 		}
 		double finalres = (result / totSI) * 100;
+		// propertyOnshoreRating.setStock_Discount(finalres);
 		return finalres;
 	}
 
@@ -1119,7 +1293,14 @@ public class PropertyRatingBean implements Serializable {
 			}
 
 		}
+		// propertyOnshoreRating.setStock_Premium(result);
+		return result;
+	}
 
+	public double calculateStockDed() {
+		double result = CalculateTotalStockPremium() / calculateStockTotalSI()
+				* 100;
+		// propertyOnshoreRating.setStock_Deductible(result);
 		return result;
 	}
 
@@ -1131,6 +1312,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getOTHER_SI();
 		}
+		// propertyOnshoreRating.setOther_TotalSumInsured(result);
 		return result;
 	}
 
@@ -1143,8 +1325,9 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getOTHER_Base_Premium();
 		}
-
-		return (result / calculateOtherTotalSI()) * 100;
+		double result2 = (result / calculateOtherTotalSI()) * 100;
+		// propertyOnshoreRating.setOther_BaseRate(result2);
+		return result2;
 	}
 
 	public double calculateOtherTotalPML() {
@@ -1155,6 +1338,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			result = result + a.getOTHER_PML();
 		}
+		// propertyOnshoreRating.setOther_PML(result);
 		return result;
 	}
 
@@ -1173,8 +1357,9 @@ public class PropertyRatingBean implements Serializable {
 			resultMBD = resultMBD + t;
 			totSI = totSI + a.getOTHER_SI();
 		}
-
-		return resultMBD / totSI;
+		double result = resultMBD / totSI;
+		// propertyOnshoreRating.setOther_BaseRate(result);
+		return result;
 	}
 
 	public double CalculateTotalOtherDiscount() {
@@ -1190,6 +1375,7 @@ public class PropertyRatingBean implements Serializable {
 
 		}
 		double toti = (result / totSI) * 100;
+		// propertyOnshoreRating.setOther_Discount(toti);
 		return toti;
 	}
 
@@ -1207,7 +1393,14 @@ public class PropertyRatingBean implements Serializable {
 			}
 
 		}
+		// propertyOnshoreRating.setOther_Premium(result);
+		return result;
+	}
 
+	public double calculateOtherDed() {
+		double result = CalculateTotalOtherPremium() / calculateOtherTotalSI()
+				* 100;
+		// propertyOnshoreRating.setOther_Deductible(result);
 		return result;
 	}
 
@@ -1403,7 +1596,46 @@ public class PropertyRatingBean implements Serializable {
 			assets.setBI_Discount_premium((1 + BIload)
 					* assets.getBI_PML_Adjusted_Premium());
 
-			assets.setBI_Dedpremium(assets.getBI_Discount_premium());
+			// count BI deductible
+			List<Assets> assetsforBI = assetsServicesLocal
+					.GetAssetsByIdProject(project3.getId());
+			double MaxAssetsSi = 0;
+			for (Assets ase : assetsforBI) {
+				MaxAssetsSi = Math.max(MaxAssetsSi, ase.getBI_SI());
+			}
+			double DedAPrem = 0;
+			double f;
+			if (propertyOnshoreRating.getBiIndemnityPeriod().equals("0-5")) {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (2.5 * 30));
+			} else {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (Double
+								.parseDouble(propertyOnshoreRating
+										.getBiIndemnityPeriod()) * 30));
+			}
+			if (propertyOnshoreRating.getBI_deductible_perc() == 0) {
+
+				double gg = (f) / assets.getBI_PML();
+				double BI_discount = MBBEFD(gg, ExposureBI);
+
+				DedAPrem = ((1 - BI_discount) * assets.getBI_Discount_premium());
+
+			} else {
+
+				double DedLY1 = (MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / assets.getBI_PML()),
+						ExposureBI) - MBBEFD(f / assets.getBI_PML(), ExposureBI))
+						* assets.getBI_Discount_premium();
+				double DedLY2 = (1 - MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / assets.getBI_PML()),
+						ExposureBI))
+						* assets.getBI_Discount_premium()
+						* (1 - (propertyOnshoreRating.getBI_deductible_perc() / 100));
+				DedAPrem = DedLY1 + DedLY2;
+			}
+			assets.setBI_Dedpremium(DedAPrem);
+
 		}
 
 		// MLOP
@@ -1493,10 +1725,10 @@ public class PropertyRatingBean implements Serializable {
 							(propertyOnshoreRating.getOther_amount() / assets
 									.getOTHER_PML()), ExposurePD)));
 
-			assets.setEML(assets.getPD_PML() + assets.getBI_PML()
-					+ assets.getStock_PML() + assets.getOTHER_PML());
 		}
-
+		// setting the EML
+		assets.setEML(assets.getPD_PML() + assets.getBI_PML()
+				+ assets.getStock_PML() + assets.getOTHER_PML());
 		// OPD
 		double min1 = Math.min(1,
 				((propertyOnshoreRating.getOPD_lim() + propertyOnshoreRating
@@ -1626,7 +1858,7 @@ public class PropertyRatingBean implements Serializable {
 
 	// RATING FUNCTION END
 
-	// Summary Calculation start
+	// Summary Calculation start for QuotaShare
 	public double GetCommPrice() {
 		if (propertyOnshoreRating.getProposedShare() == 0) {
 			propertyOnshoreRating.setMaxLiability(0);
@@ -1661,8 +1893,8 @@ public class PropertyRatingBean implements Serializable {
 
 		propertyOnshoreRating.setCommercialPrice((propertyOnshoreRating
 				.getTotalCosts() + propertyOnshoreRating.getTotalRiskPrice())
-				/ (1 - propertyOnshoreRating.getProfitMargin() / 100)
-				/ (1 - propertyOnshoreRating.getBrokerage() / 100));
+				/ (1 - (propertyOnshoreRating.getProfitMargin() / 100))
+				/ (1 - (propertyOnshoreRating.getBrokerage() / 100)));
 		return propertyOnshoreRating.getCommercialPrice();
 
 	}
@@ -1675,7 +1907,381 @@ public class PropertyRatingBean implements Serializable {
 	}
 
 	// Summary Calculation end
+	// Summary Calculation start for Excess
+	public double CalculateCommercialPriceXL() {
+		propertyOnshoreRating.setCommercialPrice(propertyOnshoreRating
+				.getLY1_CommercialPrice()
+				+ propertyOnshoreRating.getLY2_CommercialPrice()
+				+ propertyOnshoreRating.getLY3_CommercialPrice()
+				+ propertyOnshoreRating.getLY4_CommercialPrice()
+				+ propertyOnshoreRating.getLY5_CommercialPrice());
+		return propertyOnshoreRating.getCommercialPrice();
+		
+	}
+
+	// LY1
+	public void CalculateLY1CommercialPrice() {
+		if (propertyOnshoreRating.isLY1_Selected() == true) {
+
+			propertyOnshoreRating.setLY1_BasicRIskPrice(propertyOnshoreRating
+					.getLY1_Premium()
+					* (propertyOnshoreRating.getLY1_Share() / 100));
+
+			propertyOnshoreRating.setLY1_NatCatastrophe(propertyOnshoreRating
+					.getLY1_BasicRIskPrice() * 0.1);
+			propertyOnshoreRating
+					.setLY1_InternalCostLoading((propertyOnshoreRating
+							.getLY1_NatCatastrophe() + propertyOnshoreRating
+							.getLY1_BasicRIskPrice()) * 0.16);
+
+			double a = ((propertyOnshoreRating.getLY1_NatCatastrophe()
+					+ propertyOnshoreRating.getLY1_BasicRIskPrice() + propertyOnshoreRating
+						.getLY1_InternalCostLoading()) / 0.9)
+					- ((propertyOnshoreRating.getLY1_NatCatastrophe()
+							+ propertyOnshoreRating.getLY1_BasicRIskPrice() + propertyOnshoreRating
+								.getLY1_InternalCostLoading()));
+
+			propertyOnshoreRating.setLY1_ProfitMargin(a);
+
+			double somme = (propertyOnshoreRating.getLY1_NatCatastrophe()
+					+ propertyOnshoreRating.getLY1_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY1_InternalCostLoading() + propertyOnshoreRating
+					.getLY1_ProfitMargin());
+
+			double b = (somme / (1 - (propertyOnshoreRating.getBrokerage() / 100)))
+					- (somme);
+
+			propertyOnshoreRating.setLY1_Brokerage(b);
+
+			propertyOnshoreRating.setLY1_CommercialPrice(propertyOnshoreRating
+					.getLY1_NatCatastrophe()
+					+ propertyOnshoreRating.getLY1_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY1_InternalCostLoading()
+					+ propertyOnshoreRating.getLY1_ProfitMargin()
+					+ propertyOnshoreRating.getLY1_Brokerage());
+		} else {
+
+			propertyOnshoreRating.setLY1_BasicRIskPrice(0);
+			propertyOnshoreRating.setLY1_NatCatastrophe(0);
+			propertyOnshoreRating.setLY1_InternalCostLoading(0);
+			propertyOnshoreRating.setLY1_ProfitMargin(0);
+			propertyOnshoreRating.setLY1_Brokerage(0);
+			propertyOnshoreRating.setLY1_CommercialPrice(0);
+		}
+
+	}
+
+	// LY2
+	public void CalculateLY2CommercialPrice() {
+		if (propertyOnshoreRating.isLY2_Selected() == true) {
+
+			propertyOnshoreRating.setLY2_BasicRIskPrice(propertyOnshoreRating
+					.getLY2_Premium()
+					* (propertyOnshoreRating.getLY2_Share() / 100));
+
+			propertyOnshoreRating.setLY2_NatCatastrophe(propertyOnshoreRating
+					.getLY2_BasicRIskPrice() * 0.1);
+			propertyOnshoreRating
+					.setLY2_InternalCostLoading((propertyOnshoreRating
+							.getLY2_NatCatastrophe() + propertyOnshoreRating
+							.getLY2_BasicRIskPrice()) * 0.16);
+
+			double a = ((propertyOnshoreRating.getLY2_NatCatastrophe()
+					+ propertyOnshoreRating.getLY2_BasicRIskPrice() + propertyOnshoreRating
+						.getLY2_InternalCostLoading()) / 0.9)
+					- ((propertyOnshoreRating.getLY2_NatCatastrophe()
+							+ propertyOnshoreRating.getLY2_BasicRIskPrice() + propertyOnshoreRating
+								.getLY2_InternalCostLoading()));
+
+			propertyOnshoreRating.setLY2_ProfitMargin(a);
+
+			double somme = (propertyOnshoreRating.getLY2_NatCatastrophe()
+					+ propertyOnshoreRating.getLY2_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY2_InternalCostLoading() + propertyOnshoreRating
+					.getLY2_ProfitMargin());
+
+			double b = (somme / (1 - (propertyOnshoreRating.getBrokerage() / 100)))
+					- (somme);
+
+			propertyOnshoreRating.setLY2_Brokerage(b);
+
+			propertyOnshoreRating.setLY2_CommercialPrice(propertyOnshoreRating
+					.getLY2_NatCatastrophe()
+					+ propertyOnshoreRating.getLY2_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY2_InternalCostLoading()
+					+ propertyOnshoreRating.getLY2_ProfitMargin()
+					+ propertyOnshoreRating.getLY2_Brokerage());
+		} else {
+			propertyOnshoreRating.setLY2_BasicRIskPrice(0);
+			propertyOnshoreRating.setLY2_NatCatastrophe(0);
+			propertyOnshoreRating.setLY2_InternalCostLoading(0);
+			propertyOnshoreRating.setLY2_ProfitMargin(0);
+			propertyOnshoreRating.setLY2_Brokerage(0);
+			propertyOnshoreRating.setLY2_CommercialPrice(0);
+		}
+
+	}
+
+	// LY3
+	public void CalculateLY3CommercialPrice() {
+		if (propertyOnshoreRating.isLY3_Selected() == true) {
+			propertyOnshoreRating.setLY3_BasicRIskPrice(propertyOnshoreRating
+					.getLY3_Premium()
+					* (propertyOnshoreRating.getLY3_Share() / 100));
+
+			propertyOnshoreRating.setLY3_NatCatastrophe(propertyOnshoreRating
+					.getLY3_BasicRIskPrice() * 0.1);
+			propertyOnshoreRating
+					.setLY3_InternalCostLoading((propertyOnshoreRating
+							.getLY3_NatCatastrophe() + propertyOnshoreRating
+							.getLY3_BasicRIskPrice()) * 0.16);
+
+			double a = ((propertyOnshoreRating.getLY3_NatCatastrophe()
+					+ propertyOnshoreRating.getLY3_BasicRIskPrice() + propertyOnshoreRating
+						.getLY3_InternalCostLoading()) / 0.9)
+					- ((propertyOnshoreRating.getLY3_NatCatastrophe()
+							+ propertyOnshoreRating.getLY3_BasicRIskPrice() + propertyOnshoreRating
+								.getLY3_InternalCostLoading()));
+
+			propertyOnshoreRating.setLY3_ProfitMargin(a);
+
+			double somme = (propertyOnshoreRating.getLY3_NatCatastrophe()
+					+ propertyOnshoreRating.getLY3_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY3_InternalCostLoading() + propertyOnshoreRating
+					.getLY3_ProfitMargin());
+
+			double b = (somme / (1 - (propertyOnshoreRating.getBrokerage() / 100)))
+					- (somme);
+
+			propertyOnshoreRating.setLY3_Brokerage(b);
+
+			propertyOnshoreRating.setLY3_CommercialPrice(propertyOnshoreRating
+					.getLY3_NatCatastrophe()
+					+ propertyOnshoreRating.getLY3_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY3_InternalCostLoading()
+					+ propertyOnshoreRating.getLY3_ProfitMargin()
+					+ propertyOnshoreRating.getLY3_Brokerage());
+		} else {
+			propertyOnshoreRating.setLY3_BasicRIskPrice(0);
+			propertyOnshoreRating.setLY3_NatCatastrophe(0);
+			propertyOnshoreRating.setLY3_InternalCostLoading(0);
+			propertyOnshoreRating.setLY3_ProfitMargin(0);
+			propertyOnshoreRating.setLY3_Brokerage(0);
+			propertyOnshoreRating.setLY3_CommercialPrice(0);
+		}
+
+	}
+
+	// LY4
+
+	public void CalculateLY4CommercialPrice() {
+		if (propertyOnshoreRating.isLY4_Selected() == true) {
+			propertyOnshoreRating.setLY4_BasicRIskPrice(propertyOnshoreRating
+					.getLY4_Premium()
+					* (propertyOnshoreRating.getLY4_Share() / 100));
+
+			propertyOnshoreRating.setLY4_NatCatastrophe(propertyOnshoreRating
+					.getLY4_BasicRIskPrice() * 0.1);
+			propertyOnshoreRating
+					.setLY4_InternalCostLoading((propertyOnshoreRating
+							.getLY4_NatCatastrophe() + propertyOnshoreRating
+							.getLY4_BasicRIskPrice()) * 0.16);
+
+			double a = ((propertyOnshoreRating.getLY4_NatCatastrophe()
+					+ propertyOnshoreRating.getLY4_BasicRIskPrice() + propertyOnshoreRating
+						.getLY4_InternalCostLoading()) / 0.9)
+					- ((propertyOnshoreRating.getLY4_NatCatastrophe()
+							+ propertyOnshoreRating.getLY4_BasicRIskPrice() + propertyOnshoreRating
+								.getLY4_InternalCostLoading()));
+
+			propertyOnshoreRating.setLY4_ProfitMargin(a);
+
+			double somme = (propertyOnshoreRating.getLY4_NatCatastrophe()
+					+ propertyOnshoreRating.getLY4_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY4_InternalCostLoading() + propertyOnshoreRating
+					.getLY4_ProfitMargin());
+
+			double b = (somme / (1 - (propertyOnshoreRating.getBrokerage() / 100)))
+					- (somme);
+
+			propertyOnshoreRating.setLY4_Brokerage(b);
+
+			propertyOnshoreRating.setLY4_CommercialPrice(propertyOnshoreRating
+					.getLY4_NatCatastrophe()
+					+ propertyOnshoreRating.getLY4_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY4_InternalCostLoading()
+					+ propertyOnshoreRating.getLY4_ProfitMargin()
+					+ propertyOnshoreRating.getLY4_Brokerage());
+		} else {
+			propertyOnshoreRating.setLY4_BasicRIskPrice(0);
+			propertyOnshoreRating.setLY4_NatCatastrophe(0);
+			propertyOnshoreRating.setLY4_InternalCostLoading(0);
+			propertyOnshoreRating.setLY4_ProfitMargin(0);
+			propertyOnshoreRating.setLY4_Brokerage(0);
+			propertyOnshoreRating.setLY4_CommercialPrice(0);
+		}
+
+	}
+
+	// LY5
+
+	public void CalculateLY5CommercialPrice() {
+		if (propertyOnshoreRating.isLY5_Selected() == true) {
+			propertyOnshoreRating.setLY5_BasicRIskPrice(propertyOnshoreRating
+					.getLY5_Premium()
+					* (propertyOnshoreRating.getLY5_Share() / 100));
+
+			propertyOnshoreRating.setLY5_NatCatastrophe(propertyOnshoreRating
+					.getLY5_BasicRIskPrice() * 0.1);
+			propertyOnshoreRating
+					.setLY5_InternalCostLoading((propertyOnshoreRating
+							.getLY5_NatCatastrophe() + propertyOnshoreRating
+							.getLY5_BasicRIskPrice()) * 0.16);
+
+			double a = ((propertyOnshoreRating.getLY5_NatCatastrophe()
+					+ propertyOnshoreRating.getLY5_BasicRIskPrice() + propertyOnshoreRating
+						.getLY5_InternalCostLoading()) / 0.9)
+					- ((propertyOnshoreRating.getLY5_NatCatastrophe()
+							+ propertyOnshoreRating.getLY5_BasicRIskPrice() + propertyOnshoreRating
+								.getLY5_InternalCostLoading()));
+
+			propertyOnshoreRating.setLY5_ProfitMargin(a);
+
+			double somme = (propertyOnshoreRating.getLY5_NatCatastrophe()
+					+ propertyOnshoreRating.getLY5_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY5_InternalCostLoading() + propertyOnshoreRating
+					.getLY5_ProfitMargin());
+
+			double b = (somme / (1 - (propertyOnshoreRating.getBrokerage() / 100)))
+					- (somme);
+
+			propertyOnshoreRating.setLY5_Brokerage(b);
+
+			propertyOnshoreRating.setLY5_CommercialPrice(propertyOnshoreRating
+					.getLY5_NatCatastrophe()
+					+ propertyOnshoreRating.getLY5_BasicRIskPrice()
+					+ propertyOnshoreRating.getLY5_InternalCostLoading()
+					+ propertyOnshoreRating.getLY5_ProfitMargin()
+					+ propertyOnshoreRating.getLY5_Brokerage());
+		} else {
+			propertyOnshoreRating.setLY5_BasicRIskPrice(0);
+			propertyOnshoreRating.setLY5_NatCatastrophe(0);
+			propertyOnshoreRating.setLY5_InternalCostLoading(0);
+			propertyOnshoreRating.setLY5_ProfitMargin(0);
+			propertyOnshoreRating.setLY5_Brokerage(0);
+			propertyOnshoreRating.setLY5_CommercialPrice(0);
+		}
+
+	}
+	public void ProposedShareorBrokeragechange(){
+		CalculateLY1CommercialPrice();
+		CalculateLY2CommercialPrice();
+		CalculateLY3CommercialPrice();
+		
+		CalculateLY4CommercialPrice();
+		CalculateLY5CommercialPrice();
+		
+		
+	}
+
+	// TOTAL
+	public double CalculateTotalBasicRiskPrice() {
+		double result = propertyOnshoreRating.getLY1_BasicRIskPrice()
+				+ propertyOnshoreRating.getLY2_BasicRIskPrice()
+				+ propertyOnshoreRating.getLY3_BasicRIskPrice()
+				+ propertyOnshoreRating.getLY4_BasicRIskPrice()
+				+ propertyOnshoreRating.getLY5_BasicRIskPrice();
+		return result;
+	}
+
+	public double CalculateTotalNatCatastrophe() {
+		double result = propertyOnshoreRating.getLY1_NatCatastrophe()
+				+ propertyOnshoreRating.getLY2_NatCatastrophe()
+				+ propertyOnshoreRating.getLY3_NatCatastrophe()
+				+ propertyOnshoreRating.getLY4_NatCatastrophe()
+				+ propertyOnshoreRating.getLY5_NatCatastrophe();
+		return result;
+	}
+
+	public double CalculateTotalInternalCosts() {
+		double result = propertyOnshoreRating.getLY1_InternalCostLoading()
+				+ propertyOnshoreRating.getLY2_InternalCostLoading()
+				+ propertyOnshoreRating.getLY3_InternalCostLoading()
+				+ propertyOnshoreRating.getLY4_InternalCostLoading()
+				+ propertyOnshoreRating.getLY5_InternalCostLoading();
+
+		return result;
+	}
+
+	public double CalculateTotalProfitMargin() {
+		double result = propertyOnshoreRating.getLY1_ProfitMargin()
+				+ propertyOnshoreRating.getLY2_ProfitMargin()
+				+ propertyOnshoreRating.getLY3_ProfitMargin()
+				+ propertyOnshoreRating.getLY4_ProfitMargin()
+				+ propertyOnshoreRating.getLY5_ProfitMargin();
+
+		return result;
+	}
+
+	public double CalculateTotalBrokerage() {
+		double result = propertyOnshoreRating.getLY1_Brokerage()
+				+ propertyOnshoreRating.getLY2_Brokerage()
+				+ propertyOnshoreRating.getLY3_Brokerage()
+				+ propertyOnshoreRating.getLY4_Brokerage()
+				+ propertyOnshoreRating.getLY5_Brokerage();
+
+		return result;
+	}
+
+	// Summary Calculation end for Excess
+
 	// Deductible rating start
+	public void BIDeductibleChange() {
+		for (Assets as : assetsList) {
+			double Exposure = exposureScaleServicesLocal.GetExposureScale(
+					as.getCountry(), as.getBI_Curve()).getExposure();
+
+			List<Assets> assetsforBI = assetsServicesLocal
+					.GetAssetsByIdProject(project3.getId());
+			double MaxAssetsSi = 0;
+			for (Assets ase : assetsforBI) {
+				MaxAssetsSi = Math.max(MaxAssetsSi, ase.getBI_SI());
+			}
+			double DedAPrem = 0;
+			double f;
+			if (propertyOnshoreRating.getBiIndemnityPeriod().equals("0-5")) {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (2.5 * 30));
+			} else {
+				f = propertyOnshoreRating.getBI_Deductible_amount()
+						* (MaxAssetsSi / (Double
+								.parseDouble(propertyOnshoreRating
+										.getBiIndemnityPeriod()) * 30));
+			}
+			if (propertyOnshoreRating.getBI_deductible_perc() == 0) {
+
+				double gg = (f) / as.getBI_PML();
+				double BI_discount = MBBEFD(gg, Exposure);
+
+				DedAPrem = ((1 - BI_discount) * as.getBI_Discount_premium());
+
+			} else {
+
+				double DedLY1 = (MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / as.getBI_PML()),
+						Exposure) - MBBEFD(f / as.getBI_PML(), Exposure))
+						* as.getBI_Discount_premium();
+				double DedLY2 = (1 - MBBEFD(((f / (propertyOnshoreRating
+						.getBI_deductible_perc() / 100)) / as.getBI_PML()),
+						Exposure))
+						* as.getBI_Discount_premium()
+						* (1 - (propertyOnshoreRating.getBI_deductible_perc() / 100));
+				DedAPrem = DedLY1 + DedLY2;
+			}
+			as.setBI_Dedpremium(DedAPrem);
+		}
+	}
+
 	public void PD_dedChange() {
 
 		for (Assets as : assetsList) {
@@ -1844,6 +2450,7 @@ public class PropertyRatingBean implements Serializable {
 		for (Assets a : assetsList) {
 			double ExposurePD = exposureScaleServicesLocal.GetExposureScale(
 					a.getCountry(), a.getPD_Curve()).getExposure();
+			System.out.println("essq" + ExposurePD);
 
 			double min1 = Math
 					.min(1,
@@ -1851,24 +2458,26 @@ public class PropertyRatingBean implements Serializable {
 									.getLY1_ded()) / a.getEML()));
 			double min2 = Math.min(1,
 					propertyOnshoreRating.getLY1_ded() / a.getEML());
-			a.setLY1Fac(MBBEFD(min1, ExposurePD) - MBBEFD(min2, ExposurePD));
+			double result = MBBEFD(min1, ExposurePD) - MBBEFD(min2, ExposurePD);
+
+			a.setLY1Fac(result);
 		}
 
 	}
 
 	public double CalculateLY1Premium() {
-		double totp = 0;
 		double totfac = 0;
 		for (Assets a : assetsList) {
 			totfac = totfac + a.getLY1Fac();
-			totp = totp
-					+ (a.getBI_Discount_premium() + a.getMB_Discount_premium()
-							+ a.getPD_Discount_premium()
-							+ a.getMlop_Discount_premium()
-							+ a.getStock_Discount_premium() + a
-								.getOTHER_Discount_premium());
+
 		}
-		return (totfac * totp);
+		propertyOnshoreRating.setLY1_Premium(totfac * GetTotalPremium());
+		return (totfac * GetTotalPremium());
+	}
+
+	public double CalculateLY1Ratio() {
+
+		return (CalculateLY1Premium() / GetTotalPremium()) * 100;
 	}
 
 	public void CalculateLY2fac() {
@@ -1887,18 +2496,17 @@ public class PropertyRatingBean implements Serializable {
 	}
 
 	public double CalculateLY2Premium() {
-		double totp = 0;
 		double totfac = 0;
 		for (Assets a : assetsList) {
 			totfac = totfac + a.getLY2Fac();
-			totp = totp
-					+ (a.getBI_Discount_premium() + a.getMB_Discount_premium()
-							+ a.getPD_Discount_premium()
-							+ a.getMlop_Discount_premium()
-							+ a.getStock_Discount_premium() + a
-								.getOTHER_Discount_premium());
 		}
-		return (totfac * totp);
+		propertyOnshoreRating.setLY2_Premium(totfac * GetTotalPremium());
+		return (totfac * GetTotalPremium());
+	}
+
+	public double CalculateLY2Ratio() {
+
+		return (CalculateLY2Premium() / GetTotalPremium()) * 100;
 	}
 
 	public void CalculateLY3fac() {
@@ -1917,19 +2525,19 @@ public class PropertyRatingBean implements Serializable {
 	}
 
 	public double CalculateLY3Premium() {
-		double totp = 0;
 		double totfac = 0;
 		for (Assets a : assetsList) {
 
 			totfac = totfac + a.getLY3Fac();
-			totp = totp
-					+ (a.getBI_Discount_premium() + a.getMB_Discount_premium()
-							+ a.getPD_Discount_premium()
-							+ a.getMlop_Discount_premium()
-							+ a.getStock_Discount_premium() + a
-								.getOTHER_Discount_premium());
+
 		}
-		return (totfac * totp);
+		propertyOnshoreRating.setLY3_Premium(totfac * GetTotalPremium());
+		return (totfac * GetTotalPremium());
+	}
+
+	public double CalculateLY3Ratio() {
+
+		return (CalculateLY3Premium() / GetTotalPremium()) * 100;
 	}
 
 	public void CalculateLY4fac() {
@@ -1948,18 +2556,18 @@ public class PropertyRatingBean implements Serializable {
 	}
 
 	public double CalculateLY4Premium() {
-		double totp = 0;
 		double totfac = 0;
 		for (Assets a : assetsList) {
 			totfac = totfac + a.getLY4Fac();
-			totp = totp
-					+ (a.getBI_Discount_premium() + a.getMB_Discount_premium()
-							+ a.getPD_Discount_premium()
-							+ a.getMlop_Discount_premium()
-							+ a.getStock_Discount_premium() + a
-								.getOTHER_Discount_premium());
+
 		}
-		return (totfac * totp);
+		propertyOnshoreRating.setLY4_Premium(totfac * GetTotalPremium());
+		return (totfac * GetTotalPremium());
+	}
+
+	public double CalculateLY4Ratio() {
+
+		return (CalculateLY4Premium() / GetTotalPremium()) * 100;
 	}
 
 	public void CalculateLY5fac() {
@@ -1978,18 +2586,19 @@ public class PropertyRatingBean implements Serializable {
 	}
 
 	public double CalculateLY5Premium() {
-		double totp = 0;
 		double totfac = 0;
 		for (Assets a : assetsList) {
 			totfac = totfac + a.getLY5Fac();
-			totp = totp
-					+ (a.getBI_Discount_premium() + a.getMB_Discount_premium()
-							+ a.getPD_Discount_premium()
-							+ a.getMlop_Discount_premium()
-							+ a.getStock_Discount_premium() + a
-								.getOTHER_Discount_premium());
+
 		}
-		return (totfac * totp);
+		double result = totfac * GetTotalPremium();
+		propertyOnshoreRating.setLY5_Premium(result);
+		return (result);
+	}
+
+	public double CalculateLY5Ratio() {
+
+		return (CalculateLY5Premium() / GetTotalPremium()) * 100;
 	}
 
 	public double CalculateXLTotalPremium() {
@@ -2017,9 +2626,80 @@ public class PropertyRatingBean implements Serializable {
 
 	// XL layers management end
 
+	// Comparaison between quotations start
+
+	public List<Project> GetComparaisonProjects() {
+
+		return projectServicesLocal.GetProjectsByName(project3
+				.getNameOfTheProject());
+
+	}
+
+	public void ComparasionProjChange() {
+		if (IDProjectToCompareWith != 0) {
+
+			ProjectToCompareWith = projectServicesLocal
+					.GetProjectById(IDProjectToCompareWith);
+			RatingToCompareWith = propertyOnshoreRatingServicesLocal
+					.GetByIdProject(ProjectToCompareWith.getId());
+		}
+
+	}
+
+	// Chart bar management start
+	private BarChartModel barModel1;
+
+	public BarChartModel initBarModel() {
+		// Change this to only quoted
+		List<Project> pro1 = GetComparaisonProjects();
+		List<Project> pro = new ArrayList<Project>();
+		for (Project po : pro1) {
+			if (po.getQuoted_Date() != null) {
+				pro.add(po);
+			}
+		}
+		BarChartModel model = new BarChartModel();
+		ChartSeries CommercialPrice = new ChartSeries();
+		CommercialPrice.setLabel("Commercial Price");
+
+		ChartSeries RatingPrice = new ChartSeries();
+		RatingPrice.setLabel("Rating Price");
+		for (Project a : pro) {
+			PropertyOnshoreRating b = propertyOnshoreRatingServicesLocal
+					.GetByIdProject(a.getId());
+			CommercialPrice.set(a.getInception_Date().getYear() + 1900,
+					b.getCommercialPrice());
+			RatingPrice.set(a.getInception_Date().getYear() + 1900,
+					b.getModifiedPrice());
+
+		}
+		model.addSeries(CommercialPrice);
+		model.addSeries(RatingPrice);
+
+		return model;
+	}
+
+	private void createBarModel() {
+		barModel1 = initBarModel();
+		barModel1.setTitle("Rating and Commercial Price chart");
+		barModel1.setLegendPosition("s");
+		barModel1.setAnimate(true);
+		Axis xAxis = barModel1.getAxis(AxisType.X);
+		xAxis.setLabel("Inception Year");
+		Axis yAxis = barModel1.getAxis(AxisType.Y);
+		yAxis.setLabel("Amount ($)");
+	}
+
+	// Chart bar management end
+	// Comparaison between quotations end
+
 	// Format method begin
 	public String FormatToDollar(double toformat) {
-		return NumberFormat.getCurrencyInstance(us).format(toformat);
+		DecimalFormat formatter = (DecimalFormat) NumberFormat
+				.getCurrencyInstance(us);
+		formatter.setNegativePrefix("$-");
+		formatter.setNegativeSuffix("");
+		return formatter.format(toformat);
 	}
 
 	public String FormatPerc(Double toformat) {
@@ -2031,8 +2711,17 @@ public class PropertyRatingBean implements Serializable {
 	// Format method end
 
 	// set get
+
 	public PropertyOnshoreRating getPropertyOnshoreRating() {
 		return propertyOnshoreRating;
+	}
+
+	public int getIDProjectToCompareWith() {
+		return IDProjectToCompareWith;
+	}
+
+	public void setIDProjectToCompareWith(int iDProjectToCompareWith) {
+		IDProjectToCompareWith = iDProjectToCompareWith;
 	}
 
 	public void setPropertyOnshoreRating(
@@ -2304,4 +2993,37 @@ public class PropertyRatingBean implements Serializable {
 	public void setSeverity(List<String> severity) {
 		Severity = severity;
 	}
+
+	public Project getProjectToCompareWith() {
+		return ProjectToCompareWith;
+	}
+
+	public void setProjectToCompareWith(Project projectToCompareWith) {
+		ProjectToCompareWith = projectToCompareWith;
+	}
+
+	public PropertyOnshoreRating getRatingToCompareWith() {
+		return RatingToCompareWith;
+	}
+
+	public void setRatingToCompareWith(PropertyOnshoreRating ratingToCompareWith) {
+		RatingToCompareWith = ratingToCompareWith;
+	}
+
+	public BarChartModel getBarModel1() {
+		return barModel1;
+	}
+
+	public void setBarModel1(BarChartModel barModel1) {
+		this.barModel1 = barModel1;
+	}
+
+	public List<Integer> getBI_Year_List() {
+		return BI_Year_List;
+	}
+
+	public void setBI_Year_List(List<Integer> bI_Year_List) {
+		BI_Year_List = bI_Year_List;
+	}
+
 }

@@ -16,22 +16,26 @@
 				<p:tabView id="tab" style="width:auto">
 					<p:tab title="Summary" id="summary">
 						<h:form id="frsum">
-							<p:panel id="glo" style="margin-left:200px;margin-right:200px;">
+							<p:panel id="glo">
 								<p:panelGrid columns="2" style="width:600px">
-									<f:facet name="header">offer information</f:facet>
+									<f:facet name="header">Offer Information</f:facet>
 									<p:outputLabel value="Underwriter : " for="Labe1" />
 									<p:outputLabel
 										value="#{projectBean.GetUserName(projectBean.project3.user)}"
 										id="Labe1"></p:outputLabel>
-									<p:outputLabel value="Inception Date : " for="inc1" />
-									<h:outputLabel id="inc1"
-										value="#{projectBean.project3.inception_Date}" />
-									<p:outputLabel value="Expiry date : " for="exp1" />
-									<h:outputLabel id="exp1"
-										value="#{projectBean.project3.expiry_date}" />
+									<p:outputLabel value="Creation date : " for="Creation1" />
+									<h:outputLabel id="Creation1"
+										value="#{projectBean.FormatDate(projectBean.project3.dateCreation)}" />
 									<p:outputLabel value="Quoted date : " for="quote1" />
 									<h:outputLabel id="quote1"
-										value="#{projectBean.project3.quoted_Date}" />
+										value="#{projectBean.FormatDate(projectBean.project3.quoted_Date)}" />
+									<p:outputLabel value="Inception Date : " for="inc1" />
+									<h:outputLabel id="inc1"
+										value="#{projectBean.FormatDate(projectBean.project3.inception_Date)}" />
+									<p:outputLabel value="Expiry date : " for="exp1" />
+									<h:outputLabel id="exp1"
+										value="#{projectBean.FormatDate(projectBean.project3.expiry_date)}" />
+
 									<p:outputLabel value="Currency : " for="curr1" />
 									<h:outputLabel id="curr1"
 										value="#{projectBean.project3.currency}" />
@@ -45,7 +49,7 @@
 									<h:outputLabel id="pol1" value="#{projectBean.project3.policy}" />
 
 								</p:panelGrid>
-								<p:panelGrid id="pansum">
+								<p:panelGrid id="QSgrid" rendered="#{PropertyRating.displayQs}">
 									<f:facet name="header">
 										<p:row>
 											<p:column colspan="2" style="width:600px">Summary</p:column>
@@ -53,7 +57,8 @@
 									</f:facet>
 									<p:row>
 										<p:column style="width:253px">Proposed Share</p:column>
-										<p:column style="width:347px">
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;width:347px">
 											<p:inplace editor="true">
 
 												<p:inputMask
@@ -114,7 +119,8 @@
 									</p:row>
 									<p:row>
 										<p:column>Profit margin</p:column>
-										<p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
 											<p:inplace editor="true">
 
 												<p:inputMask
@@ -130,13 +136,13 @@
 									</p:row>
 									<p:row>
 										<p:column> Brokerage</p:column>
-										<p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
 											<p:inplace editor="true">
-
 												<p:inputMask
 													value="#{PropertyRating.propertyOnshoreRating.brokerage}"
 													label="text" maxlength="7">
-													<pe:keyFilter regEx="/[0-9]/" />
+													<pe:keyFilter regEx="/[0-9.]/" />
 													<p:ajax event="valueChange"
 														listener="#{PropertyRating.GetCommPrice()}" update="@form" />
 												</p:inputMask>
@@ -146,21 +152,266 @@
 									</p:row>
 									<f:facet name="footer">
 										<p:row>
-											<p:column style="font-weight: bold;">Commercial Price </p:column>
+											<p:column style="font-weight: bold;">Rating Price </p:column>
 											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetCommPrice())} </p:column>
+										</p:row>
+										<p:row>
+											<p:column style="font-weight: bold;">Commercial Price </p:column>
+											<p:column>
+												<p:inplace editor="true">
+													<f:facet name="output">
+														<p:outputLabel
+															value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.modifiedPrice)}"></p:outputLabel>
+													</f:facet>
+													<f:facet name="input">
+														<p:inputMask
+															value="#{PropertyRating.propertyOnshoreRating.modifiedPrice}"
+															label="text" maxlength="15">
+														</p:inputMask>
+													</f:facet>
+
+												</p:inplace>
+											</p:column>
 										</p:row>
 									</f:facet>
 								</p:panelGrid>
-								<f:facet name="footer">
-									<p:commandButton style="position:relative;left:260px"
-										actionListener="#{projectBean.MakeThisProjectQuoted()}"
-										rendered="#{PropertyRating.DisplayNotQuotedRating()}"
-										value="Mark as quoted" update="glo :popupQuotation">
-										<p:confirm header="Confirmation"
-											message="By putting this project as quoted it will not be possible to change it .
+								<p:separator></p:separator>
+								<p:panelGrid id="ExcessGrid"
+									rendered="#{PropertyRating.dispalyExcess}">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="5" style="width:600px">Summary</p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="1">Proposed share</p:column>
+											<p:column colspan="1">Nat Catastrophe</p:column>
+											<p:column colspan="1">Internal costs</p:column>
+											<p:column colspan="1">Profit Margin </p:column>
+											<p:column colspan="1">brokerage </p:column>
+
+										</p:row>
+									</f:facet>
+									<p:row>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.proposedShare}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.ProposedShareorBrokeragechange()}"
+														update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%
+											</p:column>
+										<p:column>10%</p:column>
+										<p:column>16%</p:column>
+										<p:column>10%</p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.brokerage}"
+													label="text" maxlength="7">
+													<pe:keyFilter regEx="/[0-9]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.ProposedShareorBrokeragechange()}"
+														update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%</p:column>
+
+									</p:row>
+
+								</p:panelGrid>
+								<p:separator></p:separator>
+								<p:panelGrid id="ExcessGrid2"
+									rendered="#{PropertyRating.dispalyExcess}" style="width:1000px">
+									<f:facet name="header">
+
+										<p:row>
+											<p:column colspan="1" style="width:120px">Layer Number</p:column>
+											<p:column colspan="1">Share per layer</p:column>
+											<p:column colspan="1">Basic Risk Price </p:column>
+											<p:column colspan="1">Nat Catastrophe </p:column>
+											<p:column colspan="1">Internal Costs </p:column>
+											<p:column colspan="1">Profit Margin  </p:column>
+											<p:column colspan="1">Brokerage  </p:column>
+											<p:column colspan="1">
+											</p:column>
+											<p:column colspan="1">Commercial Price </p:column>
+										</p:row>
+									</f:facet>
+									<p:row
+										rendered="#{PropertyRating.propertyOnshoreRating.LY1_Selected}">
+										<p:column>Layer 1</p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.LY1_Share}"
+													label="text" maxlength="12">
+													<pe:keyFilter regEx="/[0-9.]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.CalculateLY1CommercialPrice()}"
+														update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_BasicRIskPrice)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_NatCatastrophe)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_InternalCostLoading)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_ProfitMargin)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_Brokerage)}</p:column>
+										<p:column></p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_CommercialPrice)}</p:column>
+
+									</p:row>
+									<p:row
+										rendered="#{PropertyRating.propertyOnshoreRating.LY2_Selected}">
+										<p:column>Layer 2</p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.LY2_Share}"
+													label="text" maxlength="12">
+													<pe:keyFilter regEx="/[0-9.]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.CalculateLY2CommercialPrice()}"
+														update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY2_BasicRIskPrice)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY2_NatCatastrophe)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY2_InternalCostLoading)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY2_ProfitMargin)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY2_Brokerage)}</p:column>
+										<p:column></p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY2_CommercialPrice)}</p:column>
+
+									</p:row>
+									<p:row
+										rendered="#{PropertyRating.propertyOnshoreRating.LY3_Selected}">
+										<p:column>Layer 3</p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.LY3_Share}"
+													label="text" maxlength="12">
+													<pe:keyFilter regEx="/[0-9.]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.CalculateLY3CommercialPrice()}"
+														update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_BasicRIskPrice)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_NatCatastrophe)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_InternalCostLoading)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_ProfitMargin)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_Brokerage)}</p:column>
+										<p:column></p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_CommercialPrice)}</p:column>
+
+									</p:row>
+									<p:row
+										rendered="#{PropertyRating.propertyOnshoreRating.LY4_Selected}">
+										<p:column>Layer 4</p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.LY4_Share}"
+													label="text" maxlength="12">
+													<pe:keyFilter regEx="/[0-9.]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.CalculateLY4CommercialPrice()}"
+														update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_BasicRIskPrice)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_NatCatastrophe)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_InternalCostLoading)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_ProfitMargin)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_Brokerage)}</p:column>
+										<p:column></p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_CommercialPrice)}</p:column>
+
+									</p:row>
+									<p:row
+										rendered="#{PropertyRating.propertyOnshoreRating.LY5_Selected}">
+										<p:column>Layer 5</p:column>
+										<p:column
+											style=" background-color: #E1E1E1;font-weight: bold;">
+											<p:inplace editor="true">
+
+												<p:inputMask
+													value="#{PropertyRating.propertyOnshoreRating.LY5_Share}"
+													label="text" maxlength="12">
+													<pe:keyFilter regEx="/[0-9.]/" />
+													<p:ajax event="valueChange"
+														listener="#{PropertyRating.CalculateLY5CommercialPrice()}"
+														update="@form" />
+												</p:inputMask>
+
+											</p:inplace>%</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_BasicRIskPrice)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_NatCatastrophe)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_InternalCostLoading)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_ProfitMargin)}</p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_Brokerage)}</p:column>
+										<p:column></p:column>
+										<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_CommercialPrice)}</p:column>
+
+									</p:row>
+									<f:facet name="footer">
+										<p:row>
+											<p:column>Total :</p:column>
+											<p:column>
+											</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalBasicRiskPrice())}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalNatCatastrophe())}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalInternalCosts())}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalProfitMargin())}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalBrokerage())}</p:column>
+											<p:column></p:column>
+											<p:column style="font-weight:bold;">#{PropertyRating.FormatToDollar(PropertyRating.CalculateCommercialPriceXL())}</p:column>
+
+										</p:row>
+									</f:facet>
+								</p:panelGrid>
+
+								<p:separator></p:separator>
+								<p:commandButton
+									action="#{PropertyRating.SaveRatingBeforeMakingitQuoted()}"
+									actionListener="#{projectBean.MakeThisProjectQuoted()}"
+									rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+									value="Mark as quoted" update="glo :popupQuotation">
+									<p:confirm header="Confirmation"
+										message="By putting this project as quoted it will not be possible to change it .
 													Are you sure you want to continue ?"
-											icon="ui-icon-alert" />
-									</p:commandButton>
+										icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:commandButton value="Save rating" id="saverating"
+									rendered="#{PropertyRating.DisplayNotQuotedRating()}"
+									actionListener="#{PropertyRating.SaveRating()}"></p:commandButton>
+								<p:tooltip id="toolTipFade" for="saverating"
+									value="you can also use ctrl+shift+s  to save the rating" />
+								<p:hotkey bind="ctrl+shift+s"
+									actionListener="#{PropertyRating.SaveRating()}" />
+								<f:facet name="footer">
 								</f:facet>
 
 							</p:panel>
@@ -225,7 +476,7 @@
 														id="Ibasis" style="width:155px">
 														<p:ajax event="valueChange"
 															listener="#{PropertyRating.DisplayByBasis()}"
-															update="leftpanel rightpanel sectionbreakdown" />
+															update="leftpanel rightpanel sectionbreakdown :tab:frsum" />
 														<f:selectItem itemLabel="QS" itemValue="qs" />
 														<f:selectItem itemLabel="Excess" itemValue="excess" />
 													</p:selectOneMenu>
@@ -313,10 +564,10 @@
 											</f:facet>
 											<p:row>
 												<p:column> PD_MB Deductibles</p:column>
-												<p:column>
+												<p:column style=" background-color: #E1E1E1;">
 													<p:inplace editor="true">
 														<f:facet name="output">
-															<p:outputLabel
+															<p:outputLabel style="font-weight: bold;"
 																value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.PD_Deductible_amount)}"></p:outputLabel>
 														</f:facet>
 														<f:facet name="input">
@@ -332,11 +583,12 @@
 
 													</p:inplace>
 												</p:column>
-												<p:column>#{PropertyRating.FormatToDollar(200000)}</p:column>
+												<p:column>in progress</p:column>
 											</p:row>
 											<p:row>
 												<p:column>PD % of Claim</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 
 														<p:inputMask
@@ -353,26 +605,41 @@
 											</p:row>
 											<p:row>
 												<p:column> BI</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
+														<f:facet name="output">
+															<p:outputLabel style="font-weight: bold;"
+																value="#{PropertyRating.propertyOnshoreRating.BI_Deductible_amount}"></p:outputLabel>
+														</f:facet>
+														<f:facet name="input">
+															<p:selectOneMenu
+																value="#{PropertyRating.propertyOnshoreRating.BI_Deductible_amount}">
+																<p:ajax event="valueChange"
+																	update="@form :tab:f :tab:frsum"
+																	listener="#{PropertyRating.BIDeductibleChange()}"></p:ajax>
+																<f:selectItems value="#{PropertyRating.BI_Year_List}"
+																	var="year" itemLabel="#{year}" itemValue="#{year}"></f:selectItems>
+															</p:selectOneMenu>
 
-														<p:inputMask
-															value="#{PropertyRating.propertyOnshoreRating.BI_Deductible_amount}"
-															label="text" maxlength="7">
-														</p:inputMask>
+														</f:facet>
 
 													</p:inplace>
 												</p:column>
-												<p:column>#{PropertyRating.FormatToDollar(10000)}</p:column>
+												<p:column>in progress</p:column>
 											</p:row>
 											<p:row>
 												<p:column> BI % of Claim</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 
 														<p:inputMask
-															value="#{PropertyRating.propertyOnshoreRating.BI_Deductible_amount}"
+															value="#{PropertyRating.propertyOnshoreRating.BI_deductible_perc}"
 															label="text" maxlength="7">
+															<p:ajax event="valueChange"
+																update="@form :tab:f :tab:frsum"
+																listener="#{PropertyRating.BIDeductibleChange()}"></p:ajax>
 														</p:inputMask>
 
 													</p:inplace>%
@@ -381,10 +648,11 @@
 											</p:row>
 											<p:row>
 												<p:column> Stocks</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
-															<p:outputLabel
+															<p:outputLabel style="font-weight: bold;"
 																value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.stock_amount)}"></p:outputLabel>
 														</f:facet>
 														<f:facet name="input">
@@ -402,10 +670,11 @@
 											</p:row>
 											<p:row>
 												<p:column> Other</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
-															<p:outputLabel
+															<p:outputLabel style="font-weight: bold;"
 																value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.other_amount)}"></p:outputLabel>
 														</f:facet>
 														<f:facet name="input">
@@ -433,11 +702,13 @@
 													<p:column>Priority</p:column>
 													<p:column>Premium</p:column>
 													<p:column style="width:65px">%</p:column>
+													<p:column style="width:65px">Selected</p:column>
 												</p:row>
 											</f:facet>
 											<p:row>
 												<p:column> Originial Policy deductible</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
 															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.OPD_lim)}
@@ -454,7 +725,8 @@
 													</p:inplace>
 
 												</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
 															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.OPD_ded)}
@@ -474,11 +746,13 @@
 												</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateOBDPremium())}</p:column>
 												<p:column>0%</p:column>
+												<p:column></p:column>
 											</p:row>
 
 											<p:row>
 												<p:column> Layer1</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
 															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY1_lim)}
@@ -486,7 +760,7 @@
 														<f:facet name="input">
 															<p:inputMask
 																value="#{PropertyRating.propertyOnshoreRating.LY1_lim}"
-																label="text" maxlength="7">
+																label="text" maxlength="12">
 																<pe:keyFilter regEx="/[0-9]/" />
 																<p:ajax event="valueChange"
 																	listener="#{PropertyRating.CalculateLY1fac()}"
@@ -498,11 +772,19 @@
 												</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer1ded())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY1Premium())}</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateLY1Ratio())}%</p:column>
+												<p:column>
+													<p:selectBooleanCheckbox
+														value="#{PropertyRating.propertyOnshoreRating.LY1_Selected}">
+														<p:ajax update="@form :tab:frsum"
+															listener="#{PropertyRating.CalculateLY1CommercialPrice()}" />
+													</p:selectBooleanCheckbox>
+												</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Layer2</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 
 														<f:facet name="output">
@@ -524,11 +806,19 @@
 
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer2ded())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY2Premium())}</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateLY2Ratio())}%</p:column>
+												<p:column>
+													<p:selectBooleanCheckbox
+														value="#{PropertyRating.propertyOnshoreRating.LY2_Selected}">
+														<p:ajax update="@form :tab:frsum"
+															listener="#{PropertyRating.CalculateLY2CommercialPrice()}" />
+													</p:selectBooleanCheckbox>
+												</p:column>
 											</p:row>
 											<p:row>
 												<p:column>Layer3</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
 															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY3_lim)}
@@ -549,11 +839,19 @@
 												</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer3ded())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY3Premium())}</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateLY3Ratio())}%</p:column>
+												<p:column>
+													<p:selectBooleanCheckbox
+														value="#{PropertyRating.propertyOnshoreRating.LY3_Selected}">
+														<p:ajax update="@form :tab:frsum"
+															listener="#{PropertyRating.CalculateLY3CommercialPrice()}" />
+													</p:selectBooleanCheckbox>
+												</p:column>
 											</p:row>
 											<p:row>
 												<p:column> Layer4</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
 															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY4_lim)}
@@ -572,11 +870,19 @@
 												</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer4ded())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY4Premium())}</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateLY4Ratio())}%</p:column>
+												<p:column>
+													<p:selectBooleanCheckbox
+														value="#{PropertyRating.propertyOnshoreRating.LY4_Selected}">
+														<p:ajax update="@form :tab:frsum"
+															listener="#{PropertyRating.CalculateLY4CommercialPrice()}" />
+													</p:selectBooleanCheckbox>
+												</p:column>
 											</p:row>
 											<p:row>
 												<p:column> Layer5</p:column>
-												<p:column>
+												<p:column
+													style=" background-color: #E1E1E1;font-weight: bold;">
 													<p:inplace editor="true">
 														<f:facet name="output">
 															#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.LY5_lim)}
@@ -595,7 +901,14 @@
 												</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.GetLayer5ded())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateLY5Premium())}</p:column>
-												<p:column>0%</p:column>
+												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateLY5Ratio())}%</p:column>
+												<p:column>
+													<p:selectBooleanCheckbox
+														value="#{PropertyRating.propertyOnshoreRating.LY5_Selected}">
+														<p:ajax update="@form :tab:frsum"
+															listener="#{PropertyRating.CalculateLY5CommercialPrice()}" />
+													</p:selectBooleanCheckbox>
+												</p:column>
 											</p:row>
 											<f:facet name="footer">
 												<p:row>
@@ -625,7 +938,7 @@
 												</p:row>
 											</f:facet>
 											<p:row>
-												<p:column>property Damage</p:column>
+												<p:column>Property Damage</p:column>
 
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBasePropertyDamage())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculatePDPMLAdjustedRate())}%</p:column>
@@ -640,7 +953,7 @@
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseBI())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateBIPMLAdjustedRate())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalBIDiscount())}%</p:column>
-												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalBIPremium()/PropertyRating.calculateBITotalSumInsured()*100)}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.calculateBIDed())}%</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalBIPremium())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateBITotalPML())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateBITotalSumInsured())}</p:column>
@@ -650,7 +963,7 @@
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseMB())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateMBPMLAdjustedRate())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMBDiscount())}%</p:column>
-												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMBPremium()/PropertyRating.calculateMBTotalSumInsured()*100)}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateMBDeductible())}%</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalMBPremium())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMBTotalPML())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMBTotalSumInsured())}</p:column>
@@ -660,7 +973,7 @@
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseMLop())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateMlopPMLAdjustedRate())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMlopDiscount())}%</p:column>
-												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalMlopPremium()/PropertyRating.calculateMlopTotalSI()*100)}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.calculateMLopDed())}%</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalMlopPremium())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMlopTotalPML())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateMlopTotalSI())}</p:column>
@@ -671,7 +984,7 @@
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseStock())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateStockPMLAdjustedRate())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalStockDiscount())}%</p:column>
-												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalStockPremium()/PropertyRating.calculateStockTotalSI()*100)}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.calculateStockDed())}%</p:column>
 												Stock_Deductible_Change<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalStockPremium())}</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculateStockTotalPML())}</p:column>
 												<p:column>	#{PropertyRating.FormatToDollar(PropertyRating.calculateStockTotalSI())}</p:column>
@@ -681,7 +994,7 @@
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.calculateBaseOther())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateOtherPMLAdjustedRate())}%</p:column>
 												<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalOtherDiscount())}%</p:column>
-												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalOtherPremium()/PropertyRating.calculateOtherTotalSI()*100)}%</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.calculateOtherDed())}%</p:column>
 												<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalOtherPremium())}</p:column>
 												<p:column>	#{PropertyRating.FormatToDollar(PropertyRating.calculateOtherTotalPML())}</p:column>
 												<p:column>	#{PropertyRating.FormatToDollar(PropertyRating.calculateOtherTotalSI())}</p:column>
@@ -708,9 +1021,12 @@
 									</h:panelGrid>
 
 								</h:panelGrid>
-								<p:commandButton value="Save rating"
+								<p:separator></p:separator>
+								<p:commandButton value="Save rating" id="saverating2"
 									rendered="#{PropertyRating.DisplayNotQuotedRating()}"
 									actionListener="#{PropertyRating.SaveRating()}"></p:commandButton>
+								<p:tooltip id="toolTipFade" for="saverating2"
+									value="you can also use ctrl+shift+s  to save the rating" />
 							</h:form>
 
 						</p:panel>
@@ -1732,13 +2048,198 @@
 								</p:panelGrid>
 
 							</p:panel>
-							<p:commandButton value="Save rating"
+							<p:commandButton value="Save rating" id="saverating3"
 								rendered="#{PropertyRating.DisplayNotQuotedRating()}"
-								actionListener="#{PropertyRating.SaveRating()}"></p:commandButton>
+								actionListener="#{PropertyRating.SaveRating()}" />
+							<p:tooltip id="toolTipFade" for="saverating3"
+								value="you can also use ctrl+shift+s  to save the rating" />
 						</h:form>
 					</p:tab>
+					
+					<p:tab   title="Difference" rendered="#{projectBean.DisplayDiffTab()}">
+						<p:chart  type="bar" model="#{PropertyRating.barModel1}"
+							style="left:50px;width:500px" />
+						<p:separator></p:separator>
+						<h:form>
+							<p:outputLabel>Project Date Of Creation : </p:outputLabel>
+							<p:selectOneMenu id="QuotationSelect"
+								value="#{PropertyRating.IDProjectToCompareWith}"
+								style="width:155px">
+								<p:ajax event="valueChange"
+									listener="#{PropertyRating.ComparasionProjChange()}"
+									update=":tab:pan"></p:ajax>
+								<f:selectItem itemLabel="Select one" itemValue="0" />
+								<f:selectItems
+									value="#{PropertyRating.GetComparaisonProjects()}" var="cob"
+									itemLabel="#{projectBean.FormatDate(cob.dateCreation)}"
+									itemValue="#{cob.id}"></f:selectItems>
+							</p:selectOneMenu>
+						</h:form>
+						<p:panelGrid id="pan">
+							<p:row>
+								<p:column>
+									<h:form>
+										<p:panelGrid>
+											<f:facet name="header">
+												<p:row>
+													<p:column colspan="2"> Project 1</p:column>
+												</p:row>
+											</f:facet>
+											<p:row>
+												<p:column>Creation  Date</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{projectBean.FormatDate(PropertyRating.project3.dateCreation)}"></p:outputLabel>
+												</p:column>
+											</p:row>
 
+											<p:row>
+												<p:column>Inception  Date</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{projectBean.FormatDate(PropertyRating.project3.inception_Date)}"></p:outputLabel>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>Expiry  Date</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{projectBean.FormatDate(PropertyRating.project3.expiry_date)}"></p:outputLabel>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>Rating Price</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.commercialPrice)}"></p:outputLabel>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>Commercial Price</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.modifiedPrice)}"></p:outputLabel>
+												</p:column>
+
+											</p:row>
+										</p:panelGrid>
+									</h:form>
+								</p:column>
+								<p:column>
+									<h:form>
+										<p:panelGrid>
+											<f:facet name="header">
+												<p:row>
+													<p:column colspan="2"> Project 2</p:column>
+												</p:row>
+											</f:facet>
+											<p:row>
+												<p:column>Creation  Date</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{projectBean.FormatDate(PropertyRating.projectToCompareWith.dateCreation)}"></p:outputLabel>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>Inception  Date</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{projectBean.FormatDate(PropertyRating.projectToCompareWith.inception_Date)}"></p:outputLabel>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>Expiry  Date</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{projectBean.FormatDate(PropertyRating.projectToCompareWith.expiry_date)}"></p:outputLabel>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>Rating Price</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{PropertyRating.FormatToDollar(PropertyRating.ratingToCompareWith.commercialPrice)}"></p:outputLabel>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>Commercial Price</p:column>
+												<p:column>
+													<p:outputLabel
+														value="#{PropertyRating.FormatToDollar(PropertyRating.ratingToCompareWith.modifiedPrice)}"></p:outputLabel>
+												</p:column>
+
+											</p:row>
+										</p:panelGrid>
+									</h:form>
+
+								</p:column>
+							</p:row>
+
+							<p:row>
+								<p:column colspan="2">
+									<p:panelGrid id="Tab1">
+
+										<f:facet name="header">
+											<p:row>
+												<p:column>Property Damage</p:column>
+												<p:column>Adj.Rates</p:column>
+												<p:column>Disc.</p:column>
+												<p:column rendered="#{PropertyRating.displayQs}">Ded</p:column>
+												<p:column>Prem</p:column>
+												<p:column>PML</p:column>
+												<p:column>Deductibles</p:column>
+												<p:column>% of claim</p:column>
+											</p:row>
+										</f:facet>
+										<p:row>
+
+											<p:column>Project 1 PD</p:column>
+
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculatePDPMLAdjustedRate())}%</p:column>
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalPDDiscount())}%</p:column>
+											<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.calculatePDDed())}%</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalPDPremium())}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculatePropertyTotalPML())}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.PD_Deductible_amount)}</p:column>
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.propertyOnshoreRating.PD_deductible_perc)}%</p:column>
+										</p:row>
+										<p:row>
+											<p:column>Project 2 PD</p:column>
+
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.ratingToCompareWith.PD_AdRate)}%</p:column>
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.ratingToCompareWith.PD_Disc)}%</p:column>
+											<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.ratingToCompareWith.PD_Ded)}%</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.ratingToCompareWith.PD_Premium)}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.ratingToCompareWith.PD_PML)}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.ratingToCompareWith.PD_Deductible_amount)}</p:column>
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.ratingToCompareWith.PD_deductible_perc)}%</p:column>
+										</p:row>
+										<p:row>
+											<p:column>Project 1-Project2</p:column>
+
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculatePDPMLAdjustedRate()-PropertyRating.ratingToCompareWith.PD_AdRate)}%</p:column>
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.CalculateTotalPDDiscount()-PropertyRating.ratingToCompareWith.PD_Disc)}%</p:column>
+											<p:column rendered="#{PropertyRating.displayQs}">#{PropertyRating.FormatPerc(PropertyRating.calculatePDDed()-PropertyRating.ratingToCompareWith.PD_Ded)}%</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.CalculateTotalPDPremium()-PropertyRating.ratingToCompareWith.PD_Premium)}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.calculatePropertyTotalPML()-PropertyRating.ratingToCompareWith.PD_PML)}</p:column>
+											<p:column>#{PropertyRating.FormatToDollar(PropertyRating.propertyOnshoreRating.PD_Deductible_amount-PropertyRating.ratingToCompareWith.PD_Deductible_amount)}</p:column>
+											<p:column>#{PropertyRating.FormatPerc(PropertyRating.propertyOnshoreRating.PD_deductible_perc-PropertyRating.ratingToCompareWith.PD_deductible_perc)}%</p:column>
+										</p:row>
+
+
+									</p:panelGrid>
+								</p:column>
+							</p:row>
+
+
+
+
+						</p:panelGrid>
+					</p:tab>
 				</p:tabView>
+
+
+
 				<p:confirmDialog global="true" hideEffect="explode" visible="false"
 					showEffect="fade">
 					<p:commandButton value="Yes" type="button"
@@ -1791,7 +2292,13 @@
 
 				</h:form>
 			</p:dialog>
-
+			<script type="text/javascript">
+        
+        window.onbeforeunload = function() {
+        	 return 'Make sure that you saved the rating else all the informations entered will be lost';
+        	
+       	}
+        </script>
 
 		</ui:define>
 	</ui:composition>

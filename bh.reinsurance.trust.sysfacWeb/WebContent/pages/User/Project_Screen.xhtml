@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:head>
 </h:head>
 <h:body>
@@ -43,7 +44,7 @@
 					</h:panelGrid>
 				</p:panel>
 
-				<p:dataTable emptyMessage="no Projects found!"
+				<p:dataTable  emptyMessage="no Projects found!"
 					value="#{projectBean.projects}" var="prod" rows="13"
 					selectionMode="single" selection="#{projectBean.project}"
 					paginator="true" paginatorPosition="bottom" rowKey="#{prod.id}"
@@ -94,7 +95,7 @@
 				</p:dataTable>
 			</h:form>
 
-			<p:dialog header="Password" modal="true" id="popup1"
+			<p:dialog   header="Password" modal="true" id="popup1"
 				widgetVar="popup1" showEffect="true" hideEffect="explode"
 				resizable="false">
 				<h:form id="form3">
@@ -208,15 +209,15 @@
 
 			<p:dialog header="Select a project" modal="true"
 				widgetVar="popupProj" id="popupProj" showEffect="true"
-				hideEffect="explode" resizable="false">
+				hideEffect="explode" resizable="false" >
 				<h:form id="form4">
 					<p:dataTable style="width:750px" emptyMessage="no Projects found!"
 						value="#{projectBean.projectsByName}" var="pod" rows="13"
 						paginator="true" paginatorPosition="bottom" selectionMode="single"
 						selection="#{projectBean.projectToOpen}" rowKey="#{pod.id}"
 						widgetVar="datatable1">
-						<p:ajax event="rowSelect" listener="#{projectBean.DisplayPopManyProj()}"
-						update="@form" />
+						<p:ajax event="rowSelect"
+							listener="#{projectBean.DisplayPopManyProj()}" update="@form" />
 
 						<p:column headerText="ID">
 							<h:outputText value="#{pod.id}" />
@@ -228,15 +229,16 @@
 							<h:outputText value="#{projectBean.FormatDate(pod.quoted_Date)}" />
 						</p:column>
 					</p:dataTable>
-				
-	
-				<p:commandButton value="Renew" action="#{projectBean.RenewProj()}"
-					rendered="#{projectBean.DisplayRenewButton2()}"
-					icon="ui-icon-folder-open" />
-				<p:commandButton value="Open"
-					action="#{projectBean.FillProjAndOpen()}"
-					rendered="#{projectBean.openButtonManyproj}" icon="ui-icon-folder-open" />
-					</h:form>
+
+
+					<p:commandButton value="Renew" action="#{projectBean.RenewProj()}"
+						rendered="#{projectBean.DisplayRenewButton2()}"
+						icon="ui-icon-folder-open" />
+					<p:commandButton value="Open"
+						action="#{projectBean.FillProjAndOpen()}"
+						rendered="#{projectBean.openButtonManyproj}"
+						icon="ui-icon-folder-open" />
+				</h:form>
 			</p:dialog>
 
 		</ui:define>

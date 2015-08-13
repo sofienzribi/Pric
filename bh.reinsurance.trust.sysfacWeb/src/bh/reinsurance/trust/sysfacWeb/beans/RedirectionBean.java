@@ -115,7 +115,7 @@ public class RedirectionBean implements Serializable {
 
 	public void GoToTest2() throws IOException {
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("test2.jsf");
+				.redirect("PropertyRating.jsf");
 	}
 
 	public void GoToPlaccountantandauditorsratingtool() throws IOException {

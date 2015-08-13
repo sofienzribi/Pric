@@ -122,4 +122,11 @@ public class ProjectServices implements ProjectServicesLocal {
 		entityManager.merge(project);
 
 	}
+
+	@Override
+	public List<Project> GetProjectsByUserNonDistinct(User user) {
+		return entityManager
+				.createQuery("select p from Project p where p.user=:c ORDER BY p.dateCreation DESC")
+				.setParameter("c", user.getId()).getResultList();
+	}
 }

@@ -38,7 +38,7 @@
 										actionListener="#{redirectionBean.GoToMap()}"></p:commandLink>
 
 								</li>
-								<li><p:commandLink value="Charts"
+								<li><p:commandLink rendered="false" value="Charts"
 										actionListener="#{redirectionBean.GoToChartPage()}" /></li>
 							</ul></li>
 
@@ -128,7 +128,7 @@
 										value="Test/Reset Measure"
 										rendered="#{!projectBean.disabledButtonProjectSendClose}"
 										onclick="PF('POPMeasure').show()" /></li>
-								<li><p:commandLink
+								<li><p:commandLink ajax="false"
 										rendered="#{!projectBean.disabledButtonProjectSendClose}"
 										value="Close Project"
 										actionListener="#{projectBean.CloseDProject()}" /></li>

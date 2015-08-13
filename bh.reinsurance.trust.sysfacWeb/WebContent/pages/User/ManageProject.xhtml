@@ -22,7 +22,7 @@
 						<h:outputText value="#{prod.nameOfTheProject}" />
 					</p:column>
 					<p:column headerText="Creation Date">
-						<h:outputText value="#{prod.dateCreation}" />
+						<h:outputText value="#{projectBean.FormatDate(prod.dateCreation)}" />
 					</p:column>
 					<p:column headerText="Privacy ">
 						<h:outputText value="#{prod.privacy}" />

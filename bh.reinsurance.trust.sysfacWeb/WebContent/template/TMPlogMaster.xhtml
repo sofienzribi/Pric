@@ -24,11 +24,11 @@ body {
 	<h:outputScript library="js" name="bootstrap.min.js"></h:outputScript>
 
 
-	<div id="header">
+	<div id="header"  class="ui-fluid">
 		<div class="container">
 			<div class="container text-left"></div>
 			<div class="container text-center">
-
+			
 				<section> <h:form class="form-2">
 					<p:graphicImage value="/resources/images/logo_small.png"></p:graphicImage>
 					<h1>
@@ -64,6 +64,8 @@ body {
 						actionListener="#{login.login()}">
 						<p:graphicImage value="/resources/images/dd.png" width="85" />
 					</p:commandLink>
+						<p:hotkey bind="return" update="@form"
+									actionListener="#{login.login()}" />
 				</h:form> </section>
 			</div>
 		</div>

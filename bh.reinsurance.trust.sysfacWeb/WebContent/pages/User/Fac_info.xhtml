@@ -78,8 +78,8 @@
 							filterMatchMode="contains">
 							<h:outputText value="#{prod.occupencies}" />
 						</p:column>
-						<p:column headerText="our liability">
-							<h:outputText value="#{prod.our_liability}" />
+						<p:column headerText="Our liability">
+							<h:outputText value="#{facultativeBean.FormatToDollar(prod.our_liability)}" />
 						</p:column>
 						<f:facet name="footer">
 							<p:commandLink onclick="PF('popuppdf').show()">
@@ -108,10 +108,10 @@
 							<p:outputLabel value="Cedent" />
 							<p:outputLabel value="#{facultativeBean.facbychoice1.cedant}" />
 							<p:outputLabel value="Sum Insured" />
-							<p:outputLabel value="#{facultativeBean.facbychoice1.suminsured}" />
+							<p:outputLabel value="#{facultativeBean.FormatToDollar(facultativeBean.facbychoice1.suminsured)}" />
 							<p:outputLabel value="Our Liability" />
 							<p:outputLabel
-								value="#{facultativeBean.facbychoice1.our_liability}" />
+								value="#{facultativeBean.FormatToDollar(facultativeBean.facbychoice1.our_liability)}" />
 							<p:outputLabel value="Interest" />
 							<p:outputLabel value="#{facultativeBean.facbychoice1.interest}" />
 							<p:outputLabel value="Commission" />
@@ -149,10 +149,10 @@
 									value="#{facultativeBean.comparaisonFacultative.cedant}" />
 								<p:outputLabel value="Sum Insured" />
 								<p:outputLabel
-									value="#{facultativeBean.comparaisonFacultative.suminsured}" />
+									value="#{facultativeBean.FormatToDollar(facultativeBean.comparaisonFacultative.suminsured)}" />
 								<p:outputLabel value="Our Liability" />
 								<p:outputLabel
-									value="#{facultativeBean.comparaisonFacultative.our_liability}" />
+									value="#{facultativeBean.FormatToDollar(facultativeBean.comparaisonFacultative.our_liability)}" />
 								<p:outputLabel value="Interest" />
 								<p:outputLabel
 									value="#{facultativeBean.comparaisonFacultative.interest}" />

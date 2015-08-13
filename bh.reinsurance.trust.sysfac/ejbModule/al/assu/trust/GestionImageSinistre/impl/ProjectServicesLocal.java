@@ -13,6 +13,7 @@ public interface ProjectServicesLocal {
 	public void NewProject(Project project);
 
 	public List<Project> GetProjectsByUser(User user);
+	public List<Project> GetProjectsByUserNonDistinct(User user);
 
 	public Project GetProjectByName(String Name);
 

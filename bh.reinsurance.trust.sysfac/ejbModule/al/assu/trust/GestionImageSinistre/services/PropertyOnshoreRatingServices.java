@@ -39,7 +39,7 @@ public class PropertyOnshoreRatingServices implements
 
 	@Override
 	public void Delete(PropertyOnshoreRating onshoreRating) {
-		entityManager.remove(onshoreRating);
+		entityManager.remove(entityManager.merge(onshoreRating));
 	}
 
 	@Override

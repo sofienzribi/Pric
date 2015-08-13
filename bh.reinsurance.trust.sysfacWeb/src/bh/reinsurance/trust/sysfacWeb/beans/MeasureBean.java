@@ -358,7 +358,7 @@ public class MeasureBean implements Serializable {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('popup').hide();");
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("PropertyOnshoreMeasure.jsf");
+				.redirect("PropertyMeasure.jsf");
 	}
 
 	public String OpenPropertyOnshoreMeasure() {
@@ -367,7 +367,7 @@ public class MeasureBean implements Serializable {
 		DisplayMeasureMenu = "true";
 		DisableButtonMeasure = true;
 		disableButtonCloseSet = false;
-		return "PropertyOnshoreMeasure?faces-redirect=true";
+		return "PropertyMeasure?faces-redirect=true";
 
 	}
 
@@ -380,7 +380,7 @@ public class MeasureBean implements Serializable {
 			.redirect("PIAccountantandandAuditorsMeasurel.jsf");
 		}else{
 			FacesContext.getCurrentInstance().getExternalContext()
-			.redirect("PropertyOnshoreMeasure.jsf");
+			.redirect("PropertyMeasure.jsf");
 		}
 		
 		

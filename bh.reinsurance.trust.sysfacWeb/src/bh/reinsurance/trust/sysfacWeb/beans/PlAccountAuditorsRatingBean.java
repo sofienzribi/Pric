@@ -60,7 +60,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	private Map<Integer, String> CoverExtensionsList;
 	private Map<Integer, String> CoverExtensionsList2;
 
-
 	private PIaccandAudit iaccandAudittosave;
 	private TestMeasureResult test1 = new TestMeasureResult();
 	private TestMeasureResult test2 = new TestMeasureResult();
@@ -1150,12 +1149,12 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	}
 
 	// Calculate total premium by rating end
-	//Format method
-		public String FormatToDollar(double toformat) {
-			return NumberFormat.getCurrencyInstance(us).format(toformat);
-		}
+	// Format method
+	public String FormatToDollar(double toformat) {
+		return NumberFormat.getCurrencyInstance(us).format(toformat);
+	}
 
-		
+
 	// getters setters
 
 	public PIaccandAudit getIaccandAudittosave() {
@@ -1606,8 +1605,6 @@ public class PlAccountAuditorsRatingBean implements Serializable {
 	public void setTest2(TestMeasureResult test2) {
 		this.test2 = test2;
 	}
-
-	
 
 	public BarChartModel getBarChartModel() {
 		return barChartModel;

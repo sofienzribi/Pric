@@ -9,14 +9,14 @@
 	<ui:composition template="/template/TmpMaster.xhtml">
 		<ui:define name="title">Risks On map </ui:define>
 		<ui:define name="content">
-			<div style="position: relative; left: -100px; top: -50px">
+			<div    style="position: relative; left: -100px; top: -50px">
 				<h2 style="color: black; bold: true; font-weight: bold;">Risks
 					On Map</h2>
 			</div>
-			<p:panel style="position:relative;left:-100px;top:-50px" id="master">
+			<p:panel   style="position:relative;left:-100px;top:-50px" id="master">
 				<h:form>
 
-					<h:panelGrid id="eu" columns="2">
+					<h:panelGrid id="eu" columns="2" >
 						<h:outputLabel style="margin-left:600px" value="Region : " />
 						<p:selectOneMenu value="#{MapBean.selectedRegion}"
 							style="width:375px">
@@ -32,7 +32,7 @@
 					<div id="map">
 						<p:gmap center="#{MapBean.mapRegion}" zoom="#{MapBean.mapZoom}"
 							type="TERRAIN" style="width:1400px;height:600px"
-							model="#{MapBean.simpleModel}">
+							model="#{MapBean.simpleModel}" >
 							<p:ajax event="overlaySelect"
 								listener="#{MapBean.onMarkerSelect}" />
 							<p:gmapInfoWindow id="infoWindow">

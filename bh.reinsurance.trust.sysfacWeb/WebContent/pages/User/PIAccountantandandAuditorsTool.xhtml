@@ -225,19 +225,20 @@
 												<p:column>Gross Revenue Of the firm</p:column>
 												<p:column>
 													<p:inplace editor="true">
-		<f:facet name="output">
-		<p:outputLabel value="#{plAccountAuditorsRatingBean.FormatToDollar(plAccountAuditorsRatingBean.iaccandAudittosave.grossRevenue)}"></p:outputLabel>
-		</f:facet>
-			<f:facet name="input">
-														<p:inputMask
-															value="#{plAccountAuditorsRatingBean.iaccandAudittosave.grossRevenue}"
-															label="text" maxlength="7">
-															<pe:keyFilter regEx="/[0-9]/" />
-															<p:ajax event="valueChange"
-																listener="#{plAccountAuditorsRatingBean.GetBasePremium()}"
-																update="@form :tab:summary" />
-														</p:inputMask>
-</f:facet>
+														<f:facet name="output">
+															<p:outputLabel
+																value="#{plAccountAuditorsRatingBean.FormatToDollar(plAccountAuditorsRatingBean.iaccandAudittosave.grossRevenue)}"></p:outputLabel>
+														</f:facet>
+														<f:facet name="input">
+															<p:inputMask
+																value="#{plAccountAuditorsRatingBean.iaccandAudittosave.grossRevenue}"
+																label="text" maxlength="7">
+																<pe:keyFilter regEx="/[0-9]/" />
+																<p:ajax event="valueChange"
+																	listener="#{plAccountAuditorsRatingBean.GetBasePremium()}"
+																	update="@form :tab:summary" />
+															</p:inputMask>
+														</f:facet>
 													</p:inplace>
 												</p:column>
 											</p:row>
@@ -555,7 +556,8 @@
 											<p:column>
 												<p:outputLabel value="Each occurence limit " />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace editor="true">
 
 													<p:inputMask
@@ -577,7 +579,7 @@
 											<p:column>
 												<p:selectOneMenu
 													value="#{plAccountAuditorsRatingBean.iaccandAudittosave.aggregatelimit}"
-													style="width:160px">
+													style="width:130px">
 													<p:ajax event="valueChange"
 														listener="#{plAccountAuditorsRatingBean.AggregateChange()}"
 														update="@form :tab:summary" />
@@ -592,7 +594,8 @@
 											<p:column>
 												<p:outputLabel value="Deductible " />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace editor="true">
 
 													<p:inputMask
@@ -626,7 +629,8 @@
 											<p:column>
 												<p:outputLabel value="Loss of document " />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace editor="true">
 
 													<p:inputMask
@@ -645,7 +649,8 @@
 											<p:column>
 												<p:outputLabel value="Dishonest of employees " />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace editor="true">
 
 													<p:inputMask
@@ -664,7 +669,8 @@
 											<p:column>
 												<p:outputLabel value="Libel,Slander " />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace editor="true">
 
 													<p:inputMask
@@ -683,7 +689,8 @@
 											<p:column>
 												<p:outputLabel value="Defence Expenses outside limits " />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace editor="true">
 
 													<p:inputMask
@@ -717,7 +724,8 @@
 											<p:column>
 												<p:outputLabel value="Commission and Acquisition Costs" />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 
 												<p:inplace id="ajax" editor="true">
 
@@ -739,7 +747,8 @@
 											<p:column>
 												<p:outputLabel value="General Expenses" />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace id="ajax3" editor="true">
 
 													<p:inputMask id="e2"
@@ -759,7 +768,8 @@
 											<p:column>
 												<p:outputLabel value="Profit/Contingency " />
 											</p:column>
-											<p:column>
+											<p:column
+												style=" background-color: #E1E1E1;font-weight: bold;">
 												<p:inplace id="ajax2" editor="true">
 
 													<p:inputMask id="e3"
@@ -1561,7 +1571,9 @@
      
         window.onbeforeunload = function() {
         	 return 'Make sure that you saved the rating else all the informations entered will be lost';
+        	
        	}
+     
       </script>
 
 
